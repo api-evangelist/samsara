@@ -1,0 +1,369 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Samsara Fleet Operations"
+  description: >-
+    Unified fleet operations capability composing Samsara vehicle, driver, route, address,
+    tag, and asset management APIs into a single workflow surface for fleet managers and
+    dispatchers. Supports full fleet lifecycle: vehicle tracking, driver assignment, route
+    dispatch, asset management, and organizational tagging.
+  tags:
+    - Asset Management
+    - Dispatch
+    - Driver Management
+    - Fleet Management
+    - GPS
+    - Routes
+    - Samsara
+    - Telematics
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      SAMSARA_API_TOKEN: SAMSARA_API_TOKEN
+
+capability:
+  consumes:
+    - import: samsara
+      location: ./shared/samsara.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: fleet-operations-api
+      description: "Unified REST API for Samsara fleet operations management."
+      resources:
+        - path: /v1/vehicles
+          name: vehicles
+          description: "Vehicle fleet inventory and management"
+          operations:
+            - method: GET
+              name: list-vehicles
+              description: "List all vehicles in the fleet"
+              call: "samsara.list-vehicles"
+              with:
+                limit: "rest.limit"
+                after: "rest.after"
+                tagIds: "rest.tagIds"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/vehicles/{id}
+          name: vehicle
+          description: "Individual vehicle details"
+          operations:
+            - method: GET
+              name: get-vehicle
+              description: "Get a specific vehicle by ID"
+              call: "samsara.get-vehicle"
+              with:
+                id: "rest.id"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/vehicle-locations
+          name: vehicle-locations
+          description: "Real-time and historical vehicle GPS locations"
+          operations:
+            - method: GET
+              name: get-vehicle-locations
+              description: "Get vehicle locations feed"
+              call: "samsara.get-vehicle-locations"
+              with:
+                after: "rest.after"
+                vehicleIds: "rest.vehicleIds"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/drivers
+          name: drivers
+          description: "Driver profile management"
+          operations:
+            - method: GET
+              name: list-drivers
+              description: "List all drivers"
+              call: "samsara.list-drivers"
+              with:
+                limit: "rest.limit"
+                after: "rest.after"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-driver
+              description: "Create a new driver"
+              call: "samsara.create-driver"
+              with:
+                name: "rest.name"
+                username: "rest.username"
+                licenseNumber: "rest.licenseNumber"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/drivers/{id}
+          name: driver
+          description: "Individual driver details"
+          operations:
+            - method: GET
+              name: get-driver
+              description: "Get a specific driver by ID"
+              call: "samsara.get-driver"
+              with:
+                id: "rest.id"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/routes
+          name: routes
+          description: "Dispatch route planning and tracking"
+          operations:
+            - method: GET
+              name: list-routes
+              description: "List all dispatch routes"
+              call: "samsara.list-routes"
+              with:
+                limit: "rest.limit"
+                after: "rest.after"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-route
+              description: "Create a new dispatch route"
+              call: "samsara.create-route"
+              with:
+                name: "rest.name"
+                driverId: "rest.driverId"
+                stops: "rest.stops"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/assets
+          name: assets
+          description: "Non-powered asset tracking (trailers, equipment)"
+          operations:
+            - method: GET
+              name: list-assets
+              description: "List all tracked assets"
+              call: "samsara.list-assets"
+              with:
+                limit: "rest.limit"
+                after: "rest.after"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/addresses
+          name: addresses
+          description: "Location and geofence management"
+          operations:
+            - method: GET
+              name: list-addresses
+              description: "List all addresses and geofences"
+              call: "samsara.list-addresses"
+              with:
+                limit: "rest.limit"
+                after: "rest.after"
+                tagIds: "rest.tagIds"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-address
+              description: "Create an address with geofence"
+              call: "samsara.create-address"
+              with:
+                name: "rest.name"
+                formattedAddress: "rest.formattedAddress"
+                geofence: "rest.geofence"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/tags
+          name: tags
+          description: "Organizational tags for fleet grouping"
+          operations:
+            - method: GET
+              name: list-tags
+              description: "List all tags"
+              call: "samsara.list-tags"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-tag
+              description: "Create an organizational tag"
+              call: "samsara.create-tag"
+              with:
+                name: "rest.name"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/webhooks
+          name: webhooks
+          description: "Event webhook subscription management"
+          operations:
+            - method: GET
+              name: list-webhooks
+              description: "List all webhook subscriptions"
+              call: "samsara.list-webhooks"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-webhook
+              description: "Subscribe to fleet event webhooks"
+              call: "samsara.create-webhook"
+              with:
+                name: "rest.name"
+                url: "rest.url"
+                eventTypes: "rest.eventTypes"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9080
+      namespace: fleet-operations-mcp
+      transport: http
+      description: "MCP server for AI-assisted fleet operations and dispatch management."
+      tools:
+        - name: list-vehicles
+          description: "List all vehicles in the fleet, optionally filtered by tag"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "samsara.list-vehicles"
+          with:
+            limit: "tools.limit"
+            after: "tools.after"
+            tagIds: "tools.tagIds"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-vehicle
+          description: "Get details for a specific vehicle by ID"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "samsara.get-vehicle"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-vehicle-locations
+          description: "Get real-time GPS locations for fleet vehicles"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "samsara.get-vehicle-locations"
+          with:
+            after: "tools.after"
+            vehicleIds: "tools.vehicleIds"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-drivers
+          description: "List all drivers in the organization"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "samsara.list-drivers"
+          with:
+            limit: "tools.limit"
+            after: "tools.after"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-driver
+          description: "Get details for a specific driver by ID"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "samsara.get-driver"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-driver
+          description: "Create a new driver profile in the organization"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "samsara.create-driver"
+          with:
+            name: "tools.name"
+            username: "tools.username"
+            licenseNumber: "tools.licenseNumber"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-routes
+          description: "List all dispatch routes"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "samsara.list-routes"
+          with:
+            limit: "tools.limit"
+            after: "tools.after"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-route
+          description: "Create a new dispatch route with stops for a driver"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "samsara.create-route"
+          with:
+            name: "tools.name"
+            driverId: "tools.driverId"
+            stops: "tools.stops"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-assets
+          description: "List all non-powered assets (trailers, equipment)"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "samsara.list-assets"
+          with:
+            limit: "tools.limit"
+            after: "tools.after"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-addresses
+          description: "List all addresses and geofence locations"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "samsara.list-addresses"
+          with:
+            limit: "tools.limit"
+            after: "tools.after"
+            tagIds: "tools.tagIds"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-address
+          description: "Create a new address with geofence for fleet operations"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "samsara.create-address"
+          with:
+            name: "tools.name"
+            formattedAddress: "tools.formattedAddress"
+            geofence: "tools.geofence"
+          outputParameters:
+            - type: object
+              mapping: "$."

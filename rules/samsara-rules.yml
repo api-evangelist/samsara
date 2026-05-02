@@ -1,0 +1,122 @@
+extends: "spectral:oas"
+rules:
+  # Samsara API Conventions
+
+  samsara-operation-summary-title-case:
+    description: Operation summaries must use Title Case
+    message: "Summary '{{value}}' should use Title Case"
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(\\[(?:beta|preview|legacy)\\] )?[A-Z]"
+
+  samsara-operation-id-camel-case:
+    description: OperationIds must use lowerCamelCase
+    message: "OperationId '{{value}}' should use lowerCamelCase"
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  samsara-tags-defined:
+    description: All tags used in operations must be defined in the global tags list
+    message: "Tag '{{value}}' is used but not defined in global tags"
+    severity: warn
+    given: "$.paths[*][*].tags[*]"
+    then:
+      function: enumeration
+      functionOptions:
+        values:
+          - Addresses
+          - Assets
+          - Attributes
+          - Camera Media
+          - Carrier Proposed Assignments
+          - Contacts
+          - Documents
+          - Drivers
+          - Driver Vehicle Assignments
+          - Equipment
+          - Hours of Service
+          - Industrial
+          - Maintenance
+          - Messages
+          - Organization Info
+          - Routes
+          - Safety
+          - Sensors
+          - Tachograph (EU Only)
+          - Tags
+          - Trailer Assignments
+          - Trips
+          - Users
+          - Vehicles
+          - Vehicle Driver Assignments
+          - Vehicle Stats
+          - Vehicle Locations
+          - Beta APIs
+          - Preview APIs
+          - Legacy APIs
+
+  samsara-response-200-schema:
+    description: All 200 responses should have a schema defined
+    message: "200 response should define a schema"
+    severity: warn
+    given: "$.paths[*][*].responses['200'].content[*]"
+    then:
+      field: schema
+      function: defined
+
+  samsara-bearer-auth-used:
+    description: Operations should use the AccessTokenHeader security scheme
+    message: "Operation should use AccessTokenHeader security"
+    severity: info
+    given: "$.paths[*][*]"
+    then:
+      field: security
+      function: defined
+
+  samsara-pagination-cursor-pattern:
+    description: List operations should support cursor-based pagination with 'after' parameter
+    message: "List operations (GET on collection) should support 'after' pagination parameter"
+    severity: info
+    given: "$.paths[?(!@property.match(/\\{.*\\}/))].get.parameters[*]"
+    then:
+      field: name
+      function: pattern
+      functionOptions:
+        match: "^(limit|after|before|tagIds|parentTagIds|updatedAfterTime|createdAfterTime)$"
+
+  samsara-no-trailing-slash:
+    description: API paths must not end with a trailing slash
+    message: "Path '{{property}}' must not end with a trailing slash"
+    severity: error
+    given: "$.paths"
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        notMatch: ".+/$"
+
+  samsara-path-kebab-case:
+    description: Path segments must use kebab-case or camelCase (Samsara convention)
+    message: "Path segment should use kebab-case"
+    severity: info
+    given: "$.paths"
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^(/[a-zA-Z0-9\\-_\\{\\}]+)+$"
+
+  samsara-external-id-support:
+    description: Resources that support external IDs should document them
+    message: "External IDs should be documented in the description"
+    severity: info
+    given: "$.paths[*][*].description"
+    then:
+      function: truthy

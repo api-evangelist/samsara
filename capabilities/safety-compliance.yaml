@@ -1,0 +1,151 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Samsara Safety and Compliance"
+  description: >-
+    Safety and compliance workflow combining Samsara safety events, driver coaching,
+    Hours of Service (HOS/ELD) compliance logs, DVIR inspections, and maintenance
+    tracking. Designed for safety managers and compliance officers to monitor driver
+    behavior, enforce regulatory HOS requirements, and track vehicle inspection status.
+  tags:
+    - Compliance
+    - DVIR
+    - ELD
+    - Hours Of Service
+    - Inspection
+    - Maintenance
+    - Safety
+    - Samsara
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      SAMSARA_API_TOKEN: SAMSARA_API_TOKEN
+
+capability:
+  consumes:
+    - import: samsara
+      location: ./shared/samsara.yaml
+
+  exposes:
+    - type: rest
+      port: 8081
+      namespace: safety-compliance-api
+      description: "Unified REST API for driver safety monitoring and regulatory compliance."
+      resources:
+        - path: /v1/safety-events
+          name: safety-events
+          description: "Driver safety event monitoring and scoring"
+          operations:
+            - method: GET
+              name: list-safety-events
+              description: "List safety events for a time range"
+              call: "samsara.list-safety-events"
+              with:
+                startTime: "rest.startTime"
+                endTime: "rest.endTime"
+                driverIds: "rest.driverIds"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/dvirs
+          name: dvirs
+          description: "Driver Vehicle Inspection Reports (DVIR)"
+          operations:
+            - method: GET
+              name: list-dvirs
+              description: "List all DVIR inspection reports"
+              call: "samsara.list-dvirs"
+              with:
+                limit: "rest.limit"
+                after: "rest.after"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-dvir
+              description: "Submit a DVIR inspection report"
+              call: "samsara.create-dvir"
+              with:
+                vehicleId: "rest.vehicleId"
+                inspectionType: "rest.inspectionType"
+                defects: "rest.defects"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/hos-logs
+          name: hos-logs
+          description: "Hours of Service ELD compliance logs"
+          operations:
+            - method: GET
+              name: list-hos-logs
+              description: "List HOS logs for ELD compliance"
+              call: "samsara.list-hos-logs"
+              with:
+                startTime: "rest.startTime"
+                endTime: "rest.endTime"
+                driverIds: "rest.driverIds"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9081
+      namespace: safety-compliance-mcp
+      transport: http
+      description: "MCP server for AI-assisted safety analysis and compliance monitoring."
+      tools:
+        - name: list-safety-events
+          description: "List driver safety events including harsh braking, speeding, and camera events for a time range"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "samsara.list-safety-events"
+          with:
+            startTime: "tools.startTime"
+            endTime: "tools.endTime"
+            driverIds: "tools.driverIds"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-dvirs
+          description: "List all DVIR vehicle inspection reports"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "samsara.list-dvirs"
+          with:
+            limit: "tools.limit"
+            after: "tools.after"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-dvir
+          description: "Submit a Driver Vehicle Inspection Report (DVIR) with defects"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "samsara.create-dvir"
+          with:
+            vehicleId: "tools.vehicleId"
+            inspectionType: "tools.inspectionType"
+            defects: "tools.defects"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-hos-logs
+          description: "List Hours of Service ELD logs for regulatory compliance reporting"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "samsara.list-hos-logs"
+          with:
+            startTime: "tools.startTime"
+            endTime: "tools.endTime"
+            driverIds: "tools.driverIds"
+          outputParameters:
+            - type: object
+              mapping: "$."

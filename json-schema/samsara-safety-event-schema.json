@@ -1,0 +1,110 @@
+{
+  "$id": "samsara-safety-event-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Samsara Safety Event",
+  "description": "Schema for a Samsara driver safety event as returned by the Samsara Safety API. Represents a detected driving behavior event such as harsh braking, harsh acceleration, harsh cornering, speeding, or camera-detected event.",
+  "type": "object",
+  "required": ["id", "eventType", "time"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the safety event."
+    },
+    "eventType": {
+      "type": "string",
+      "description": "Type of safety event detected.",
+      "enum": [
+        "crashThresholdExceeded",
+        "eatingDriving",
+        "drowsyDriving",
+        "followingDistanceSevere",
+        "followingDistanceModerate",
+        "handsOffWheel",
+        "harshAccel",
+        "harshBrake",
+        "harshTurn",
+        "inattentiveDriving",
+        "landDeparture",
+        "mobileUsage",
+        "obstructedCamera",
+        "rollingStopSign",
+        "smokingCigarette",
+        "speeding",
+        "stopSignViolation",
+        "tailgating",
+        "yawning"
+      ]
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of the safety event in RFC 3339 format."
+    },
+    "driver": {
+      "type": "object",
+      "description": "The driver involved in the safety event.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Driver ID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Driver name."
+        }
+      }
+    },
+    "vehicle": {
+      "type": "object",
+      "description": "The vehicle involved in the safety event.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Vehicle ID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Vehicle name."
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "description": "GPS location where the event occurred.",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "description": "Latitude in decimal degrees.",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Longitude in decimal degrees.",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "formattedAddress": {
+          "type": "string",
+          "description": "Human-readable address of the event location."
+        }
+      }
+    },
+    "speedMilesPerHour": {
+      "type": "number",
+      "description": "Vehicle speed in miles per hour at the time of the event.",
+      "minimum": 0
+    },
+    "severity": {
+      "type": "string",
+      "description": "Severity level of the safety event.",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "coachingState": {
+      "type": "string",
+      "description": "Current coaching workflow state for this event.",
+      "enum": ["needs_review", "dismissed", "coached", "pending_coach_review"]
+    }
+  },
+  "additionalProperties": true
+}

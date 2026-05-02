@@ -1,0 +1,112 @@
+{
+  "$id": "samsara-vehicle-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Samsara Vehicle",
+  "description": "Schema for a Samsara fleet vehicle entity as returned by the Samsara REST API. Represents a motorized vehicle tracked in the Samsara platform including cars, trucks, buses, and construction equipment.",
+  "type": "object",
+  "required": ["id", "name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique Samsara-assigned identifier for the vehicle."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the vehicle."
+    },
+    "vin": {
+      "type": "string",
+      "description": "Vehicle Identification Number (VIN).",
+      "pattern": "^[A-HJ-NPR-Z0-9]{17}$"
+    },
+    "externalIds": {
+      "type": "object",
+      "description": "Customer-defined key-value pairs for external system identifiers.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "make": {
+      "type": "string",
+      "description": "Vehicle manufacturer (e.g., Ford, Kenworth, Freightliner)."
+    },
+    "model": {
+      "type": "string",
+      "description": "Vehicle model name."
+    },
+    "year": {
+      "type": "integer",
+      "description": "Model year of the vehicle.",
+      "minimum": 1900,
+      "maximum": 2100
+    },
+    "licensePlate": {
+      "type": "string",
+      "description": "Vehicle license plate number."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Freeform text notes about the vehicle."
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags assigned to this vehicle for organizational grouping.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Tag ID."
+          },
+          "name": {
+            "type": "string",
+            "description": "Tag name."
+          },
+          "parentTagId": {
+            "type": "string",
+            "description": "ID of the parent tag in hierarchy."
+          }
+        }
+      }
+    },
+    "eldSettings": {
+      "type": "object",
+      "description": "ELD (Electronic Logging Device) configuration for this vehicle.",
+      "properties": {
+        "eldExempt": {
+          "type": "boolean",
+          "description": "Whether this vehicle is exempt from ELD requirements."
+        },
+        "eldExemptReason": {
+          "type": "string",
+          "description": "Reason for ELD exemption if applicable."
+        }
+      }
+    },
+    "engineHours": {
+      "type": "number",
+      "description": "Current engine hours reading.",
+      "minimum": 0
+    },
+    "odometerMeters": {
+      "type": "integer",
+      "description": "Current odometer reading in meters.",
+      "minimum": 0
+    },
+    "staticAssignedDriver": {
+      "type": "object",
+      "description": "Statically assigned driver for this vehicle (optional).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Driver ID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Driver name."
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

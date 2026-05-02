@@ -1,0 +1,73 @@
+{
+  "title": "Samsara Driver Structure",
+  "description": "JSON structure documentation for the Samsara Driver entity showing field hierarchy and types.",
+  "type": "object",
+  "fields": [
+    {"name": "id", "type": "string", "required": true, "description": "Unique Samsara driver identifier"},
+    {"name": "name", "type": "string", "required": true, "description": "Driver full name"},
+    {"name": "username", "type": "string", "required": false, "description": "Driver App login username"},
+    {"name": "driverActivationStatus", "type": "string", "required": false, "description": "active or deactivated"},
+    {"name": "phone", "type": "string", "required": false, "description": "Driver phone number"},
+    {"name": "licenseNumber", "type": "string", "required": false, "description": "CDL number"},
+    {"name": "licenseState", "type": "string", "required": false, "description": "Two-letter US state code"},
+    {"name": "timezone", "type": "string", "required": false, "description": "IANA timezone (e.g., America/Chicago)"},
+    {
+      "name": "eldSettings",
+      "type": "object",
+      "required": false,
+      "description": "HOS/ELD compliance configuration",
+      "fields": [
+        {"name": "eldAdverseWeatherExemptionEnabled", "type": "boolean", "description": "Adverse weather exemption"},
+        {"name": "eldBigDayExemptionEnabled", "type": "boolean", "description": "Big day exemption"},
+        {"name": "eldDayStartHour", "type": "integer", "description": "HOS rollover hour (0-23)"},
+        {"name": "eldExempt", "type": "boolean", "description": "ELD exempt status"},
+        {"name": "eldExemptReason", "type": "string", "description": "ELD exemption reason"},
+        {"name": "eldPcEnabled", "type": "boolean", "description": "Personal conveyance enabled"},
+        {"name": "eldYmEnabled", "type": "boolean", "description": "Yard moves enabled"},
+        {
+          "name": "rulesets",
+          "type": "array",
+          "description": "Applicable HOS rulesets",
+          "items": {
+            "type": "object",
+            "fields": [
+              {"name": "cycle", "type": "string", "description": "HOS cycle name (e.g., USA Property 70hr/8days)"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "externalIds",
+      "type": "object",
+      "required": false,
+      "description": "External system key-value identifiers",
+      "fields": [
+        {"name": "{key}", "type": "string", "description": "Custom identifier value"}
+      ]
+    },
+    {
+      "name": "tags",
+      "type": "array",
+      "required": false,
+      "description": "Organizational tags",
+      "items": {
+        "type": "object",
+        "fields": [
+          {"name": "id", "type": "string"},
+          {"name": "name", "type": "string"}
+        ]
+      }
+    },
+    {
+      "name": "currentVehicle",
+      "type": "object",
+      "required": false,
+      "description": "Currently assigned vehicle",
+      "fields": [
+        {"name": "id", "type": "string", "description": "Vehicle ID"},
+        {"name": "name", "type": "string", "description": "Vehicle name"}
+      ]
+    }
+  ]
+}

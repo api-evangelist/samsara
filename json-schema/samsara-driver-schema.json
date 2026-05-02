@@ -1,0 +1,128 @@
+{
+  "$id": "samsara-driver-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Samsara Driver",
+  "description": "Schema for a Samsara driver entity as returned by the Samsara REST API. Represents a commercial vehicle driver managed in the Samsara platform.",
+  "type": "object",
+  "required": ["id", "name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique Samsara-assigned identifier for the driver."
+    },
+    "name": {
+      "type": "string",
+      "description": "Full name of the driver."
+    },
+    "username": {
+      "type": "string",
+      "description": "Driver's login username for the Samsara Driver App."
+    },
+    "driverActivationStatus": {
+      "type": "string",
+      "description": "Whether the driver is active or deactivated.",
+      "enum": ["active", "deactivated"]
+    },
+    "phone": {
+      "type": "string",
+      "description": "Driver's phone number."
+    },
+    "licenseNumber": {
+      "type": "string",
+      "description": "Commercial Driver's License (CDL) number."
+    },
+    "licenseState": {
+      "type": "string",
+      "description": "US state that issued the driver's license (two-letter code).",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "eldSettings": {
+      "type": "object",
+      "description": "ELD/HOS configuration for this driver.",
+      "properties": {
+        "eldAdverseWeatherExemptionEnabled": {
+          "type": "boolean",
+          "description": "Whether the adverse weather HOS exemption is enabled."
+        },
+        "eldBigDayExemptionEnabled": {
+          "type": "boolean",
+          "description": "Whether the big day HOS exemption is enabled."
+        },
+        "eldDayStartHour": {
+          "type": "integer",
+          "description": "The hour of the day at which HOS rollover occurs (0-23).",
+          "minimum": 0,
+          "maximum": 23
+        },
+        "eldExempt": {
+          "type": "boolean",
+          "description": "Whether this driver is ELD-exempt."
+        },
+        "eldExemptReason": {
+          "type": "string",
+          "description": "Reason for ELD exemption."
+        },
+        "eldPcEnabled": {
+          "type": "boolean",
+          "description": "Whether personal conveyance (PC) is enabled."
+        },
+        "eldYmEnabled": {
+          "type": "boolean",
+          "description": "Whether yard moves (YM) are enabled."
+        },
+        "rulesets": {
+          "type": "array",
+          "description": "HOS rulesets applicable to this driver.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cycle": {
+                "type": "string",
+                "description": "HOS cycle (e.g., USA Property 70hr/8days, Canada 70hr/7days)."
+              }
+            }
+          }
+        }
+      }
+    },
+    "externalIds": {
+      "type": "object",
+      "description": "Customer-defined key-value pairs for external system identifiers.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags assigned to this driver for organizational grouping.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "timezone": {
+      "type": "string",
+      "description": "Driver's home timezone (IANA timezone database name, e.g., America/Chicago)."
+    },
+    "currentVehicle": {
+      "type": "object",
+      "description": "The vehicle currently assigned to this driver.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,60 @@
+{
+  "title": "Samsara Vehicle Structure",
+  "description": "JSON structure documentation for the Samsara Vehicle entity showing field hierarchy and types.",
+  "type": "object",
+  "fields": [
+    {"name": "id", "type": "string", "required": true, "description": "Unique Samsara vehicle identifier"},
+    {"name": "name", "type": "string", "required": true, "description": "Vehicle display name"},
+    {"name": "vin", "type": "string", "required": false, "description": "17-character Vehicle Identification Number"},
+    {"name": "make", "type": "string", "required": false, "description": "Vehicle manufacturer brand"},
+    {"name": "model", "type": "string", "required": false, "description": "Vehicle model name"},
+    {"name": "year", "type": "integer", "required": false, "description": "Model year"},
+    {"name": "licensePlate", "type": "string", "required": false, "description": "License plate number"},
+    {"name": "odometerMeters", "type": "integer", "required": false, "description": "Odometer reading in meters"},
+    {"name": "engineHours", "type": "number", "required": false, "description": "Total engine hours"},
+    {"name": "notes", "type": "string", "required": false, "description": "Freeform notes"},
+    {
+      "name": "externalIds",
+      "type": "object",
+      "required": false,
+      "description": "Customer-defined external system identifiers (key-value pairs)",
+      "fields": [
+        {"name": "{key}", "type": "string", "description": "Custom identifier value"}
+      ]
+    },
+    {
+      "name": "tags",
+      "type": "array",
+      "required": false,
+      "description": "Organizational tags assigned to this vehicle",
+      "items": {
+        "type": "object",
+        "fields": [
+          {"name": "id", "type": "string", "description": "Tag identifier"},
+          {"name": "name", "type": "string", "description": "Tag display name"},
+          {"name": "parentTagId", "type": "string", "description": "Parent tag for hierarchy"}
+        ]
+      }
+    },
+    {
+      "name": "eldSettings",
+      "type": "object",
+      "required": false,
+      "description": "Electronic Logging Device (ELD) compliance settings",
+      "fields": [
+        {"name": "eldExempt", "type": "boolean", "description": "Whether vehicle is ELD-exempt"},
+        {"name": "eldExemptReason", "type": "string", "description": "Reason for ELD exemption"}
+      ]
+    },
+    {
+      "name": "staticAssignedDriver",
+      "type": "object",
+      "required": false,
+      "description": "Statically assigned driver",
+      "fields": [
+        {"name": "id", "type": "string", "description": "Driver ID"},
+        {"name": "name", "type": "string", "description": "Driver name"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1242 @@
+"""
+Samsara GraphQL Schema
+Conceptual schema derived from the Samsara REST API.
+REST base URL: https://api.samsara.com
+Documentation: https://developers.samsara.com/reference
+"""
+
+scalar DateTime
+scalar JSON
+
+# ─────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────
+
+enum EngineStateValue {
+  Off
+  On
+  Idle
+}
+
+enum HOSStatus {
+  OffDuty
+  Sleeper
+  Driving
+  OnDuty
+  PersonalConveyance
+  YardMoves
+}
+
+enum HOSViolationType {
+  DriveTimeExceeded
+  ShiftTimeExceeded
+  CycleTimeExceeded
+  RestBreakRequired
+  FormAndManner
+}
+
+enum DVIRInspectionType {
+  PreTrip
+  PostTrip
+  UnscheduledRepair
+  AnnualVehicleInspection
+}
+
+enum DVIRSafetyStatus {
+  Safe
+  Unsafe
+  Resolved
+}
+
+enum DispatchJobStatus {
+  Unassigned
+  Assigned
+  EnRoute
+  Arrived
+  Skipped
+  Completed
+  Cancelled
+}
+
+enum AlertSeverity {
+  Low
+  Medium
+  High
+  Critical
+}
+
+enum CoachingEventType {
+  HarshAcceleration
+  HarshBraking
+  HarshTurn
+  Speeding
+  Distracted
+  Drowsy
+  ForwardCollisionWarning
+  LaneDeparture
+  FollowingDistance
+  RollStability
+  SeatbeltViolation
+}
+
+enum MediaRequestStatus {
+  Pending
+  Processing
+  Available
+  Failed
+  Expired
+}
+
+enum FuelType {
+  Gasoline
+  Diesel
+  Electric
+  Hybrid
+  NaturalGas
+  Propane
+  Hydrogen
+}
+
+enum AssetType {
+  Trailer
+  Container
+  Equipment
+  Sensor
+  Other
+}
+
+# ─────────────────────────────────────────────
+# Core scalars and shared types
+# ─────────────────────────────────────────────
+
+"""GPS coordinates in WGS84 decimal degrees."""
+type GeoPoint {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""Pagination cursor information."""
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# ─────────────────────────────────────────────
+# Vehicle domain
+# ─────────────────────────────────────────────
+
+"""A vehicle tracked by the Samsara platform."""
+type Vehicle {
+  id: ID!
+  name: String!
+  vin: String
+  serialNumber: String
+  make: String
+  model: String
+  year: Int
+  fuelType: FuelType
+  licensePlate: String
+  notes: String
+  tags: [Tag!]!
+  externalIds: JSON
+  location: VehicleLocation
+  speed: VehicleSpeed
+  engineState: EngineState
+  engineHours: EngineHours
+  fuelLevel: FuelLevel
+  batteryLevel: BatteryLevel
+  defLevel: DefLevel
+  obdData: OBDData
+  obdFaults: [OBDFault!]!
+  stats: VehicleStats
+  dvirReports(resolved: Boolean, limit: Int): [DVIRReport!]!
+  trips(startTime: DateTime, endTime: DateTime, limit: Int): [Trip!]!
+  camera: Camera
+  truckConfig: TruckConfig
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Aggregate statistics for a vehicle over a time window."""
+type VehicleStats {
+  vehicleId: ID!
+  totalDistanceMeters: Float
+  totalDrivingMs: Long
+  totalIdleMs: Long
+  totalFuelConsumedMl: Float
+  maxSpeedMph: Float
+  harshEventCount: Int
+  startTime: DateTime!
+  endTime: DateTime!
+}
+
+"""Real-time GPS location data for a vehicle."""
+type VehicleLocation {
+  vehicleId: ID!
+  latitude: Float!
+  longitude: Float!
+  headingDegrees: Float
+  speedMilesPerHour: Float
+  reverseGeo: ReverseGeoAddress
+  timestamp: DateTime!
+}
+
+"""Instantaneous and rolling speed data for a vehicle."""
+type VehicleSpeed {
+  vehicleId: ID!
+  speedMilesPerHour: Float!
+  timestamp: DateTime!
+}
+
+"""Engine on/off/idle state with transition timestamp."""
+type EngineState {
+  vehicleId: ID!
+  value: EngineStateValue!
+  updatedAt: DateTime!
+}
+
+"""Cumulative engine hours for maintenance scheduling."""
+type EngineHours {
+  vehicleId: ID!
+  value: Float!
+  updatedAt: DateTime!
+}
+
+"""Fuel tank level as a percentage and estimated range."""
+type FuelLevel {
+  vehicleId: ID!
+  percent: Float!
+  fuelType: FuelType
+  estimatedRangeMiles: Float
+  updatedAt: DateTime!
+}
+
+"""State of charge for electric or hybrid vehicles."""
+type BatteryLevel {
+  vehicleId: ID!
+  percent: Float!
+  isCharging: Boolean
+  estimatedRangeMiles: Float
+  updatedAt: DateTime!
+}
+
+"""Diesel exhaust fluid level for emissions compliance."""
+type DefLevel {
+  vehicleId: ID!
+  percent: Float!
+  updatedAt: DateTime!
+}
+
+"""OBD-II parameter readings from the vehicle ECU."""
+type OBDData {
+  vehicleId: ID!
+  engineRpm: Float
+  coolantTemperatureCelsius: Float
+  intakeManifoldPressureKpa: Float
+  engineLoadPercent: Float
+  throttlePercent: Float
+  barometricPressureKpa: Float
+  ambientAirTemperatureCelsius: Float
+  timestamp: DateTime!
+}
+
+"""An active or historical OBD diagnostic trouble code group."""
+type OBDFault {
+  vehicleId: ID!
+  faultCodes: [FaultCode!]!
+  isActive: Boolean!
+  detectedAt: DateTime!
+  clearedAt: DateTime
+}
+
+"""A single decoded OBD-II or J1939 fault code."""
+type FaultCode {
+  id: ID!
+  code: String!
+  description: String
+  severity: AlertSeverity
+  system: String
+  mil: Boolean
+}
+
+"""Reverse-geocoded address from GPS coordinates."""
+type ReverseGeoAddress {
+  formattedLocation: String
+  street: String
+  city: String
+  state: String
+  zipCode: String
+  country: String
+}
+
+# ─────────────────────────────────────────────
+# Asset domain
+# ─────────────────────────────────────────────
+
+"""A non-vehicle tracked asset such as a trailer or container."""
+type Asset {
+  id: ID!
+  name: String!
+  assetType: AssetType!
+  serialNumber: String
+  notes: String
+  tags: [Tag!]!
+  externalIds: JSON
+  location: AssetLocation
+  stats: AssetStats
+  trailerConfig: TrailerConfig
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Current GPS location and motion state for an asset."""
+type AssetLocation {
+  assetId: ID!
+  latitude: Float!
+  longitude: Float!
+  isMoving: Boolean!
+  reverseGeo: ReverseGeoAddress
+  timestamp: DateTime!
+}
+
+"""Utilization and sensor statistics for an asset."""
+type AssetStats {
+  assetId: ID!
+  totalMovingMs: Long
+  totalIdleMs: Long
+  lightValue: LightValue
+  startTime: DateTime!
+  endTime: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Driver domain
+# ─────────────────────────────────────────────
+
+"""A driver managed by the Samsara platform."""
+type Driver {
+  id: ID!
+  name: String!
+  username: String!
+  email: String
+  phone: String
+  licenseNumber: String
+  licenseState: String
+  hosRuleSet: String
+  eldExempt: Boolean
+  eldExemptReason: String
+  notes: String
+  tags: [Tag!]!
+  externalIds: JSON
+  vehicleGroupTag: Tag
+  carrierSettings: JSON
+  stats: DriverStats
+  app: DriverApp
+  hos: HOS
+  hosLogs(startTime: DateTime, endTime: DateTime, limit: Int): [HOSLog!]!
+  hosCycle: HOSCycle
+  hosViolations(limit: Int): [HOSViolation!]!
+  trips(startTime: DateTime, endTime: DateTime, limit: Int): [Trip!]!
+  dvirReports(limit: Int): [DVIRReport!]!
+  coachingEvents(limit: Int): [CoachingEvent!]!
+  riskScore: RiskScore
+  messages(limit: Int): [DriverMessage!]!
+  isDeactivated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Aggregate safety and activity statistics for a driver."""
+type DriverStats {
+  driverId: ID!
+  totalDistanceMeters: Float
+  totalDrivingMs: Long
+  safetyScore: Float
+  harshAccelerationCount: Int
+  harshBrakingCount: Int
+  harshTurnCount: Int
+  speedingCount: Int
+  distractedDrivingCount: Int
+  startTime: DateTime!
+  endTime: DateTime!
+}
+
+"""ELD app session state for a driver."""
+type DriverApp {
+  driverId: ID!
+  version: String
+  deviceModel: String
+  osVersion: String
+  lastLoginAt: DateTime
+  lastSyncAt: DateTime
+  isLogCertified: Boolean
+}
+
+"""In-cab message between dispatch and a driver."""
+type DriverMessage {
+  id: ID!
+  driverId: ID!
+  senderId: String!
+  senderType: String!
+  text: String!
+  readAt: DateTime
+  sentAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Hours of Service (HOS)
+# ─────────────────────────────────────────────
+
+"""Current HOS duty status and available time for a driver."""
+type HOS {
+  driverId: ID!
+  currentStatus: HOSStatus!
+  driveRemainingMs: Long
+  shiftRemainingMs: Long
+  cycleRemainingMs: Long
+  breakRemainingMs: Long
+  startedAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A single duty status log entry in a driver's HOS record."""
+type HOSLog {
+  id: ID!
+  driverId: ID!
+  vehicleId: ID
+  status: HOSStatus!
+  location: String
+  notes: String
+  startTime: DateTime!
+  endTime: DateTime
+  isEdited: Boolean!
+  editedBy: String
+}
+
+"""60/70-hour cycle state and recap information for a driver."""
+type HOSCycle {
+  driverId: ID!
+  ruleSet: String!
+  totalOnDutyMs: Long!
+  cycleRemainingMs: Long!
+  recapAt: DateTime
+  updatedAt: DateTime!
+}
+
+"""A detected HOS rule violation."""
+type HOSViolation {
+  id: ID!
+  driverId: ID!
+  violationType: HOSViolationType!
+  durationMs: Long
+  startTime: DateTime!
+  endTime: DateTime
+  notes: String
+}
+
+# ─────────────────────────────────────────────
+# DVIR (Driver Vehicle Inspection Reports)
+# ─────────────────────────────────────────────
+
+"""A Driver Vehicle Inspection Report."""
+type DVIRReport {
+  id: ID!
+  vehicleId: ID
+  trailerId: ID
+  driverId: ID!
+  inspectionType: DVIRInspectionType!
+  safetyStatus: DVIRSafetyStatus!
+  defects: [DVIRDefect!]!
+  mechanics: [DVIRMechanic!]!
+  odometer: Float
+  location: String
+  notes: String
+  signedAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Mechanic sign-off record for DVIR defect resolution."""
+type DVIRMechanic {
+  id: ID!
+  dvirId: ID!
+  name: String!
+  signature: String
+  certifiedAt: DateTime!
+  notes: String
+}
+
+"""An individual defect item within a DVIR report."""
+type DVIRDefect {
+  id: ID!
+  dvirId: ID!
+  category: String!
+  description: String
+  isResolved: Boolean!
+  resolvedAt: DateTime
+  resolvedBy: String
+}
+
+# ─────────────────────────────────────────────
+# Trips and Routes
+# ─────────────────────────────────────────────
+
+"""A single vehicle trip from ignition on to ignition off."""
+type Trip {
+  id: ID!
+  vehicleId: ID!
+  driverId: ID
+  startLocation: GeoPoint
+  endLocation: GeoPoint
+  startAddress: String
+  endAddress: String
+  distanceMeters: Float!
+  durationMs: Long!
+  fuelConsumedMl: Float
+  startTime: DateTime!
+  endTime: DateTime
+  log: TripLog
+  segments: [TripSegment!]!
+  coachingEvents: [CoachingEvent!]!
+}
+
+"""High-resolution breadcrumb log for a trip."""
+type TripLog {
+  tripId: ID!
+  points: [TripLogPoint!]!
+}
+
+"""A single breadcrumb point within a trip log."""
+type TripLogPoint {
+  latitude: Float!
+  longitude: Float!
+  speedMilesPerHour: Float
+  headingDegrees: Float
+  timestamp: DateTime!
+}
+
+"""A subdivided segment of a trip (e.g., highway vs. city driving)."""
+type TripSegment {
+  id: ID!
+  tripId: ID!
+  startLocation: GeoPoint!
+  endLocation: GeoPoint!
+  distanceMeters: Float!
+  durationMs: Long!
+  averageSpeedMph: Float
+  startTime: DateTime!
+  endTime: DateTime!
+}
+
+"""A planned route with ordered waypoints."""
+type Route {
+  id: ID!
+  name: String!
+  driverId: ID
+  vehicleId: ID
+  notes: String
+  tags: [Tag!]!
+  routePoints: [RoutePoint!]!
+  routePlan: RoutePlan
+  actualStartTime: DateTime
+  actualEndTime: DateTime
+  scheduledStartTime: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Optimization metadata and constraints for a route."""
+type RoutePlan {
+  routeId: ID!
+  optimizationStrategy: String
+  maxDriveTimeMs: Long
+  maxDistanceMeters: Float
+  vehicleCapacity: Float
+  estimatedDistanceMeters: Float
+  estimatedDurationMs: Long
+}
+
+"""An individual stop or waypoint within a route."""
+type RoutePoint {
+  id: ID!
+  routeId: ID!
+  sequence: Int!
+  address: Address
+  latitude: Float
+  longitude: Float
+  scheduledArrival: DateTime
+  scheduledDeparture: DateTime
+  actualArrival: DateTime
+  actualDeparture: DateTime
+  notes: String
+}
+
+# ─────────────────────────────────────────────
+# Dispatch
+# ─────────────────────────────────────────────
+
+"""A dispatch workflow instance."""
+type Dispatch {
+  id: ID!
+  name: String
+  organizationId: ID!
+  jobs: [DispatchJob!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A job assigned to a driver/vehicle with a status lifecycle."""
+type DispatchJob {
+  id: ID!
+  dispatchId: ID
+  driverId: ID
+  vehicleId: ID
+  driver: Driver
+  vehicle: Vehicle
+  status: DispatchJobStatus!
+  completionPercentage: Float
+  notes: String
+  externalIds: JSON
+  stops: [DispatchStop!]!
+  scheduledStartTime: DateTime
+  actualStartTime: DateTime
+  completedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An individual stop within a dispatch job."""
+type DispatchStop {
+  id: ID!
+  jobId: ID!
+  sequence: Int!
+  address: Address
+  latitude: Float
+  longitude: Float
+  scheduledArrival: DateTime
+  scheduledDeparture: DateTime
+  actualArrival: DateTime
+  actualDeparture: DateTime
+  skippedAt: DateTime
+  notes: String
+  externalIds: JSON
+}
+
+# ─────────────────────────────────────────────
+# Organization and administration
+# ─────────────────────────────────────────────
+
+"""A label applied to vehicles, drivers, or assets for grouping."""
+type Tag {
+  id: ID!
+  name: String!
+  parentTagId: ID
+  vehicles: [Vehicle!]!
+  drivers: [Driver!]!
+  assets: [Asset!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A geofenced address with formatted location and coordinates."""
+type Address {
+  id: ID!
+  name: String!
+  formattedAddress: String!
+  latitude: Float!
+  longitude: Float!
+  radiusMeters: Float
+  notes: String
+  contacts: [Contact!]!
+  tags: [Tag!]!
+  externalIds: JSON
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A person record associated with an address or organization."""
+type Contact {
+  id: ID!
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  notes: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A logical grouping of drivers, vehicles, or assets."""
+type Group {
+  id: ID!
+  name: String!
+  vehicles: [Vehicle!]!
+  drivers: [Driver!]!
+  assets: [Asset!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A top-level Samsara customer organization account."""
+type Organization {
+  id: ID!
+  name: String!
+  carrierId: String
+  dotNumber: String
+  timezone: String
+  tags: [Tag!]!
+  vehicles: [Vehicle!]!
+  drivers: [Driver!]!
+  assets: [Asset!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Integrations and Webhooks
+# ─────────────────────────────────────────────
+
+"""A third-party system integration configuration."""
+type Integration {
+  id: ID!
+  name: String!
+  provider: String!
+  status: String!
+  config: JSON
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A webhook endpoint registration."""
+type Webhook {
+  id: ID!
+  name: String!
+  url: String!
+  secret: String
+  isEnabled: Boolean!
+  configs: [WebhookConfig!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Event type subscriptions and delivery settings for a webhook."""
+type WebhookConfig {
+  webhookId: ID!
+  eventTypes: [String!]!
+  filterTagIds: [ID!]!
+  version: String!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Alerts and Notifications
+# ─────────────────────────────────────────────
+
+"""A triggered alert instance."""
+type Alert {
+  id: ID!
+  alertConfigId: ID!
+  type: String!
+  severity: AlertSeverity!
+  vehicleId: ID
+  driverId: ID
+  assetId: ID
+  vehicle: Vehicle
+  driver: Driver
+  asset: Asset
+  value: Float
+  threshold: Float
+  location: GeoPoint
+  notifications: [AlertNotification!]!
+  triggeredAt: DateTime!
+  resolvedAt: DateTime
+}
+
+"""A delivery record for an alert (email, SMS, or webhook)."""
+type AlertNotification {
+  id: ID!
+  alertId: ID!
+  channel: String!
+  recipient: String!
+  status: String!
+  sentAt: DateTime!
+  deliveredAt: DateTime
+}
+
+"""An alert rule definition with thresholds and recipients."""
+type AlertConfig {
+  id: ID!
+  name: String!
+  type: String!
+  severity: AlertSeverity!
+  threshold: Float
+  filterTagIds: [ID!]!
+  notificationChannels: JSON
+  isEnabled: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Safety and Coaching
+# ─────────────────────────────────────────────
+
+"""A dashcam device associated with a vehicle."""
+type Camera {
+  id: ID!
+  vehicleId: ID!
+  serial: String!
+  model: String!
+  firmware: String
+  isEnabled: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A dashcam recording with event trigger and timestamps."""
+type DashcamVideo {
+  id: ID!
+  cameraId: ID!
+  vehicleId: ID!
+  driverId: ID
+  eventType: CoachingEventType
+  startTime: DateTime!
+  endTime: DateTime!
+  duration: Int!
+  location: GeoPoint
+  footage: [DashcamFootage!]!
+  aiResult: AI
+  createdAt: DateTime!
+}
+
+"""A raw footage segment from a camera channel."""
+type DashcamFootage {
+  id: ID!
+  videoId: ID!
+  channel: String!
+  url: String
+  expiresAt: DateTime
+}
+
+"""A user-requested or event-triggered short video clip."""
+type Clip {
+  id: ID!
+  vehicleId: ID!
+  cameraId: ID
+  requestedBy: String!
+  startTime: DateTime!
+  endTime: DateTime!
+  status: MediaRequestStatus!
+  url: String
+  expiresAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""AI inference result attached to a dashcam event."""
+type AI {
+  eventId: ID!
+  model: String
+  confidence: Float
+  predictions: JSON
+  behaviorLabels: [String!]!
+  processedAt: DateTime!
+}
+
+"""Computed driver risk score from AI and telematics signals."""
+type RiskScore {
+  driverId: ID!
+  score: Float!
+  category: String!
+  components: JSON
+  calculatedAt: DateTime!
+}
+
+"""An individual coaching-worthy driving event."""
+type CoachingEvent {
+  id: ID!
+  driverId: ID!
+  vehicleId: ID
+  type: CoachingEventType!
+  severity: AlertSeverity!
+  speedMph: Float
+  location: GeoPoint
+  videoClipId: ID
+  coachingSessionId: ID
+  occurredAt: DateTime!
+  createdAt: DateTime!
+}
+
+"""A structured coaching review session for a driver."""
+type CoachingSession {
+  id: ID!
+  driverId: ID!
+  driver: Driver
+  coachId: String!
+  events: [CoachingEvent!]!
+  notes: String
+  outcome: String
+  scheduledAt: DateTime
+  completedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Media
+# ─────────────────────────────────────────────
+
+"""A request to retrieve dashcam media with status tracking."""
+type MediaRequest {
+  id: ID!
+  vehicleId: ID!
+  cameraId: ID
+  startTime: DateTime!
+  endTime: DateTime!
+  status: MediaRequestStatus!
+  clips: [Clip!]!
+  requestedBy: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Configuration
+# ─────────────────────────────────────────────
+
+"""Vehicle-specific hardware and sensor configuration."""
+type TruckConfig {
+  vehicleId: ID!
+  hosRuleSet: String
+  eldEnabled: Boolean
+  gpsEnabled: Boolean
+  dashcamEnabled: Boolean
+  obdEnabled: Boolean
+  speedLimitMph: Float
+  idleShutdownMs: Long
+  updatedAt: DateTime!
+}
+
+"""Trailer-specific sensor and tracking configuration."""
+type TrailerConfig {
+  assetId: ID!
+  sensorEnabled: Boolean
+  gpsEnabled: Boolean
+  lightSensorEnabled: Boolean
+  doorSensorEnabled: Boolean
+  temperatureSensorEnabled: Boolean
+  updatedAt: DateTime!
+}
+
+"""A lighting sensor reading from a trailer or asset sensor."""
+type LightValue {
+  assetId: ID!
+  lightPercent: Float!
+  isDoorOpen: Boolean
+  timestamp: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Input types
+# ─────────────────────────────────────────────
+
+input VehicleFilter {
+  tagIds: [ID!]
+  name: String
+  vin: String
+  limit: Int
+  after: String
+}
+
+input DriverFilter {
+  tagIds: [ID!]
+  isActive: Boolean
+  name: String
+  limit: Int
+  after: String
+}
+
+input AssetFilter {
+  tagIds: [ID!]
+  assetType: AssetType
+  name: String
+  limit: Int
+  after: String
+}
+
+input TripFilter {
+  vehicleId: ID
+  driverId: ID
+  startTime: DateTime
+  endTime: DateTime
+  limit: Int
+  after: String
+}
+
+input AlertFilter {
+  severity: AlertSeverity
+  vehicleId: ID
+  driverId: ID
+  startTime: DateTime
+  endTime: DateTime
+  limit: Int
+  after: String
+}
+
+input DispatchJobInput {
+  driverId: ID
+  vehicleId: ID
+  notes: String
+  scheduledStartTime: DateTime
+  externalIds: JSON
+  stops: [DispatchStopInput!]!
+}
+
+input DispatchStopInput {
+  addressId: ID
+  latitude: Float
+  longitude: Float
+  scheduledArrival: DateTime
+  scheduledDeparture: DateTime
+  notes: String
+  externalIds: JSON
+}
+
+input RouteInput {
+  name: String!
+  driverId: ID
+  vehicleId: ID
+  notes: String
+  tagIds: [ID!]
+  scheduledStartTime: DateTime
+  routePoints: [RoutePointInput!]!
+}
+
+input RoutePointInput {
+  sequence: Int!
+  addressId: ID
+  latitude: Float
+  longitude: Float
+  scheduledArrival: DateTime
+  scheduledDeparture: DateTime
+  notes: String
+}
+
+input WebhookInput {
+  name: String!
+  url: String!
+  eventTypes: [String!]!
+  filterTagIds: [ID!]
+  version: String
+}
+
+input MediaRequestInput {
+  vehicleId: ID!
+  startTime: DateTime!
+  endTime: DateTime!
+  cameraChannels: [String!]
+}
+
+# ─────────────────────────────────────────────
+# Connection types (pagination)
+# ─────────────────────────────────────────────
+
+type VehicleConnection {
+  nodes: [Vehicle!]!
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type DriverConnection {
+  nodes: [Driver!]!
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type AssetConnection {
+  nodes: [Asset!]!
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type TripConnection {
+  nodes: [Trip!]!
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type AlertConnection {
+  nodes: [Alert!]!
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# ─────────────────────────────────────────────
+# Root types
+# ─────────────────────────────────────────────
+
+type Query {
+  """Fetch a single vehicle by ID."""
+  vehicle(id: ID!): Vehicle
+
+  """List vehicles with optional filters and pagination."""
+  vehicles(filter: VehicleFilter): VehicleConnection!
+
+  """Fetch a single driver by ID."""
+  driver(id: ID!): Driver
+
+  """List drivers with optional filters."""
+  drivers(filter: DriverFilter): DriverConnection!
+
+  """Fetch a single asset by ID."""
+  asset(id: ID!): Asset
+
+  """List assets with optional filters."""
+  assets(filter: AssetFilter): AssetConnection!
+
+  """Fetch a single trip by ID."""
+  trip(id: ID!): Trip
+
+  """List trips across vehicles or drivers."""
+  trips(filter: TripFilter): TripConnection!
+
+  """Fetch a single route by ID."""
+  route(id: ID!): Route
+
+  """List routes."""
+  routes(tagIds: [ID!], limit: Int, after: String): [Route!]!
+
+  """Fetch a single dispatch job by ID."""
+  dispatchJob(id: ID!): DispatchJob
+
+  """List dispatch jobs."""
+  dispatchJobs(status: DispatchJobStatus, driverId: ID, limit: Int, after: String): [DispatchJob!]!
+
+  """Fetch a single DVIR report by ID."""
+  dvirReport(id: ID!): DVIRReport
+
+  """List DVIR reports."""
+  dvirReports(vehicleId: ID, driverId: ID, resolved: Boolean, limit: Int): [DVIRReport!]!
+
+  """Fetch a single tag by ID."""
+  tag(id: ID!): Tag
+
+  """List all tags."""
+  tags(limit: Int): [Tag!]!
+
+  """Fetch a single address by ID."""
+  address(id: ID!): Address
+
+  """List addresses."""
+  addresses(tagIds: [ID!], limit: Int, after: String): [Address!]!
+
+  """Fetch alerts with optional filters."""
+  alerts(filter: AlertFilter): AlertConnection!
+
+  """Fetch alert configuration rules."""
+  alertConfigs(limit: Int): [AlertConfig!]!
+
+  """Fetch coaching events for a driver."""
+  coachingEvents(driverId: ID!, limit: Int): [CoachingEvent!]!
+
+  """Fetch a coaching session by ID."""
+  coachingSession(id: ID!): CoachingSession
+
+  """Fetch all coaching sessions."""
+  coachingSessions(driverId: ID, limit: Int): [CoachingSession!]!
+
+  """Fetch the current organization."""
+  organization: Organization
+
+  """Fetch webhooks."""
+  webhooks(limit: Int): [Webhook!]!
+
+  """Fetch a single webhook by ID."""
+  webhook(id: ID!): Webhook
+
+  """Fetch a media request by ID."""
+  mediaRequest(id: ID!): MediaRequest
+
+  """Fetch all media requests."""
+  mediaRequests(vehicleId: ID, status: MediaRequestStatus, limit: Int): [MediaRequest!]!
+}
+
+type Mutation {
+  """Create a new dispatch job."""
+  createDispatchJob(input: DispatchJobInput!): DispatchJob!
+
+  """Update the status of a dispatch job."""
+  updateDispatchJobStatus(id: ID!, status: DispatchJobStatus!): DispatchJob!
+
+  """Create a new route."""
+  createRoute(input: RouteInput!): Route!
+
+  """Update an existing route."""
+  updateRoute(id: ID!, input: RouteInput!): Route!
+
+  """Delete a route."""
+  deleteRoute(id: ID!): Boolean!
+
+  """Create a new webhook."""
+  createWebhook(input: WebhookInput!): Webhook!
+
+  """Update a webhook."""
+  updateWebhook(id: ID!, input: WebhookInput!): Webhook!
+
+  """Delete a webhook."""
+  deleteWebhook(id: ID!): Boolean!
+
+  """Submit a DVIR report."""
+  submitDVIRReport(vehicleId: ID!, inspectionType: DVIRInspectionType!, safetyStatus: DVIRSafetyStatus!, defects: JSON, notes: String): DVIRReport!
+
+  """Resolve a DVIR defect."""
+  resolveDVIRDefect(defectId: ID!, mechanic: String!, notes: String): DVIRDefect!
+
+  """Update driver HOS status."""
+  updateHOSStatus(driverId: ID!, status: HOSStatus!, notes: String): HOS!
+
+  """Request a dashcam media clip."""
+  createMediaRequest(input: MediaRequestInput!): MediaRequest!
+
+  """Send a message to a driver."""
+  sendDriverMessage(driverId: ID!, text: String!): DriverMessage!
+
+  """Mark a coaching event as reviewed."""
+  reviewCoachingEvent(id: ID!, notes: String): CoachingEvent!
+
+  """Create a coaching session."""
+  createCoachingSession(driverId: ID!, eventIds: [ID!]!, notes: String, scheduledAt: DateTime): CoachingSession!
+
+  """Complete a coaching session."""
+  completeCoachingSession(id: ID!, outcome: String!, notes: String): CoachingSession!
+}
+
+type Subscription {
+  """Real-time vehicle location updates."""
+  vehicleLocation(vehicleId: ID!): VehicleLocation!
+
+  """Real-time vehicle engine state changes."""
+  vehicleEngineState(vehicleId: ID!): EngineState!
+
+  """Real-time driver HOS status changes."""
+  driverHOSStatus(driverId: ID!): HOS!
+
+  """Real-time alert notifications."""
+  alertTriggered(organizationId: ID!): Alert!
+
+  """Real-time dispatch job status updates."""
+  dispatchJobStatus(jobId: ID!): DispatchJob!
+
+  """Real-time safety/coaching event stream."""
+  coachingEventOccurred(driverId: ID): CoachingEvent!
+
+  """Real-time media request status updates."""
+  mediaRequestStatus(requestId: ID!): MediaRequest!
+}
+
+"""
+Long integer scalar for millisecond durations and large counts.
+"""
+scalar Long

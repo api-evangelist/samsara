@@ -1,0 +1,553 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Exports API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Exports
+paths:
+  /form-submissions/pdf-exports:
+    get:
+      description: "Returns a PDF export for a form submission. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getFormSubmissionsPdfExports
+      parameters:
+      - description: ID of the form submission PDF export.
+        in: query
+        name: pdfId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Return a PDF Export for a Form Submission.'
+      tags:
+      - Exports
+    post:
+      description: "Creates a PDF export for a form submission. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postFormSubmissionsPdfExports
+      parameters:
+      - description: ID of the form submission to create a PDF export from.
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsResponseBody'
+          description: Accepted response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Create a PDF Export for a Form Submission.'
+      tags:
+      - Exports
+components:
+  schemas:
+    FormSubmissionsGetFormSubmissionsPdfExportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FormSubmissionPdfExportResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionPdfExportResponseObjectResponseBody:
+      description: Form Submission PDF export response object.
+      properties:
+        completedAtTime:
+          description: Time when the PDF export job was completed. Included if 'jobStatus' is 'done'. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        errorMessage:
+          description: An error message for failed PDF export jobs. Included if 'jobStatus' is 'failed'.
+          example: PDF export timed out.
+          type: string
+        expiresAtTime:
+          description: Time when the PDF export job expires. After expiration, GET requests for this job will fail and clients must create a new one with another POST request. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        id:
+          description: ID of the form submission being exported.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        jobStatus:
+          description: 'Status of the PDF export job.  Valid values: `unknown`, `pending`, `done`, `failed`'
+          enum:
+          - unknown
+          - pending
+          - done
+          - failed
+          example: pending
+          type: string
+        pdfId:
+          description: Unique ID for the PDF export that is created.
+          example: 300af62b-5aea-43a9-b4cf-a59667e817ed
+          type: string
+        pdfUrl:
+          description: URL to download the PDF file. Expires at time specified in 'pdfUrlExpiresAtTime'. Included if 'jobStatus' is 'done'.
+          example: https://samsara-pdf-exports.s3.us-west-2.amazonaws.com/123456
+          type: string
+        pdfUrlExpiresAtTime:
+          description: Time when the PDF export's 'pdfUrl' expires. After expiration, clients can retrieve a fresh url with another GET request. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        requestedAtTime:
+          description: Time when the PDF export POST request was made. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - expiresAtTime
+      - id
+      - jobStatus
+      - pdfId
+      - requestedAtTime
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FormSubmissionPdfExportResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

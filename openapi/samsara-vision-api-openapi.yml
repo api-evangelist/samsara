@@ -1,0 +1,950 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Vision API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Vision
+paths:
+  /v1/industrial/vision/cameras:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch all cameras. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getCameras
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1VisionCamerasResponse'
+          description: Returns details about a camera.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Fetch Industrial Cameras
+      tags:
+      - Vision
+  /v1/industrial/vision/cameras/{camera_id}/programs:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch configured programs on the camera. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getVisionProgramsByCamera
+      parameters:
+      - description: The camera_id should be valid for the given accessToken.
+        in: path
+        name: camera_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ProgramsForTheCameraResponse'
+          description: Returns programs configured on the camera.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Fetch Industrial Camera Programs
+      tags:
+      - Vision
+  /v1/industrial/vision/run/camera/{camera_id}:
+    get:
+      description: "Fetch the latest run for a camera or program by default. If startedAtMs is supplied, fetch the specific run that corresponds to that start time. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getVisionLatestRunCamera
+      parameters:
+      - description: The camera_id should be valid for the given accessToken.
+        in: path
+        name: camera_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: The configured program's ID on the camera.
+        in: query
+        name: program_id
+        schema:
+          format: int64
+          type: integer
+      - description: EndMs is an optional param. It will default to the current time.
+        in: query
+        name: startedAtMs
+        schema:
+          format: int64
+          type: integer
+      - description: Include is a filter parameter. Accepts 'pass', 'reject' or 'no_read'.
+        in: query
+        name: include
+        schema:
+          type: string
+      - description: Limit is an integer value from 1 to 1,000.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1VisionRunByCameraResponse'
+          description: Returns the details for this run.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Fetch the Latest Run for a Camera or Program
+      tags:
+      - Vision
+  /v1/industrial/vision/runs:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch runs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getVisionRuns
+      parameters:
+      - description: DurationMs is a required param. This works with the EndMs parameter. Indicates the duration in which the visionRuns will be fetched
+        in: query
+        name: durationMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: EndMs is an optional param. It will default to the current time.
+        in: query
+        name: endMs
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1VisionRunsResponse'
+          description: Return runs.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Fetch Runs
+      tags:
+      - Vision
+  /v1/industrial/vision/runs/{camera_id}:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch runs by camera. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getVisionRunsByCamera
+      parameters:
+      - description: The camera_id should be valid for the given accessToken.
+        in: path
+        name: camera_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: DurationMs is a required param. This works with the EndMs parameter. Indicates the duration in which the visionRuns will be fetched
+        in: query
+        name: durationMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: EndMs is an optional param. It will default to the current time.
+        in: query
+        name: endMs
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1VisionRunsByCameraResponse'
+          description: Return runs by cameraId.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Fetch Runs by Camera
+      tags:
+      - Vision
+  /v1/industrial/vision/runs/{camera_id}/{program_id}/{started_at_ms}:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch runs by camera and program. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getVisionRunsByCameraAndProgram
+      parameters:
+      - description: The camera_id should be valid for the given accessToken.
+        in: path
+        name: camera_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: The configured program's ID on the camera.
+        in: path
+        name: program_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Started_at_ms is a required param. Indicates the start time of the run to be fetched.
+        in: path
+        name: started_at_ms
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Include is a filter parameter. Accepts 'pass', 'reject' or 'no_read'.
+        in: query
+        name: include
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1VisionRunsByCameraAndProgramResponse'
+          description: Return runs by camera ID and program ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Fetch Runs by Camera and Program
+      tags:
+      - Vision
+components:
+  schemas:
+    V1VisionCamerasResponse:
+      description: Contains the list of Cameras installed in the org.
+      items:
+        properties:
+          cameraId:
+            example: 1234512345999
+            format: int64
+            type: integer
+          cameraName:
+            example: Line 32
+            type: string
+          ethernetIp:
+            example: 10.1.2.34
+            type: string
+          wifiIp:
+            example: 10.1.2.35
+            type: string
+        type: object
+      type: array
+    V1VisionStepResults:
+      items:
+        properties:
+          angleCheck:
+            properties:
+              angleConfigured:
+                description: The configured angle allowance range (in degrees)
+                properties:
+                  high:
+                    example: 150
+                    format: int64
+                    type: integer
+                  low:
+                    example: 90
+                    format: int64
+                    type: integer
+                type: object
+              angleFound:
+                description: The counter-clockwise angle detected from the first edge to the second edge
+                example: 60
+                format: int64
+                type: integer
+              endStepName:
+                description: The name of the second reference step used to check the angle
+                example: Edge 2
+                type: string
+              startStepName:
+                description: The name of the first reference step used to check the angle
+                example: Edge 1
+                type: string
+            type: object
+          barcode:
+            items:
+              properties:
+                contents:
+                  example: '10855639004823'
+                  type: string
+                matchString:
+                  example: '10855639004823'
+                  type: string
+                type:
+                  example: EAN8
+                  type: string
+              type: object
+            type: array
+          booleanLogic:
+            properties:
+              operator:
+                example: AND
+                type: string
+              steps:
+                items:
+                  properties:
+                    name:
+                      example: Expiration Date
+                      type: string
+                    result:
+                      example: PASS
+                      type: string
+                  type: object
+                type: array
+            type: object
+          caliper:
+            properties:
+              angleRange:
+                description: The configured angle allowance range
+                properties:
+                  high:
+                    example: 360
+                    format: int32
+                    type: integer
+                  low:
+                    example: 0
+                    format: int32
+                    type: integer
+                type: object
+              contrastRange:
+                description: The configured contrast allowance range
+                properties:
+                  high:
+                    example: 100
+                    format: int64
+                    type: integer
+                  low:
+                    example: 50
+                    format: int64
+                    type: integer
+                type: object
+              distanceFound:
+                description: The distance found between the found edges
+                example: 555.55
+                format: float
+                type: number
+              filterPolarity:
+                default: LIGHT TO DARK
+                description: 'The configured polarity for finding edges. Valid values: `LIGHT TO DARK`, `DARK TO LIGHT`.'
+                enum:
+                - LIGHT TO DARK
+                - DARK TO LIGHT
+                example: LIGHT TO DARK
+                type: string
+              maxDistance:
+                description: The maximum allowed distance threshold
+                example: 1000
+                format: float
+                type: number
+              minDistance:
+                description: The minumum allowed distance threshold
+                example: 500
+                format: float
+                type: number
+              sharpnessRange:
+                description: The configured sharpness allowance range
+                properties:
+                  high:
+                    example: 100
+                    format: int64
+                    type: integer
+                  low:
+                    example: 80
+                    format: int64
+                    type: integer
+                type: object
+              straightnessRange:
+                description: The configured straightness allowance range
+                properties:
+                  high:
+                    example: 100
+                    format: int32
+                    type: integer
+                  low:
+                    example: 80
+                    format: int32
+                    type: integer
+                type: object
+              unit:
+                description: The measurement unit of the distance found and the min and max distance threshold
+                example: Millimeters
+                type: string
+            type: object
+          contour:
+            properties:
+              angleDegrees:
+                description: The rotation angle found
+                example: 0
+                format: int64
+                type: integer
+              angleTolerance:
+                description: The rotation angle allowance
+                example: 50
+                format: int64
+                type: integer
+              matchPercentage:
+                description: The contour match percentage with the configured contour
+                example: 46
+                format: int64
+                type: integer
+              matchThreshold:
+                description: The configured match threshold for contours
+                example: 18
+                format: int64
+                type: integer
+            type: object
+          distance:
+            properties:
+              distanceFound:
+                description: The distance found between the start and end references
+                format: float64
+                type: integer
+              endStepName:
+                description: The name of the second reference step that we're checking the distances between
+                example: Bottom Right Square
+                type: string
+              enforceOffsetAngleRange:
+                description: Whether an offset angle range is enforced
+                example: true
+                type: boolean
+              maxDistance:
+                description: The maximum allowed distance threshold
+                example: 900
+                format: float64
+                type: integer
+              maxOffsetAngle:
+                description: The maximum angle allowance (in degrees) if enforceOffsetAngleRange is true
+                example: 90
+                format: int64
+                type: integer
+              minDistance:
+                description: The minumum allowed distance threshold
+                example: 1500
+                format: float64
+                type: integer
+              minOffsetAngle:
+                description: The minimum angle allowance (in degrees) if enforceOffsetAngleRange is true
+                example: 45
+                format: int64
+                type: integer
+              offsetAngleFound:
+                description: The counter-clockwise angle (in degrees) found between the horizontal axis of the start reference step and the last
+                example: 50
+                format: int64
+                type: integer
+              startStepName:
+                description: The name of the first reference step that we're checking the distances between
+                example: Top Left Square
+                type: string
+              unit:
+                description: The measurement unit of the distance found and the min and max distance threshold
+                example: Millimeters
+                type: string
+            type: object
+          expirationDate:
+            properties:
+              dateOffset:
+                example: 1
+                format: int64
+                type: integer
+              foundDate:
+                example: 06/13/2019
+                type: string
+              matchDate:
+                example: 06/13/2019
+                type: string
+            type: object
+          findCopies:
+            properties:
+              angleTolerance:
+                description: The orientation angle tolerance (+/- �)
+                example: 10
+                format: int64
+                type: integer
+              foundCount:
+                description: The number of copies found
+                example: 1
+                format: int64
+                type: integer
+              maxCount:
+                description: The maximum number of copies allowed
+                example: 5
+                format: int64
+                type: integer
+              minCount:
+                description: The minimum number of copies allowed
+                example: 1
+                format: int64
+                type: integer
+              threshold:
+                description: The minimum required similarity (in %) of a found copy compared to the configured match region
+                example: 70
+                format: int64
+                type: integer
+            type: object
+          findEdge:
+            properties:
+              angleFound:
+                description: The detected angle in degrees
+                example: 90
+                format: float64
+                type: integer
+              angleRange:
+                description: The configured angle allowance range
+                properties:
+                  high:
+                    example: 360
+                    format: int32
+                    type: integer
+                  low:
+                    example: 0
+                    format: int32
+                    type: integer
+                type: object
+              contrastPercent:
+                description: The detected contrast percentage
+                format: float64
+                type: integer
+              contrastRange:
+                description: The configured contrast allowance range
+                properties:
+                  high:
+                    example: 100
+                    format: int64
+                    type: integer
+                  low:
+                    example: 50
+                    format: int64
+                    type: integer
+                type: object
+              filterPolarity:
+                description: 'The configured polarity for finding edges. Valid values: `LIGHT TO DARK`, `DARK TO LIGHT`.'
+                example: ANY
+                type: string
+              sharpnessPercent:
+                description: The detected sharpness percentage
+                example: 95
+                format: float64
+                type: integer
+              sharpnessRange:
+                description: The configured sharpness allowance range
+                properties:
+                  high:
+                    example: 100
+                    format: int64
+                    type: integer
+                  low:
+                    example: 80
+                    format: int64
+                    type: integer
+                type: object
+              straightnessFound:
+                description: The detected straightness percentage
+                example: 95
+                format: float64
+                type: integer
+              straightnessRange:
+                description: The configured straightness allowance range
+                properties:
+                  high:
+                    example: 100
+                    format: int32
+                    type: integer
+                  low:
+                    example: 80
+                    format: int32
+                    type: integer
+                type: object
+            type: object
+          findShapes:
+            properties:
+              foundCount:
+                example: 1
+                format: int32
+                type: integer
+              maxCount:
+                example: 5
+                format: int32
+                type: integer
+              minCount:
+                example: 1
+                format: int32
+                type: integer
+            type: object
+          fixture:
+            properties:
+              coordinates:
+                properties:
+                  x:
+                    example: 10
+                    format: int32
+                    type: integer
+                  y:
+                    example: 10
+                    format: int32
+                    type: integer
+                type: object
+              found:
+                example: true
+                type: boolean
+              rotationDegrees:
+                example: 90
+                format: int64
+                type: integer
+            type: object
+          labelMatch:
+            properties:
+              score:
+                example: 10
+                format: int64
+                type: integer
+              threshold:
+                example: 10
+                format: int64
+                type: integer
+            type: object
+          name:
+            example: Chicken Caesar Label
+            type: string
+          presenceAbsence:
+            properties:
+              blueRange:
+                properties:
+                  high:
+                    example: 150
+                    format: int64
+                    type: integer
+                  low:
+                    example: 90
+                    format: int64
+                    type: integer
+                type: object
+              checkForAbsence:
+                example: true
+                type: boolean
+              grayscaleRange:
+                properties:
+                  high:
+                    example: 100
+                    format: int64
+                    type: integer
+                  low:
+                    example: 20
+                    format: int64
+                    type: integer
+                type: object
+              greenRange:
+                properties:
+                  high:
+                    example: 150
+                    format: int64
+                    type: integer
+                  low:
+                    example: 90
+                    format: int64
+                    type: integer
+                type: object
+              hueRange:
+                properties:
+                  high:
+                    example: 100
+                    format: int64
+                    type: integer
+                  low:
+                    example: 20
+                    format: int64
+                    type: integer
+                type: object
+              redRange:
+                properties:
+                  high:
+                    example: 150
+                    format: int64
+                    type: integer
+                  low:
+                    example: 90
+                    format: int64
+                    type: integer
+                type: object
+              saturationRange:
+                properties:
+                  high:
+                    example: 50
+                    format: int64
+                    type: integer
+                  low:
+                    example: 10
+                    format: int64
+                    type: integer
+                type: object
+              score:
+                example: 50
+                format: int64
+                type: integer
+              threshold:
+                example: 50
+                format: int64
+                type: integer
+              valueRange:
+                properties:
+                  high:
+                    example: 50
+                    format: int64
+                    type: integer
+                  low:
+                    example: 10
+                    format: int64
+                    type: integer
+                type: object
+            type: object
+          result:
+            example: PASS
+            type: string
+          textMatch:
+            properties:
+              foundText:
+                example: ABCD
+                type: string
+              matchString:
+                example: ABCD
+                type: string
+            type: object
+        type: object
+      type: array
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1VisionRunsByCameraResponse:
+      items:
+        properties:
+          deviceId:
+            example: 1234512345123
+            format: int64
+            type: integer
+          endedAtMs:
+            example: 0
+            format: int64
+            type: integer
+          program:
+            properties:
+              id:
+                example: 1
+                format: int64
+                type: integer
+              name:
+                example: Barcode verification program
+                type: string
+            type: object
+          reportMetadata:
+            properties:
+              itemsPerMinute:
+                example: 0.1
+                format: float64
+                type: number
+              noReadCount:
+                example: 0
+                format: int64
+                type: integer
+              rejectCount:
+                example: 0
+                format: int64
+                type: integer
+              successCount:
+                example: 181
+                format: int64
+                type: integer
+            type: object
+          startedAtMs:
+            example: 1553808606097
+            format: int64
+            type: integer
+        type: object
+      type: array
+    V1ProgramsForTheCameraResponse:
+      description: Contains the list of Programs configured on the given Camera.
+      items:
+        properties:
+          programId:
+            example: 1
+            format: int64
+            type: integer
+          programName:
+            example: Barcode verification program
+            type: string
+        type: object
+      type: array
+    V1VisionRunsResponse_reportMetadata:
+      description: The response includes 4 additional fields that are now deprecated
+      properties:
+        itemsPerMinute:
+          description: Returns average scanned items per minute. Should be used instead of scanRate.
+          example: 0.1
+          format: float64
+          type: number
+        noReadCount:
+          description: Returns no read count for the run. Should be used instead of noReadScansCount
+          example: 181
+          format: int64
+          type: integer
+        rejectCount:
+          description: Returns reject count for the run. Should be used instead of failedScansCount
+          example: 0
+          format: int64
+          type: integer
+        successCount:
+          description: Returns success count for the run. Should be used instead of successfulScansCount
+          example: 181
+          format: int64
+          type: integer
+      type: object
+    V1VisionRunByCameraResponse_program:
+      properties:
+        id:
+          example: 1
+          format: int64
+          type: integer
+        name:
+          example: Barcode verification program
+          type: string
+      type: object
+    V1VisionRunByCameraResponse_runSummary:
+      properties:
+        itemsPerMinute:
+          example: 0.1
+          format: float64
+          type: number
+        noReadCount:
+          example: 0
+          format: int64
+          type: integer
+        rejectCount:
+          example: 0
+          format: int64
+          type: integer
+        successCount:
+          example: 181
+          format: int64
+          type: integer
+      type: object
+    V1VisionRunByCameraResponse:
+      properties:
+        cameraId:
+          example: 1234512345123
+          format: int64
+          type: integer
+        endedAtMs:
+          example: 0
+          format: int64
+          type: integer
+        inspectionResults:
+          items:
+            $ref: '#/components/schemas/V1VisionRunByCameraResponse_inspectionResults'
+          type: array
+        isOngoing:
+          example: true
+          type: boolean
+        program:
+          $ref: '#/components/schemas/V1VisionRunByCameraResponse_program'
+        runSummary:
+          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
+        startedAtMs:
+          example: 1553808606097
+          format: int64
+          type: integer
+      type: object
+    V1VisionRunsResponse:
+      properties:
+        visionRuns:
+          items:
+            $ref: '#/components/schemas/V1VisionRunsResponse_visionRuns'
+          type: array
+      type: object
+    V1VisionRunsResponse_visionRuns:
+      properties:
+        deviceId:
+          example: 1234512345123
+          format: int64
+          type: integer
+        endedAtMs:
+          example: 0
+          format: int64
+          type: integer
+        programId:
+          example: 1
+          format: int64
+          type: integer
+        reportMetadata:
+          $ref: '#/components/schemas/V1VisionRunsResponse_reportMetadata'
+        startedAtMs:
+          example: 1553808606097
+          format: int64
+          type: integer
+      type: object
+    V1VisionRunsByCameraAndProgramResponse:
+      properties:
+        deviceId:
+          example: 1234512345123
+          format: int64
+          type: integer
+        endedAtMs:
+          example: 0
+          format: int64
+          type: integer
+        programId:
+          example: 1
+          format: int64
+          type: integer
+        reportMetadata:
+          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
+        results:
+          items:
+            $ref: '#/components/schemas/V1VisionRunByCameraResponse_inspectionResults'
+          type: array
+        startedAtMs:
+          example: 1553808606097
+          format: int64
+          type: integer
+      type: object
+    V1VisionRunByCameraResponse_inspectionResults:
+      properties:
+        captureAtMs:
+          example: 1553811994730
+          format: float64
+          type: number
+        result:
+          example: PASS
+          type: string
+        stepResults:
+          $ref: '#/components/schemas/V1VisionStepResults'
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

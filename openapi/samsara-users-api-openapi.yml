@@ -1,0 +1,374 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Users API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Users
+paths:
+  /users:
+    get:
+      description: "Returns a list of all users in an organization. Users that have expired access will not be returned. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Users** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listUsers
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsersResponse'
+          description: List all users.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Users
+      tags:
+      - Users
+    post:
+      description: "Add a user to the organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Users** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+        description: The user to create.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: Newly created user object with ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create a User
+      tags:
+      - Users
+      x-codegen-request-body-name: user
+  /users/{id}:
+    delete:
+      description: "Delete the given user. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Users** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteUser
+      parameters:
+      - description: Unique identifier for the user.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Delete a User
+      tags:
+      - Users
+    get:
+      description: "Get a specific user's information. Users that have expired access will not be returned. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Users** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getUser
+      parameters:
+      - description: Unique identifier for the user.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: Returns the specified user.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve a User
+      tags:
+      - Users
+    patch:
+      description: "Update a specific user's information. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Users** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: updateUser
+      parameters:
+      - description: Unique identifier for the user.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+        description: Updates to the user.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: Updated user object with ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update a User
+      tags:
+      - Users
+      x-codegen-request-body-name: user
+components:
+  schemas:
+    UserRoleAssignment:
+      description: A role that applies to a user. If the role has a `tag`, then the role applies for that tag. If there is no `tag`, then the role applies at the organizational level. A user may have many tag-specific roles, but may only have one organizational level role. If the organizational level role has higher privileges than a tag-specific role, then the organizational role privileges will take precedence.
+      properties:
+        expireAt:
+          $ref: '#/components/schemas/UserExpireAt'
+        role:
+          $ref: '#/components/schemas/UserRole'
+        tag:
+          $ref: '#/components/schemas/tagTinyResponse'
+      type: object
+    UserExpireAt:
+      description: For user account expiration, the access expiration datetime in RFC3339 format
+      example: '2025-08-13T19:08:25Z'
+      type: string
+    UserRole:
+      description: A user role object.
+      properties:
+        id:
+          description: The unique ID for the role.
+          example: 8a9371af-82d1-4158-bf91-4ecc8d3a114c
+          type: string
+        name:
+          description: The name of the role.
+          example: Full Admin
+          type: string
+      type: object
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    UserAuthType:
+      description: 'The authentication type the user uses to authenticate. To use SAML this organization must have a configured SAML integration. Valid values: `default`, `saml`.'
+      enum:
+      - default
+      - saml
+      type: string
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    UserName:
+      description: The first and last name of the user.
+      example: Bob Smith
+      type: string
+    UserId:
+      description: ID of the user.
+      example: '123'
+      type: string
+    UserResponse:
+      description: A single user.
+      properties:
+        data:
+          $ref: '#/components/schemas/User'
+      type: object
+    UpdateUserRequest:
+      description: The user update arguments
+      properties:
+        authType:
+          description: 'The authentication type the user uses to authenticate. To use SAML this organization must have a configured SAML integration. Valid values: `default`, `saml`.'
+          enum:
+          - default
+          - saml
+          type: string
+        expireAt:
+          description: For users with temporary access, this is the expiration datetime in RFC3339 format
+          example: '2025-08-13T19:08:25Z'
+          type: string
+        name:
+          description: The first and last name of the user.
+          example: Bob Smith
+          type: string
+        roles:
+          description: The list of roles that applies to this user. A user may have "organizational" roles, which apply to the user at the organizational level, and "tag-specific" roles, which apply to the user for a given tag.
+          items:
+            $ref: '#/components/schemas/CreateUserRequest_roles'
+          type: array
+      type: object
+    User:
+      description: A user object.
+      properties:
+        authType:
+          $ref: '#/components/schemas/UserAuthType'
+        email:
+          $ref: '#/components/schemas/UserEmail'
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          $ref: '#/components/schemas/UserName'
+        roles:
+          $ref: '#/components/schemas/UserRoles'
+      required:
+      - authType
+      - email
+      - id
+      - name
+      - roles
+      type: object
+    ListUsersResponse:
+      description: A list of users.
+      properties:
+        data:
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    UserRoles:
+      description: The list of roles that applies to this user. A user may have "organizational" roles, which apply to the user at the organizational level, and "tag-specific" roles, which apply to the user for a given tag.
+      items:
+        $ref: '#/components/schemas/UserRoleAssignment'
+      type: array
+    CreateUserRequest:
+      description: The user creation arguments
+      properties:
+        authType:
+          description: 'The authentication type the user uses to authenticate. To use SAML this organization must have a configured SAML integration. Valid values: `default`, `saml`.'
+          enum:
+          - default
+          - saml
+          type: string
+        email:
+          description: The email address of this user.
+          example: user@company.com
+          type: string
+        expireAt:
+          description: For users with temporary access, this is the expiration datetime in RFC3339 format
+          example: '2025-08-13T19:08:25Z'
+          type: string
+        name:
+          description: The first and last name of the user.
+          example: Bob Smith
+          type: string
+        roles:
+          description: The list of roles that applies to this user. A user may have "organizational" roles, which apply to the user at the organizational level, and "tag-specific" roles, which apply to the user for a given tag.
+          items:
+            $ref: '#/components/schemas/CreateUserRequest_roles'
+          type: array
+      required:
+      - authType
+      - email
+      - name
+      - roles
+      type: object
+    UserEmail:
+      description: The email address of this user.
+      example: user@company.com
+      type: string
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    CreateUserRequest_roles:
+      description: A role that applies to a user. If the role has a `tagId`, then the role applies for that tag. If there is no `tagId`, then the role applies at the organizational level. A user may have many tag-specific roles, but may only have one organizational role. If the organizational level role has higher privileges than a tag-specific role, then the organizational role privileges will take precedence.
+      properties:
+        roleId:
+          description: The unique ID for the role.
+          example: 8a9371af-82d1-4158-bf91-4ecc8d3a114c
+          type: string
+        tagId:
+          description: ID of the tag this role applies to.
+          example: '3914'
+          type: string
+      required:
+      - roleId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

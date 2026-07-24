@@ -1,0 +1,438 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Page API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Page
+paths:
+  /beta/aemp/Fleet/{pageNumber}:
+    get:
+      description: "Get a list of equipment following the AEMP ISO 15143-3 standard.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read AEMP** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getAempEquipmentList
+      parameters:
+      - description: The number corresponding to a specific page of paginated results, defaulting to the first page if not provided. The default page size is 100 records.
+        in: path
+        name: pageNumber
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AempEquipmentGetAempEquipmentListBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Get a List of AEMP Equipment'
+      tags:
+      - Page
+components:
+  schemas:
+    DEFRemainingResponseBody:
+      description: DEF remaining in equipment.
+      properties:
+        Percent:
+          description: Percent of DEF remaining in tank.
+          example: 12
+          format: double
+          type: number
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    AempEquipmentGetAempEquipmentListMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AempEquipmentGetAempEquipmentListNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AempEquipmentGetAempEquipmentListResponseBody:
+      properties:
+        Fleet:
+          $ref: '#/components/schemas/AempFleetListResponseBody'
+      required:
+      - Fleet
+      type: object
+    AempFleetListResponseBody:
+      description: Contains a list of equipment objects and links
+      properties:
+        Equipment:
+          description: The list of Equipment objects.
+          items:
+            $ref: '#/components/schemas/AempEquipmentWithAdditionalFieldsResponseBody'
+          type: array
+        Links:
+          description: The list of links associated with the current API request.
+          items:
+            $ref: '#/components/schemas/AempLinkResponseBody'
+          type: array
+        snapshotTime:
+          description: Date and time at which the snapshot of the fleet was created in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        version:
+          description: The version of the ISO/TS 15143-3 standard
+          example: '1'
+          type: string
+      required:
+      - Equipment
+      - Links
+      - snapshotTime
+      - version
+      type: object
+    CumulativeOperatingHoursResponseBody:
+      description: Equipment operating hours.
+      properties:
+        Hour:
+          description: Total number of equipment operating hours.
+          example: 12.34
+          format: double
+          type: number
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    AempLinkResponseBody:
+      description: Contains a list of relevant links
+      properties:
+        href:
+          description: The hyperlink of the relationship.
+          example: https://api.samsara.com/aemp/Fleet/1
+          type: string
+        rel:
+          description: The link relationship to the current call.
+          example: self
+          type: string
+      required:
+      - href
+      - rel
+      type: object
+    AempEquipmentGetAempEquipmentListNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AempEquipmentGetAempEquipmentListBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AempEquipmentGetAempEquipmentListTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AempEquipmentWithAdditionalFieldsResponseBody:
+      description: Contains equipment fields.
+      properties:
+        CumulativeOperatingHours:
+          $ref: '#/components/schemas/CumulativeOperatingHoursResponseBody'
+        DEFRemaining:
+          $ref: '#/components/schemas/DEFRemainingResponseBody'
+        Distance:
+          $ref: '#/components/schemas/DistanceResponseBody'
+        EngineStatus:
+          $ref: '#/components/schemas/EngineStatusResponseBody'
+        EquipmentHeader:
+          $ref: '#/components/schemas/EquipmentHeaderWithAdditionalFieldsResponseBody'
+        FuelRemaining:
+          $ref: '#/components/schemas/FuelRemainingResponseBody'
+        Location:
+          $ref: '#/components/schemas/LocationResponseBody'
+      required:
+      - EquipmentHeader
+      - Location
+      type: object
+    AempEquipmentGetAempEquipmentListServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelRemainingResponseBody:
+      description: Fuel remaining in equipment.
+      properties:
+        Percent:
+          description: Percent of fuel remaining in tank.
+          example: 12
+          format: double
+          type: number
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    EngineStatusResponseBody:
+      description: Equipment engine status.
+      properties:
+        Running:
+          description: Boolean value for whether engine is running or not.
+          example: true
+          type: boolean
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    AempEquipmentGetAempEquipmentListGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AempEquipmentGetAempEquipmentListBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AempEquipmentGetAempEquipmentListUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DistanceResponseBody:
+      description: Equipment odometer distance.
+      properties:
+        Odometer:
+          description: Odometer value reported by equipment.
+          example: 12
+          format: double
+          type: number
+        OdometerUnits:
+          description: Unit of measurement for distance.
+          example: kilometre
+          type: string
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    EquipmentHeaderWithAdditionalFieldsResponseBody:
+      description: Equipment header fields.
+      properties:
+        EquipmentID:
+          description: The unique Samsara ID of the equipment. This is automatically generated when the Equipment object is created. It cannot be changed.
+          example: '494123'
+          type: string
+        Model:
+          description: The model of the equipment.
+          example: S630 T4
+          type: string
+        OEMName:
+          description: The make of the equipment.
+          example: Bobcat
+          type: string
+        PIN:
+          description: The PIN number of the equipment.
+          example: 8V8WD530FLN016251
+          type: string
+        SerialNumber:
+          description: The serial number of the equipment.
+          example: 8V8WD530FLN016251
+          type: string
+        UnitInstallDateTime:
+          description: 'Telematics unit install date in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    LocationResponseBody:
+      description: Equipment location.
+      properties:
+        Latitude:
+          description: Location latitude.
+          example: 12.34
+          format: double
+          type: number
+        Longitude:
+          description: Location longitude.
+          example: 12.34
+          format: double
+          type: number
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    AempEquipmentGetAempEquipmentListInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

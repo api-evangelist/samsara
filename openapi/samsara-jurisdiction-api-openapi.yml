@@ -1,0 +1,415 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Jurisdiction API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Jurisdiction
+paths:
+  /fleet/reports/ifta/jurisdiction:
+    get:
+      description: "Get all jurisdiction IFTA reports for the requested time duration. Data is returned in your organization's defined timezone.\n\n**Note:** The most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read IFTA (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getIftaJurisdictionReports
+      parameters:
+      - description: ' The year of the requested IFTA report summary. Must be provided with a month or quarter param. Example: `year=2021`'
+        in: query
+        name: year
+        required: true
+        schema:
+          maximum: 2100
+          minimum: 2015
+          type: integer
+      - description: ' The month of the requested IFTA report summary. Can not be provided with the quarter param. Example: `month=January`  Valid values: `January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`'
+        in: query
+        name: month
+        schema:
+          enum:
+          - January
+          - February
+          - March
+          - April
+          - May
+          - June
+          - July
+          - August
+          - September
+          - October
+          - November
+          - December
+          type: string
+      - description: ' The quarter of the requested IFTA report summary. Can not be provided with the month param. Q1: January, February, March. Q2: April, May, June. Q3: July, August, September. Q4: October, November, December. Example: `quarter=Q1`  Valid values: `Q1`, `Q2`, `Q3`, `Q4`'
+        in: query
+        name: quarter
+        schema:
+          enum:
+          - Q1
+          - Q2
+          - Q3
+          - Q4
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of jurisdictions. Example: `jurisdictions=GA`'
+        in: query
+        name: jurisdictions
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of IFTA fuel types. Example: `fuelType=Diesel`  Valid values: `Unspecified`, `A55`, `Biodiesel`, `CompressedNaturalGas`, `Diesel`, `E85`, `Electricity`, `Ethanol`, `Gasohol`, `Gasoline`, `Hydrogen`, `LiquifiedNaturalGas`, `M85`, `Methanol`, `Propane`, `Other`'
+        in: query
+        name: fuelType
+        schema:
+          enum:
+          - Unspecified
+          - A55
+          - Biodiesel
+          - CompressedNaturalGas
+          - Diesel
+          - E85
+          - Electricity
+          - Ethanol
+          - Gasohol
+          - Gasoline
+          - Hydrogen
+          - LiquifiedNaturalGas
+          - M85
+          - Methanol
+          - Propane
+          - Other
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get IFTA Jurisdiction Reports.
+      tags:
+      - Jurisdiction
+components:
+  schemas:
+    IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaJurisdictionSummaryObjectResponseBody:
+      description: A summary of this jurisdiction's IFTA data.
+      properties:
+        jurisdiction:
+          description: Jurisdiction code.
+          example: GA
+          type: string
+        taxPaidLiters:
+          description: Liters purchased for all qualified vehicles.
+          example: 25.5
+          format: double
+          type: number
+        taxableMeters:
+          description: Distance in meters traveled on public roads in an IFTA jurisdiction.
+          example: 2350
+          format: double
+          type: number
+        totalMeters:
+          description: Total meters driven in this jurisdiction, taxable and non-taxable.
+          example: 2350
+          format: double
+          type: number
+      required:
+      - jurisdiction
+      - taxableMeters
+      - totalMeters
+      type: object
+    IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaReportTroubleshootingObjectResponseBody:
+      description: IFTA report troubleshooting information.
+      properties:
+        noPurchasesFound:
+          description: Whether or not fuel purchases were found for this report.
+          example: false
+          type: boolean
+        unassignedFuelTypePurchases:
+          description: The number of fuel purchases without a fuel type assigned. Fuel purchases are used to calculate tax paid gallons.
+          example: 200
+          format: int64
+          type: integer
+        unassignedFuelTypeVehicles:
+          description: The number of vehicles without a fuel type assigned. Vehicles without an assigned fuel type may affect total mileage.
+          example: 2500
+          format: int64
+          type: integer
+        unassignedVehiclePurchases:
+          description: Purchases without an assigned fuel type may affect tax-paid gallons and fleet mpg.
+          example: 2500
+          format: int64
+          type: integer
+      required:
+      - noPurchasesFound
+      - unassignedFuelTypePurchases
+      - unassignedFuelTypeVehicles
+      - unassignedVehiclePurchases
+      type: object
+    IFTAGetIftaJurisdictionReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaJurisdictionReportDataObjectResponseBody'
+      required:
+      - data
+      type: object
+    IftaJurisdictionReportDataObjectResponseBody:
+      description: Dictionary containing summarized jurisdiction report data.
+      properties:
+        jurisdictionReports:
+          description: List of summarized jurisdiction reports.
+          items:
+            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
+          type: array
+        month:
+          description: The specified month duration for this IFTA report.
+          example: January
+          type: string
+        quarter:
+          description: The specified quarter duration for this IFTA report.
+          example: Q4
+          type: string
+        troubleshooting:
+          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
+        year:
+          description: The specified year for this IFTA report.
+          example: 2021
+          format: int64
+          type: integer
+      required:
+      - jurisdictionReports
+      - year
+      type: object
+    IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

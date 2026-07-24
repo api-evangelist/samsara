@@ -1,0 +1,94 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Organization  Info API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Organization  Info
+paths:
+  /me:
+    get:
+      description: "Get information about your organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Org Information** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getOrganizationInfo
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInfoResponse'
+          description: Returns information about your organization.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Information About Your Organization
+      tags:
+      - Organization  Info
+components:
+  schemas:
+    OrganizationInfoResponse:
+      description: Information about an organization.
+      properties:
+        data:
+          $ref: '#/components/schemas/OrganizationInfo'
+      type: object
+    OrganizationInfo:
+      description: Information about your organization.
+      properties:
+        carrierSettings:
+          $ref: '#/components/schemas/OrganizationInfo_carrierSettings'
+        id:
+          description: ID of the organization.
+          example: '123'
+          type: string
+        name:
+          description: Name of organization.
+          example: Charlie's Dining Services
+          type: string
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    OrganizationInfo_carrierSettings:
+      description: Carrier for a given organization.
+      properties:
+        carrierName:
+          description: Carrier for a given organization.
+          example: Acme Inc.
+          maxLength: 255
+          type: string
+        dotNumber:
+          description: Carrier US DOT Number for the organization.
+          example: 98231
+          format: int64
+          type: integer
+        mainOfficeAddress:
+          description: Main office address for a given organization.
+          example: 1234 Pear St., Scranton, PA 62814
+          maxLength: 255
+          type: string
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

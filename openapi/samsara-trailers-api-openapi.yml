@@ -1,0 +1,1742 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Trailers API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Trailers
+paths:
+  /fleet/trailers:
+    get:
+      description: "List all trailers.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: listTrailers
+      parameters:
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          default: 512
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersListTrailersBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: List All Trailers
+      tags:
+      - Trailers
+    post:
+      description: "Creates a new trailer asset.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: createTrailer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrailersCreateTrailerRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersCreateTrailerBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Creates a New Trailer Asset
+      tags:
+      - Trailers
+      x-codegen-request-body-name: CreateTrailerRequestBody
+  /fleet/trailers/{id}:
+    delete:
+      description: "Delete a trailer with the given ID.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: deleteTrailer
+      parameters:
+      - description: Unique identifier for the trailer to delete.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: No Content response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersDeleteTrailerBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Delete a Trailer
+      tags:
+      - Trailers
+    get:
+      description: "Retrieve a trailer with given ID.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getTrailer
+      parameters:
+      - description: 'ID of the trailer. This can either be the Samsara-specified ID, or an external ID. External IDs are customer specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: "key:value". For example, "maintenanceId:250020".'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersGetTrailerBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Retrieve a Trailer
+      tags:
+      - Trailers
+    patch:
+      description: "Update a trailer.  **Note** this implementation of patch uses [the JSON merge patch](https://tools.ietf.org/html/rfc7396) proposed standard.\n This means that any fields included in the patch request will _overwrite_ fields which exist on the target resource.\n For arrays, this means any array included in the request will _replace_ the array that exists at the specified path, it will not _add_ to the existing array\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: updateTrailer
+      parameters:
+      - description: ID of the trailer. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the trailer.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrailersUpdateTrailerRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailersUpdateTrailerBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Update a Trailer
+      tags:
+      - Trailers
+      x-codegen-request-body-name: UpdateTrailerRequestBody
+  /v1/fleet/trailers/assignments:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch trailer assignment data for all trailers in your organization. \n\n <b>Rate limit:</b> 100 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getAllTrailerAssignments
+      parameters:
+      - description: Timestamp in Unix epoch miliseconds representing the start of the period to fetch. Omitting both startMs and endMs only returns current assignments.
+        in: query
+        name: startMs
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in Unix epoch miliseconds representing the end of the period to fetch. Omitting endMs sets endMs as the current time
+        in: query
+        name: endMs
+        schema:
+          format: int64
+          type: integer
+      - description: Pagination parameter indicating the number of results to return in this request. Used in conjunction with either 'startingAfter' or 'endingBefore'.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          type: number
+      - description: Pagination parameter indicating the cursor position to continue returning results after. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'endingBefore' parameter.
+        in: query
+        name: startingAfter
+        schema:
+          type: string
+      - description: Pagination parameter indicating the cursor position to return results before. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'startingAfter' parameter.
+        in: query
+        name: endingBefore
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_7'
+          description: Returns trailer assignment data for all trailers in your organization
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Trailer Assignments for All Trailers
+      tags:
+      - Trailers
+  /v1/fleet/trailers/{trailerId}/assignments:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch trailer assignment data for a single trailer. \n\n <b>Rate limit:</b> 100 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getFleetTrailerAssignments
+      parameters:
+      - description: ID of trailer. Must contain only digits 0-9.
+        in: path
+        name: trailerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in Unix epoch milliseconds representing the start of the period to fetch. Omitting both startMs and endMs only returns current assignments.
+        in: query
+        name: startMs
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in Unix epoch milliseconds representing the end of the period to fetch. Omitting endMs sets endMs as the current time
+        in: query
+        name: endMs
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          description: Returns trailer assignment data for a single trailer
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Trailer Assignments for a Given Trailer
+      tags:
+      - Trailers
+components:
+  schemas:
+    TrailersDeleteTrailerInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1TrailerAssignmentsResponse_allOf:
+      properties:
+        trailerAssignments:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
+          type: array
+      type: object
+    TrailersUpdateTrailerBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    TrailersGetTrailerGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/TrailerWithAttributesResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    TrailersCreateTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerGoaGatewayTinyResponseResponseBody:
+      description: A minified gateway object. This field will be omitted if the trailer does not have a gateway installed.
+      properties:
+        model:
+          description: 'The model of the gateway installed on the asset.  Valid values: `AG15`, `AG24`, `AG24EU`, `AG26`, `AG26EU`, `AG41`, `AG41EU`, `AG45`, `AG45EU`, `AG46`, `AG46EU`, `AG46P`, `AG46PEU`, `AG51`, `AG51EU`, `AG52`, `AG52EU`, `AG53`, `AG53EU`, `IG15`, `IG21`, `IG41`, `IG61`, `SG1`, `SG1B`, `SG1G`, `SG1G32`, `SG1x`, `VG32`, `VG33`, `VG34`, `VG34EU`, `VG34FN`, `VG34M`, `VG54ATT`, `VG54EU`, `VG54FN`, `VG54NA`, `VG54NAE`, `VG54NAH`, `VG55EU`, `VG55FN`, `VG55NA`'
+          enum:
+          - AG15
+          - AG24
+          - AG24EU
+          - AG26
+          - AG26EU
+          - AG41
+          - AG41EU
+          - AG45
+          - AG45EU
+          - AG46
+          - AG46EU
+          - AG46P
+          - AG46PEU
+          - AG51
+          - AG51EU
+          - AG52
+          - AG52EU
+          - AG53
+          - AG53EU
+          - IG15
+          - IG21
+          - IG41
+          - IG61
+          - SG1
+          - SG1B
+          - SG1G
+          - SG1G32
+          - SG1x
+          - VG32
+          - VG33
+          - VG34
+          - VG34EU
+          - VG34FN
+          - VG34M
+          - VG54ATT
+          - VG54EU
+          - VG54FN
+          - VG54NA
+          - VG54NAE
+          - VG54NAH
+          - VG55EU
+          - VG55FN
+          - VG55NA
+          example: VG34
+          type: string
+        serial:
+          description: The serial number of the gateway installed on the asset.
+          example: GFRV-43N-VGX
+          type: string
+      required:
+      - model
+      - serial
+      type: object
+    GoaTagTinyResponseResponseBody:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    inline_response_200_7:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+        trailers:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          type: array
+      type: object
+    TrailersGetTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TrailersGetTrailerTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerResponseObjectResponseBody:
+      properties:
+        enabledForMobile:
+          description: Indicates if the trailer is visible on the Samsara mobile apps.
+          example: true
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unique Samsara ID of the Trailer. This is automatically generated when the Trailer object is created. It cannot be changed.
+          example: '494123'
+          type: string
+        installedGateway:
+          $ref: '#/components/schemas/TrailerGoaGatewayTinyResponseResponseBody'
+        licensePlate:
+          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          example: 7TYP290
+          maxLength: 12
+          type: string
+        name:
+          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        notes:
+          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
+          example: These are my trailer notes
+          maxLength: 255
+          type: string
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Trailer.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
+          type: string
+      required:
+      - id
+      type: object
+    TrailersListTrailersInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1Pagination:
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results after this response.
+          type: boolean
+        hasPrevPage:
+          description: True if there are more pages of results before this response.
+          type: boolean
+        startCursor:
+          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+      required:
+      - endCursor
+      - hasNextPage
+      - hasPrevPage
+      - startCursor
+      type: object
+    TrailersGetTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerRequestBody:
+      properties:
+        attributes:
+          description: A list of attributes to assign to the trailer.
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyRequestBody'
+          type: array
+        enabledForMobile:
+          description: Indicates if the trailer is visible on the Samsara mobile apps.
+          example: true
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        licensePlate:
+          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          example: 7TYP290
+          maxLength: 12
+          type: string
+        name:
+          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        notes:
+          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
+          example: These are my trailer notes
+          maxLength: 255
+          type: string
+        tagIds:
+          description: An array of IDs of tags to associate with this trailer. If your access to the API is scoped by one or more tags, this field is required to pass in.
+          example:
+          - Delectus alias molestiae.
+          - Nam ut.
+          - Eum ut qui aut voluptas soluta.
+          - Quia corrupti.
+          items:
+            example: Nihil nemo et delectus ab est a.
+            type: string
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
+          type: string
+      required:
+      - name
+      type: object
+    TrailersUpdateTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/TrailerWithAttributesResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    TrailersUpdateTrailerMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaAttributeTinyRequestBody:
+      description: Attribute properties.
+      properties:
+        id:
+          description: Id of the attribute
+          example: '494123'
+          type: string
+        name:
+          description: Name of the attribute
+          example: Compliance/ELD
+          type: string
+        numberValues:
+          description: List of number values associated with the attribute
+          example:
+          - 867
+          - 5309
+          items:
+            example: 0.2809278574550267
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: List of string values associated with the attribute.
+          example:
+          - HQ
+          - Leased
+          items:
+            example: Voluptas inventore.
+            type: string
+          type: array
+      type: object
+    TrailersListTrailersResponseBody:
+      properties:
+        data:
+          description: List of trailer objects.
+          items:
+            $ref: '#/components/schemas/TrailerResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrailersCreateTrailerInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1TrailerAssignmentResponse:
+      properties:
+        driverId:
+          description: The ID of the driver associated with this trailer.
+          example: 2047
+          format: int64
+          type: integer
+        endMs:
+          description: The time at which the driver ended the assignment. If the assignment is current, this value will be omitted.
+          example: 1462881998034
+          format: int64
+          type: integer
+        startMs:
+          description: The time at which the driver started the assignment
+          example: 1462878398034
+          format: int64
+          type: integer
+      type: object
+    GoaAttributeTinyResponseBody:
+      description: Attribute properties.
+      properties:
+        id:
+          description: Id of the attribute
+          example: '494123'
+          type: string
+        name:
+          description: Name of the attribute
+          example: Compliance/ELD
+          type: string
+        numberValues:
+          description: List of number values associated with the attribute
+          example:
+          - 867
+          - 5309
+          items:
+            example: 0.7405685598633346
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: List of string values associated with the attribute.
+          example:
+          - HQ
+          - Leased
+          items:
+            example: Tempora dolorum placeat.
+            type: string
+          type: array
+      type: object
+    TrailersUpdateTrailerRequestBody:
+      properties:
+        attributes:
+          description: A list of attributes to assign to the trailer.
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyRequestBody'
+          type: array
+        enabledForMobile:
+          description: Indicates if the trailer is visible on the Samsara mobile apps.
+          example: true
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        licensePlate:
+          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          example: 7TYP290
+          maxLength: 12
+          type: string
+        name:
+          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        notes:
+          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
+          example: These are my trailer notes
+          maxLength: 255
+          type: string
+        odometerMeters:
+          description: When you provide a manual odometer override, Samsara will begin updating a trailer's odometer using GPS distance traveled since this override was set. Only applies to trailers installed with Samsara gateways.
+          example: 1234
+          format: int64
+          type: integer
+        tagIds:
+          description: An array of IDs of tags to associate with this trailer. If your access to the API is scoped by one or more tags, this field is required to pass in.
+          example:
+          - Qui ad et et non.
+          - Et numquam ut.
+          - Qui eligendi vel ab ut.
+          items:
+            example: Ratione consequatur delectus dolorum ut.
+            type: string
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
+          type: string
+      type: object
+    TrailersListTrailersUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1TrailerBase:
+      properties:
+        id:
+          description: ID of the trailer
+          example: 2041
+          format: int64
+          type: integer
+        name:
+          description: Assignment trailer name (given when creating trailer via the trailer portal)
+          example: myTrailer
+          format: string
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    TrailersUpdateTrailerNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/TrailerWithAttributesResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    TrailersDeleteTrailerGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerWithAttributesResponseObjectResponseBody:
+      properties:
+        attributes:
+          description: List of attributes associated with the entity
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
+          type: array
+        enabledForMobile:
+          description: Indicates if the trailer is visible on the Samsara mobile apps.
+          example: true
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unique Samsara ID of the Trailer. This is automatically generated when the Trailer object is created. It cannot be changed.
+          example: '494123'
+          type: string
+        installedGateway:
+          $ref: '#/components/schemas/TrailerGoaGatewayTinyResponseResponseBody'
+        licensePlate:
+          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          example: 7TYP290
+          maxLength: 12
+          type: string
+        name:
+          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        notes:
+          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
+          example: These are my trailer notes
+          maxLength: 255
+          type: string
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Trailer.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
+          type: string
+      required:
+      - id
+      type: object
+    TrailersDeleteTrailerBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1TrailerAssignmentsResponse:
+      allOf:
+      - $ref: '#/components/schemas/V1TrailerBase'
+      - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
+    TrailersCreateTrailerGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

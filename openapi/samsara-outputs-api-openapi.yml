@@ -1,0 +1,300 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Outputs API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Outputs
+paths:
+  /industrial/assets/{id}/data-outputs:
+    patch:
+      description: "Writes values to multiple data outputs on an asset simultaneously. Only the provided data outputs will be updated.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchAssetDataOutputs
+      parameters:
+      - description: Asset ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Writes to Data Outputs on an Asset
+      tags:
+      - Outputs
+      x-codegen-request-body-name: PatchAssetDataOutputsRequestBody
+components:
+  schemas:
+    PatchAssetDataOutputsSingleResponseResponseBody:
+      description: A response that corresponds to an element in the original request body.
+      properties:
+        errorMessage:
+          description: If the request failed, this displays the error message.
+          example: 'Failed to write to Device: GFRV-43N-VGX'
+          type: string
+        id:
+          description: The data output ID.
+          example: 8a9371af-82d1-4158-bf91-4ecc8d3a114c
+          type: string
+        statusCode:
+          description: The status code of the request. 200 indicates the request succeeded for this data output. 500 indicates an internal server error.
+          example: 200
+          format: int64
+          type: integer
+      required:
+      - id
+      - statusCode
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsResponseBody:
+      properties:
+        data:
+          description: List of responses for each data output from the original request.
+          items:
+            $ref: '#/components/schemas/PatchAssetDataOutputsSingleResponseResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsRequestBody:
+      properties:
+        values:
+          description: A map of data output IDs to values. All data outputs must belong to the same asset. Only the specified IDs will be written to.
+          example: ''
+          type: object
+      required:
+      - values
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

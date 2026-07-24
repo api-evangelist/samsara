@@ -1,0 +1,77 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Dispatch API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Dispatch
+paths:
+  /v1/fleet/dispatch/routes/{route_id_or_external_id}:
+    delete:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nDelete a dispatch route and its associated jobs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Routes** under the Driver Workflow category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1deleteDispatchRouteById
+      parameters:
+      - description: 'ID of the route. This can either be the Samsara-specified ID, or an external ID. External IDs are customer specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `payrollId:ABFS18600`'
+        in: path
+        name: route_id_or_external_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object'
+        content:
+          application/json:
+            schema:
+              properties:
+                apply_to_future_routes:
+                  description: This is only for a recurring route.  If set to true, delete all following runs of the route.  If set to false, only delete the current route.
+                  example: true
+                  type: boolean
+              type: object
+        required: false
+      responses:
+        '200':
+          content: {}
+          description: Successfully deleted the dispatch route. No response body is returned.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Delete a Route
+      tags:
+      - Dispatch
+      x-codegen-request-body-name: applyToFutureRoutes
+components:
+  schemas:
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    inline_object:
+      properties:
+        apply_to_future_routes:
+          description: This is only for a recurring route.  If set to true, delete all following runs of the route.  If set to false, only delete the current route.
+          example: true
+          type: boolean
+      type: object
+  requestBodies:
+    inline_object:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      required: false
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

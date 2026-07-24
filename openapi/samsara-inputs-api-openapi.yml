@@ -1,0 +1,456 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Inputs API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Inputs
+paths:
+  /assets/inputs/stream:
+    get:
+      description: "This endpoint will return data collected from the inputs of your organization's assets based on the time parameters passed in. Results are paginated. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. The endpoint will only return data up until the endTime that has been processed by the server at the time of the original request. You will need to request the same [startTime, endTime) range again to receive data for assets processed after the original request time. This endpoint sorts data by time ascending.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Assets** under the Assets category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getAssetsInputs
+      parameters:
+      - description: Comma-separated list of asset IDs. Limited to 100 ID's for each request.
+        explode: false
+        in: query
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'Input stat type to query for.  Valid values: `auxInput1`, `auxInput2`, `auxInput3`, `auxInput4`, `auxInput5`, `auxInput6`, `auxInput7`, `auxInput8`, `auxInput9`, `auxInput10`, `auxInput11`, `auxInput12`, `auxInput13`, `analogInput1Voltage`, `analogInput2Voltage`, `analogInput1Current`, `analogInput2Current`, `batteryVoltage`'
+        in: query
+        name: type
+        required: true
+        schema:
+          enum:
+          - auxInput1
+          - auxInput2
+          - auxInput3
+          - auxInput4
+          - auxInput5
+          - auxInput6
+          - auxInput7
+          - auxInput8
+          - auxInput9
+          - auxInput10
+          - auxInput11
+          - auxInput12
+          - auxInput13
+          - analogInput1Voltage
+          - analogInput2Voltage
+          - analogInput1Current
+          - analogInput2Current
+          - batteryVoltage
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to never if not provided; if not provided then pagination will not cease, and a valid pagination cursor will always be returned. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: Optional boolean indicating whether to return external IDs on supported entities
+        in: query
+        name: includeExternalIds
+        schema:
+          type: boolean
+      - description: Optional boolean indicating whether to return tags on supported entities
+        in: query
+        name: includeTags
+        schema:
+          type: boolean
+      - description: Optional boolean indicating whether to return attributes on supported entities
+        in: query
+        name: includeAttributes
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsInputsGetAssetsInputsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] List Asset Inputs Data in an Organization.'
+      tags:
+      - Inputs
+components:
+  schemas:
+    GoaAttributeTinyResponseBody:
+      description: Attribute properties.
+      properties:
+        id:
+          description: Id of the attribute
+          example: '494123'
+          type: string
+        name:
+          description: Name of the attribute
+          example: Compliance/ELD
+          type: string
+        numberValues:
+          description: List of number values associated with the attribute
+          example:
+          - 867
+          - 5309
+          items:
+            example: 0.7405685598633346
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: List of string values associated with the attribute.
+          example:
+          - HQ
+          - Leased
+          items:
+            example: Tempora dolorum placeat.
+            type: string
+          type: array
+      type: object
+    assetsInputsResponseResponseBody:
+      description: Full assets inputs objects.
+      properties:
+        asset:
+          $ref: '#/components/schemas/AssetsInputsAssetResponseResponseBody'
+        auxInput:
+          $ref: '#/components/schemas/assetsInputsAuxInputResponseBody'
+        happenedAtTime:
+          description: UTC timestamp in RFC 3339 format of the event.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        units:
+          description: 'Units of the values in the returned data.  Valid values: `boolean`, `millivolts`, `microamps`'
+          enum:
+          - boolean
+          - millivolts
+          - microamps
+          example: boolean
+          type: string
+        value:
+          description: Value of the data point.
+          example: '1'
+          type: string
+      required:
+      - asset
+      - happenedAtTime
+      - units
+      - value
+      type: object
+    AssetsInputsGetAssetsInputsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsAssetResponseResponseBody:
+      description: Asset that the input data is from.
+      properties:
+        attributes:
+          description: List of attributes associated with the entity
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the asset
+          example: '12345'
+          type: string
+        tags:
+          description: The array of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Asset.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      type: object
+    AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaTagTinyResponseResponseBody:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    AssetsInputsGetAssetsInputsResponseBody:
+      properties:
+        data:
+          description: Array of assets inputs objects.
+          items:
+            $ref: '#/components/schemas/assetsInputsResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    AssetsInputsGetAssetsInputsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    assetsInputsAuxInputResponseBody:
+      description: Auxiliary input metadata
+      properties:
+        name:
+          description: Name of the auxiliary input
+          example: PTO
+          type: string
+      required:
+      - name
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,2764 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Drivers API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Drivers
+paths:
+  /beta/fleet/hos/drivers/eld-events:
+    get:
+      description: "Get all HOS ELD events in a time range, grouped by driver. Attributes will be populated depending on which ELD Event Type is being returned.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read ELD Compliance Settings (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getHosEldEvents
+      parameters:
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: 'If value is `deactivated`, only drivers that are deactivated will appear in the response. This parameter will default to `active` if not provided (fetching only active drivers).  Valid values: `active`, `deactivated`'
+        in: query
+        name: driverActivationStatus
+        schema:
+          default: active
+          enum:
+          - active
+          - deactivated
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: The limit for how many objects will be in the response. Default and max for this value is 25 objects.
+        in: query
+        name: limit
+        schema:
+          default: 25
+          maximum: 25
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosEldEventsGetHosEldEventsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Get Driver HOS ELD Events'
+      tags:
+      - Drivers
+  /fleet/drivers:
+    get:
+      description: "Get all drivers in organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Drivers** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listDrivers
+      parameters:
+      - description: If value is `deactivated`, only drivers that are deactivated will appear in the response. This parameter will default to `active` if not provided (fetching only active drivers).
+        in: query
+        name: driverActivationStatus
+        schema:
+          enum:
+          - active
+          - deactivated
+          type: string
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of attribute value IDs. Only entities associated with ALL of the referenced values will be returned (i.e. the intersection of the sets of entities with each value). Example: `attributeValueIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`'
+        explode: false
+        in: query
+        name: attributeValueIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on data to have an updated at time after or equal to this specified time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: updatedAfterTime
+        schema:
+          type: string
+      - description: 'A filter on data to have a created at time after or equal to this specified time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: createdAfterTime
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDriversResponse'
+          description: List of all driver objects.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Drivers
+      tags:
+      - Drivers
+    post:
+      description: "Add a driver to the organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Drivers** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createDriver
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDriverRequest'
+        description: The driver to create.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverResponse'
+          description: Newly created driver object, with Samsara-generated ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create a Driver
+      tags:
+      - Drivers
+      x-codegen-request-body-name: driver
+  /fleet/drivers/tachograph-activity/history:
+    get:
+      description: "Returns all known tachograph activity for all specified drivers in the time range. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Tachograph (EU)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDriverTachographActivity
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. It can''t be more than 30 days past startTime. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of driver IDs. Example: `driverIds=1234,5678`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverTachographActivityResponse'
+          description: List of all driver tachograph activities in a specified time range.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Driver Tachograph Activity
+      tags:
+      - Drivers
+  /fleet/drivers/tachograph-files/history:
+    get:
+      description: "Returns all known tachograph files for all specified drivers in the time range. \n\n <b>Rate limit:</b> 50 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Tachograph (EU)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDriverTachographFiles
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of driver IDs. Example: `driverIds=1234,5678`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TachographDriverFilesResponse'
+          description: List of all driver tachograph files in a specified time range.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Tachograph Driver Files
+      tags:
+      - Drivers
+  /fleet/drivers/vehicle-assignments:
+    get:
+      description: "**Note: This is a legacy endpoint, consider using [this endpoint](https://developers.samsara.com/reference/getdrivervehicleassignments) instead. The endpoint will continue to function as documented.** Get all vehicle assignments for the requested drivers in the requested time range. The only type of assignment supported right now are assignments created through the driver app.\n\n <b>Rate limit:</b> 25 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getDriversVehicleAssignments
+      parameters:
+      - description: ' A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). The maximum allowed startTime-endTime range is 7 days.'
+        in: query
+        name: startTime
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). The maximum allowed startTime-endTime range is 7 days.'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: 'If value is `deactivated`, only drivers that are deactivated will appear in the response. This parameter will default to `active` if not provided (fetching only active drivers).  Valid values: `active`, `deactivated`'
+        in: query
+        name: driverActivationStatus
+        schema:
+          default: active
+          enum:
+          - active
+          - deactivated
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[legacy] Get All Vehicles Assigned to a Set of Drivers'
+      tags:
+      - Drivers
+  /fleet/drivers/{id}:
+    get:
+      description: "Get information about a driver. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Drivers** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDriver
+      parameters:
+      - description: 'ID of the driver. This can either be the Samsara-specified ID, or an external ID. External IDs are customer specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `payrollId:ABFS18600`'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverResponse'
+          description: Returns the specified driver.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve a Driver
+      tags:
+      - Drivers
+    patch:
+      description: "Update a specific driver's information. This can also be used to activate or de-activate a given driver by setting the driverActivationStatus field. If the driverActivationStatus field is 'deactivated' then the user can also specify the deactivatedAtTime. The deactivatedAtTime cannot be more than 6 months in the past and must not come before the dirver's latest active HOS log. It will be considered an error if deactivatedAtTime is provided with a driverActivationStatus of active. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Drivers** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: updateDriver
+      parameters:
+      - description: 'ID of the driver. This can either be the Samsara-specified ID, or an external ID. External IDs are customer specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `payrollId:ABFS18600`'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDriverRequest'
+        description: Updates to the driver properties.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverResponse'
+          description: Updated driver object, with ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update a Driver
+      tags:
+      - Drivers
+      x-codegen-request-body-name: driver
+  /preview/driver-efficiency/drivers:
+    get:
+      description: "This endpoint will return driver efficiency data that has been collected for your organization and grouped by drivers based on the time parameters passed in. Results are paginated.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Driver Efficiency** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getDriverEfficiencyByDrivers
+      parameters:
+      - description: 'A start time in RFC 3339 format. Must be in multiple of hours and at least 1 day before endTime. Timezones are supported. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. (Examples: 2019-06-11T19:00:00Z, 2015-09-12T14:00:00-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Must be in multiple of hours and no later than 3 hours before the current time. Timezones are supported. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. (Examples: 2019-06-13T19:00:00Z, 2015-09-15T14:00:00-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of data formats you want to fetch. Valid values: `score`, `raw` and `percentage`. The default data format is `score`. Example: `dataFormats=raw,score`'
+        explode: false
+        in: query
+        name: dataFormats
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverEfficiencyGetDriverEfficiencyByDriversBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Get Driver Efficiency Data Grouped by Drivers.'
+      tags:
+      - Drivers
+  /v1/fleet/drivers/{driverId}/safety/score:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch the safety score for the driver.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Safety Events & Scores** under the Safety & Cameras category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getDriverSafetyScore
+      parameters:
+      - description: ID of the driver. Must contain only digits 0-9.
+        in: path
+        name: driverId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the start of the period to fetch, inclusive. Used in combination with endMs. Total duration (endMs - startMs) must be greater than or equal to 1 hour.
+        in: query
+        name: startMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the end of the period to fetch, inclusive. Used in combination with startMs. Total duration (endMs - startMs) must be greater than or equal to 1 hour.
+        in: query
+        name: endMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1DriverSafetyScoreResponse'
+          description: Safety score details.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Fetch Driver Safety Score
+      tags:
+      - Drivers
+  /v1/fleet/drivers/{driver_id}/hos/duty_status:
+    post:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nSet an individual drivers current duty status to 'On Duty' or 'Off Duty'.\n\n To ensure compliance with the ELD Mandate, only  authenticated drivers can make direct duty status changes on their own logbook. Any system external to the Samsara Driver App using this endpoint to trigger duty status changes must ensure that such changes are only triggered directly by the driver in question and that the driver has been properly authenticated. This endpoint should not be used to algorithmically trigger duty status changes nor should it be used by personnel besides the driver to trigger duty status changes on the drivers behalf. Carriers and their drivers are ultimately responsible for maintaining accurate logs and should confirm that their use of the endpoint is compliant with the ELD Mandate. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write ELD Hours of Service (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: setCurrentDutyStatus
+      parameters:
+      - description: ID of the driver for whom the duty status is being set.
+        in: path
+        name: driver_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_1'
+        content:
+          application/json:
+            schema:
+              properties:
+                duty_status:
+                  description: Duty status to set the driver to. The only supported values are 'ON_DUTY' and 'OFF_DUTY'.
+                  example: ON_DUTY
+                  type: string
+                location:
+                  description: Location to associate the duty status change with.
+                  example: Loading dock
+                  type: string
+                remark:
+                  description: Remark to associate the duty status change with.
+                  example: Beginning On Duty Shift
+                  type: string
+                status_change_at_ms:
+                  description: Timestamp that the duty status will begin at specified in milliseconds UNIX time. Defaults to the current time if left blank. This can only be set to up to 8 hours in the past.
+                  example: 1580834793568
+                  format: int64
+                  type: number
+                vehicle_id:
+                  description: Vehicle ID to associate the duty status change with.
+                  example: 1234
+                  format: int64
+                  type: number
+              required:
+              - duty_status
+              type: object
+        required: false
+      responses:
+        '200':
+          content: {}
+          description: Successfully changed duty status. No response body is returned.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Set a Duty Status for a Specific Driver
+      tags:
+      - Drivers
+      x-codegen-request-body-name: dutyStatusParams
+components:
+  schemas:
+    HosEldEventsGetHosEldEventsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ListDriversResponse:
+      description: A list of drivers.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Driver'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    HosEldEventsGetHosEldEventsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverIsDeactivated:
+      description: '[DEPRECATED] A boolean indicating whether or not the driver is deactivated. Use `driverActivationStatus` instead.'
+      example: false
+      type: boolean
+    DriverEfficiencyRawDataObjectResponseBody:
+      description: Driver Efficiency raw data. This object is returned when the raw format is specified in dataFormats.
+      properties:
+        anticipationBrakeEventCount:
+          description: Total number of quick braking events (less than one second after accelerating).
+          example: 17
+          format: int64
+          type: integer
+        averageVehicleWeightKg:
+          description: Average vehicle weight in kilograms.
+          example: 14500
+          format: int64
+          type: integer
+        coastingDurationMs:
+          description: Time spent without engaging the accelerator or brake in milliseconds.
+          example: 1900800
+          format: int64
+          type: integer
+        cruiseControlDurationMs:
+          description: Time spent in cruise control in milliseconds.
+          example: 3283200
+          format: int64
+          type: integer
+        driveTimeDurationMs:
+          description: Total driving time in milliseconds.
+          example: 7200000
+          format: int64
+          type: integer
+        engineOnDurationMs:
+          description: Total engine-on time in milliseconds.
+          example: 7500000
+          format: int64
+          type: integer
+        greenBandDurationMs:
+          description: Time spent driving within the configurable green band in milliseconds.
+          example: 5683200
+          format: int64
+          type: integer
+        highGradeRoadDrivingDurationMs:
+          description: Time spent driving on high-grade roads in milliseconds.
+          example: 1108800
+          format: int64
+          type: integer
+        highTorqueDurationMs:
+          description: 'Time the vehicle engine torque is greater than 90% in milliseconds. '
+          example: 1684800
+          format: int64
+          type: integer
+        idlingDurationMs:
+          description: Time spent idling in milliseconds.
+          example: 921600
+          format: int64
+          type: integer
+        overSpeedDurationMs:
+          description: Time spent over-speeding in milliseconds.
+          example: 403200
+          format: int64
+          type: integer
+        totalBrakeDurationMs:
+          description: Total breaking time in milliseconds.
+          example: 1022400
+          format: int64
+          type: integer
+        totalBrakeEventCount:
+          description: Total number of brake events.
+          example: 85
+          format: int64
+          type: integer
+        wearFreeBrakeDurationMs:
+          description: Time spent ware-free breaking in milliseconds.
+          example: 6340800
+          format: int64
+          type: integer
+      required:
+      - driveTimeDurationMs
+      - engineOnDurationMs
+      - idlingDurationMs
+      - totalBrakeDurationMs
+      type: object
+    Driver:
+      description: A driver object
+      properties:
+        attributes:
+          description: A minified attribute
+          items:
+            $ref: '#/components/schemas/attributeTiny'
+          type: array
+        carrierSettings:
+          $ref: '#/components/schemas/DriverCarrierSettings'
+        createdAtTime:
+          $ref: '#/components/schemas/DriverCreatedAtTime'
+        currentIdCardCode:
+          $ref: '#/components/schemas/DriverIdCardCode'
+        driverActivationStatus:
+          $ref: '#/components/schemas/DriverActivationStatus'
+        eldAdverseWeatherExemptionEnabled:
+          $ref: '#/components/schemas/DriverEldAdverseWeatherExemptionEnabled'
+        eldBigDayExemptionEnabled:
+          $ref: '#/components/schemas/DriverEldBigDayExemptionEnabled'
+        eldDayStartHour:
+          $ref: '#/components/schemas/DriverEldDayStartHour'
+        eldExempt:
+          $ref: '#/components/schemas/DriverEldExempt'
+        eldExemptReason:
+          $ref: '#/components/schemas/DriverEldExemptReason'
+        eldPcEnabled:
+          $ref: '#/components/schemas/DriverEldPcEnabled'
+        eldSettings:
+          $ref: '#/components/schemas/DriverEldSettings'
+        eldYmEnabled:
+          $ref: '#/components/schemas/DriverEldYmEnabled'
+        externalIds:
+          $ref: '#/components/schemas/DriverExternalIds'
+        hasDrivingFeaturesHidden:
+          $ref: '#/components/schemas/DriverHasDrivingFeaturesHidden'
+        id:
+          $ref: '#/components/schemas/DriverId'
+        isDeactivated:
+          $ref: '#/components/schemas/DriverIsDeactivated'
+        licenseNumber:
+          $ref: '#/components/schemas/DriverLicenseNumber'
+        licenseState:
+          $ref: '#/components/schemas/DriverLicenseState'
+        locale:
+          $ref: '#/components/schemas/DriverLocale'
+        name:
+          $ref: '#/components/schemas/DriverName'
+        notes:
+          $ref: '#/components/schemas/DriverNotes'
+        peerGroupTag:
+          $ref: '#/components/schemas/tagTinyResponse'
+        phone:
+          $ref: '#/components/schemas/DriverPhone'
+        staticAssignedVehicle:
+          $ref: '#/components/schemas/DriverStaticAssignedVehicle'
+        tachographCardNumber:
+          $ref: '#/components/schemas/DriverTachographCardNumber'
+        tags:
+          $ref: '#/components/schemas/DriverTags'
+        timezone:
+          $ref: '#/components/schemas/DriverTimezone'
+        updatedAtTime:
+          $ref: '#/components/schemas/DriverUpdatedAtTime'
+        usDriverRulesetOverride:
+          $ref: '#/components/schemas/UsDriverRulesetOverride'
+        username:
+          $ref: '#/components/schemas/DriverUsername'
+        vehicleGroupTag:
+          $ref: '#/components/schemas/DriverVehicleGroupTag'
+        waitingTimeDutyStatusEnabled:
+          $ref: '#/components/schemas/DriverWaitingTimeDutyStatusEnabled'
+      type: object
+    DriverName:
+      description: Driver's name.
+      example: Susan Jones
+      maxLength: 255
+      minLength: 1
+      type: string
+    DriverEfficiencyGetDriverEfficiencyByDriversInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    DriverUsername:
+      description: Driver's login username into the driver app. The username may not contain spaces or the '@' symbol. The username must be unique.
+      example: SusanJones
+      maxLength: 189
+      minLength: 1
+      type: string
+    TachographDriverFileListWrapper:
+      properties:
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+        files:
+          $ref: '#/components/schemas/TachographDriverFileList'
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverResponse:
+      description: A single driver.
+      properties:
+        data:
+          $ref: '#/components/schemas/Driver'
+      type: object
+    DriverTachographActivityResponse:
+      description: List of all driver tachograph activities in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverTachographActivityData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    DriverEldRulesetJurisdiction:
+      description: The jurisdiction of the ELD ruleset applied to this driver. These are specified by either `CS` or `CN` for Canada South and Canada North, respectively, or the ISO 3166-2 postal code for the supported state or territory.
+      example: AR
+      type: string
+    DriverTachographCardNumber:
+      description: Driver's assigned tachograph card number (Europe specific)
+      example: '1000000492436002'
+      type: string
+    DriverEfficiencyGetDriverEfficiencyByDriversNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverTachographActivityData:
+      items:
+        $ref: '#/components/schemas/TachographActivityListWrapper'
+      type: array
+    DriverEfficiencyGetDriverEfficiencyByDriversGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    singleDriverEfficiencyByDriverDataObjectResponseBody:
+      description: singleDriverEfficiencyByDriverDataObject
+      properties:
+        difficultyScore:
+          $ref: '#/components/schemas/DriverEfficiencyDifficultyScoreDataObjectResponseBody'
+        driverId:
+          description: ID of the driver.
+          example: driver_001
+          type: string
+        percentageData:
+          $ref: '#/components/schemas/DriverEfficiencyPercentageDataObjectResponseBody'
+        rawData:
+          $ref: '#/components/schemas/DriverEfficiencyRawDataObjectResponseBody'
+        scoreData:
+          $ref: '#/components/schemas/DriverEfficiencyDataObjectResponseBody'
+      required:
+      - driverId
+      type: object
+    DriverEldBigDayExemptionEnabled:
+      default: false
+      description: Flag indicating this driver may use Big Day exemption in ELD logs.
+      type: boolean
+    HosEldEventsGetHosEldEventsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverHasDrivingFeaturesHidden:
+      description: 'A boolean indicating whether the driver has driving-related features hidden in the Driver App, including Vehicle selection, HOS, Routing, Team Driving, Documents, and Trip Logs. Default value is false if omitted. Note: only available to customers of Connected Forms.'
+      example: true
+      type: boolean
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsObjectResponseBody:
+      properties:
+        driverActivationStatus:
+          description: 'A value indicating whether the driver is active or deactivated.  Valid values: `active`, `deactivated`'
+          enum:
+          - active
+          - deactivated
+          example: active
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver.
+          example: '494123'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Joe Driver
+          type: string
+        vehicleAssignments:
+          description: List of vehicle assignment objects.
+          items:
+            $ref: '#/components/schemas/VehicleAssignmentObjectResponseBody'
+          type: array
+      required:
+      - driverActivationStatus
+      - id
+      - name
+      - vehicleAssignments
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventObjectResponseBody:
+      description: An event that refers to a discrete instance in time with various data elements. Depending on the type of event, not every field will be populated. For more information, see the ELD Mandate [section 3.1.2](https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&ty=HTML&h=L&mc=true&=PART&n=pt49.5.395#ap49.5.395_138.a).
+      properties:
+        accumulatedVehicleMeters:
+          description: The accumulated meters in the given ignition power on cycle.
+          example: 106
+          format: int64
+          type: integer
+        elapsedEngineHours:
+          description: The elapsed time in the engine's operation in the given ignition power on cycle.
+          example: 284.1
+          format: double
+          type: number
+        eldEventCode:
+          description: 'A dependent attribute on `eldEventType` that specifies the nature of the event, as defined in the ELD Mandate [section 7.20](https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&ty=HTML&h=L&mc=true&=PART&n=pt49.5.395#ap49.5.395_138.a).  Valid values: `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`'
+          example: 3
+          maximum: 9
+          minimum: 1
+          type: integer
+        eldEventRecordOrigin:
+          description: 'An attribute for the event record indicating whether it is automatically recorded, or edited, entered or accepted by the driver, requested by another authenticated user, or assumed from unidentified driver profile, as defined in the ELD Mandate [section 7.22](https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&ty=HTML&h=L&mc=true&=PART&n=pt49.5.395#ap49.5.395_138.a).  Valid values: `1`, `2`, `3`, `4`'
+          example: 2
+          maximum: 4
+          minimum: 1
+          type: integer
+        eldEventRecordStatus:
+          description: 'An attribute for the event record indicating whether an event is active or inactive and further, if inactive, whether it is due to a change or lack of confirmation by the driver or due to a driver''s rejection of change request, as defined in the ELD Mandate [section 7.23](https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&ty=HTML&h=L&mc=true&=PART&n=pt49.5.395#ap49.5.395_138.a).  Valid values: `1`, `2`, `3`, `4`'
+          example: 2
+          maximum: 4
+          minimum: 1
+          type: integer
+        eldEventType:
+          description: 'An attribute specifying the type of ELD event, as defined in the ELD Mandate [section 7.25](https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&ty=HTML&h=L&mc=true&=PART&n=pt49.5.395#ap49.5.395_138.a).  Valid values: `1`, `2`, `3`, `4`, `5`, `6`, `7`'
+          example: 6
+          maximum: 7
+          minimum: 1
+          type: integer
+        location:
+          $ref: '#/components/schemas/HosEldEventLocationObjectResponseBody'
+        malfunctionDiagnosticCode:
+          description: 'A code that further specifies the underlying malfunction or data diagnostic event, as defined in the ELD Mandate [section 7.34](https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&ty=HTML&h=L&mc=true&=PART&n=pt49.5.395#ap49.5.395_138.a).  Valid values: `P`, `E`, `T`, `L`, `R`, `S`, `O`, `1`, `2`, `3`, `4`, `5`, `6`'
+          enum:
+          - P
+          - E
+          - T
+          - L
+          - R
+          - S
+          - O
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          example: P
+          type: string
+        remark:
+          $ref: '#/components/schemas/HosEldEventRemarkObjectResponseBody'
+        time:
+          description: 'A time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        totalEngineHours:
+          description: The aggregated time of a vehicle's engine's operation since its inception.
+          example: 2894.1
+          format: double
+          type: number
+        totalVehicleMeters:
+          description: The total meters recorded for the vehicle.
+          example: 1004566
+          format: int64
+          type: integer
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - eldEventCode
+      - eldEventType
+      - time
+      type: object
+    TachographDriverFile:
+      description: Tachograph driver file
+      properties:
+        cardNumber:
+          description: Tachograph card number associated with the file.
+          example: '1000000492436002'
+          type: string
+        createdAtTime:
+          description: Creation time of files in RFC 3339 format. This is either the download time from the tachograph itself (for files downloaded via Samsara VG) or upload time (for files manually uploaded via Samsara UI).
+          example: 2020-01-02T15:04:05Z07:00
+          type: string
+        id:
+          description: ID of the file.
+          example: 4aff772c-a7bb-45e6-8e41-6a53e34feb83
+          type: string
+        url:
+          description: A temporary URL which can be used to download the file. The link can be used multiple times and expires after an hour.
+          example: https://samsara-tachograph-files.s3.us-west-2.amazonaws.com/123/456/789/4aff772c-a7bb-45e6-8e41-6a53e34feb83.ddd
+          type: string
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    TachographActivityList:
+      description: List of all driver tachograph activities in a specified time range.
+      items:
+        $ref: '#/components/schemas/TachographActivity'
+      type: array
+    V1DriverSafetyScoreResponse:
+      description: Safety score details for a driver
+      properties:
+        crashCount:
+          description: Crash event count
+          example: 0
+          type: integer
+        driverId:
+          description: Driver ID
+          example: 1234
+          type: integer
+        harshAccelCount:
+          description: Harsh acceleration event count
+          example: 1
+          type: integer
+        harshBrakingCount:
+          description: Harsh braking event count
+          example: 2
+          type: integer
+        harshEvents:
+          items:
+            $ref: '#/components/schemas/V1SafetyReportHarshEvent'
+          type: array
+        harshTurningCount:
+          description: Harsh turning event count
+          example: 0
+          type: integer
+        safetyScore:
+          description: The drivers Safety Score for the requested period. Note that if the driver has zero drive time in this period, the Safety Score will be returned as 100.
+          example: 97
+          type: integer
+        safetyScoreRank:
+          description: Safety Score Rank
+          example: '26'
+          type: string
+        timeOverSpeedLimitMs:
+          description: Amount of time driven over the speed limit in milliseconds
+          example: 3769
+          type: integer
+        totalDistanceDrivenMeters:
+          description: Total distance driven in meters
+          example: 291836
+          type: integer
+        totalHarshEventCount:
+          description: Total harsh event count
+          example: 3
+          type: integer
+        totalTimeDrivenMs:
+          description: Amount of time driven in milliseconds
+          example: 19708293
+          type: integer
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverPhone:
+      description: Phone number of the driver.
+      example: '5558234327'
+      maxLength: 255
+      type: string
+    DriverEfficiencyPercentageDataObjectResponseBody:
+      description: Driver Efficiency percentage data. This object is returned when the percentage format is specified in dataFormats.
+      properties:
+        anticipationPercentage:
+          description: Percentage of time a driver is in quickly breaking events vs total breaking events.
+          example: 9.5
+          format: double
+          type: number
+        coastingPercentage:
+          description: Percentage of time a driver is in coasting.
+          example: 45.6
+          format: double
+          type: number
+        cruiseControlPercentage:
+          description: Percentage of time a vehicle is in cruise control.
+          example: 45.6
+          format: double
+          type: number
+        greenBandPercentage:
+          description: Percentage of time a driver is driving within the green band.
+          example: 78.9
+          format: double
+          type: number
+        highGradeRoadDrivingPercentage:
+          description: Percentage of time a driver is driving on high-grade road.
+          example: 15.3
+          format: double
+          type: number
+        highTorquePercentage:
+          description: Percentage of time a driver is driving in high torque.
+          example: 23.4
+          format: double
+          type: number
+        idlingPercentage:
+          description: Percentage of time a driver is idling.
+          example: 12.8
+          format: double
+          type: number
+        overSpeedPercentage:
+          description: Percentage of time a driver is in over-speeding.
+          example: 5.6
+          format: double
+          type: number
+        wearFreeBrakePercentage:
+          description: Percentage of time a driver is in wear-free breaking.
+          example: 88.2
+          format: double
+          type: number
+      required:
+      - idlingPercentage
+      type: object
+    HosEldEventsGetHosEldEventsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TachographActivityListWrapper:
+      properties:
+        activity:
+          $ref: '#/components/schemas/TachographActivityList'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+      type: object
+    DriverId:
+      description: Samsara ID for the driver.
+      example: '123'
+      type: string
+    DriverExternalIds:
+      description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+      example:
+        maintenanceId: '250020'
+        payrollId: ABFS18600
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventsGetHosEldEventsResponseBody:
+      properties:
+        data:
+          description: List of drivers and their ELD event objects data.
+          items:
+            $ref: '#/components/schemas/HosDriversEldEventObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      type: object
+    attributeTiny:
+      description: A minified attribute.
+      properties:
+        id:
+          description: The samsara id of the attribute object.
+          example: 123e4567-e89b-12d3-a456-426614174000
+          type: string
+        name:
+          description: Name of attribute.
+          example: License Certifications
+          type: string
+        numberValues:
+          description: Number values that are associated with this attribute.
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that are associated with this attribute.
+          items:
+            type: string
+          type: array
+      type: object
+    DriverEldYmEnabled:
+      default: false
+      description: Flag indicating this driver may select the Yard Move duty status in ELD logs.
+      type: boolean
+    DriverEldSettings:
+      description: The driver's ELD settings.
+      properties:
+        rulesets:
+          $ref: '#/components/schemas/DriverEldRulesets'
+      type: object
+    DriverEldDayStartHour:
+      default: 0
+      description: '`0` indicating midnight-to-midnight ELD driving hours, `12` to indicate noon-to-noon driving hours.'
+      type: integer
+    UpdateDriverRequest:
+      description: Driver that should be updated.
+      properties:
+        attributes:
+          items:
+            $ref: '#/components/schemas/CreateDriverRequest_attributes'
+          type: array
+        carrierSettings:
+          $ref: '#/components/schemas/DriverCarrierSettings'
+        currentIdCardCode:
+          description: The ID Card Code on the back of the physical card assigned to the driver.  Contact Samsara if you would like to enable this feature.
+          example: '941767043'
+          type: string
+        deactivatedAtTime:
+          description: The date and time this driver is considered to be deactivated in RFC 3339 format.
+          example: '2019-05-18T20:27:35Z'
+          type: string
+        driverActivationStatus:
+          description: 'A value indicating whether the driver is active or deactivated. Valid values: `active`, `deactivated`.'
+          enum:
+          - active
+          - deactivated
+          type: string
+        eldAdverseWeatherExemptionEnabled:
+          description: Flag indicating this driver may use Adverse Weather exemptions in ELD logs.
+          type: boolean
+        eldBigDayExemptionEnabled:
+          description: Flag indicating this driver may use Big Day exemption in ELD logs.
+          type: boolean
+        eldDayStartHour:
+          description: '`0` indicating midnight-to-midnight ELD driving hours, `12` to indicate noon-to-noon driving hours.'
+          type: integer
+        eldExempt:
+          description: Flag indicating this driver is exempt from the Electronic Logging Mandate.
+          type: boolean
+        eldExemptReason:
+          description: Reason that this driver is exempt from the Electronic Logging Mandate (see eldExempt).
+          example: Bad driver
+          type: string
+        eldPcEnabled:
+          description: Flag indicating this driver may select the Personal Conveyance duty status in ELD logs.
+          type: boolean
+        eldYmEnabled:
+          description: Flag indicating this driver may select the Yard Move duty status in ELD logs.
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        hasDrivingFeaturesHidden:
+          $ref: '#/components/schemas/DriverHasDrivingFeaturesHidden'
+        hosSetting:
+          $ref: '#/components/schemas/UpdateDriverRequest_hosSetting'
+        licenseNumber:
+          description: Driver's state issued license number. The combination of this number and `licenseState` must be unique.
+          example: E1234567
+          type: string
+        licenseState:
+          description: Abbreviation of US state, Canadian province, or US territory that issued driver's license.
+          example: CA
+          type: string
+        locale:
+          description: 'Locale override (uncommon). These are specified by ISO 3166-2 country codes for supported locales. Valid values: `us`, `at`, `be`, `ca`, `gb`, `fr`, `de`, `ie`, `it`, `lu`, `mx`, `nl`, `es`, `ch`, `pr`.'
+          enum:
+          - us
+          - at
+          - be
+          - ca
+          - gb
+          - fr
+          - de
+          - ie
+          - it
+          - lu
+          - mx
+          - nl
+          - es
+          - ch
+          - pr
+          type: string
+        name:
+          description: Driver's name.
+          example: Susan Jones
+          maxLength: 255
+          minLength: 1
+          type: string
+        notes:
+          description: Notes about the driver.
+          example: Also goes by the nickname Furious Fred.
+          maxLength: 4096
+          type: string
+        password:
+          description: Password that the driver can use to login to the Samsara driver app.
+          example: aSecurePassword1234
+          type: string
+        peerGroupTagId:
+          description: The peer group tag id this driver belong to, leave blank to be in group with everyone, used for gamification.
+          type: string
+        phone:
+          description: Phone number of the driver.
+          example: '5558234327'
+          maxLength: 255
+          type: string
+        staticAssignedVehicleId:
+          description: ID of vehicle that the driver is permanently assigned to. (uncommon).
+          example: '456'
+          type: string
+        tachographCardNumber:
+          description: Driver's assigned tachograph card number (Europe specific)
+          example: '1000000492436002'
+          type: string
+        tagIds:
+          description: IDs of tags the driver is associated with. If your access to the API is scoped by one or more tags, this field is required to pass in.
+          items:
+            example: '147'
+            type: string
+          type: array
+        timezone:
+          description: Home terminal timezone, in order to indicate what time zone should be used to calculate the ELD logs. Driver timezones use [IANA timezone database](https://www.iana.org/time-zones) keys (e.g. `America/Los_Angeles`, `America/New_York`, `Europe/London`, etc.). You can find a mapping of common timezone formats to IANA timezone keys [here](https://unicode.org/cldr/charts/latest/supplemental/zone_tzid.html).
+          example: America/Los_Angeles
+          type: string
+        usDriverRulesetOverride:
+          $ref: '#/components/schemas/UsDriverRulesetOverride'
+        username:
+          description: Driver's login username into the driver app. The username may not contain spaces or the '@' symbol. The username must be unique.
+          example: SusanJones
+          maxLength: 189
+          minLength: 1
+          type: string
+        vehicleGroupTagId:
+          description: Tag ID which determines which vehicles a driver will see when selecting vehicles.
+          example: '342417'
+          type: string
+        waitingTimeDutyStatusEnabled:
+          description: Flag indicating this driver may select waiting time duty status in ELD logs
+          type: boolean
+      type: object
+    DriverEldAdverseWeatherExemptionEnabled:
+      default: false
+      description: Flag indicating this driver may use Adverse Weather exemptions in ELD logs.
+      type: boolean
+    DriverTags:
+      description: The tags this driver belongs to.
+      items:
+        $ref: '#/components/schemas/tagTinyResponse'
+      type: array
+    HosEldEventsGetHosEldEventsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventRemarkObjectResponseBody:
+      properties:
+        comment:
+          description: The content of the remark.
+          example: Pre-Trip Inspection
+          type: string
+        locationDescription:
+          description: The location description entered by the user
+          example: Near San Francisco
+          type: string
+        time:
+          description: The time in RFC 3339 format at which the remark was created.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - comment
+      - locationDescription
+      - time
+      type: object
+    DriverUpdatedAtTime:
+      description: The date and time this driver was last updated in RFC 3339 format.
+      example: '2019-06-13T19:08:25Z'
+      type: string
+    DriverIdCardCode:
+      description: The ID Card Code on the back of the physical card assigned to the driver.  Contact Samsara if you would like to enable this feature.
+      example: '941767043'
+      type: string
+    DriverVehicleGroupTag:
+      description: Tag which determines which vehicles a driver will see when selecting vehicles.
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    DriverCreatedAtTime:
+      description: The date and time this driver was created in RFC 3339 format.
+      example: '2019-05-18T20:27:35Z'
+      type: string
+    UpdateDriverRequest_hosSetting:
+      description: Hos settings for a driver.
+      properties:
+        heavyHaulExemptionToggleEnabled:
+          $ref: '#/components/schemas/DriverHeavyHaulExemptionToggleEnabled'
+      type: object
+    HosEldEventsGetHosEldEventsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverWaitingTimeDutyStatusEnabled:
+      default: false
+      description: Flag indicating this driver may select waiting time duty status in ELD logs.
+      type: boolean
+    DriverEfficiencyGetDriverEfficiencyByDriversNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CreateDriverRequest_attributes:
+      description: A minified attribute.
+      properties:
+        id:
+          description: The samsara id of the attribute object.
+          example: 123e4567-e89b-12d3-a456-426614174000
+          type: string
+        name:
+          description: Name of attribute.
+          example: License Certifications
+          type: string
+        numberValues:
+          description: Number values that are associated with this attribute.
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that are associated with this attribute.
+          items:
+            type: string
+          type: array
+      type: object
+    DriverHeavyHaulExemptionToggleEnabled:
+      default: false
+      description: Flag indicating this driver may use the Heavy Haul exemption in ELD logs.
+      type: boolean
+    DriverLicenseState:
+      description: Abbreviation of US state, Canadian province, or US territory that issued driver's license.
+      example: CA
+      type: string
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverNotes:
+      description: Notes about the driver.
+      example: Also goes by the nickname Furious Fred.
+      maxLength: 4096
+      type: string
+    DriverLocale:
+      description: 'Locale override (uncommon). These are specified by ISO 3166-2 country codes for supported locales. Valid values: `us`, `at`, `be`, `ca`, `gb`, `fr`, `de`, `ie`, `it`, `lu`, `mx`, `nl`, `es`, `ch`, `pr`.'
+      enum:
+      - us
+      - at
+      - be
+      - ca
+      - gb
+      - fr
+      - de
+      - ie
+      - it
+      - lu
+      - mx
+      - nl
+      - es
+      - ch
+      - pr
+      type: string
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEldExemptReason:
+      description: Reason that this driver is exempt from the Electronic Logging Mandate (see eldExempt).
+      example: Bad driver
+      type: string
+    DriverCarrierSettings:
+      description: Carrier for a given driver. If the driver's carrier differs from the general organization's carrier settings, the override value is used. Updating this value only updates the override setting for this driver.
+      properties:
+        carrierName:
+          description: Carrier for a given driver.
+          example: Acme Inc.
+          maxLength: 255
+          type: string
+        dotNumber:
+          description: Carrier US DOT Number. If this differs from the general organization's settings, the override value is used. Updating this value only updates the override setting for this driver.
+          example: 98231
+          format: int64
+          type: integer
+        homeTerminalAddress:
+          $ref: '#/components/schemas/DriverHomeTerminalAddress'
+        homeTerminalName:
+          $ref: '#/components/schemas/DriverHomeTerminalName'
+        mainOfficeAddress:
+          description: 'Main office address for a given driver. If this differs from the general organization''s settings, the override value is used. '
+          example: 1234 Pear St., Scranton, PA 62814
+          maxLength: 255
+          type: string
+      type: object
+    TachographDriverFilesResponse:
+      description: List of all driver tachograph files in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/TachographDriverFileData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    DriverEldRulesetRestBreak:
+      description: 'The rest break required setting of the ELD ruleset applied to this driver. Valid values: `Property (off-duty/sleeper)`, `Explosives/HazMat (on-duty)`'
+      enum:
+      - Property (off-duty/sleeper)
+      - Explosives/HazMat (on-duty)
+      example: Property (off-duty/sleeper)
+      type: string
+    V1SafetyReportHarshEvent:
+      description: List of harsh events
+      properties:
+        harshEventType:
+          description: Sensor generated harsh event type.
+          example: Harsh Braking
+          type: string
+        timestampMs:
+          description: Timestamp that the harsh event occurred in Unix milliseconds since epoch
+          example: 1535590776000
+          type: integer
+        vehicleId:
+          description: Vehicle associated with the harsh event
+          example: 212014918086169
+          type: integer
+      type: object
+    HosEldEventsGetHosEldEventsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TachographDriverFileList:
+      description: List of all tachograph driver files in a specified time range.
+      items:
+        $ref: '#/components/schemas/TachographDriverFile'
+      type: array
+    DriverEldRulesetCycle:
+      description: 'The cycle of the ELD ruleset applied to this driver. Valid values: `USA 60 hour / 7 day`, `USA 70 hour / 8 day`, `AK 80 hour / 8 day`, `AK 70 hour / 7 day`, `CA 80 hour / 8 day`, `CA 112 hour / 8 day`, `FL 80 hour / 8 day`, `FL 70 hour / 7 day`, `NE 80 hour / 8 day`, `NE 70 hour / 7 day`, `NC 80 hour / 8 day`, `NC 70 hour / 7 day`, `OK 70 hour / 8 day`, `OK 60 hour / 7 day`, `OR 80 hour / 8 day`, `OR 70 hour / 7 day`, `SC 80 hour / 8 day`, `SC 70 hour / 7 day`, `TX 70 hour / 7 day`, `WI 80 hour / 8 day`, `WI 70 hour / 7 day`, `Canada South Cycle 1 (70 hour / 7 day)`, `Canada South Cycle 2 (120 hour / 14 day)`, `Canada North Cycle 1 (80 hour / 7 day)`, `Canada North Cycle 2 (120 hour / 14 day)`.'
+      enum:
+      - USA 60 hour / 7 day
+      - USA 70 hour / 8 day
+      - AK 80 hour / 8 day
+      - AK 70 hour / 7 day
+      - CA 80 hour / 8 day
+      - CA 112 hour / 8 day
+      - FL 80 hour / 8 day
+      - FL 70 hour / 7 day
+      - NE 80 hour / 8 day
+      - NE 70 hour / 7 day
+      - NC 80 hour / 8 day
+      - NC 70 hour / 7 day
+      - OK 70 hour / 8 day
+      - OK 60 hour / 7 day
+      - OR 80 hour / 8 day
+      - OR 70 hour / 7 day
+      - SC 80 hour / 8 day
+      - SC 70 hour / 7 day
+      - TX 70 hour / 7 day
+      - WI 80 hour / 8 day
+      - WI 70 hour / 7 day
+      - Canada South Cycle 1 (70 hour / 7 day)
+      - Canada South Cycle 2 (120 hour / 14 day)
+      - Canada North Cycle 1 (80 hour / 7 day)
+      - Canada North Cycle 2 (120 hour / 14 day)
+      example: USA 60 hour / 7 day
+      type: string
+    DriverHomeTerminalName:
+      description: Name of the place of business at which a driver ordinarily reports for work.
+      example: Acme Inc.
+      maxLength: 255
+      type: string
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    DriverEldExempt:
+      default: false
+      description: Flag indicating this driver is exempt from the Electronic Logging Mandate.
+      type: boolean
+    DriverEldRulesets:
+      description: The driver's ELD rulesets and overrides. This is the full set of rulesets that may apply to the driver depending on their activity. If you wish to interface with the specific US driver override, use the usDriverRulesetOverride field.
+      items:
+        $ref: '#/components/schemas/DriverEldRuleset'
+      type: array
+    DriverHosSetting:
+      description: Hos settings for a driver.
+      properties:
+        heavyHaulExemptionToggleEnabled:
+          $ref: '#/components/schemas/DriverHeavyHaulExemptionToggleEnabled'
+      type: object
+    DriverEldRulesetRestart:
+      description: 'The restart of the ELD ruleset applied to this driver. Valid values: `None`, `34-hour Restart`, `24-hour Restart`, `36-hour Restart`, `72-hour Restart`.'
+      enum:
+      - None
+      - 34-hour Restart
+      - 24-hour Restart
+      - 36-hour Restart
+      - 72-hour Restart
+      example: Default
+      type: string
+    DriverEfficiencyDifficultyScoreDataObjectResponseBody:
+      description: Difficulty score won't be available if there is no data to compute it against.
+      properties:
+        overallScore:
+          description: Represents the overall difficulty score. It has scores from 1 to 5.
+          example: '4'
+          type: string
+        topographyScore:
+          description: Represents the topography difficulty score. It has scores from 1 to 5.
+          example: '5'
+          type: string
+        vehicleWeightScore:
+          description: ' Represents the average vehicle weight score. It has scores from 1 to 5.'
+          example: '4'
+          type: string
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDriversEldEventObjectResponseBody:
+      properties:
+        driverActivationStatus:
+          description: 'A value indicating whether the driver is active or deactivated.  Valid values: `active`, `deactivated`'
+          enum:
+          - active
+          - deactivated
+          example: active
+          type: string
+        eldEvents:
+          description: List of ELD event objects.
+          items:
+            $ref: '#/components/schemas/HosEldEventObjectResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver.
+          example: '494123'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Joe Driver
+          type: string
+      required:
+      - driverActivationStatus
+      - eldEvents
+      - id
+      - name
+      type: object
+    HosEldEventsGetHosEldEventsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventsGetHosEldEventsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverTimezone:
+      default: America/Los_Angeles
+      description: Home terminal timezone, in order to indicate what time zone should be used to calculate the ELD logs. Driver timezones use [IANA timezone database](https://www.iana.org/time-zones) keys (e.g. `America/Los_Angeles`, `America/New_York`, `Europe/London`, etc.). You can find a mapping of common timezone formats to IANA timezone keys [here](https://unicode.org/cldr/charts/latest/supplemental/zone_tzid.html).
+      example: America/Los_Angeles
+      type: string
+    DriverLicenseNumber:
+      description: Driver's state issued license number. The combination of this number and `licenseState` must be unique.
+      example: E1234567
+      type: string
+    inline_object_1:
+      properties:
+        duty_status:
+          description: Duty status to set the driver to. The only supported values are 'ON_DUTY' and 'OFF_DUTY'.
+          example: ON_DUTY
+          type: string
+        location:
+          description: Location to associate the duty status change with.
+          example: Loading dock
+          type: string
+        remark:
+          description: Remark to associate the duty status change with.
+          example: Beginning On Duty Shift
+          type: string
+        status_change_at_ms:
+          description: Timestamp that the duty status will begin at specified in milliseconds UNIX time. Defaults to the current time if left blank. This can only be set to up to 8 hours in the past.
+          example: 1580834793568
+          format: int64
+          type: number
+        vehicle_id:
+          description: Vehicle ID to associate the duty status change with.
+          example: 1234
+          format: int64
+          type: number
+      required:
+      - duty_status
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TachographDriverFileData:
+      items:
+        $ref: '#/components/schemas/TachographDriverFileListWrapper'
+      type: array
+    DriverEfficiencyGetDriverEfficiencyByDriversResponseBody:
+      properties:
+        data:
+          description: List of driver efficiency data associated with drivers.
+          items:
+            $ref: '#/components/schemas/singleDriverEfficiencyByDriverDataObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    DriverHomeTerminalAddress:
+      description: Address of the place of business at which a driver ordinarily reports for work.
+      example: 1234 Pear St., Scranton, PA 62814
+      maxLength: 255
+      type: string
+    HosEldEventLocationObjectResponseBody:
+      properties:
+        city:
+          description: The best effort city for the latitude and longitude.
+          example: San Francisco
+          type: string
+        eldLocation:
+          description: Relative location to the city, village, or town with population of 5,000 or greater.
+          example: 3.1 mi WSW San Francisco, CA
+          type: string
+        latitude:
+          description: The latitude of the location.
+          example: 123.456
+          format: double
+          type: number
+        longitude:
+          description: The longitude of the location.
+          example: 37.459
+          format: double
+          type: number
+        state:
+          description: The best effort state for the latitude and longitude.
+          example: CA
+          type: string
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of driver and their vehicle assignments.
+          items:
+            $ref: '#/components/schemas/DriversVehicleAssignmentsObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEldRuleset:
+      description: An ELD ruleset for a driver.
+      properties:
+        break:
+          $ref: '#/components/schemas/DriverEldRulesetRestBreak'
+        cycle:
+          $ref: '#/components/schemas/DriverEldRulesetCycle'
+        jurisdiction:
+          $ref: '#/components/schemas/DriverEldRulesetJurisdiction'
+        restart:
+          $ref: '#/components/schemas/DriverEldRulesetRestart'
+        shift:
+          $ref: '#/components/schemas/DriverEldRulesetShift'
+      type: object
+    DriverActivationStatus:
+      description: 'A value indicating whether the driver is active or deactivated. Valid values: `active`, `deactivated`.'
+      enum:
+      - active
+      - deactivated
+      type: string
+    DriverEldPcEnabled:
+      default: false
+      description: Flag indicating this driver may select the Personal Conveyance duty status in ELD logs.
+      type: boolean
+    VehicleAssignmentObjectResponseBody:
+      properties:
+        assignmentType:
+          description: 'Assignment type of the driver-vehicle assignment, indicating the provenance of the assignment. The only type of assignment supported right now is `driverApp` assignments. This list could change, so it is recommended that clients gracefully handle any types not enumerated in this list.  Valid values: `driverApp`'
+          enum:
+          - driverApp
+          example: driverApp
+          type: string
+        endTime:
+          description: ' An end time in RFC 3339 format. Omitted if not applicable. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Boolean indicating whether the driver is a passenger.
+          example: false
+          type: boolean
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - assignmentType
+      - isPassenger
+      - startTime
+      - vehicle
+      type: object
+    UsDriverRulesetOverride:
+      description: US Driver Ruleset override for a given driver. If the driver is operating under a ruleset different from the organization default, the override is used. Updating this value only updates the override setting for this driver. Explicitly setting this field to `null` will delete driver's ruleset override. If the driver does not have an override ruleset set, the response will not include any usDriverRulesetOverride information.
+      properties:
+        cycle:
+          description: 'The driver''s working cycle. Valid values: `USA Property (8/70)`, `USA Property (7/60)`, `USA Passenger (8/70)`, `USA Passenger (7/60)`, `Alaska Property (8/80)`, `Alaska Property (7/70)`, `Alaska Passenger (8/80)`, `Alaska Passenger (7/70)`, `California School/FLV (8/80)`, `California Farm (8/112)`, `California Property (8/80)`, `California Flammable Liquid (8/80)`, `California Passenger (8/80)`, `California Motion Picture (8/80)`, `Florida (8/80)`, `Florida (7/70)`, `Nebraska (8/80)`, `Nebraska (7/70)`, `North Carolina (8/80)`, `North Carolina (7/70)`, `Oklahoma (8/70)`, `Oklahoma (7/60)`, `Oregon (8/80)`, `Oregon (7/70)`, `South Carolina (8/80)`, `South Carolina (7/70)`, `Texas (7/70)`, `Wisconsin (8/80)`, `Wisconsin (7/70)`'
+          enum:
+          - USA Property (8/70)
+          - USA Property (7/60)
+          - USA Passenger (8/70)
+          - USA Passenger (7/60)
+          - Alaska Property (8/80)
+          - Alaska Property (7/70)
+          - Alaska Passenger (8/80)
+          - Alaska Passenger (7/70)
+          - California School/FLV (8/80)
+          - California Farm (8/112)
+          - California Property (8/80)
+          - California Flammable Liquid (8/80)
+          - California Passenger (8/80)
+          - California Motion Picture (8/80)
+          - Florida (8/80)
+          - Florida (7/70)
+          - Nebraska (8/80)
+          - Nebraska (7/70)
+          - North Carolina (8/80)
+          - North Carolina (7/70)
+          - Oklahoma (8/70)
+          - Oklahoma (7/60)
+          - Oregon (8/80)
+          - Oregon (7/70)
+          - South Carolina (8/80)
+          - South Carolina (7/70)
+          - Texas (7/70)
+          - Wisconsin (8/80)
+          - Wisconsin (7/70)
+          example: TX 70 hour / 7 day
+          type: string
+        restart:
+          description: 'Amount of time necessary for the driver to be resting in order to restart their cycle. Valid values: `34-hour Restart`, `24-hour Restart`, `36-hour Restart`, `72-hour Restart`, `None`.'
+          enum:
+          - 34-hour Restart
+          - 24-hour Restart
+          - 36-hour Restart
+          - 72-hour Restart
+          - None
+          example: 34-hour Restart
+          type: string
+        restbreak:
+          description: 'The restbreak required for this driver. Valid values: `Property (off-duty/sleeper)`, `California Mealbreak (off-duty/sleeper)`, `None`.'
+          enum:
+          - Property (off-duty/sleeper)
+          - California Mealbreak (off-duty/sleeper)
+          - None
+          example: None
+          type: string
+        usStateToOverride:
+          description: 'The jurisdiction of the ruleset applied to this driver. These are specified by either the ISO 3166-2 postal code for the supported US states, or empty string '''' for US Federal Ruleset jurisdiction. Valid values: ``, `AK`, `CA`, `FL`, `NE`, `NC`, `OK`, `OR`, `SC`, `TX`, `WI`.'
+          enum:
+          - ''
+          - AK
+          - CA
+          - FL
+          - NE
+          - NC
+          - OK
+          - OR
+          - SC
+          - TX
+          - WI
+          example: TX
+          type: string
+      required:
+      - cycle
+      - restart
+      - restbreak
+      - usStateToOverride
+      type: object
+    DriverStaticAssignedVehicle:
+      description: Vehicle assigned to the driver for static vehicle assignments. (uncommon).
+      properties:
+        id:
+          description: ID of the vehicle.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
+          type: string
+      type: object
+    DriverEfficiencyDataObjectResponseBody:
+      description: Driver Efficiency score data. This object is returned by default or when the score format is specified in dataFormats.
+      properties:
+        anticipationScore:
+          description: Represents the anticipation score for the driver. The score will be in either number or letter format depending on the organisation config.
+          example: C
+          type: string
+        coastingScore:
+          description: Represents the coasting score for the driver. The score will be in either number or letter format depending on the organisation config.
+          example: C
+          type: string
+        cruiseControlScore:
+          description: Represents the cruise control score for the driver. The score will be in either number or letter format depending on the organisation config.
+          example: B
+          type: string
+        greenBandScore:
+          description: Represents the green band score for the driver. The score will be in either number or letter format depending on the organisation config.
+          example: A
+          type: string
+        highTorqueScore:
+          description: Represents the high torque score for the driver. The score will be in either number or letter format depending on the organisation config.
+          example: A
+          type: string
+        idlingScore:
+          description: Represents the idling score for the driver.The score will be in either number or letter format depending on the organisation config.
+          example: B
+          type: string
+        overSpeedScore:
+          description: Represents the over speed score for the driver. The score will be in either number or letter format depending on the organisation config.
+          example: B
+          type: string
+        overallScore:
+          description: Represents the overall score for the driver. The score will be in either number (0-100) as a string or letter format (A-G) depending on the organisation config.
+          example: A
+          type: string
+        wearFreeBrakeScore:
+          description: Represents the ware-free breaking score for the driver. The score will be in either number or letter format depending on the organisation config.
+          example: A
+          type: string
+      required:
+      - overallScore
+      type: object
+    DriverEldRulesetShift:
+      description: 'The shift of the ELD ruleset applied to this driver. Valid values: `US Interstate Property`, `US Interstate Passenger`, `Texas Intrastate`.'
+      enum:
+      - US Interstate Property
+      - US Interstate Passenger
+      - Texas Intrastate
+      example: US Interstate Property
+      type: string
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CreateDriverRequest:
+      description: Driver that should be created.
+      properties:
+        attributes:
+          items:
+            $ref: '#/components/schemas/CreateDriverRequest_attributes'
+          type: array
+        carrierSettings:
+          $ref: '#/components/schemas/DriverCarrierSettings'
+        currentIdCardCode:
+          description: The ID Card Code on the back of the physical card assigned to the driver.  Contact Samsara if you would like to enable this feature.
+          example: '941767043'
+          type: string
+        eldAdverseWeatherExemptionEnabled:
+          description: Flag indicating this driver may use Adverse Weather exemptions in ELD logs.
+          type: boolean
+        eldBigDayExemptionEnabled:
+          description: Flag indicating this driver may use Big Day exemption in ELD logs.
+          type: boolean
+        eldDayStartHour:
+          description: '`0` indicating midnight-to-midnight ELD driving hours, `12` to indicate noon-to-noon driving hours.'
+          type: integer
+        eldExempt:
+          description: Flag indicating this driver is exempt from the Electronic Logging Mandate.
+          type: boolean
+        eldExemptReason:
+          description: Reason that this driver is exempt from the Electronic Logging Mandate (see eldExempt).
+          example: Bad driver
+          type: string
+        eldPcEnabled:
+          description: Flag indicating this driver may select the Personal Conveyance duty status in ELD logs.
+          type: boolean
+        eldYmEnabled:
+          description: Flag indicating this driver may select the Yard Move duty status in ELD logs.
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        hasDrivingFeaturesHidden:
+          $ref: '#/components/schemas/DriverHasDrivingFeaturesHidden'
+        hosSetting:
+          $ref: '#/components/schemas/DriverHosSetting'
+        licenseNumber:
+          description: Driver's state issued license number. The combination of this number and `licenseState` must be unique.
+          example: E1234567
+          type: string
+        licenseState:
+          description: Abbreviation of US state, Canadian province, or US territory that issued driver's license.
+          example: CA
+          type: string
+        locale:
+          description: 'Locale override (uncommon). These are specified by ISO 3166-2 country codes for supported locales. Valid values: `us`, `at`, `be`, `ca`, `gb`, `fr`, `de`, `ie`, `it`, `lu`, `mx`, `nl`, `es`, `ch`, `pr`.'
+          enum:
+          - us
+          - at
+          - be
+          - ca
+          - gb
+          - fr
+          - de
+          - ie
+          - it
+          - lu
+          - mx
+          - nl
+          - es
+          - ch
+          - pr
+          type: string
+        name:
+          description: Driver's name.
+          example: Susan Jones
+          maxLength: 255
+          minLength: 1
+          type: string
+        notes:
+          description: Notes about the driver.
+          example: Also goes by the nickname Furious Fred.
+          maxLength: 4096
+          type: string
+        password:
+          description: Password that the driver can use to login to the Samsara driver app.
+          example: aSecurePassword1234
+          type: string
+        peerGroupTagId:
+          description: The peer group tag id this driver belong to, used for gamification.
+          type: string
+        phone:
+          description: Phone number of the driver.
+          example: '5558234327'
+          maxLength: 255
+          type: string
+        staticAssignedVehicleId:
+          description: ID of vehicle that the driver is permanently assigned to. (uncommon).
+          example: '456'
+          type: string
+        tachographCardNumber:
+          description: Driver's assigned tachograph card number (Europe specific)
+          example: '1000000492436002'
+          type: string
+        tagIds:
+          description: IDs of tags the driver is associated with. If your access to the API is scoped by one or more tags, this field is required to pass in.
+          items:
+            example: '147'
+            type: string
+          type: array
+        timezone:
+          description: Home terminal timezone, in order to indicate what time zone should be used to calculate the ELD logs. Driver timezones use [IANA timezone database](https://www.iana.org/time-zones) keys (e.g. `America/Los_Angeles`, `America/New_York`, `Europe/London`, etc.). You can find a mapping of common timezone formats to IANA timezone keys [here](https://unicode.org/cldr/charts/latest/supplemental/zone_tzid.html).
+          example: America/Los_Angeles
+          type: string
+        usDriverRulesetOverride:
+          $ref: '#/components/schemas/UsDriverRulesetOverride'
+        username:
+          description: Driver's login username into the driver app. The username may not contain spaces or the '@' symbol. The username must be unique.
+          example: SusanJones
+          maxLength: 189
+          minLength: 1
+          type: string
+        vehicleGroupTagId:
+          description: Tag ID which determines which vehicles a driver will see when selecting vehicles.
+          example: '342417'
+          type: string
+        waitingTimeDutyStatusEnabled:
+          description: Flag indicating this driver may select waiting time duty status in ELD logs
+          type: boolean
+      required:
+      - name
+      - password
+      - username
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventsGetHosEldEventsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TachographActivity:
+      description: Tachograph activity
+      properties:
+        endTime:
+          description: End time of state in RFC 3339 format.
+          example: 2020-01-03T16:04:05Z07:00
+          type: string
+        isManualEntry:
+          description: A flag indicating whether the activity was manually entered by the driver. If this is `true`, the state cannot be "UNKNOWN"
+          example: false
+          type: boolean
+        startTime:
+          description: Start time of state in RFC 3339 format.
+          example: 2020-01-02T15:04:05Z07:00
+          type: string
+        state:
+          description: 'Tachograph activity state. Valid values: `BREAK/REST`, `WORK`, `AVAILABILITY`, `DRIVING`, `UNKNOWN`.'
+          enum:
+          - BREAK/REST
+          - WORK
+          - AVAILABILITY
+          - DRIVING
+          - UNKNOWN
+          type: string
+      type: object
+  requestBodies:
+    inline_object_1:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      required: false
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

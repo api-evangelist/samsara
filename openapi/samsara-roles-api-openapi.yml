@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Roles API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Roles
+paths:
+  /user-roles:
+    get:
+      description: "Returns a list of all user roles in an organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Users** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listUserRoles
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserRolesResponse'
+          description: List all user roles.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All User Roles
+      tags:
+      - Roles
+components:
+  schemas:
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    UserRole:
+      description: A user role object.
+      properties:
+        id:
+          description: The unique ID for the role.
+          example: 8a9371af-82d1-4158-bf91-4ecc8d3a114c
+          type: string
+        name:
+          description: The name of the role.
+          example: Full Admin
+          type: string
+      type: object
+    ListUserRolesResponse:
+      description: A list of user roles.
+      properties:
+        data:
+          description: A list of user roles
+          items:
+            $ref: '#/components/schemas/UserRole'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

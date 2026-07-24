@@ -1,0 +1,1048 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Equipment API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Equipment
+paths:
+  /fleet/equipment:
+    get:
+      description: "Returns a list of all equipment in an organization. Equipment objects represent powered assets connected to a [Samsara AG26](https://www.samsara.com/products/models/ag26) via an APWR, CAT, or J1939 cable. They are automatically created with a unique Samsara Equipment ID whenever an AG26 is activated in your organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listEquipment
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentListResponse'
+          description: List of all equipment objects, and pagination information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Equipment
+      tags:
+      - Equipment
+  /fleet/equipment/locations:
+    get:
+      description: "Returns last known locations for all equipment. This can be optionally filtered by tags or specific equipment IDs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getEquipmentLocations
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of equipment IDs. Example: `equipmentIds=1234,5678`'
+        explode: false
+        in: query
+        name: equipmentIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentLocationsResponse'
+          description: The most recent equipment locations and pagination information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Most Recent Locations for All Equipment
+      tags:
+      - Equipment
+  /fleet/equipment/locations/feed:
+    get:
+      description: "Follow a continuous feed of all equipment locations from Samsara AG26s.\n\nYour first call to this endpoint will provide you with the most recent location for each unit of equipment and a `pagination` object that contains an `endCursor`.\n\nYou can provide the `endCursor` to subsequent calls via the `after` parameter. The response will contain any equipment location updates since that `endCursor`.\n\nIf `hasNextPage` is `false`, no updates are readily available yet. We'd suggest waiting a minimum of 5 seconds before requesting updates. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getEquipmentLocationsFeed
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of equipment IDs. Example: `equipmentIds=1234,5678`'
+        explode: false
+        in: query
+        name: equipmentIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentLocationsListResponse'
+          description: The feed of equipment locations and pagination information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Follow Feed of Equipment Locations
+      tags:
+      - Equipment
+  /fleet/equipment/locations/history:
+    get:
+      description: "Returns historical equipment locations during the given time range. This can be optionally filtered by tags or specific equipment IDs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getEquipmentLocationsHistory
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of equipment IDs. Example: `equipmentIds=1234,5678`'
+        explode: false
+        in: query
+        name: equipmentIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentLocationsListResponse'
+          description: Historical equipment locations and pagination information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Historical Equipment Locations
+      tags:
+      - Equipment
+  /fleet/equipment/stats:
+    get:
+      description: "Returns the last known stats for all equipment. This can be optionally filtered by tags or specific equipment IDs. \n\n <b>Rate limit:</b> 150 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getEquipmentStats
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of equipment IDs. Example: `equipmentIds=1234,5678`'
+        explode: false
+        in: query
+        name: equipmentIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: "The types of equipment stats you want to query. Currently, you may submit up to 3 types.\r\n\r\n- `engineRpm`: The revolutions per minute of the engine.\r\n- `fuelPercents`: The percent of fuel in the unit of equipment.\r\n- `obdEngineSeconds`: The number of seconds the engine has been running since it was new. This value is provided directly from on-board diagnostics.\r\n- `gatewayEngineSeconds`: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the asset gateway has been receiving power with an offset provided manually through the Samsara cloud dashboard. This is supported with the following hardware configurations: \r\n  - AG24/AG26/AG46P + APWR cable ([Auxiliary engine configuration](https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs#UUID-d514abff-d10a-efaf-35d9-e10fa6c4888d) required) \r\n  - AG52 + BPWR/BEQP cable ([Auxiliary engine configuration](https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs#UUID-d514abff-d10a-efaf-35d9-e10fa6c4888d) required). \r\n- `gatewayJ1939EngineSeconds`: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power via J1939/CAT cable and an offset provided manually through the Samsara cloud dashboard.\r\n- `obdEngineStates`: The state of the engine read from on-board diagnostics. Can be `Off`, `On`, or `Idle`.\r\n- `gatewayEngineStates`: An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Can be `Off` or `On`.\r\n- `gpsOdometerMeters`: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard. Valid values: `Off`, `On`.\r\n- `gps`: GPS data including lat/long, heading, speed, address book entry (if exists), and a reverse geocoded address."
+        explode: false
+        in: query
+        name: types
+        required: true
+        schema:
+          items:
+            enum:
+            - gatewayEngineStates
+            - obdEngineStates
+            - fuelPercents
+            - engineRpm
+            - gatewayEngineSeconds
+            - obdEngineSeconds
+            - gatewayJ1939EngineSeconds
+            - gpsOdometerMeters
+            - gps
+            format: string
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentStatsResponse'
+          description: The most recent equipment stats and pagination information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Most Recent Stats for All Equipment
+      tags:
+      - Equipment
+  /fleet/equipment/stats/feed:
+    get:
+      description: "Follow a continuous feed of all equipment stats from Samsara AG26s.\n\nYour first call to this endpoint will provide you with the most recent stats for each unit of equipment and a `pagination` object that contains an `endCursor`.\n\nYou can provide the `endCursor` to subsequent calls via the `after` parameter. The response will contain any equipment stats updates since that `endCursor`.\n\nIf `hasNextPage` is `false`, no updates are readily available yet. Each stat type has a different refresh rate, but in general we'd suggest waiting a minimum of 5 seconds before requesting updates. \n\n <b>Rate limit:</b> 150 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getEquipmentStatsFeed
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of equipment IDs. Example: `equipmentIds=1234,5678`'
+        explode: false
+        in: query
+        name: equipmentIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: "The types of equipment stats you want to query. Currently, you may submit up to 3 types.\r\n\r\n- `engineRpm`: The revolutions per minute of the engine.\r\n- `fuelPercents`: The percent of fuel in the unit of equipment.\r\n- `obdEngineSeconds`: The number of seconds the engine has been running since it was new. This value is provided directly from on-board diagnostics.\r\n- `gatewayEngineSeconds`: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the asset gateway has been receiving power with an offset provided manually through the Samsara cloud dashboard. This is supported with the following hardware configurations: \r\n  - AG24/AG26/AG46P + APWR cable ([Auxiliary engine configuration](https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs#UUID-d514abff-d10a-efaf-35d9-e10fa6c4888d) required) \r\n  - AG52 + BPWR/BEQP cable ([Auxiliary engine configuration](https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs#UUID-d514abff-d10a-efaf-35d9-e10fa6c4888d) required). \r\n- `gatewayJ1939EngineSeconds`: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power via J1939/CAT cable and an offset provided manually through the Samsara cloud dashboard.\r\n- `obdEngineStates`: The state of the engine read from on-board diagnostics. Can be `Off`, `On`, or `Idle`.\r\n- `gatewayEngineStates`: An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Can be `Off` or `On`.\r\n- `gpsOdometerMeters`: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard. Valid values: `Off`, `On`.\r\n- `gps`: GPS data including lat/long, heading, speed, address book entry (if exists), and a reverse geocoded address."
+        explode: false
+        in: query
+        name: types
+        required: true
+        schema:
+          items:
+            enum:
+            - gatewayEngineStates
+            - obdEngineStates
+            - fuelPercents
+            - engineRpm
+            - gatewayEngineSeconds
+            - obdEngineSeconds
+            - gatewayJ1939EngineSeconds
+            - gpsOdometerMeters
+            - gps
+            format: string
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentStatsListResponse'
+          description: The feed of equipment stats and pagination information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Follow a Feed of Equipment Stats
+      tags:
+      - Equipment
+  /fleet/equipment/stats/history:
+    get:
+      description: "Returns historical equipment status during the given time range. This can be optionally filtered by tags or specific equipment IDs. \n\n <b>Rate limit:</b> 150 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getEquipmentStatsHistory
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of equipment IDs. Example: `equipmentIds=1234,5678`'
+        explode: false
+        in: query
+        name: equipmentIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: "The types of equipment stats you want to query. Currently, you may submit up to 3 types.\r\n\r\n- `engineRpm`: The revolutions per minute of the engine.\r\n- `fuelPercents`: The percent of fuel in the unit of equipment.\r\n- `obdEngineSeconds`: The number of seconds the engine has been running since it was new. This value is provided directly from on-board diagnostics.\r\n- `gatewayEngineSeconds`: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the asset gateway has been receiving power with an offset provided manually through the Samsara cloud dashboard. This is supported with the following hardware configurations: \r\n  - AG24/AG26/AG46P + APWR cable ([Auxiliary engine configuration](https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs#UUID-d514abff-d10a-efaf-35d9-e10fa6c4888d) required) \r\n  - AG52 + BPWR/BEQP cable ([Auxiliary engine configuration](https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs#UUID-d514abff-d10a-efaf-35d9-e10fa6c4888d) required). \r\n- `gatewayJ1939EngineSeconds`: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power via J1939/CAT cable and an offset provided manually through the Samsara cloud dashboard.\r\n- `obdEngineStates`: The state of the engine read from on-board diagnostics. Can be `Off`, `On`, or `Idle`.\r\n- `gatewayEngineStates`: An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Can be `Off` or `On`.\r\n- `gpsOdometerMeters`: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard. Valid values: `Off`, `On`.\r\n- `gps`: GPS data including lat/long, heading, speed, address book entry (if exists), and a reverse geocoded address."
+        explode: false
+        in: query
+        name: types
+        required: true
+        schema:
+          items:
+            enum:
+            - gatewayEngineStates
+            - obdEngineStates
+            - fuelPercents
+            - engineRpm
+            - gatewayEngineSeconds
+            - obdEngineSeconds
+            - gatewayJ1939EngineSeconds
+            - gpsOdometerMeters
+            - gps
+            format: string
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentStatsListResponse'
+          description: Historical equipment stats and pagination information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Historical Equipment Stats
+      tags:
+      - Equipment
+  /fleet/equipment/{id}:
+    get:
+      description: "Retrieves the unit of equipment with the given Samsara ID. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getEquipment
+      parameters:
+      - description: Samsara ID of the Equipment.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentResponse'
+          description: The specified equipment object
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve a Unit of Equipment
+      tags:
+      - Equipment
+components:
+  schemas:
+    EquipmentLocationsResponse_data:
+      description: A unit of equipment and its most recent location.
+      properties:
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        location:
+          $ref: '#/components/schemas/EquipmentLocation'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+      required:
+      - id
+      - location
+      - name
+      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    EquipmentLocationsListResponse:
+      description: A time-series of equipment locations and pagination information
+      properties:
+        data:
+          description: Time-series of locations for the specified units of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocationsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentObdEngineState:
+      description: Engine state reading from on-board diagnostics.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'The state of the engine read from on-board diagnostics. Valid values: `Off`, `On`, `Idle`.'
+          enum:
+          - 'Off'
+          - 'On'
+          - Idle
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    Equipment:
+      description: An equipment object.
+      properties:
+        assetSerial:
+          description: An equipment identification number.
+          example: 1FUJA6BD31LJ09646
+          type: string
+        externalIds:
+          $ref: '#/components/schemas/carrierProposedAssignmentDriverAllOf2ExternalIds'
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        installedGateway:
+          $ref: '#/components/schemas/Equipment_installedGateway'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+        notes:
+          description: Notes about a piece of equipment. Samsara supports a maximum of 255 chars.
+          example: These are notes about this given equipment.
+          maxLength: 255
+          type: string
+        tags:
+          description: An array of all tag mini-objects that are associated with the given equipment.
+          items:
+            $ref: '#/components/schemas/tagTinyResponse'
+          type: array
+      required:
+      - id
+      type: object
+    AssetLocationHeading:
+      description: Heading of the asset in degrees.
+      example: 120
+      format: double
+      type: number
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    EquipmentEngineState:
+      description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
+          enum:
+          - 'Off'
+          - 'On'
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    EquipmentGatewayJ1939EngineSeconds:
+      description: Engine seconds reading from the J1939/CAT cable.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentStatsGps:
+      description: GPS location of equipment.
+      properties:
+        address:
+          $ref: '#/components/schemas/addressTinyResponse'
+        headingDegrees:
+          $ref: '#/components/schemas/AssetLocationHeading'
+        latitude:
+          description: GPS latitude represented in degrees
+          example: 122.142
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees
+          example: -93.343
+          format: double
+          type: number
+        reverseGeo:
+          $ref: '#/components/schemas/reverseGeo'
+        speedMilesPerHour:
+          $ref: '#/components/schemas/AssetLocationSpeed'
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - latitude
+      - longitude
+      - time
+      type: object
+    EquipmentEngineSeconds:
+      description: '[DEPRECATED] Please use either `gatewayEngineSeconds` or `obdEngineSeconds`.'
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentLocationsListResponse_data:
+      description: A unit of equipment and its time-series of location events.
+      properties:
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        locations:
+          description: A time-series of location events for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocation'
+          type: array
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+      required:
+      - id
+      - locations
+      - name
+      type: object
+    EquipmentLocation:
+      description: Location reading.
+      properties:
+        heading:
+          description: Heading of the unit of equipment in degrees.
+          example: 120
+          format: double
+          type: number
+        latitude:
+          description: GPS latitude represented in degrees
+          example: 122.142
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees
+          example: -93.343
+          format: double
+          type: number
+        speed:
+          description: GPS speed of the unit of equipment in miles per hour.
+          example: 48.3
+          format: double
+          type: number
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - latitude
+      - longitude
+      - time
+      type: object
+    Equipment_installedGateway:
+      properties:
+        model:
+          description: The model of the installed Samsara gateway.
+          example: Ag26
+          type: string
+        serial:
+          description: The serial of the installed Samsara gateway.
+          type: string
+      type: object
+    EquipmentGpsOdometerMeters:
+      description: GPS odometer reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard.
+          example: 3200
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentListResponse:
+      description: List of all equipment objects, and pagination information.
+      properties:
+        data:
+          description: List of equipment objects.
+          items:
+            $ref: '#/components/schemas/Equipment'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentTime:
+      description: UTC timestamp of the time the data point was generated by the equipment, in RFC3339 format.
+      example: '2019-05-03T04:30:31Z'
+      type: string
+    EquipmentStatsResponse:
+      description: The most recent equipment stats and pagination information
+      properties:
+        data:
+          description: List of the most recent stats for the specified units of equipment and stat types.
+          items:
+            $ref: '#/components/schemas/EquipmentStatsResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    carrierProposedAssignmentDriverAllOf2ExternalIds:
+      additionalProperties:
+        type: string
+      description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+      example:
+        maintenanceId: '250020'
+        payrollId: ABFS18600
+      type: object
+      x-go-gen-location: models
+    reverseGeo:
+      description: Reverse geocoded information.
+      properties:
+        formattedLocation:
+          description: Formatted address of the reverse geocoding data.
+          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
+          type: string
+      type: object
+    EquipmentLocationsResponse:
+      description: The most recent equipment locations and pagination information
+      properties:
+        data:
+          description: List of the most recent locations for the specified units of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocationsResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentGatewayEngineSeconds:
+      description: Engine seconds reading from the aux/digio cable.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    addressTinyResponse:
+      description: Address book entry, if one exists
+      properties:
+        id:
+          description: Address book identifier
+          example: '123'
+          type: string
+        name:
+          description: Name of this address book entry
+          example: Main Distribution Warehouse
+          type: string
+      type: object
+    EquipmentId:
+      description: Unique Samsara ID for the equipment.
+      example: '112'
+      type: string
+    EquipmentName:
+      description: Name of the equipment.
+      example: Crane A7
+      type: string
+    EquipmentStatsResponse_data:
+      description: A unit of equipment and its most recent stat.
+      properties:
+        engineRpm:
+          $ref: '#/components/schemas/EquipmentEngineRpm'
+        engineSeconds:
+          $ref: '#/components/schemas/EquipmentEngineSeconds'
+        engineState:
+          $ref: '#/components/schemas/EquipmentEngineState'
+        fuelPercent:
+          $ref: '#/components/schemas/EquipmentFuelPercent'
+        gatewayEngineSeconds:
+          $ref: '#/components/schemas/EquipmentGatewayEngineSeconds'
+        gatewayEngineState:
+          $ref: '#/components/schemas/EquipmentGatewayEngineState'
+        gps:
+          $ref: '#/components/schemas/EquipmentStatsGps'
+        gpsOdometerMeters:
+          $ref: '#/components/schemas/EquipmentGpsOdometerMeters'
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+        obdEngineSeconds:
+          $ref: '#/components/schemas/EquipmentObdEngineSeconds'
+        obdEngineState:
+          $ref: '#/components/schemas/EquipmentObdEngineState'
+      required:
+      - id
+      - name
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    EquipmentStatsListResponse:
+      description: A time-series of equipment stats and pagination information
+      properties:
+        data:
+          description: Time-series of stats for the specified units of equipment and stat types.
+          items:
+            $ref: '#/components/schemas/EquipmentStatsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentFuelPercent:
+      description: Fuel percent reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: The percent of fuel in the unit of equipment.
+          example: 54
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentStatsListResponse_data:
+      description: A unit of equipment and its time-series of stats events.
+      properties:
+        engineRpm:
+          description: A time-series of engine RPM readings for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentEngineRpm'
+          type: array
+        engineSeconds:
+          description: '[DEPRECATED] Please use either `gatewayEngineSeconds`, `obdEngineSeconds`, or `gatewayJ1939EngineSeconds`.'
+          items:
+            $ref: '#/components/schemas/EquipmentEngineSeconds'
+          type: array
+        engineStates:
+          description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
+          items:
+            $ref: '#/components/schemas/EquipmentEngineState'
+          type: array
+        fuelPercents:
+          description: A time-series of fuel percent level changes for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentFuelPercent'
+          type: array
+        gatewayEngineSeconds:
+          description: A time-series of engine seconds readings for the given unit of equipment as an approximate based on readings from the AG26's aux/digio cable.
+          items:
+            $ref: '#/components/schemas/EquipmentGatewayEngineSeconds'
+          type: array
+        gatewayEngineStates:
+          description: A time-series of engine state changes (as read from the AG26's aux/digio cable) for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentGatewayEngineState'
+          type: array
+        gatewayJ1939EngineSeconds:
+          description: A time-series of engine seconds readings for the given unit of equipment as an approximate based on readings from the AG26's CAT/J1939 cable.
+          items:
+            $ref: '#/components/schemas/EquipmentGatewayJ1939EngineSeconds'
+          type: array
+        gps:
+          description: A time-series of GPS locations.
+          items:
+            $ref: '#/components/schemas/EquipmentStatsGps'
+          type: array
+        gpsOdometerMeters:
+          description: A time-series of GPS odometer readings for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentGpsOdometerMeters'
+          type: array
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+        obdEngineSeconds:
+          description: A time-series of engine seconds readings for the given unit of equipment directly from on-board diagnostics.
+          items:
+            $ref: '#/components/schemas/EquipmentObdEngineSeconds'
+          type: array
+        obdEngineStates:
+          description: A time-series of engine state changes (as read from on-board diagnostics) for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentObdEngineState'
+          type: array
+      required:
+      - id
+      - name
+      type: object
+    EquipmentEngineRpm:
+      description: Engine RPM reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: The revolutions per minute of the engine.
+          example: 1800
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentGatewayEngineState:
+      description: Engine state reading from the aux/digio cable.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
+          enum:
+          - 'Off'
+          - 'On'
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    AssetLocationSpeed:
+      description: GPS speed of the asset in miles per hour.
+      example: 48.3
+      format: double
+      type: number
+    EquipmentResponse:
+      description: A response containing an equipment object.
+      properties:
+        data:
+          $ref: '#/components/schemas/Equipment'
+      required:
+      - data
+      type: object
+    EquipmentObdEngineSeconds:
+      description: Engine seconds reading from on-board diagnostics.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: The number of seconds the engine has been running since it was new. This value is provided directly from on-board diagnostics.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,131 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Cargo API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Cargo
+paths:
+  /v1/sensors/cargo:
+    post:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet cargo monitor status (empty / full) for requested sensors. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Sensors** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getSensorsCargo
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_4'
+        content:
+          application/json:
+            schema:
+              properties:
+                sensors:
+                  description: List of sensor IDs to query.
+                  example:
+                  - 122
+                  items:
+                    format: int64
+                    type: integer
+                  type: array
+              required:
+              - sensors
+              type: object
+        description: List of sensor IDs to query.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1CargoResponse'
+          description: List of sensor objects containing the current cargo status reported by each sensor.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Get Cargo Status
+      tags:
+      - Cargo
+      x-codegen-request-body-name: V1sensorParam
+components:
+  schemas:
+    inline_object_4:
+      properties:
+        sensors:
+          description: List of sensor IDs to query.
+          example:
+          - 122
+          items:
+            format: int64
+            type: integer
+          type: array
+      required:
+      - sensors
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1CargoResponse:
+      description: Contains the current cargo status of a sensor.
+      properties:
+        groupId:
+          description: Deprecated.
+          example: 101
+          format: int64
+          type: integer
+        sensors:
+          items:
+            $ref: '#/components/schemas/V1CargoResponse_sensors'
+          type: array
+      type: object
+    V1CargoResponse_sensors:
+      properties:
+        cargoEmpty:
+          description: Flag indicating whether the current cargo is empty or loaded.
+          example: true
+          type: boolean
+        cargoStatusTime:
+          description: The timestamp of reported cargo status, specified in RFC 3339 time.
+          example: '2019-04-17T16:42:55Z'
+          type: string
+        id:
+          description: ID of the sensor.
+          example: 122
+          format: int64
+          type: integer
+        name:
+          description: Name of the sensor.
+          example: Trailer Cargo V1Sensor
+          type: string
+        redEyeDistance:
+          description: The distance between red eye detector and the closest object in cm.
+          example: 175
+          type: integer
+        trailerId:
+          description: ID of the trailer associated with the sensor for the data point. If no trailer is connected, this parameter will not be reported.
+          example: 123
+          type: integer
+        vehicleId:
+          description: ID of the vehicle associated with the sensor for the data point. If no vehicle is connected, this parameter will not be reported.
+          example: 124
+          type: integer
+      type: object
+  requestBodies:
+    inline_object_4:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      required: true
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

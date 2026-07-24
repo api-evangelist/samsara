@@ -1,0 +1,349 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Purchase API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Purchase
+paths:
+  /fuel-purchase:
+    post:
+      description: "Create a fuel purchase transaction.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Fuel Purchase** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postFuelPurchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelPurchasePostFuelPurchaseBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Create a Fuel Purchase Transaction.
+      tags:
+      - Purchase
+      x-codegen-request-body-name: PostFuelPurchaseRequestBody
+components:
+  schemas:
+    PostFuelPurchaseRequestBodyPriceRequestBody:
+      description: The price of the fuel transaction in the currency of the country where the transaction occurred.
+      properties:
+        amount:
+          description: The money amount.
+          example: '640.2'
+          type: string
+        currency:
+          description: 'The currency of money. This is a 3-letter ISO 4217 currency code.  Valid values: `usd`, `gbp`, `cad`, `eur`, `chf`, `mxn`'
+          enum:
+          - usd
+          - gbp
+          - cad
+          - eur
+          - chf
+          - mxn
+          example: usd
+          type: string
+      required:
+      - amount
+      - currency
+      type: object
+    FuelPurchasePostFuelPurchaseBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostFuelPurchaseResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    FuelPurchasePostFuelPurchaseNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseRequestBody:
+      description: Request payload for creating a new fuel purchase transaction.
+      properties:
+        fuelQuantityLiters:
+          description: The amount of fuel purchased in liters.
+          example: '676.8'
+          type: string
+        iftaFuelType:
+          description: 'The type of fuel purchased supported by IFTA.  Valid values: `Unspecified`, `A55`, `Biodiesel`, `CompressedNaturalGas`, `Diesel`, `E85`, `Electricity`, `Ethanol`, `Gasohol`, `Gasoline`, `Hydrogen`, `LiquifiedNaturalGas`, `M85`, `Methanol`, `Propane`, `Other`'
+          enum:
+          - Unspecified
+          - A55
+          - Biodiesel
+          - CompressedNaturalGas
+          - Diesel
+          - E85
+          - Electricity
+          - Ethanol
+          - Gasohol
+          - Gasoline
+          - Hydrogen
+          - LiquifiedNaturalGas
+          - M85
+          - Methanol
+          - Propane
+          - Other
+          example: Biodiesel
+          type: string
+        transactionLocation:
+          description: 'The full street address for the location of the fuel transaction, as it might be recognized by Google Maps. Ideal entries should be in accordance with the format used by the national postal service of the country concerned (example: 1 De Haro St, San Francisco, CA 94107, United States). Alternatively, exact latitude/longitude can be provided (example: 40.748441, -73.985664).'
+          example: 350 Rhode Island St, San Francisco, CA 94103
+          type: string
+        transactionPrice:
+          $ref: '#/components/schemas/PostFuelPurchaseRequestBodyPriceRequestBody'
+        transactionReference:
+          description: The fuel transaction reference. This is the transaction identifier. For instance, this can be the Serial Number on the invoice.
+          example: '5454534'
+          maxLength: 32
+          minLength: 1
+          pattern: ^[a-zA-Z0-9\-]+$
+          type: string
+        transactionTime:
+          description: The time of the fuel transaction in RFC 3339 format. Timezone must be specified. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time.
+          example: '2022-07-13T14:20:50.52-07:00'
+          type: string
+        vehicleId:
+          description: Samsara ID of the vehicle that purchased the fuel.
+          example: '281474900488527'
+          type: string
+      required:
+      - fuelQuantityLiters
+      - transactionLocation
+      - transactionPrice
+      - transactionReference
+      - transactionTime
+      type: object
+    FuelPurchasePostFuelPurchaseServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostFuelPurchaseResponseBodyResponseBody:
+      description: Response after successfully adding a Fuel Purchase transaction
+      properties:
+        uuid:
+          description: Universally unique identifier for the fuel purchase.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+      required:
+      - uuid
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

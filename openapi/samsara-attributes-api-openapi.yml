@@ -1,0 +1,477 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Attributes API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Attributes
+paths:
+  /attributes:
+    get:
+      description: "Fetch all attributes in an organization associated with either drivers or assets. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Attributes** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getAttributesByEntityType
+      parameters:
+      - description: Denotes the type of entity, driver or asset.
+        in: query
+        name: entityType
+        required: true
+        schema:
+          enum:
+          - driver
+          - asset
+          type: string
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAttributesByEntityTypeResponse'
+          description: All attributes in an organization for an entity type
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Attributes by Entity Type
+      tags:
+      - Attributes
+    post:
+      description: "Creates a new attribute in the organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Attributes** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createAttribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAttributeRequest'
+        description: The attribute to create.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeExpandedResponse'
+          description: Newly created attribute object with ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create an Attribute
+      tags:
+      - Attributes
+      x-codegen-request-body-name: attribute
+  /attributes/{id}:
+    delete:
+      description: "Delete an attribute by id, including all of its applications. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Attributes** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteAttribute
+      parameters:
+      - description: Samsara-provided UUID of the attribute.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Denotes the type of entity, driver or asset.
+        in: query
+        name: entityType
+        required: true
+        schema:
+          enum:
+          - driver
+          - asset
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Deleting an Attribute
+      tags:
+      - Attributes
+    get:
+      description: "Fetch an attribute by id, including all of its applications. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Attributes** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getAttribute
+      parameters:
+      - description: Samsara-provided UUID of the attribute.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Denotes the type of entity, driver or asset.
+        in: query
+        name: entityType
+        required: true
+        schema:
+          enum:
+          - driver
+          - asset
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeExpandedResponse'
+          description: The attribute corresponding to request id.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve an Attribute
+      tags:
+      - Attributes
+    patch:
+      description: "Updates an attribute in the organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Attributes** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: updateAttribute
+      parameters:
+      - description: Samsara-provided UUID of the attribute.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAttributeRequest'
+        description: The attribute to update.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeExpandedResponse'
+          description: Newly created attribute object with ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update an Attribute
+      tags:
+      - Attributes
+      x-codegen-request-body-name: attribute
+components:
+  schemas:
+    Attribute:
+      properties:
+        attributeType:
+          default: string
+          description: 'Denotes the data type of the attribute''s values. Valid values: `string`, `number`.'
+          enum:
+          - string
+          - number
+          example: string
+          type: string
+        attributeValueQuantity:
+          default: multi
+          description: 'Defines whether or not this attribute can be used on the same entity many times (with different values). Valid values: `single`, `multi`.'
+          enum:
+          - single
+          - multi
+          example: multi
+          type: string
+        entityType:
+          description: 'Denotes the type of entity, driver or asset. Valid values: `driver`, `asset`.'
+          enum:
+          - driver
+          - asset
+          example: asset
+          type: string
+        id:
+          description: The samsara id of the attribute object.
+          example: 123e4567-e89b-12d3-a456-426614174000
+          type: string
+        name:
+          description: Name of attribute.
+          example: License Certifications
+          type: string
+        numberValues:
+          description: Number values that can be associated with this attribute
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that can be associated with this attribute
+          items:
+            type: string
+          type: array
+        values:
+          description: Representation of values that includes ids.
+          items:
+            $ref: '#/components/schemas/attributeValueTiny'
+          type: array
+      type: object
+    CreateAttributeRequest:
+      description: A request body to create an Attribute.
+      properties:
+        attributeType:
+          default: string
+          description: 'Denotes the data type of the attribute''s values. Valid values: `string`, `number`.'
+          enum:
+          - string
+          - number
+          example: string
+          type: string
+        attributeValueQuantity:
+          default: multi
+          description: 'Defines whether or not this attribute can be used on the same entity many times (with different values). Valid values: `single`, `multi`.'
+          enum:
+          - single
+          - multi
+          example: multi
+          type: string
+        entities:
+          description: Entities that will be applied to this attribute
+          items:
+            $ref: '#/components/schemas/CreateAttributeRequest_entities'
+          type: array
+        entityType:
+          description: Denotes the type of entity, driver or asset.
+          enum:
+          - driver
+          - asset
+          example: asset
+          type: string
+        name:
+          description: Name
+          example: License Certifications
+          type: string
+        numberValues:
+          description: Number values that can be associated with this attribute
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that can be associated with this attribute
+          items:
+            type: string
+          type: array
+      required:
+      - attributeType
+      - attributeValueQuantity
+      - entityType
+      - name
+      type: object
+    AttributeExpanded:
+      allOf:
+      - $ref: '#/components/schemas/Attribute'
+      - $ref: '#/components/schemas/AttributeExpanded_allOf'
+    attributeValueTiny:
+      description: A minified attribute value
+      properties:
+        id:
+          description: The samsara id of this value object.
+          example: 123e4567-e89b-12d3-a456-426614174000
+          type: string
+        stringValue:
+          description: The human-readable string for this value.
+          example: CDL
+          type: string
+      type: object
+    CreateAttributeRequest_entities:
+      properties:
+        entityId:
+          description: Entity id, based on the entity type.
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        numberValues:
+          description: Number values that can be associated with this attribute
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that can be associated with this attribute
+          items:
+            type: string
+          type: array
+      type: object
+    AttributeExpandedResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/AttributeExpanded'
+      type: object
+    AttributeExpanded_allOf:
+      properties:
+        entities:
+          description: Entities that this attribute is applied onto
+          items:
+            $ref: '#/components/schemas/AttributeEntity'
+          type: array
+      required:
+      - entities
+      type: object
+    AttributeEntity:
+      properties:
+        entityId:
+          format: int64
+          type: integer
+        externalIds:
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          properties: {}
+          type: object
+        name:
+          type: string
+        numberValues:
+          description: Number values that are associated with this attribute.
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that are associated with this attribute.
+          items:
+            type: string
+          type: array
+        values:
+          description: Representation of values that includes ids.
+          items:
+            $ref: '#/components/schemas/attributeValueTiny'
+          type: array
+      type: object
+    GetAttributesByEntityTypeResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Attribute'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    UpdateAttributeRequest:
+      description: A request body to update an Attribute.
+      properties:
+        attributeType:
+          default: string
+          description: 'Denotes the data type of the attribute''s values. Valid values: `string`, `number`.'
+          enum:
+          - string
+          - number
+          example: string
+          type: string
+        attributeValueQuantity:
+          default: multi
+          description: 'Defines whether or not this attribute can be used on the same entity many times (with different values). Denotes the type of entity, driver or asset. Valid values: `driver`, `asset`.'
+          enum:
+          - single
+          - multi
+          example: multi
+          type: string
+        entities:
+          description: Entities that will be applied to this attribute
+          items:
+            $ref: '#/components/schemas/CreateAttributeRequest_entities'
+          type: array
+        entityType:
+          description: Denotes the type of entity, driver or asset.
+          enum:
+          - driver
+          - asset
+          example: asset
+          type: string
+        name:
+          description: Name
+          example: License Certifications
+          type: string
+        numberValues:
+          description: Number values that can be associated with this attribute
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that can be associated with this attribute
+          items:
+            type: string
+          type: array
+      required:
+      - entityType
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

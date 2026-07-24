@@ -1,0 +1,527 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Locations API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Locations
+paths:
+  /assets/location-and-speed/stream:
+    get:
+      description: "This endpoint will return asset locations and speed data that has been collected for your organization based on the time parameters passed in. Results are paginated. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. The endpoint will only return data up until the endTime that has been processed by the server at the time of the original request. You will need to request the same [startTime, endTime) range again to receive data for assets processed after the original request time. This endpoint sorts the time-series data by device.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Vehicles** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getLocationAndSpeed
+      parameters:
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          default: 512
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to never if not provided; if not provided then pagination will not cease, and a valid pagination cursor will always be returned. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: Comma-separated list of asset IDs.
+        explode: false
+        in: query
+        name: ids
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Optional boolean indicating whether or not to return the 'speed' object
+        in: query
+        name: includeSpeed
+        schema:
+          type: boolean
+      - description: Optional boolean indicating whether or not to return the 'address' object
+        in: query
+        name: includeReverseGeo
+        schema:
+          type: boolean
+      - description: Optional boolean indicating whether or not to return the 'geofence' object
+        in: query
+        name: includeGeofenceLookup
+        schema:
+          type: boolean
+      - description: Optional boolean indicating whether to return external IDs on supported entities
+        in: query
+        name: includeExternalIds
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: List Asset Location and Speed Data in an Organization.
+      tags:
+      - Locations
+  /v1/fleet/assets/{asset_id}/locations:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nList historical locations for a given asset. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getAssetLocation
+      parameters:
+      - description: ID of the asset. Must contain only digits 0-9.
+        in: path
+        name: asset_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the start of the period to fetch, inclusive. Used in combination with endMs.
+        in: query
+        name: startMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the end of the period to fetch, inclusive. Used in combination with startMs.
+        in: query
+        name: endMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1AssetLocationResponse'
+          description: Asset location details.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Historical Locations for a Given Asset
+      tags:
+      - Locations
+components:
+  schemas:
+    GoaPaginationWithTokensResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - hasNextPage
+      type: object
+    LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationResponseResponseBody:
+      description: Location object.
+      properties:
+        accuracyMeters:
+          description: Radial accuracy of gps location in meters. This will only return if strong GPS is not available.
+          example: 5.801
+          format: double
+          type: number
+        address:
+          $ref: '#/components/schemas/AddressResponseResponseBody'
+        geofence:
+          $ref: '#/components/schemas/GeofenceResponseResponseBody'
+        headingDegrees:
+          description: Heading of the asset in degrees. May be 0 if the asset is not moving.
+          example: 120
+          format: int64
+          type: integer
+        latitude:
+          description: Latitude of the location of the asset.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the location of the asset.
+          example: 137.2719
+          format: double
+          type: number
+      required:
+      - headingDegrees
+      - latitude
+      - longitude
+      type: object
+    LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedResponseBody:
+      properties:
+        data:
+          description: List of location and speed objects.
+          items:
+            $ref: '#/components/schemas/LocationAndSpeedResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationWithTokensResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    AssetResponseResponseBody:
+      description: Asset that the location readings are tied to.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the asset
+          example: '12345'
+          type: string
+      required:
+      - id
+      type: object
+    LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedResponseResponseBody:
+      description: Full location and speed objects.
+      properties:
+        asset:
+          $ref: '#/components/schemas/AssetResponseResponseBody'
+        happenedAtTime:
+          description: UTC timestamp in RFC 3339 format of the event.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        location:
+          $ref: '#/components/schemas/LocationResponseResponseBody'
+        speed:
+          $ref: '#/components/schemas/SpeedResponseResponseBody'
+      required:
+      - asset
+      - happenedAtTime
+      - location
+      type: object
+    LocationAndSpeedGetLocationAndSpeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GeofenceResponseResponseBody:
+      description: Closest geofence based on 1000 meter radial search.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Unique ID of the geofence object.
+          example: '12345'
+          type: string
+      type: object
+    AddressResponseResponseBody:
+      description: Closest address that the GPS latitude and longitude match to.
+      properties:
+        city:
+          description: The name of the city
+          example: New York
+          type: string
+        country:
+          description: The country
+          example: USA
+          type: string
+        neighborhood:
+          description: The name of the neighborhood if one exists
+          example: Mission District
+          type: string
+        pointOfInterest:
+          description: Point that may be of interest to the user
+          example: The Eiffel Tower
+          type: string
+        postalCode:
+          description: The zip code
+          example: '10010'
+          type: string
+        state:
+          description: The name of the state
+          example: New York
+          type: string
+        street:
+          description: The street name
+          example: Main Street
+          type: string
+        streetNumber:
+          description: Street number of the address
+          example: '16'
+          type: string
+      type: object
+    LocationAndSpeedGetLocationAndSpeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1AssetLocationResponse:
+      description: A list of historical asset locations.
+      items:
+        description: Asset location details.
+        properties:
+          latitude:
+            description: The latitude of the location in degrees.
+            example: 37
+            type: number
+          location:
+            description: The best effort (street,city,state) for the latitude and longitude.
+            example: 525 York, San Francisco, CA
+            type: string
+          longitude:
+            description: The longitude of the location in degrees.
+            example: -122.7
+            type: number
+          speedMilesPerHour:
+            description: The speed calculated from GPS that the asset was traveling at in miles per hour.
+            example: 35
+            type: number
+          time:
+            description: Time in Unix milliseconds since epoch when the asset was at the location.
+            example: 12314151
+            type: number
+        type: object
+      type: array
+    SpeedResponseResponseBody:
+      description: Speed object.
+      properties:
+        ecuSpeedMetersPerSecond:
+          description: Speed of asset based on ECU data.
+          example: 30.2
+          format: double
+          type: number
+        gpsSpeedMetersPerSecond:
+          description: Speed of asset based on GPS data.
+          example: 30.2
+          format: double
+          type: number
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

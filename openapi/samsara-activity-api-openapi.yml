@@ -1,0 +1,177 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Activity API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Activity
+paths:
+  /fleet/drivers/tachograph-activity/history:
+    get:
+      description: "Returns all known tachograph activity for all specified drivers in the time range. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Tachograph (EU)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDriverTachographActivity
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. It can''t be more than 30 days past startTime. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of driver IDs. Example: `driverIds=1234,5678`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverTachographActivityResponse'
+          description: List of all driver tachograph activities in a specified time range.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get Driver Tachograph Activity
+      tags:
+      - Activity
+components:
+  schemas:
+    DriverTachographActivityResponse:
+      description: List of all driver tachograph activities in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverTachographActivityData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    TachographActivityList:
+      description: List of all driver tachograph activities in a specified time range.
+      items:
+        $ref: '#/components/schemas/TachographActivity'
+      type: array
+    TachographActivityListWrapper:
+      properties:
+        activity:
+          $ref: '#/components/schemas/TachographActivityList'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+      type: object
+    DriverTachographActivityData:
+      items:
+        $ref: '#/components/schemas/TachographActivityListWrapper'
+      type: array
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TachographActivity:
+      description: Tachograph activity
+      properties:
+        endTime:
+          description: End time of state in RFC 3339 format.
+          example: 2020-01-03T16:04:05Z07:00
+          type: string
+        isManualEntry:
+          description: A flag indicating whether the activity was manually entered by the driver. If this is `true`, the state cannot be "UNKNOWN"
+          example: false
+          type: boolean
+        startTime:
+          description: Start time of state in RFC 3339 format.
+          example: 2020-01-02T15:04:05Z07:00
+          type: string
+        state:
+          description: 'Tachograph activity state. Valid values: `BREAK/REST`, `WORK`, `AVAILABILITY`, `DRIVING`, `UNKNOWN`.'
+          enum:
+          - BREAK/REST
+          - WORK
+          - AVAILABILITY
+          - DRIVING
+          - UNKNOWN
+          type: string
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

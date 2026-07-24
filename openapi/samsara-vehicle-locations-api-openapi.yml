@@ -1,0 +1,197 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Vehicle  Locations API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Vehicle  Locations
+paths:
+  /fleet/vehicles/locations:
+    get:
+      description: "***NOTE: The Vehicle Locations API is an older API that does not combine GPS data with onboard diagnostics. Try our new [Vehicle Stats API](ref:getvehiclestats) instead.***\n\nReturns the last known location of all vehicles at the given `time`. If no `time` is specified, the current time is used. This can be optionally filtered by tags or specific vehicle IDs.\n\nRelated guide: <a href=\"/docs/vehicle-locations-1\" target=\"_blank\">Vehicle Locations</a>. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Vehicle Statistics** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getVehicleLocations
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data that returns the last known data points with timestamps less than or equal to this value. Defaults to now if not provided. Must be a string in RFC 3339 format. Millisecond precision and timezones are supported. (Example: `2020-01-27T07:06:25Z`).'
+        in: query
+        name: time
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of vehicle IDs. Example: `vehicleIds=1234,5678`'
+        explode: false
+        in: query
+        name: vehicleIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleLocationsResponse'
+          description: List of the most recent locations for the specified vehicles.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Locations Snapshot
+      tags:
+      - Vehicle  Locations
+components:
+  schemas:
+    VehicleId:
+      description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
+      example: '112'
+      type: string
+    VehicleLocationHeading:
+      description: Heading of the vehicle in degrees.
+      example: 120
+      format: double
+      type: number
+    VehicleLocation:
+      description: Vehicle location event.
+      properties:
+        heading:
+          $ref: '#/components/schemas/VehicleLocationHeading'
+        latitude:
+          $ref: '#/components/schemas/VehicleLocationLatitude'
+        longitude:
+          $ref: '#/components/schemas/VehicleLocationLongitude'
+        reverseGeo:
+          $ref: '#/components/schemas/reverseGeo'
+        speed:
+          $ref: '#/components/schemas/VehicleLocationSpeed'
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - latitude
+      - longitude
+      - time
+      type: object
+    reverseGeo:
+      description: Reverse geocoded information.
+      properties:
+        formattedLocation:
+          description: Formatted address of the reverse geocoding data.
+          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
+          type: string
+      type: object
+    VehicleLocationsResponse:
+      description: Most recent vehicle locations and pagination info.
+      properties:
+        data:
+          description: List of the most recent locations for the specified vehicles.
+          items:
+            $ref: '#/components/schemas/VehicleLocationsResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    VehicleName:
+      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+      example: Truck A7
+      type: string
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    VehicleLocationSpeed:
+      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
+      example: 48.3
+      format: double
+      type: number
+    VehicleLocationLatitude:
+      description: GPS latitude represented in degrees
+      example: 122.142
+      format: double
+      type: number
+    VehicleLocationsResponse_data:
+      description: A vehicle and its most recent location.
+      properties:
+        id:
+          $ref: '#/components/schemas/VehicleId'
+        location:
+          $ref: '#/components/schemas/VehicleLocation'
+        name:
+          $ref: '#/components/schemas/VehicleName'
+      required:
+      - id
+      - location
+      - name
+      type: object
+    VehicleLocationLongitude:
+      description: GPS longitude represented in degrees
+      example: -93.343
+      format: double
+      type: number
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

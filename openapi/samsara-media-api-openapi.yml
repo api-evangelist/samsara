@@ -1,0 +1,612 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Media API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Media
+paths:
+  /cameras/media/retrieval:
+    get:
+      description: "This endpoint returns media information corresponding to a retrieval ID. Retrieval IDs are associated to prior [media retrieval requests](https://developers.samsara.com/reference/postmediaretrieval). Urls provided by this endpoint expire in 8 hours.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Media Retrieval** under the Safety & Cameras category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getMediaRetrieval
+      parameters:
+      - description: 'Retrieval ID associated with this media capture request. Examples: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e'
+        in: query
+        name: retrievalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalGetMediaRetrievalBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Get Details for a Media Retrieval Request'
+      tags:
+      - Media
+    post:
+      description: "This endpoint creates an asynchronous request to upload certain media from a device. Currently, only images can be requested for timestamps when there's high resolution footage stored on the device, even if low resolution footage exists on the device during that timestamp. Other types of media (e.g. videos, hyperlapse) are planned to be supported in the future. If a device is offline, the requested media will be uploaded once it comes back online.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Media Retrieval** under the Safety & Cameras category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postMediaRetrieval
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalPostMediaRetrievalBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Create a Media Retrieval Request'
+      tags:
+      - Media
+      x-codegen-request-body-name: PostMediaRetrievalRequestBody
+components:
+  schemas:
+    MediaRetrievalPostMediaRetrievalInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/GetMediaRetrievalObjectResponseBody'
+      required:
+      - data
+      type: object
+    MediaRetrievalPostMediaRetrievalNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UrlInfoObjectResponseBody:
+      description: URL info for this piece of media. This field is only populated when the 'status' response field is 'available'
+      properties:
+        url:
+          description: 'Signed URL for this piece of media. Examples: https://sample.s3.url.com/image.jpeg'
+          example: https://sample.s3.url.com/image.jpeg
+          type: string
+        urlExpiryTime:
+          description: 'Timestamp, in RFC 3339 format, at which the URL expires. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+      required:
+      - url
+      - urlExpiryTime
+      type: object
+    GetMediaRetrievalObjectResponseBody:
+      properties:
+        media:
+          description: List of media retrieval objects.
+          items:
+            $ref: '#/components/schemas/MediaObjectResponseBody'
+          type: array
+      required:
+      - media
+      type: object
+    MediaRetrievalGetMediaRetrievalNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostMediaRetrievalObjectResponseBody'
+      required:
+      - data
+      type: object
+    MediaRetrievalPostMediaRetrievalBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostMediaRetrievalObjectResponseBody:
+      properties:
+        retrievalId:
+          description: 'Retrieval ID associated with this media capture request. Examples: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e'
+          example: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e
+          type: string
+      required:
+      - retrievalId
+      type: object
+    MediaRetrievalGetMediaRetrievalTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalRequestBody:
+      properties:
+        inputs:
+          description: A list of desired camera inputs for which to capture media. Only media with valid inputs (e.g. device has that input stream and device was recording at the time) will be uploaded. An empty list is invalid.
+          example:
+          - dashcamRoadFacing
+          - dashcamRoadFacing
+          - dashcamRoadFacing
+          items:
+            description: 'input  Valid values: `dashcamRoadFacing`, `dashcamDriverFacing`, `analog`'
+            enum:
+            - dashcamRoadFacing
+            - dashcamDriverFacing
+            - analog
+            example: dashcamRoadFacing
+            type: string
+          type: array
+        startTime:
+          description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicleId:
+          description: 'Vehicle ID for which to initiate media capture. Examples: 1234'
+          example: '1234'
+          type: string
+      required:
+      - inputs
+      - startTime
+      - vehicleId
+      type: object
+    MediaRetrievalPostMediaRetrievalTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaObjectResponseBody:
+      properties:
+        availableAtTime:
+          description: 'Timestamp, in RFC 3339 format, at which the media item was made available. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+        endTime:
+          description: ' An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        input:
+          description: 'Input type for this media. Examples: dashcamDriverFacing  Valid values: `dashcamDriverFacing`, `dashcamRoadFacing`'
+          enum:
+          - dashcamDriverFacing
+          - dashcamRoadFacing
+          example: dashcamDriverFacing
+          type: string
+        mediaType:
+          description: 'Type of media. Examples: image  Valid values: `image`'
+          enum:
+          - image
+          example: image
+          type: string
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        status:
+          description: 'Status of the media. Examples: invalid, pending, requested, available.  Valid values: `available`, `invalid`, `pending`, `requested`'
+          enum:
+          - available
+          - invalid
+          - pending
+          - requested
+          example: available
+          type: string
+        urlInfo:
+          $ref: '#/components/schemas/UrlInfoObjectResponseBody'
+        vehicleId:
+          description: 'Vehicle ID for which this media was captured. Examples: 1234'
+          example: '1234'
+          type: string
+      required:
+      - endTime
+      - input
+      - mediaType
+      - startTime
+      - status
+      - vehicleId
+      type: object
+    MediaRetrievalGetMediaRetrievalBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

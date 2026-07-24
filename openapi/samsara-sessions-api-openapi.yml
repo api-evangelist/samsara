@@ -1,0 +1,503 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Sessions API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Sessions
+paths:
+  /coaching/sessions/stream:
+    get:
+      description: "This endpoint will return coaching sessions for your organization based on the time parameters passed in. Results are paginated by sessions. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Coaching** under the Coaching category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getCoachingSessions
+      parameters:
+      - description: Optional string of comma separated driver IDs. If driver ID is present, sessions for the specified driver(s) will be returned.
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Optional string of comma separated user IDs. If coach ID is present, sessions for the specified coach(s) will be returned for either assignedCoach or completedCoach. If both driverId(s) and coachId(s) are present, sessions with specified driver(s) and coach(es) will be returned.
+        explode: false
+        in: query
+        name: coachIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'Optional string of comma separated statuses. Valid values:  upcoming, completed, deleted.'
+        explode: false
+        in: query
+        name: sessionStatuses
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Optional boolean to control whether behaviors will include coachableEvents in the response. Defaults to false.
+        in: query
+        name: includeCoachableEvents
+        schema:
+          type: boolean
+      - description: Required RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime`
+        in: query
+        name: startTime
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: Optional RFC 3339 timestamp. If not provided then the endpoint behaves as an unending feed of changes. If endTime is set the same as startTime, the most recent data point before that time will be returned per asset. Value is compared against `updatedAtTime`
+        in: query
+        name: endTime
+        schema:
+          format: date-time
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: Optional boolean indicating whether to return external IDs on supported entities
+        in: query
+        name: includeExternalIds
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachingSessionsGetCoachingSessionsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Coaching Sessions.
+      tags:
+      - Sessions
+components:
+  schemas:
+    CoachingSessionsGetCoachingSessionsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsResponseBody:
+      properties:
+        data:
+          description: List of coaching sessions objects.
+          items:
+            $ref: '#/components/schemas/CoachingSessionsResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    coachableEventResponseBody:
+      description: Object reference for the coachable event within the behavior.
+      properties:
+        id:
+          description: Unique ID for an event within the item in a coaching session.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+      required:
+      - id
+      type: object
+    DriverWithExternalIdObjectResponseBody:
+      description: A driver object with an id and map of external ids.
+      properties:
+        driverId:
+          description: Samsara ID of the driver.
+          example: 0987
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+      required:
+      - driverId
+      type: object
+    CoachingSessionsGetCoachingSessionsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    behaviorResponseBody:
+      description: Object reference for the behavior within the session.
+      properties:
+        coachableBehaviorType:
+          description: 'Coachable behavior type for the behavior in the coaching session.  Valid values: `acceleration`, `braking`, `cameraObstruction`, `crash`, `defensiveDriving`, `didNotYield`, `drinkPolicy`, `drowsy`, `eatingDrinking`, `event`, `falsePositive`, `foodPolicy`, `forwardCollisionWarning`, `genericDistraction`, `harshTurn`, `laneDeparture`, `lateResponse`, `maskPolicy`, `maxSpeed`, `mobileUsage`, `nearCollison`, `noSeatbelt`, `obstructedCamera`, `outwardObstruction`, `passengerPolicy`, `ranRedLight`, `rollingRailroadCrossing`, `rollingStop`, `rollingStop`, `rollover`, `rolloverProtection`, `rolloverProtectionBrakeControlActivated`, `rolloverProtectionEngineControlActivated`, `severeSpeeding`, `smoking`, `speeding`, `tailgating`, `unknown`, `yawControl`, `yawControlBrakeControlActivated`, `yawControlEngineControlActivated`'
+          enum:
+          - acceleration
+          - braking
+          - cameraObstruction
+          - crash
+          - defensiveDriving
+          - didNotYield
+          - drinkPolicy
+          - drowsy
+          - eatingDrinking
+          - event
+          - falsePositive
+          - foodPolicy
+          - forwardCollisionWarning
+          - genericDistraction
+          - harshTurn
+          - laneDeparture
+          - lateResponse
+          - maskPolicy
+          - maxSpeed
+          - mobileUsage
+          - nearCollison
+          - noSeatbelt
+          - obstructedCamera
+          - outwardObstruction
+          - passengerPolicy
+          - ranRedLight
+          - rollingRailroadCrossing
+          - rollingStop
+          - rollingStop
+          - rollover
+          - rolloverProtection
+          - rolloverProtectionBrakeControlActivated
+          - rolloverProtectionEngineControlActivated
+          - severeSpeeding
+          - smoking
+          - speeding
+          - tailgating
+          - unknown
+          - yawControl
+          - yawControlBrakeControlActivated
+          - yawControlEngineControlActivated
+          example: forwardCollisionWarning
+          type: string
+        coachableEvents:
+          description: Object references for the coachableEvents within the behavior. For non Speeding events, corresponds to the unique Samsara ID of the safety event as vehicleId - eventMS, for Speeding events corresponds to the unique UUID of the event. Returned when includeCoachableEvents is 'true'. Capped at 100 coachable events per Coaching session. For sessions where coachable events exceed 100, please visit the Samsara dashboard to address this coaching session.
+          items:
+            $ref: '#/components/schemas/coachableEventResponseBody'
+          type: array
+        id:
+          description: Unique ID for the coaching behavior.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        lastCoachedTime:
+          description: Time of last coached date for the same behavior label.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        note:
+          description: Associated note for the coaching behavior. Returned when present.
+          example: Need to wear seatbelt even for short trips.
+          type: string
+        updatedAtTime:
+          description: Time of coaching behavior update in UTC.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - coachableBehaviorType
+      - id
+      - lastCoachedTime
+      - updatedAtTime
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    CoachingSessionsGetCoachingSessionsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsResponseResponseBody:
+      description: List of coaching sessions objects.
+      properties:
+        assignedCoachId:
+          description: Unique user ID for a coaching session. Returned when a coaching session status is incomplete.
+          example: '45646'
+          type: string
+        behaviors:
+          description: Object references for the behaviors within the session.
+          items:
+            $ref: '#/components/schemas/behaviorResponseBody'
+          type: array
+        coachingType:
+          description: 'Coaching type for the coaching session.  Valid values: `fullySharedWithManager`, `selfCoaching`, `unknown`, `unshared`, `withManager`'
+          enum:
+          - fullySharedWithManager
+          - selfCoaching
+          - unknown
+          - unshared
+          - withManager
+          example: unshared
+          type: string
+        completedAtTime:
+          description: Time coaching session is completed in UTC. Returned when a coaching session status is completed.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        completedCoachId:
+          description: Unique user ID for a completed coaching session. Returned when a coaching session status is completed.
+          example: '45646'
+          type: string
+        driver:
+          $ref: '#/components/schemas/DriverWithExternalIdObjectResponseBody'
+        dueAtTime:
+          description: Time coaching session is due in UTC.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        id:
+          description: Unique ID for the coaching session.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        sessionNote:
+          description: Associated note for the coaching session. Returned when present.
+          example: Need to wear seatbelt even for short trips.
+          type: string
+        sessionStatus:
+          description: 'Status for the coaching session.  Valid values: `unknown`, `upcoming`, `completed`, `deleted`'
+          enum:
+          - unknown
+          - upcoming
+          - completed
+          - deleted
+          example: completed
+          type: string
+        updatedAtTime:
+          description: Time coaching session was updated in UTC.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - behaviors
+      - coachingType
+      - driver
+      - dueAtTime
+      - id
+      - sessionStatus
+      - updatedAtTime
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

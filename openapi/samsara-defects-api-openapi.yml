@@ -1,0 +1,289 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Defects API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Defects
+paths:
+  /fleet/defects/history:
+    get:
+      description: "Returns a list of DVIR defects in an organization, filtered by creation time. The maximum time period you can query for is 30 days. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Defects** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDvirDefects
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). *The maximum time period you can query for is 30 days.*'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). *The maximum time period you can query for is 30 days.*'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A filter on the data based on resolution status. Example: `isResolved=true`'
+        in: query
+        name: isResolved
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefectsResponse'
+          description: List of all DVIR defects in the organization
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Get All Defects
+      tags:
+      - Defects
+  /fleet/defects/{id}:
+    patch:
+      description: "Updates a given defect. Can be used to resolve a defect by marking its `isResolved` field to `true`. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Defects** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: updateDvirDefect
+      parameters:
+      - description: ID of the defect.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DefectPatch'
+        description: The DVIR defect fields to update.
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefectResponse'
+          description: Return the modified defect entity
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update a Defect
+      tags:
+      - Defects
+      x-codegen-request-body-name: defect
+components:
+  schemas:
+    trailerTinyResponse:
+      description: A minified trailer object.
+      properties:
+        id:
+          description: ID of the trailer.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
+          type: string
+      type: object
+    DefectsResponse:
+      description: A list of defects.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Defect'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    DefectResponse:
+      description: A single defect.
+      properties:
+        data:
+          $ref: '#/components/schemas/Defect'
+      type: object
+    vehicleTinyResponse:
+      description: A minified vehicle object.
+      properties:
+        ExternalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        id:
+          description: ID of the vehicle.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
+          type: string
+      type: object
+    DefectPatch:
+      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
+      properties:
+        isResolved:
+          description: Resolves the defect. Must be `true`.
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        resolvedAtTime:
+          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/ResolvedBy'
+      type: object
+    Defect:
+      properties:
+        comment:
+          description: Comment on the defect.
+          example: Air Compressor not working
+          type: string
+        createdAtTime:
+          description: 'Time when the defect was created. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        defectType:
+          description: The type of DVIR defect.
+          example: Air Compressor
+          type: string
+        id:
+          description: ID of the defect.
+          example: '18'
+          type: string
+        isResolved:
+          description: Signifies if this defect is resolved.
+          example: true
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        mechanicNotesUpdatedAtTime:
+          description: 'Time when mechanic notes were last updated. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedAtTime:
+          description: 'Time when this defect was resolved. Will not be returned if the defect is unresolved. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/Defect_resolvedBy'
+        trailer:
+          allOf:
+          - description: The trailer this defect was submitted for.
+            type: object
+          - $ref: '#/components/schemas/trailerTinyResponse'
+          type: object
+        vehicle:
+          allOf:
+          - description: The vehicle this defect was submitted for.
+            type: object
+          - $ref: '#/components/schemas/vehicleTinyResponse'
+          type: object
+      required:
+      - id
+      - isResolved
+      type: object
+    ResolvedBy:
+      description: Information about the user who is resolving a defect.
+      properties:
+        id:
+          description: The Id of user who is resolving the defect.
+          example: '11'
+          type: string
+        type:
+          description: The type of user who is resolving the defect. Must be "mechanic".
+          enum:
+          - mechanic
+          example: mechanic
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    Defect_resolvedBy:
+      description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
+      properties:
+        id:
+          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
+          example: '11'
+          type: string
+        name:
+          description: Name of the person who resolved this defect.
+          example: Christopher 'The Handyman' Zhen
+          type: string
+        type:
+          description: Indicates whether this defect was resolved by a `driver` or a `mechanic`.
+          enum:
+          - driver
+          - mechanic
+          type: string
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

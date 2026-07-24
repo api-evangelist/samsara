@@ -1,0 +1,497 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Tags API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Tags
+paths:
+  /tags:
+    get:
+      description: "Return all of the tags for an organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Tags** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listTags
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTagsResponse'
+          description: List of tags.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Tags
+      tags:
+      - Tags
+    post:
+      description: "Create a new tag for the organization. This may include up to 20,000 tagged entities. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Tags** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createTag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+          description: Newly created tag object, including the new tag ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create a Tag
+      tags:
+      - Tags
+      x-codegen-request-body-name: tag
+  /tags/{id}:
+    delete:
+      description: "Permanently deletes a tag. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Tags** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteTag
+      parameters:
+      - description: 'ID of the Tag. This can either be the Samsara-provided ID or an external ID. External IDs are customer-specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `crmId:abc123`. Automatically populated external IDs are prefixed with `samsara.`. For example, `samsara.name:ELD-exempt`.'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Delete a Tag
+      tags:
+      - Tags
+    get:
+      description: "Fetch a tag by id. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Tags** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getTag
+      parameters:
+      - description: 'ID of the Tag. This can either be the Samsara-provided ID or an external ID. External IDs are customer-specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `crmId:abc123`. Automatically populated external IDs are prefixed with `samsara.`. For example, `samsara.name:ELD-exempt`.'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+          description: The tag corresponding to request id.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve a Tag
+      tags:
+      - Tags
+    patch:
+      description: "Update an existing tag. **Note** this implementation of patch uses [the JSON merge patch](https://tools.ietf.org/html/rfc7396) proposed standard. \n\n This means that any fields included in the patch request will _overwrite_ fields which exist on the target resource. \n\n For arrays, this means any array included in the request will _replace_ the array that exists at the specified path, it will not _add_ to the existing array. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Tags** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: patchTag
+      parameters:
+      - description: 'ID of the Tag. This can either be the Samsara-provided ID or an external ID. External IDs are customer-specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `crmId:abc123`. Automatically populated external IDs are prefixed with `samsara.`. For example, `samsara.name:ELD-exempt`.'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchTagRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+          description: Returns updated tag object.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update a Tag
+      tags:
+      - Tags
+      x-codegen-request-body-name: tag
+    put:
+      description: "Update a tag with a new name and new members. This API call would replace all old members of a tag with new members specified in the request body. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Tags** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: replaceTag
+      parameters:
+      - description: 'ID of the Tag. This can either be the Samsara-provided ID or an external ID. External IDs are customer-specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `crmId:abc123`. Automatically populated external IDs are prefixed with `samsara.`. For example, `samsara.name:ELD-exempt`.'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceTagRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+          description: The updated tag data.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update a Tag
+      tags:
+      - Tags
+      x-codegen-request-body-name: tag
+components:
+  schemas:
+    Tag:
+      allOf:
+      - $ref: '#/components/schemas/TinyTag'
+      - $ref: '#/components/schemas/Tag_allOf'
+    TinyTag:
+      properties:
+        id:
+          $ref: '#/components/schemas/TagId'
+        name:
+          $ref: '#/components/schemas/TagName'
+        parentTagId:
+          $ref: '#/components/schemas/ParentTagId'
+      type: object
+    TaggedObjectName:
+      description: The object name.
+      example: Driver Don
+      type: string
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    Tag_allOf:
+      properties:
+        addresses:
+          description: The addresses that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObject'
+          type: array
+        assets:
+          description: The trailers, unpowered, and powered assets that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObject'
+          type: array
+        drivers:
+          description: The drivers that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObject'
+          type: array
+        externalIds:
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          properties: {}
+          type: object
+        machines:
+          description: The machines that belong to thistag.
+          items:
+            $ref: '#/components/schemas/TaggedObject'
+          type: array
+        parentTag:
+          $ref: '#/components/schemas/ParentTag'
+        sensors:
+          description: The sensors that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObject'
+          type: array
+        vehicles:
+          description: The vehicles that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObject'
+          type: array
+      type: object
+    TaggedObjectId:
+      description: The object ID.
+      example: '23502866574'
+      type: string
+    TagId:
+      description: Unique Samsara ID of this tag.
+      example: '342417'
+      type: string
+    TagName:
+      description: Name of this tag.
+      example: California
+      maxLength: 191
+      minLength: 1
+      type: string
+    ParentTag:
+      description: If this tag is part a hierarchical tag tree, this is the parent tag, otherwise this will be omitted.
+      properties:
+        id:
+          $ref: '#/components/schemas/TaggedObjectId'
+        name:
+          $ref: '#/components/schemas/ParentTagName'
+      required:
+      - id
+      type: object
+    ReplaceTagRequest:
+      properties:
+        addresses:
+          description: The addresses that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        assets:
+          description: The trailers, unpowered, and powered assets that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        drivers:
+          description: The drivers that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        machines:
+          description: The machines that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        name:
+          description: Name of this tag.
+          example: California
+          maxLength: 191
+          minLength: 1
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+        sensors:
+          description: The sensors that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        vehicles:
+          description: The vehicles that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    ParentTagName:
+      description: The tag name.
+      example: US West Vehicles
+      type: string
+    CreateTagRequest:
+      properties:
+        addresses:
+          description: The addresses that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        assets:
+          description: The trailers, unpowered, and powered assets that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        drivers:
+          description: The drivers that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        machines:
+          description: The machines that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        name:
+          description: Name of this tag.
+          example: California
+          maxLength: 191
+          minLength: 1
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+        sensors:
+          description: The sensors that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        vehicles:
+          description: The vehicles that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+      required:
+      - name
+      type: object
+    ListTagsResponse:
+      description: A list of tags.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    PatchTagRequest:
+      properties:
+        addresses:
+          description: The addresses that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        assets:
+          description: The trailers, unpowered, and powered assets that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        drivers:
+          description: The drivers that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        machines:
+          description: The machines that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        name:
+          description: Name of this tag.
+          example: California
+          maxLength: 191
+          minLength: 1
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+        sensors:
+          description: The sensors that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        vehicles:
+          description: The vehicles that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+      type: object
+    ParentTagId:
+      description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+      example: '4815'
+      type: string
+    TagResponse:
+      description: A single tag.
+      properties:
+        data:
+          $ref: '#/components/schemas/Tag'
+      type: object
+    TaggedObject:
+      properties:
+        id:
+          $ref: '#/components/schemas/TaggedObjectId'
+        name:
+          $ref: '#/components/schemas/TaggedObjectName'
+      required:
+      - id
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

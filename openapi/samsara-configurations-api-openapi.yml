@@ -1,0 +1,3943 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Configurations API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Configurations
+paths:
+  /alerts/configurations:
+    delete:
+      description: "Delete an alert configuration.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Alerts** under the Alerts category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: deleteConfigurations
+      parameters:
+      - description: The unqiue Samsara id of the alert configuration.
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: No Content response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsDeleteConfigurationsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Delete Alert Configurations.
+      tags:
+      - Configurations
+    get:
+      description: "Get specified Alert Configurations.\n\nThe following trigger types are API enabled and will show up in the results:\nVehicle Speed\nAmbient Temperature\nFuel Level (Percentage)\nVehicle DEF Level (Percentage)\nVehicle Battery\nGateway Unplugged\nDashcam Disconnected\nCamera Connector Disconnected\nAsset starts moving\nInside Geofence\nOutside Geofence\nUnassigned Driving\nDriver HOS Violation\nVehicle Engine Idle\nAsset Engine On\nAsset Engine Off\nHarsh Event\nScheduled Maintenance\nScheduled Maintenance by Odometer\nScheduled Maintenance by Engine Hours\nOut of Route\nGPS Signal Loss\nCell Signal Loss\nFault Code\nTire Faults\nGateway Disconnected\nPanic Button\nTampering Detected\nIf vehicle is severely speeding (as defined by your organization)\nDVIR Submitted for Asset\nDriver Document Submitted\nDriver App Sign In\nDriver App Sign Out\nGeofence Entry\nGeofence Exit\nRoute Stop ETA Alert\nDriver Recorded\nScheduled Date And Time\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Alerts** under the Alerts category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getConfigurations
+      parameters:
+      - description: Filter by the IDs. Returns all if no ids are provided.
+        explode: true
+        in: query
+        name: ids
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'The status of the alert configuration.  Valid values: `all`, `enabled`, `disabled`'
+        in: query
+        name: status
+        schema:
+          default: all
+          enum:
+          - all
+          - enabled
+          - disabled
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: Optional boolean indicating whether to return external IDs on supported entities
+        in: query
+        name: includeExternalIds
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetConfigurationsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Alert Configurations.
+      tags:
+      - Configurations
+    patch:
+      description: "Updates an alert configuration.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Alerts** under the Alerts category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchConfigurations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertsPatchConfigurationsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPatchConfigurationsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Update Alert Configurations.
+      tags:
+      - Configurations
+      x-codegen-request-body-name: PatchConfigurationsRequestBody
+    post:
+      description: "Creates an alert configuration.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Alerts** under the Alerts category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postConfigurations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertsPostConfigurationsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsPostConfigurationsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Create Alert Configurations.
+      tags:
+      - Configurations
+      x-codegen-request-body-name: PostConfigurationsRequestBody
+  /preview/custom-reports/configs:
+    get:
+      description: "Get paginated custom report configs created in the organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Custom Reports** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getCustomReportConfigs
+      parameters:
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: The limit for how many reports will be in the response. Default and max for this value is 100 objects.
+        in: query
+        name: limit
+        schema:
+          default: 100
+          maximum: 100
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportConfigsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Get Custom Report Configs'
+      tags:
+      - Configurations
+components:
+  schemas:
+    PanicButtonDetailsObjectRequestBody:
+      description: Details specific to Panic Button
+      properties:
+        isFilteringOutPowerLoss:
+          description: If true, only receive alerts when the panic button is pressed, otherwise receive alerts when the panic button is pressed or looses connection.
+          example: true
+          type: boolean
+      required:
+      - isFilteringOutPowerLoss
+      type: object
+    AlertsPatchConfigurationsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportConfigObjectResponseBody:
+      description: Full Custom report config object
+      properties:
+        columns:
+          description: List of custom report column objects
+          items:
+            $ref: '#/components/schemas/CustomReportColumnsObjectResponseBody'
+          type: array
+        id:
+          description: ID of the custom report config.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+        reportName:
+          description: Name of the custom report config.
+          example: Fuel Custom Report
+          type: string
+      required:
+      - columns
+      - id
+      - reportName
+      type: object
+    ScopeObjectResponseBody:
+      description: What the triggers are scoped to. These are the objects this alert applies to.
+      properties:
+        all:
+          description: Whether it applies to all applicable objects.
+          example: true
+          type: boolean
+        assets:
+          description: The assets these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/TinyAssetObjectResponseBody'
+          type: array
+        drivers:
+          description: The drivers these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/TinyDriverObjectResponseBody'
+          type: array
+        tags:
+          description: The tags these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+        widgets:
+          description: The widgets these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/TinyWidgetObjectResponseBody'
+          type: array
+      required:
+      - all
+      type: object
+    DefLevelTriggerDetailsObjectResponseBody:
+      description: Details specific to DEF Level
+      properties:
+        defLevelPercent:
+          description: The DEF percentage threshold value.
+          example: 100
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `LESS`'
+          enum:
+          - GREATER
+          - LESS
+          example: GREATER
+          type: string
+      required:
+      - defLevelPercent
+      - minDurationMilliseconds
+      - operation
+      type: object
+    VehicleFaultCodeDetailsObjectResponseBody:
+      description: Details specific to Vehicle Fault Code. At least one fault code or fault code group must be selected.
+      properties:
+        hasAnyAmberWarningLampCodes:
+          description: If true then alert on codes for less serious errors that do not warrant stopping. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyFaultCodes:
+          description: If true this means that any code is alertable. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyMalfunctionIndicatorLampCodes:
+          description: If true then alert on emission-related codes. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyProtectionLampCodes:
+          description: If true then alert on codes for non-electric vehicle parts. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyRedStopLampCodes:
+          description: If true then alert when the vehicle warrants stopping. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyTrailerAbsLampCodes:
+          description: If true then alert when the ABS light is on. Defaults to false.
+          example: true
+          type: boolean
+        specificFaultCodes:
+          description: The list of specific fault codes to be alerted on.
+          items:
+            $ref: '#/components/schemas/SpecificVehicleFaultCodeObjectResponseBody'
+          type: array
+      type: object
+    FuelLevelTriggerDetailsObjectResponseBody:
+      description: Details specific to Fuel Level Percentage
+      properties:
+        fuelLevelPercent:
+          description: The fuel level percentage threshold value.
+          example: 20
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `LESS`'
+          enum:
+          - LESS
+          example: LESS
+          type: string
+      required:
+      - fuelLevelPercent
+      - minDurationMilliseconds
+      - operation
+      type: object
+    GeofenceEntryTriggerDetailsObjectResponseBody:
+      description: Details specific to Geofence Entry
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectResponseBody'
+      required:
+      - location
+      type: object
+    CustomReportsGetCustomReportConfigsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DVIRSubmittedDeviceTriggerDetailsObjectRequestBody:
+      description: Details specific to DVIR Submitted by Device
+      properties:
+        dvirMinDurationMilliseconds:
+          description: The trigger will only fire if the selected DVIR types are submitted within the duration.
+          example: 600000
+          format: int64
+          type: integer
+        dvirSubmissionTypes:
+          description: Filter to these types of DVIR submissions.
+          example:
+          - SAFE_WITH_DEFECTS
+          - SAFE_NO_DEFECTS
+          - SAFE_WITH_DEFECTS
+          - SAFE_WITH_DEFECTS
+          items:
+            description: 'DVIR submission type  Valid values: `SAFE_NO_DEFECTS`, `SAFE_WITH_DEFECTS`, `UNSAFE`'
+            enum:
+            - SAFE_NO_DEFECTS
+            - SAFE_WITH_DEFECTS
+            - UNSAFE
+            example: SAFE_NO_DEFECTS
+            type: string
+          type: array
+      type: object
+    HarshEventTriggerDetailsObjectResponseBody:
+      description: Details specific to Harsh Events
+      properties:
+        types:
+          description: On which harsh events to trigger on.
+          example:
+          - haRollover
+          - haRolloverProtectionEngineControlActivated
+          items:
+            description: 'The type of harsh event.  Valid values: `haAccel`, `haBraking`, `haCameraMisaligned`, `haCrash`, `haDistractedDriving`, `haDistractedDrivingCalibration`, `haDrinkPolicy`, `haDriverObstructionPolicy`, `haDrowsinessDetection`, `haEvent`, `haFalsePositive`, `haFoodPolicy`, `haInvalid`, `haLaneDeparture`, `haMaskPolicy`, `haNearCollision`, `haOutwardObstructionPolicy`, `haPassengerPolicy`, `haPhonePolicy`, `haPolicyDetector`, `haRearCollisionWarning`, `haRolledStopSign`, `haRollover`, `haRolloverProtectionBrakeControlActivated`, `haRolloverProtectionEngineControlActivated`, `haSeatbeltPolicy`, `haSharpTurn`, `haSignDetection`, `haSmokingPolicy`, `haSpeeding`, `haTailgating`, `haTileRollingRailroadCrossing`, `haTileRollingStopSign`, `haVulnerableRoadUserCollisionWarning`, `haYawControlBrakeControlActivated`, `haYawControlEngineControlActivated`'
+            enum:
+            - haAccel
+            - haBraking
+            - haCameraMisaligned
+            - haCrash
+            - haDistractedDriving
+            - haDistractedDrivingCalibration
+            - haDrinkPolicy
+            - haDriverObstructionPolicy
+            - haDrowsinessDetection
+            - haEvent
+            - haFalsePositive
+            - haFoodPolicy
+            - haInvalid
+            - haLaneDeparture
+            - haMaskPolicy
+            - haNearCollision
+            - haOutwardObstructionPolicy
+            - haPassengerPolicy
+            - haPhonePolicy
+            - haPolicyDetector
+            - haRearCollisionWarning
+            - haRolledStopSign
+            - haRollover
+            - haRolloverProtectionBrakeControlActivated
+            - haRolloverProtectionEngineControlActivated
+            - haSeatbeltPolicy
+            - haSharpTurn
+            - haSignDetection
+            - haSmokingPolicy
+            - haSpeeding
+            - haTailgating
+            - haTileRollingRailroadCrossing
+            - haTileRollingStopSign
+            - haVulnerableRoadUserCollisionWarning
+            - haYawControlBrakeControlActivated
+            - haYawControlEngineControlActivated
+            example: haInvalid
+            type: string
+          type: array
+      required:
+      - types
+      type: object
+    OutOfRouteDetailsObjectRequestBody:
+      description: Details specific to Out Of Route
+      properties:
+        maxOffRouteMeters:
+          description: The minimum distance in meters a vehicle has to be from its active route path to be considered out of its route.
+          example: 100
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - maxOffRouteMeters
+      - minDurationMilliseconds
+      type: object
+    AlertsPatchConfigurationsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsPatchConfigurationsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GetResponseWorkflowConfigurationObjectResponseBody:
+      description: The configuration of a alert.
+      properties:
+        actions:
+          description: An array of actions.
+          items:
+            $ref: '#/components/schemas/ActionObjectResponseBody'
+          type: array
+        createdAtTime:
+          description: The time the configuration was created in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unqiue Samsara id of the alert configuration.
+          example: e1c5dffc-c7b7-47b0-a778-6a65de638abf
+          type: string
+        isEnabled:
+          default: true
+          description: Whether the alert is enabled or not.
+          example: true
+          type: boolean
+        lastModifiedAtTime:
+          description: The time the configuration was last modified in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        name:
+          description: The custom name of the configuration.
+          example: My Harsh Event Alert
+          type: string
+        operationalSettings:
+          $ref: '#/components/schemas/OperationalSettingsObjectResponseBody'
+        scope:
+          $ref: '#/components/schemas/ScopeObjectResponseBody'
+        triggers:
+          description: An array of triggers.
+          items:
+            $ref: '#/components/schemas/WorkflowTriggerObjectResponseBody'
+          type: array
+      required:
+      - actions
+      - createdAtTime
+      - id
+      - isEnabled
+      - lastModifiedAtTime
+      - name
+      - scope
+      - triggers
+      type: object
+    AlertsDeleteConfigurationsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ActionParamsObjectRequestBody:
+      description: The action type specific details. Set webhookIds for Slack or Webhook actions. Set recipients for Notifications. Set driverAppNotification for Driver App Push. Other action types don't need to set a param.
+      properties:
+        driverAppNotification:
+          $ref: '#/components/schemas/DriverAppNotificationObjectRequestBody'
+        recipients:
+          description: Recipient of the action.
+          items:
+            $ref: '#/components/schemas/RecipientObjectRequestBody'
+          type: array
+        webhooks:
+          $ref: '#/components/schemas/WebhookParamsObjectRequestBody'
+      type: object
+    AlertsPostConfigurationsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UnassignedDrivingTriggerDetailsObjectRequestBody:
+      description: Details specific to Unassigned Driving
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsGetConfigurationsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineOffDetailsObjectRequestBody:
+      description: Details specific to Engine Off
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    TinyWidgetObjectResponseBody:
+      description: Widget to be tracked.
+      properties:
+        widgetId:
+          description: ID of the widget.
+          example: '12434'
+          type: string
+      required:
+      - widgetId
+      type: object
+    EngineIdleTriggerDetailsObjectResponseBody:
+      description: Details specific to Engine Idle
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsDeleteConfigurationsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PatchResponseWorkflowConfigurationObjectResponseBody:
+      description: The configuration of a alert.
+      properties:
+        actions:
+          description: An array of actions.
+          items:
+            $ref: '#/components/schemas/ActionObjectResponseBody'
+          type: array
+        createdAtTime:
+          description: The time the configuration was created in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unqiue Samsara id of the alert configuration.
+          example: e1c5dffc-c7b7-47b0-a778-6a65de638abf
+          type: string
+        isEnabled:
+          default: true
+          description: Whether the alert is enabled or not.
+          example: true
+          type: boolean
+        lastModifiedAtTime:
+          description: The time the configuration was last modified in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        name:
+          description: The custom name of the configuration.
+          example: My Harsh Event Alert
+          type: string
+        operationalSettings:
+          $ref: '#/components/schemas/OperationalSettingsObjectResponseBody'
+        scope:
+          $ref: '#/components/schemas/ScopeObjectResponseBody'
+        triggers:
+          description: An array of triggers.
+          items:
+            $ref: '#/components/schemas/WorkflowTriggerObjectResponseBody'
+          type: array
+      required:
+      - actions
+      - createdAtTime
+      - id
+      - isEnabled
+      - lastModifiedAtTime
+      - name
+      - scope
+      - triggers
+      type: object
+    AlertsDeleteConfigurationsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AmbientTemperatureDetailsObjectRequestBody:
+      description: Details specific to Ambient Temperature.
+      properties:
+        cargoIsFull:
+          description: Whether the cargo is full.
+          example: true
+          type: boolean
+        doorsAreClosed:
+          description: Whether the doors are closed.
+          example: true
+          type: boolean
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `INSIDE_RANGE`, `LESS`, `OUTSIDE_RANGE`'
+          enum:
+          - GREATER
+          - INSIDE_RANGE
+          - LESS
+          - OUTSIDE_RANGE
+          example: GREATER
+          type: string
+        temperatureCelcius:
+          description: The temperature in Celcius threshold value.
+          example: 60
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      - operation
+      - temperatureCelcius
+      type: object
+    PostResponseResWorkflowConfigurationObjectResponseBody:
+      description: The configuration of a alert.
+      properties:
+        actions:
+          description: An array of actions.
+          items:
+            $ref: '#/components/schemas/ActionObjectResponseBody'
+          type: array
+        createdAtTime:
+          description: The time the configuration was created in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unqiue Samsara id of the alert configuration.
+          example: e1c5dffc-c7b7-47b0-a778-6a65de638abf
+          type: string
+        isEnabled:
+          default: true
+          description: Whether the alert is enabled or not.
+          example: true
+          type: boolean
+        lastModifiedAtTime:
+          description: The time the configuration was last modified in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        name:
+          description: The custom name of the configuration.
+          example: My Harsh Event Alert
+          type: string
+        operationalSettings:
+          $ref: '#/components/schemas/OperationalSettingsObjectResponseBody'
+        scope:
+          $ref: '#/components/schemas/ScopeObjectResponseBody'
+        triggers:
+          description: An array of triggers.
+          items:
+            $ref: '#/components/schemas/WorkflowTriggerObjectResponseBody'
+          type: array
+      required:
+      - actions
+      - createdAtTime
+      - id
+      - isEnabled
+      - lastModifiedAtTime
+      - name
+      - scope
+      - triggers
+      type: object
+    ScheduledMaintenanceByEngineHoursDetailsObjectRequestBody:
+      description: Details specific to Scheduled Maintenance By Engine Hours
+      properties:
+        dueInHours:
+          description: Alert when maintenance is due in the specified number of hours.
+          example: 5000
+          format: int64
+          type: integer
+        scheduleId:
+          description: The id of the maintenance schedule.
+          example: '123'
+          type: string
+      required:
+      - dueInHours
+      - scheduleId
+      type: object
+    AmbientTemperatureDetailsObjectResponseBody:
+      description: Details specific to Ambient Temperature.
+      properties:
+        cargoIsFull:
+          description: Whether the cargo is full.
+          example: true
+          type: boolean
+        doorsAreClosed:
+          description: Whether the doors are closed.
+          example: true
+          type: boolean
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `INSIDE_RANGE`, `LESS`, `OUTSIDE_RANGE`'
+          enum:
+          - GREATER
+          - INSIDE_RANGE
+          - LESS
+          - OUTSIDE_RANGE
+          example: GREATER
+          type: string
+        temperatureCelcius:
+          description: The temperature in Celcius threshold value.
+          example: 60
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      - operation
+      - temperatureCelcius
+      type: object
+    GatewayUnpluggedTriggerDetailsObjectResponseBody:
+      description: Details specific to Gateway Unplugged
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    OutOfRouteDetailsObjectResponseBody:
+      description: Details specific to Out Of Route
+      properties:
+        maxOffRouteMeters:
+          description: The minimum distance in meters a vehicle has to be from its active route path to be considered out of its route.
+          example: 100
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - maxOffRouteMeters
+      - minDurationMilliseconds
+      type: object
+    TinyDriverObjectRequestBody:
+      description: The driver of a vehicle.
+      properties:
+        driverId:
+          description: ID of the driver.
+          example: '12434'
+          type: string
+      required:
+      - driverId
+      type: object
+    PushNotificationOptionsObjectRequestBody:
+      description: Options for push notifications
+      properties:
+        isEnabled:
+          default: true
+          description: Whether push notifications are enabled.
+          example: true
+          type: boolean
+      required:
+      - isEnabled
+      type: object
+    CustomReportColumnsObjectResponseBody:
+      description: Information about a custom report column.
+      properties:
+        baseUnit:
+          description: '[deprecated] Use unit instead.  Valid values: `bar`, `celsius`, `fahrenheit`, `foot`, `gallon`, `galpermi`, `gforce`, `gperliter`, `gperm`, `impgallon`, `impgalpermi`, `inch`, `kelvin`, `kgpergallon`, `kgperkm`, `kgperliter`, `kgpermi`, `kilogram`, `kilometer`, `kilopascal`, `kilowatthour`, `kmperhr`, `lbpermi`, `liter`, `lper100km`, `lperkm`, `lperm`, `meter`, `meterspersec`, `mile`, `milliknot`, `milliseconds`, `millivolt`, `mipergal`, `miperhr`, `miperimpgal`, `pound`, `poundsPerSquareInch`, `poundspergallon`, `poundsperliter`, `volt`, `watthour`'
+          enum:
+          - bar
+          - celsius
+          - fahrenheit
+          - foot
+          - gallon
+          - galpermi
+          - gforce
+          - gperliter
+          - gperm
+          - impgallon
+          - impgalpermi
+          - inch
+          - kelvin
+          - kgpergallon
+          - kgperkm
+          - kgperliter
+          - kgpermi
+          - kilogram
+          - kilometer
+          - kilopascal
+          - kilowatthour
+          - kmperhr
+          - lbpermi
+          - liter
+          - lper100km
+          - lperkm
+          - lperm
+          - meter
+          - meterspersec
+          - mile
+          - milliknot
+          - milliseconds
+          - millivolt
+          - mipergal
+          - miperhr
+          - miperimpgal
+          - pound
+          - poundsPerSquareInch
+          - poundspergallon
+          - poundsperliter
+          - volt
+          - watthour
+          example: meter
+          type: string
+        displayName:
+          description: The display name of the column that appears in the dashboard or exported csv, xlsx, and pdf reports. This value can contain whitespaces and special characters. It is not used to key the values below in the `data` array.
+          example: 'Attribute: Driver skill'
+          type: string
+        type:
+          description: 'The type of data for this column.  Valid values: `string`, `numeric`'
+          enum:
+          - string
+          - numeric
+          example: string
+          type: string
+        unit:
+          description: 'The unit of the data for this column. If the data is a string or custom score (ie, anticipation score), unit will not be returned.  Valid values: `bar`, `degreesCelsius`, `degreesFahrenheit`, `feet`, `gForces`, `gallons`, `gallonsPerMile`, `gramsPerLiter`, `gramsPerMeter`, `imperialGallons`, `imperialGallonsPerMile`, `inches`, `kelvin`, `kilograms`, `kilogramsPerGallon`, `kilogramsPerKilometer`, `kilogramsPerLiter`, `kilogramsPerMile`, `kilometers`, `kilometersPerHour`, `kilopascals`, `kilowattHours`, `liters`, `litersPer100Kilometers`, `litersPerKilometer`, `litersPerMeter`, `meters`, `metersPerSecond`, `miles`, `milesPerGallon`, `milesPerHour`, `milesPerImperialGallon`, `milliknots`, `milliseconds`, `millivolts`, `pounds`, `poundsPerGallon`, `poundsPerLiter`, `poundsPerMile`, `poundsPerSquareInch`, `volts`, `wattHours`'
+          enum:
+          - bar
+          - degreesCelsius
+          - degreesFahrenheit
+          - feet
+          - gForces
+          - gallons
+          - gallonsPerMile
+          - gramsPerLiter
+          - gramsPerMeter
+          - imperialGallons
+          - imperialGallonsPerMile
+          - inches
+          - kelvin
+          - kilograms
+          - kilogramsPerGallon
+          - kilogramsPerKilometer
+          - kilogramsPerLiter
+          - kilogramsPerMile
+          - kilometers
+          - kilometersPerHour
+          - kilopascals
+          - kilowattHours
+          - liters
+          - litersPer100Kilometers
+          - litersPerKilometer
+          - litersPerMeter
+          - meters
+          - metersPerSecond
+          - miles
+          - milesPerGallon
+          - milesPerHour
+          - milesPerImperialGallon
+          - milliknots
+          - milliseconds
+          - millivolts
+          - pounds
+          - poundsPerGallon
+          - poundsPerLiter
+          - poundsPerMile
+          - poundsPerSquareInch
+          - volts
+          - wattHours
+          example: meter
+          type: string
+      required:
+      - displayName
+      - type
+      type: object
+    EngineOnDetailsObjectResponseBody:
+      description: Details specific to Engine On
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    PanicButtonDetailsObjectResponseBody:
+      description: Details specific to Panic Button
+      properties:
+        isFilteringOutPowerLoss:
+          description: If true, only receive alerts when the panic button is pressed, otherwise receive alerts when the panic button is pressed or looses connection.
+          example: true
+          type: boolean
+      required:
+      - isFilteringOutPowerLoss
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TriggerParamsObjectRequestBody:
+      description: The trigger type specific details. Only the field that corresponds to the trigger type is filled in.
+      properties:
+        ambientTemperature:
+          $ref: '#/components/schemas/AmbientTemperatureDetailsObjectRequestBody'
+        cellSignalLoss:
+          $ref: '#/components/schemas/CellSignalLossDetailsObjectRequestBody'
+        defLevel:
+          $ref: '#/components/schemas/DefLevelTriggerDetailsObjectRequestBody'
+        deviceMovement:
+          $ref: '#/components/schemas/DeviceMovementTriggerDetailsObjectRequestBody'
+        documentSubmitted:
+          $ref: '#/components/schemas/DriverDocumentSubmittedDetailsObjectRequestBody'
+        dvirSubmittedDevice:
+          $ref: '#/components/schemas/DVIRSubmittedDeviceTriggerDetailsObjectRequestBody'
+        engineIdle:
+          $ref: '#/components/schemas/EngineIdleTriggerDetailsObjectRequestBody'
+        engineOff:
+          $ref: '#/components/schemas/EngineOffDetailsObjectRequestBody'
+        engineOn:
+          $ref: '#/components/schemas/EngineOnDetailsObjectRequestBody'
+        fuelLevel:
+          $ref: '#/components/schemas/FuelLevelTriggerDetailsObjectRequestBody'
+        gatewayDisconnected:
+          $ref: '#/components/schemas/GatewayDisconnectedDetailsObjectRequestBody'
+        gatewayUnplugged:
+          $ref: '#/components/schemas/GatewayUnpluggedTriggerDetailsObjectRequestBody'
+        geofenceEntry:
+          $ref: '#/components/schemas/GeofenceEntryTriggerDetailsObjectRequestBody'
+        geofenceExit:
+          $ref: '#/components/schemas/GeofenceExitTriggerDetailsObjectRequestBody'
+        gpsSignalLoss:
+          $ref: '#/components/schemas/GpsSignalLossDetailsObjectRequestBody'
+        harshEvent:
+          $ref: '#/components/schemas/HarshEventTriggerDetailsObjectRequestBody'
+        hosViolation:
+          $ref: '#/components/schemas/HOSViolationTriggerDetailsObjectRequestBody'
+        insideGeofence:
+          $ref: '#/components/schemas/InsideGeofenceTriggerDetailsObjectRequestBody'
+        outOfRoute:
+          $ref: '#/components/schemas/OutOfRouteDetailsObjectRequestBody'
+        outsideGeofence:
+          $ref: '#/components/schemas/OutsideGeofenceTriggerDetailsObjectRequestBody'
+        panicButton:
+          $ref: '#/components/schemas/PanicButtonDetailsObjectRequestBody'
+        routeStopEstimatedArrival:
+          $ref: '#/components/schemas/RouteStopEstimatedArrivalDetailsObjectRequestBody'
+        scheduledMaintenance:
+          $ref: '#/components/schemas/ScheduledMaintenanceTriggerDetailsObjectRequestBody'
+        scheduledMaintenanceByEngineHours:
+          $ref: '#/components/schemas/ScheduledMaintenanceByEngineHoursDetailsObjectRequestBody'
+        scheduledMaintenanceOdometer:
+          $ref: '#/components/schemas/ScheduledMaintenanceOdometerTriggerDetailsObjectRequestBody'
+        speed:
+          $ref: '#/components/schemas/SpeedTriggerDetailsObjectRequestBody'
+        tireFaultCode:
+          $ref: '#/components/schemas/TireFaultCodeDetailsObjectRequestBody'
+        unassignedDriving:
+          $ref: '#/components/schemas/UnassignedDrivingTriggerDetailsObjectRequestBody'
+        vehicleBatteryVoltage:
+          $ref: '#/components/schemas/VehicleBatterVoltageDetailsObjectRequestBody'
+        vehicleFaultCode:
+          $ref: '#/components/schemas/VehicleFaultCodeDetailsObjectRequestBody'
+      type: object
+    PolygonRequestBody:
+      description: Information about a polygon geofence. This field is only needed if the geofence is a polygon.
+      properties:
+        name:
+          description: The name of the polygon.
+          example: My Geofence Polygon
+          type: string
+        vertices:
+          description: The vertices of the polygon geofence. These geofence vertices describe the perimeter of the polygon, and must consist of at least 3 vertices and less than 40.
+          items:
+            $ref: '#/components/schemas/VertexRequestBody'
+          type: array
+      required:
+      - name
+      type: object
+    TinyWidgetObjectRequestBody:
+      description: Widget to be tracked.
+      properties:
+        widgetId:
+          description: ID of the widget.
+          example: '12434'
+          type: string
+      required:
+      - widgetId
+      type: object
+    VehicleBatterVoltageDetailsObjectRequestBody:
+      description: Details specific to Vehicle Battery Voltage
+      properties:
+        batteryVolts:
+          description: The battery volt threshold value.
+          example: 100
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `LESS`'
+          enum:
+          - GREATER
+          - LESS
+          example: GREATER
+          type: string
+      required:
+      - batteryVolts
+      - minDurationMilliseconds
+      - operation
+      type: object
+    OutsideGeofenceTriggerDetailsObjectRequestBody:
+      description: Details specific to Outside Geofence
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectRequestBody'
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - location
+      - minDurationMilliseconds
+      type: object
+    TinyAssetObjectResponseBody:
+      description: Vehicle, trailer or other equipment to be tracked.
+      properties:
+        assetId:
+          description: ID of the asset.
+          example: '12443'
+          type: string
+        assetType:
+          default: uncategorized
+          description: 'The operational context in which the asset interacts with the Samsara system. Examples: Vehicle (eg: truck, bus...), Trailer (eg: dry van, reefer, flatbed...), Powered Equipment (eg: dozer, crane...), Unpowered Equipment (eg: container, dumpster...), or Uncategorized.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
+          enum:
+          - uncategorized
+          - trailer
+          - equipment
+          - unpowered
+          - vehicle
+          example: trailer
+          type: string
+      required:
+      - assetId
+      - assetType
+      type: object
+    TriggerParamsObjectResponseBody:
+      description: The trigger type specific details. Only the field that corresponds to the trigger type is filled in.
+      properties:
+        ambientTemperature:
+          $ref: '#/components/schemas/AmbientTemperatureDetailsObjectResponseBody'
+        cellSignalLoss:
+          $ref: '#/components/schemas/CellSignalLossDetailsObjectResponseBody'
+        defLevel:
+          $ref: '#/components/schemas/DefLevelTriggerDetailsObjectResponseBody'
+        deviceMovement:
+          $ref: '#/components/schemas/DeviceMovementTriggerDetailsObjectResponseBody'
+        documentSubmitted:
+          $ref: '#/components/schemas/DriverDocumentSubmittedDetailsObjectResponseBody'
+        dvirSubmittedDevice:
+          $ref: '#/components/schemas/DVIRSubmittedDeviceTriggerDetailsObjectResponseBody'
+        engineIdle:
+          $ref: '#/components/schemas/EngineIdleTriggerDetailsObjectResponseBody'
+        engineOff:
+          $ref: '#/components/schemas/EngineOffDetailsObjectResponseBody'
+        engineOn:
+          $ref: '#/components/schemas/EngineOnDetailsObjectResponseBody'
+        fuelLevel:
+          $ref: '#/components/schemas/FuelLevelTriggerDetailsObjectResponseBody'
+        gatewayDisconnected:
+          $ref: '#/components/schemas/GatewayDisconnectedDetailsObjectResponseBody'
+        gatewayUnplugged:
+          $ref: '#/components/schemas/GatewayUnpluggedTriggerDetailsObjectResponseBody'
+        geofenceEntry:
+          $ref: '#/components/schemas/GeofenceEntryTriggerDetailsObjectResponseBody'
+        geofenceExit:
+          $ref: '#/components/schemas/GeofenceExitTriggerDetailsObjectResponseBody'
+        gpsSignalLoss:
+          $ref: '#/components/schemas/GpsSignalLossDetailsObjectResponseBody'
+        harshEvent:
+          $ref: '#/components/schemas/HarshEventTriggerDetailsObjectResponseBody'
+        hosViolation:
+          $ref: '#/components/schemas/HOSViolationTriggerDetailsObjectResponseBody'
+        insideGeofence:
+          $ref: '#/components/schemas/InsideGeofenceTriggerDetailsObjectResponseBody'
+        outOfRoute:
+          $ref: '#/components/schemas/OutOfRouteDetailsObjectResponseBody'
+        outsideGeofence:
+          $ref: '#/components/schemas/OutsideGeofenceTriggerDetailsObjectResponseBody'
+        panicButton:
+          $ref: '#/components/schemas/PanicButtonDetailsObjectResponseBody'
+        routeStopEstimatedArrival:
+          $ref: '#/components/schemas/RouteStopEstimatedArrivalDetailsObjectResponseBody'
+        scheduledMaintenance:
+          $ref: '#/components/schemas/ScheduledMaintenanceTriggerDetailsObjectResponseBody'
+        scheduledMaintenanceByEngineHours:
+          $ref: '#/components/schemas/ScheduledMaintenanceByEngineHoursDetailsObjectResponseBody'
+        scheduledMaintenanceOdometer:
+          $ref: '#/components/schemas/ScheduledMaintenanceOdometerTriggerDetailsObjectResponseBody'
+        speed:
+          $ref: '#/components/schemas/SpeedTriggerDetailsObjectResponseBody'
+        tireFaultCode:
+          $ref: '#/components/schemas/TireFaultCodeDetailsObjectResponseBody'
+        unassignedDriving:
+          $ref: '#/components/schemas/UnassignedDrivingTriggerDetailsObjectResponseBody'
+        vehicleBatteryVoltage:
+          $ref: '#/components/schemas/VehicleBatterVoltageDetailsObjectResponseBody'
+        vehicleFaultCode:
+          $ref: '#/components/schemas/VehicleFaultCodeDetailsObjectResponseBody'
+      type: object
+    CustomReportsGetCustomReportConfigsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    InAppNotificationOptionsObjectResponseBody:
+      description: Options for in-app notifications
+      properties:
+        canDictateAlertTitle:
+          default: false
+          description: Whether the alert will dictate the title of the alert. Both canDictateAlertTitle and canPlayAlertSound should be enabled or disabled together.
+          example: false
+          type: boolean
+        canPlayAlertSound:
+          default: false
+          description: Whether the alert will play a sound. Both canDictateAlertTitle and canPlayAlertSound should be enabled or disabled together.
+          example: false
+          type: boolean
+        customText:
+          description: Custom text to display in the notification (320 character max).
+          example: Custom text
+          maxLength: 320
+          type: string
+        isEnabled:
+          default: true
+          description: Whether in-app notifications are enabled.
+          example: true
+          type: boolean
+      required:
+      - isEnabled
+      type: object
+    CustomReportsGetCustomReportConfigsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsDeleteConfigurationsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsPostConfigurationsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportConfigsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsDeleteConfigurationsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportConfigsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsDeleteConfigurationsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsDeleteConfigurationsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsPatchConfigurationsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ScheduledMaintenanceTriggerDetailsObjectRequestBody:
+      description: Details specific to Scheduled Maintenance by Date
+      properties:
+        dueInDays:
+          description: Alert when maintenance is due in the specified number of days.
+          example: 10
+          format: int64
+          type: integer
+        scheduleId:
+          description: The id of the maintenance schedule.
+          example: '123'
+          type: string
+      required:
+      - dueInDays
+      - scheduleId
+      type: object
+    AlertsPatchConfigurationsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VertexResponseBody:
+      description: The vertex of the polygon geofence. These geofence vertices describe the perimeter of the polygon, and must consist of at least 3 vertices and less than 40.
+      properties:
+        latitude:
+          description: The latitude of a geofence vertex in decimal degrees.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: The longitude of a geofence vertex in decimal degrees.
+          example: 137.7749
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    DriverAppNotificationObjectResponseBody:
+      description: Driver app notification settings
+      properties:
+        inAppNotificationOptions:
+          $ref: '#/components/schemas/InAppNotificationOptionsObjectResponseBody'
+        pushNotificationOptions:
+          $ref: '#/components/schemas/PushNotificationOptionsObjectResponseBody'
+      type: object
+    EngineOnDetailsObjectRequestBody:
+      description: Details specific to Engine On
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    GoaTagTinyResponseRequestBody:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    HOSViolationTriggerDetailsObjectRequestBody:
+      description: Details specific to HOS Violation
+      properties:
+        maxUntilViolationMilliseconds:
+          description: Alert if driver has this specified time until driving causes an HOS violation.
+          example: 600000
+          format: int64
+          type: integer
+        violation:
+          description: 'The type of HOS violation.  Valid values: `CaliforniaMealbreakMissed`, `CycleHoursOn`, `DailyDrivingHours`, `DailyOnDutyHours`, `Invalid`, `RestbreakMissed`, `ShiftDrivingHours`, `ShiftHours`, `ShiftOnDutyHours`, `UnsubmittedLogs`'
+          enum:
+          - CaliforniaMealbreakMissed
+          - CycleHoursOn
+          - DailyDrivingHours
+          - DailyOnDutyHours
+          - Invalid
+          - RestbreakMissed
+          - ShiftDrivingHours
+          - ShiftHours
+          - ShiftOnDutyHours
+          - UnsubmittedLogs
+          example: CaliforniaMealbreakMissed
+          type: string
+      required:
+      - maxUntilViolationMilliseconds
+      - violation
+      type: object
+    CustomReportsGetCustomReportConfigsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ActionObjectRequestBody:
+      description: Action to take.
+      properties:
+        actionParams:
+          $ref: '#/components/schemas/ActionParamsObjectRequestBody'
+        actionTypeId:
+          description: 'The id of the of the action type. Reference the following list for the ids:
+
+            The following action types are in Beta:
+
+            Driver App Push = 5
+
+            The following action types are Stable:
+
+            Notification (Email, Text, Samsara Fleet Push) = 1
+
+            Dashboard Notification = 3
+
+            Webhook = 4
+
+            Slack = 6
+
+            '
+          example: 1
+          format: int32
+          type: integer
+      required:
+      - actionTypeId
+      type: object
+    HarshEventTriggerDetailsObjectRequestBody:
+      description: Details specific to Harsh Events
+      properties:
+        types:
+          description: On which harsh events to trigger on.
+          example:
+          - haFoodPolicy
+          - haPolicyDetector
+          - haRolloverProtectionEngineControlActivated
+          - haLaneDeparture
+          items:
+            description: 'The type of harsh event.  Valid values: `haAccel`, `haBraking`, `haCameraMisaligned`, `haCrash`, `haDistractedDriving`, `haDistractedDrivingCalibration`, `haDrinkPolicy`, `haDriverObstructionPolicy`, `haDrowsinessDetection`, `haEvent`, `haFalsePositive`, `haFoodPolicy`, `haInvalid`, `haLaneDeparture`, `haMaskPolicy`, `haNearCollision`, `haOutwardObstructionPolicy`, `haPassengerPolicy`, `haPhonePolicy`, `haPolicyDetector`, `haRearCollisionWarning`, `haRolledStopSign`, `haRollover`, `haRolloverProtectionBrakeControlActivated`, `haRolloverProtectionEngineControlActivated`, `haSeatbeltPolicy`, `haSharpTurn`, `haSignDetection`, `haSmokingPolicy`, `haSpeeding`, `haTailgating`, `haTileRollingRailroadCrossing`, `haTileRollingStopSign`, `haVulnerableRoadUserCollisionWarning`, `haYawControlBrakeControlActivated`, `haYawControlEngineControlActivated`'
+            enum:
+            - haAccel
+            - haBraking
+            - haCameraMisaligned
+            - haCrash
+            - haDistractedDriving
+            - haDistractedDrivingCalibration
+            - haDrinkPolicy
+            - haDriverObstructionPolicy
+            - haDrowsinessDetection
+            - haEvent
+            - haFalsePositive
+            - haFoodPolicy
+            - haInvalid
+            - haLaneDeparture
+            - haMaskPolicy
+            - haNearCollision
+            - haOutwardObstructionPolicy
+            - haPassengerPolicy
+            - haPhonePolicy
+            - haPolicyDetector
+            - haRearCollisionWarning
+            - haRolledStopSign
+            - haRollover
+            - haRolloverProtectionBrakeControlActivated
+            - haRolloverProtectionEngineControlActivated
+            - haSeatbeltPolicy
+            - haSharpTurn
+            - haSignDetection
+            - haSmokingPolicy
+            - haSpeeding
+            - haTailgating
+            - haTileRollingRailroadCrossing
+            - haTileRollingStopSign
+            - haVulnerableRoadUserCollisionWarning
+            - haYawControlBrakeControlActivated
+            - haYawControlEngineControlActivated
+            example: haDrinkPolicy
+            type: string
+          type: array
+      required:
+      - types
+      type: object
+    AlertsPostConfigurationsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DefLevelTriggerDetailsObjectRequestBody:
+      description: Details specific to DEF Level
+      properties:
+        defLevelPercent:
+          description: The DEF percentage threshold value.
+          example: 100
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `LESS`'
+          enum:
+          - GREATER
+          - LESS
+          example: GREATER
+          type: string
+      required:
+      - defLevelPercent
+      - minDurationMilliseconds
+      - operation
+      type: object
+    AlertsPatchConfigurationsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TireFaultCodeDetailsObjectRequestBody:
+      description: Details specific to Tire Fault Code. At least one fault code or fault code group must be selected.
+      properties:
+        hasCautionaryTireFaultCodes:
+          description: If true then alert over pressure, under pressure, across axle fault, or leak detected fault codes. Defaults to false.
+          example: true
+          type: boolean
+        hasCriticalTireFaultCodes:
+          description: If true then alert over temperature or extreme pressure over or under fault codes. Defaults to false.
+          example: true
+          type: boolean
+        manufacturer:
+          description: 'The tire manufacturer.  Valid values: `MANUFACTURER_BENDIX`, `MANUFACTURER_CONTINENTAL`, `MANUFACTURER_DORAN`, `MANUFACTURER_HENDRICKSON`, `MANUFACTURER_INVALID`, `MANUFACTURER_PRESSURE_PRO`'
+          enum:
+          - MANUFACTURER_BENDIX
+          - MANUFACTURER_CONTINENTAL
+          - MANUFACTURER_DORAN
+          - MANUFACTURER_HENDRICKSON
+          - MANUFACTURER_INVALID
+          - MANUFACTURER_PRESSURE_PRO
+          example: MANUFACTURER_BENDIX
+          type: string
+        specificTireFaultCodes:
+          description: The list of specific tire fault codes to be alerted on.
+          example:
+          - TIRE_ALERT_ACROSS_AXLE_FAULT
+          - TIRE_ALERT_ACROSS_AXLE_FAULT
+          - TIRE_ALERT_ACROSS_AXLE_FAULT
+          - TIRE_ALERT_ACROSS_AXLE_FAULT
+          items:
+            description: 'The specific tire fault codes.  Valid values: `TIRE_ALERT_ACROSS_AXLE_FAULT`, `TIRE_ALERT_EXTREME_OVER_PRESSURE`, `TIRE_ALERT_EXTREME_UNDER_PRESSURE`, `TIRE_ALERT_INVALID`, `TIRE_ALERT_LEAK_DETECTED`, `TIRE_ALERT_OVER_PRESSURE`, `TIRE_ALERT_OVER_TEMPERATURE`, `TIRE_ALERT_UNDER_PRESSURE`'
+            enum:
+            - TIRE_ALERT_ACROSS_AXLE_FAULT
+            - TIRE_ALERT_EXTREME_OVER_PRESSURE
+            - TIRE_ALERT_EXTREME_UNDER_PRESSURE
+            - TIRE_ALERT_INVALID
+            - TIRE_ALERT_LEAK_DETECTED
+            - TIRE_ALERT_OVER_PRESSURE
+            - TIRE_ALERT_OVER_TEMPERATURE
+            - TIRE_ALERT_UNDER_PRESSURE
+            example: TIRE_ALERT_ACROSS_AXLE_FAULT
+            type: string
+          type: array
+      required:
+      - manufacturer
+      type: object
+    AlertsPostConfigurationsRequestBody:
+      description: The configuration of a alert.
+      properties:
+        actions:
+          description: An array of actions.
+          items:
+            $ref: '#/components/schemas/ActionObjectRequestBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        isEnabled:
+          default: true
+          description: Whether the alert is enabled or not.
+          example: true
+          type: boolean
+        name:
+          description: The custom name of the configuration.
+          example: My Harsh Event Alert
+          type: string
+        operationalSettings:
+          $ref: '#/components/schemas/OperationalSettingsObjectRequestBody'
+        scope:
+          $ref: '#/components/schemas/ScopeObjectRequestBody'
+        triggers:
+          description: An array of triggers.
+          items:
+            $ref: '#/components/schemas/WorkflowTriggerObjectRequestBody'
+          type: array
+      required:
+      - actions
+      - isEnabled
+      - name
+      - scope
+      - triggers
+      type: object
+    CircleResponseBody:
+      description: Information about a circular geofence. This field is only needed if the geofence is a circle.
+      properties:
+        latitude:
+          description: Latitude of the address. Will be geocoded from formattedAddress if not provided.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from formattedAddress if not provided.
+          example: 137.7749
+          format: double
+          type: number
+        name:
+          description: The name of the cirlce.
+          example: My Geofence Cirlce
+          type: string
+        radiusMeters:
+          description: The radius of the circular geofence in meters.
+          example: 23
+          format: int64
+          type: integer
+      required:
+      - name
+      - radiusMeters
+      type: object
+    InsideGeofenceTriggerDetailsObjectResponseBody:
+      description: Details specific to Inside Geofence
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectResponseBody'
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - location
+      - minDurationMilliseconds
+      type: object
+    InsideGeofenceTriggerDetailsObjectRequestBody:
+      description: Details specific to Inside Geofence
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectRequestBody'
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - location
+      - minDurationMilliseconds
+      type: object
+    VehicleBatterVoltageDetailsObjectResponseBody:
+      description: Details specific to Vehicle Battery Voltage
+      properties:
+        batteryVolts:
+          description: The battery volt threshold value.
+          example: 100
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `LESS`'
+          enum:
+          - GREATER
+          - LESS
+          example: GREATER
+          type: string
+      required:
+      - batteryVolts
+      - minDurationMilliseconds
+      - operation
+      type: object
+    AlertsGetConfigurationsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ScheduledMaintenanceOdometerTriggerDetailsObjectRequestBody:
+      description: Details specific to Scheduled Maintenance by Odometer
+      properties:
+        dueInMeters:
+          description: Alert when vehicle odometer has this many meters left until maintenance is due.
+          example: 5000
+          format: int64
+          type: integer
+        scheduleId:
+          description: The id of the maintenance schedule.
+          example: '123'
+          type: string
+      required:
+      - dueInMeters
+      - scheduleId
+      type: object
+    GpsSignalLossDetailsObjectResponseBody:
+      description: Details specific to GPS Signal Loss
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsPostConfigurationsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HOSViolationTriggerDetailsObjectResponseBody:
+      description: Details specific to HOS Violation
+      properties:
+        maxUntilViolationMilliseconds:
+          description: Alert if driver has this specified time until driving causes an HOS violation.
+          example: 600000
+          format: int64
+          type: integer
+        violation:
+          description: 'The type of HOS violation.  Valid values: `CaliforniaMealbreakMissed`, `CycleHoursOn`, `DailyDrivingHours`, `DailyOnDutyHours`, `Invalid`, `RestbreakMissed`, `ShiftDrivingHours`, `ShiftHours`, `ShiftOnDutyHours`, `UnsubmittedLogs`'
+          enum:
+          - CaliforniaMealbreakMissed
+          - CycleHoursOn
+          - DailyDrivingHours
+          - DailyOnDutyHours
+          - Invalid
+          - RestbreakMissed
+          - ShiftDrivingHours
+          - ShiftHours
+          - ShiftOnDutyHours
+          - UnsubmittedLogs
+          example: CaliforniaMealbreakMissed
+          type: string
+      required:
+      - maxUntilViolationMilliseconds
+      - violation
+      type: object
+    AlertsGetConfigurationsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaTagTinyResponseResponseBody:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    TireFaultCodeDetailsObjectResponseBody:
+      description: Details specific to Tire Fault Code. At least one fault code or fault code group must be selected.
+      properties:
+        hasCautionaryTireFaultCodes:
+          description: If true then alert over pressure, under pressure, across axle fault, or leak detected fault codes. Defaults to false.
+          example: true
+          type: boolean
+        hasCriticalTireFaultCodes:
+          description: If true then alert over temperature or extreme pressure over or under fault codes. Defaults to false.
+          example: true
+          type: boolean
+        manufacturer:
+          description: 'The tire manufacturer.  Valid values: `MANUFACTURER_BENDIX`, `MANUFACTURER_CONTINENTAL`, `MANUFACTURER_DORAN`, `MANUFACTURER_HENDRICKSON`, `MANUFACTURER_INVALID`, `MANUFACTURER_PRESSURE_PRO`'
+          enum:
+          - MANUFACTURER_BENDIX
+          - MANUFACTURER_CONTINENTAL
+          - MANUFACTURER_DORAN
+          - MANUFACTURER_HENDRICKSON
+          - MANUFACTURER_INVALID
+          - MANUFACTURER_PRESSURE_PRO
+          example: MANUFACTURER_BENDIX
+          type: string
+        specificTireFaultCodes:
+          description: The list of specific tire fault codes to be alerted on.
+          example:
+          - TIRE_ALERT_ACROSS_AXLE_FAULT
+          - TIRE_ALERT_ACROSS_AXLE_FAULT
+          - TIRE_ALERT_ACROSS_AXLE_FAULT
+          items:
+            description: 'The specific tire fault codes.  Valid values: `TIRE_ALERT_ACROSS_AXLE_FAULT`, `TIRE_ALERT_EXTREME_OVER_PRESSURE`, `TIRE_ALERT_EXTREME_UNDER_PRESSURE`, `TIRE_ALERT_INVALID`, `TIRE_ALERT_LEAK_DETECTED`, `TIRE_ALERT_OVER_PRESSURE`, `TIRE_ALERT_OVER_TEMPERATURE`, `TIRE_ALERT_UNDER_PRESSURE`'
+            enum:
+            - TIRE_ALERT_ACROSS_AXLE_FAULT
+            - TIRE_ALERT_EXTREME_OVER_PRESSURE
+            - TIRE_ALERT_EXTREME_UNDER_PRESSURE
+            - TIRE_ALERT_INVALID
+            - TIRE_ALERT_LEAK_DETECTED
+            - TIRE_ALERT_OVER_PRESSURE
+            - TIRE_ALERT_OVER_TEMPERATURE
+            - TIRE_ALERT_UNDER_PRESSURE
+            example: TIRE_ALERT_ACROSS_AXLE_FAULT
+            type: string
+          type: array
+      required:
+      - manufacturer
+      type: object
+    AlertsGetConfigurationsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CellSignalLossDetailsObjectResponseBody:
+      description: Details specific to Cell Signal Loss
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsPostConfigurationsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostResponseResWorkflowConfigurationObjectResponseBody'
+      required:
+      - data
+      type: object
+    GeofenceExitTriggerDetailsObjectRequestBody:
+      description: Details specific to Geofence Exit
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectRequestBody'
+      required:
+      - location
+      type: object
+    DriverDocumentSubmittedDetailsObjectRequestBody:
+      description: Details specific to Driver Document Submitted
+      properties:
+        templateIds:
+          description: Specific template IDs to be alerted on.
+          example:
+          - 23b78345-d098-3k4j-1pk3-4k5j6938j289
+          - 23b78345-d098-3k4j-1pk3-4k5j6938j289
+          items:
+            description: The unique IDs of the template.
+            format: uuid
+            type: string
+          type: array
+      required:
+      - templateIds
+      type: object
+    SpeedTriggerDetailsObjectResponseBody:
+      description: Details specific to Speed
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `LESS`'
+          enum:
+          - GREATER
+          - LESS
+          example: GREATER
+          type: string
+        speedKilometersPerHour:
+          description: The speed threshold value.
+          example: 120
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      - operation
+      - speedKilometersPerHour
+      type: object
+    CellSignalLossDetailsObjectRequestBody:
+      description: Details specific to Cell Signal Loss
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    ActionObjectResponseBody:
+      description: Action to take.
+      properties:
+        actionParams:
+          $ref: '#/components/schemas/ActionParamsObjectResponseBody'
+        actionTypeId:
+          description: 'The id of the of the action type. Reference the following list for the ids:
+
+            The following action types are in Beta:
+
+            Driver App Push = 5
+
+            The following action types are Stable:
+
+            Notification (Email, Text, Samsara Fleet Push) = 1
+
+            Dashboard Notification = 3
+
+            Webhook = 4
+
+            Slack = 6
+
+            '
+          example: 1
+          format: int32
+          type: integer
+      required:
+      - actionTypeId
+      type: object
+    SpecificVehicleFaultCodeObjectRequestBody:
+      description: A specific vehicle fault code.
+      properties:
+        faultCode:
+          description: The specific fault code name.
+          example: '1067'
+          type: string
+        type:
+          description: 'The specific fault code type.  Valid values: `INVALID_FAULT_CODE_TYPE`, `J1939_DTC`, `J1939_SPN`, `PASSENGER_DTC`'
+          enum:
+          - INVALID_FAULT_CODE_TYPE
+          - J1939_DTC
+          - J1939_SPN
+          - PASSENGER_DTC
+          example: J1939_SPN
+          type: string
+      required:
+      - faultCode
+      - type
+      type: object
+    CustomReportsGetCustomReportConfigsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhookParamsObjectRequestBody:
+      description: The webhook configuration for an Action.
+      properties:
+        payloadType:
+          default: enriched
+          description: 'This determines the alert webhook payload type to use. Learn more: https://developers.samsara.com/docs/webhook-reference.  Valid values: `legacy`, `enriched`'
+          enum:
+          - legacy
+          - enriched
+          example: enriched
+          type: string
+        webhookIds:
+          description: The webhook IDs.
+          example:
+          - '123'
+          - '123'
+          - '123'
+          items:
+            description: The ID of the webhook. This will appear in both Samsaras cloud dashboard and the API. This is system generated.
+            example: '123'
+            type: string
+          type: array
+      required:
+      - webhookIds
+      type: object
+    DeviceMovementTriggerDetailsObjectRequestBody:
+      description: Details specific to Device Movement
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    WebhookParamsObjectResponseBody:
+      description: The webhook configuration for an Action.
+      properties:
+        payloadType:
+          default: enriched
+          description: 'This determines the alert webhook payload type to use. Learn more: https://developers.samsara.com/docs/webhook-reference.  Valid values: `legacy`, `enriched`'
+          enum:
+          - legacy
+          - enriched
+          example: enriched
+          type: string
+        webhookIds:
+          description: The webhook IDs.
+          example:
+          - '123'
+          - '123'
+          - '123'
+          items:
+            description: The ID of the webhook. This will appear in both Samsaras cloud dashboard and the API. This is system generated.
+            example: '123'
+            type: string
+          type: array
+      required:
+      - webhookIds
+      type: object
+    EngineIdleTriggerDetailsObjectRequestBody:
+      description: Details specific to Engine Idle
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    DriverDocumentSubmittedDetailsObjectResponseBody:
+      description: Details specific to Driver Document Submitted
+      properties:
+        templateIds:
+          description: Specific template IDs to be alerted on.
+          example:
+          - 23b78345-d098-3k4j-1pk3-4k5j6938j289
+          - 23b78345-d098-3k4j-1pk3-4k5j6938j289
+          items:
+            description: The unique IDs of the template.
+            format: uuid
+            type: string
+          type: array
+      required:
+      - templateIds
+      type: object
+    CustomReportsGetCustomReportConfigsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsGetConfigurationsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    InAppNotificationOptionsObjectRequestBody:
+      description: Options for in-app notifications
+      properties:
+        canDictateAlertTitle:
+          default: false
+          description: Whether the alert will dictate the title of the alert. Both canDictateAlertTitle and canPlayAlertSound should be enabled or disabled together.
+          example: false
+          type: boolean
+        canPlayAlertSound:
+          default: false
+          description: Whether the alert will play a sound. Both canDictateAlertTitle and canPlayAlertSound should be enabled or disabled together.
+          example: false
+          type: boolean
+        customText:
+          description: Custom text to display in the notification (320 character max).
+          example: Custom text
+          maxLength: 320
+          type: string
+        isEnabled:
+          default: true
+          description: Whether in-app notifications are enabled.
+          example: true
+          type: boolean
+      required:
+      - isEnabled
+      type: object
+    AlertsPatchConfigurationsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsDeleteConfigurationsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewayUnpluggedTriggerDetailsObjectRequestBody:
+      description: Details specific to Gateway Unplugged
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    RouteStopEstimatedArrivalDetailsObjectResponseBody:
+      description: Details specific to Route Stop Estimated Arrival
+      properties:
+        alertBeforeArrivalMilliseconds:
+          description: Time threshold for when to send an alert. Sends an alert when the ETA is less than the threshold.
+          example: 300000
+          format: int64
+          type: integer
+        hasLiveShareLink:
+          description: If true, will include a live sharing link in the alert. Defaults to false.
+          example: true
+          type: boolean
+        isAlertOnRouteStopOnly:
+          description: If true, will only alert if the vehicle is en-route to the stop. Defaults to false.
+          example: true
+          type: boolean
+        location:
+          $ref: '#/components/schemas/LocationObjectResponseBody'
+      required:
+      - alertBeforeArrivalMilliseconds
+      - location
+      type: object
+    AlertsPostConfigurationsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ScheduledMaintenanceByEngineHoursDetailsObjectResponseBody:
+      description: Details specific to Scheduled Maintenance By Engine Hours
+      properties:
+        dueInHours:
+          description: Alert when maintenance is due in the specified number of hours.
+          example: 5000
+          format: int64
+          type: integer
+        scheduleId:
+          description: The id of the maintenance schedule.
+          example: '123'
+          type: string
+      required:
+      - dueInHours
+      - scheduleId
+      type: object
+    GatewayDisconnectedDetailsObjectResponseBody:
+      description: Details specific to Gateway Disconnected
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting. Can only be either 900000 (15 minutes) or 3600000 (60 min).
+          example: 3600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsPatchConfigurationsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsGetConfigurationsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ActionParamsObjectResponseBody:
+      description: The action type specific details. Set webhookIds for Slack or Webhook actions. Set recipients for Notifications. Set driverAppNotification for Driver App Push. Other action types don't need to set a param.
+      properties:
+        driverAppNotification:
+          $ref: '#/components/schemas/DriverAppNotificationObjectResponseBody'
+        recipients:
+          description: Recipient of the action.
+          items:
+            $ref: '#/components/schemas/RecipientObjectResponseBody'
+          type: array
+        webhooks:
+          $ref: '#/components/schemas/WebhookParamsObjectResponseBody'
+      type: object
+    AlertsGetConfigurationsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ScheduledMaintenanceTriggerDetailsObjectResponseBody:
+      description: Details specific to Scheduled Maintenance by Date
+      properties:
+        dueInDays:
+          description: Alert when maintenance is due in the specified number of days.
+          example: 10
+          format: int64
+          type: integer
+        scheduleId:
+          description: The id of the maintenance schedule.
+          example: '123'
+          type: string
+      required:
+      - dueInDays
+      - scheduleId
+      type: object
+    AlertsPostConfigurationsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsPostConfigurationsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CircleRequestBody:
+      description: Information about a circular geofence. This field is only needed if the geofence is a circle.
+      properties:
+        latitude:
+          description: Latitude of the address. Will be geocoded from formattedAddress if not provided.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from formattedAddress if not provided.
+          example: 137.7749
+          format: double
+          type: number
+        name:
+          description: The name of the cirlce.
+          example: My Geofence Cirlce
+          type: string
+        radiusMeters:
+          description: The radius of the circular geofence in meters.
+          example: 23
+          format: int64
+          type: integer
+      required:
+      - name
+      - radiusMeters
+      type: object
+    RecipientObjectRequestBody:
+      description: Recipient of an Action. One of userId contactId or roleId needs to be set.
+      properties:
+        contactId:
+          description: The ID of the contact.
+          example: '1234'
+          type: string
+        notificationTypes:
+          description: How the user/contact/role should be notified.
+          example:
+          - sms
+          - sms
+          - sms
+          items:
+            description: 'The type of notification.  Valid values: `push`, `sms`, `email`'
+            enum:
+            - push
+            - sms
+            - email
+            example: push
+            type: string
+          type: array
+        roleId:
+          description: The ID of the role.
+          example: 67004a16-be3c-4ef6-a51b-1c45a2c27a92
+          type: string
+        type:
+          description: 'The type of recipients  Valid values: `user`, `contact`, `role`'
+          enum:
+          - user
+          - contact
+          - role
+          example: user
+          type: string
+        userId:
+          description: The ID of the user.
+          example: '1234'
+          type: string
+      required:
+      - type
+      type: object
+    AlertsPostConfigurationsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsPostConfigurationsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    OperationalSettingsObjectResponseBody:
+      description: Settings on when the alert should be operational.
+      properties:
+        timeRangeType:
+          description: 'The type of time ranges.  Valid values: `activeBetween`, `inactiveBetween`'
+          enum:
+          - activeBetween
+          - inactiveBetween
+          example: activeBetween
+          type: string
+        timeRanges:
+          description: The time ranges this alert applies to.
+          items:
+            $ref: '#/components/schemas/TimeRangeObjectResponseBody'
+          type: array
+      required:
+      - timeRangeType
+      - timeRanges
+      type: object
+    TinyDriverObjectResponseBody:
+      description: The driver of a vehicle.
+      properties:
+        driverId:
+          description: ID of the driver.
+          example: '12434'
+          type: string
+      required:
+      - driverId
+      type: object
+    OutsideGeofenceTriggerDetailsObjectResponseBody:
+      description: Details specific to Outside Geofence
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectResponseBody'
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - location
+      - minDurationMilliseconds
+      type: object
+    CustomReportsGetCustomReportConfigsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsPatchConfigurationsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PatchResponseWorkflowConfigurationObjectResponseBody'
+      required:
+      - data
+      type: object
+    VehicleFaultCodeDetailsObjectRequestBody:
+      description: Details specific to Vehicle Fault Code. At least one fault code or fault code group must be selected.
+      properties:
+        hasAnyAmberWarningLampCodes:
+          description: If true then alert on codes for less serious errors that do not warrant stopping. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyFaultCodes:
+          description: If true this means that any code is alertable. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyMalfunctionIndicatorLampCodes:
+          description: If true then alert on emission-related codes. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyProtectionLampCodes:
+          description: If true then alert on codes for non-electric vehicle parts. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyRedStopLampCodes:
+          description: If true then alert when the vehicle warrants stopping. Defaults to false.
+          example: true
+          type: boolean
+        hasAnyTrailerAbsLampCodes:
+          description: If true then alert when the ABS light is on. Defaults to false.
+          example: true
+          type: boolean
+        specificFaultCodes:
+          description: The list of specific fault codes to be alerted on.
+          items:
+            $ref: '#/components/schemas/SpecificVehicleFaultCodeObjectRequestBody'
+          type: array
+      type: object
+    CustomReportsGetCustomReportConfigsResponseBody:
+      properties:
+        data:
+          description: List of custom report config objects.
+          items:
+            $ref: '#/components/schemas/CustomReportConfigObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    AlertsPatchConfigurationsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsDeleteConfigurationsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportConfigsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PolygonResponseBody:
+      description: Information about a polygon geofence. This field is only needed if the geofence is a polygon.
+      properties:
+        name:
+          description: The name of the polygon.
+          example: My Geofence Polygon
+          type: string
+        vertices:
+          description: The vertices of the polygon geofence. These geofence vertices describe the perimeter of the polygon, and must consist of at least 3 vertices and less than 40.
+          items:
+            $ref: '#/components/schemas/VertexResponseBody'
+          type: array
+      required:
+      - name
+      type: object
+    GatewayDisconnectedDetailsObjectRequestBody:
+      description: Details specific to Gateway Disconnected
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting. Can only be either 900000 (15 minutes) or 3600000 (60 min).
+          example: 3600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsDeleteConfigurationsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GeofenceEntryTriggerDetailsObjectRequestBody:
+      description: Details specific to Geofence Entry
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectRequestBody'
+      required:
+      - location
+      type: object
+    WorkflowTriggerObjectResponseBody:
+      description: The trigger of an alert.
+      properties:
+        triggerParams:
+          $ref: '#/components/schemas/TriggerParamsObjectResponseBody'
+        triggerTypeId:
+          description: 'The id of the trigger type. Reference the following list for the ids:
+
+
+            Ambient Temperature = 1003
+
+            DVIR Submitted for Asset = 5005
+
+            Driver Recorded = 5027
+
+            Vehicle Speed = 1000
+
+            Fuel Level (Percentage) = 1005
+
+            Vehicle DEF Level (Percentage) = 1006
+
+            Vehicle Battery = 1007
+
+            Gateway Unplugged = 1009
+
+            Dashcam Disconnected = 1012
+
+            Camera Connector Disconnected = 1046
+
+            Asset starts moving = 1013
+
+            Inside Geofence = 1014
+
+            Outside Geofence = 1020
+
+            Unassigned Driving = 1016
+
+            Driver HOS Violation = 1018
+
+            Vehicle Engine Idle = 1019
+
+            Asset Engine On = 1021
+
+            Asset Engine Off = 1022
+
+            Harsh Event = 1023
+
+            Scheduled Maintenance = 1024
+
+            Scheduled Maintenance by Odometer = 1025
+
+            Scheduled Maintenance by Engine Hours = 1026
+
+            Out of Route = 1027
+
+            GPS Signal Loss = 1032
+
+            Cell Signal Loss = 1033
+
+            Fault Code = 1029
+
+            Tire Faults = 1043
+
+            Gateway Disconnected = 1030
+
+            Panic Button = 1034
+
+            Tampering Detected = 1045
+
+            If vehicle is severely speeding (as defined by your organization) = 5022
+
+            Driver Document Submitted = 5009
+
+            Driver App Sign In = 5012
+
+            Driver App Sign Out = 5013
+
+            Geofence Entry = 5016
+
+            Geofence Exit = 5017
+
+            Route Stop ETA Alert = 5018
+
+            Scheduled Date And Time = 8001
+
+            '
+          example: 1000
+          format: int32
+          type: integer
+      required:
+      - triggerTypeId
+      type: object
+    VertexRequestBody:
+      description: The vertex of the polygon geofence. These geofence vertices describe the perimeter of the polygon, and must consist of at least 3 vertices and less than 40.
+      properties:
+        latitude:
+          description: The latitude of a geofence vertex in decimal degrees.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: The longitude of a geofence vertex in decimal degrees.
+          example: 137.7749
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    TimeRangeObjectRequestBody:
+      description: A daily time range. If start time of day is greater than end time of day, then the time range applies overnight from the specified day of week into the following day.
+      properties:
+        daysOfWeek:
+          description: Which days this timezone applies to.
+          example:
+          - FRIDAY
+          - THURSDAY
+          items:
+            description: 'The day of the week.  Valid values: `FRIDAY`, `MONDAY`, `SATURDAY`, `SUNDAY`, `THURSDAY`, `TUESDAY`, `WEDNESDAY`'
+            enum:
+            - FRIDAY
+            - MONDAY
+            - SATURDAY
+            - SUNDAY
+            - THURSDAY
+            - TUESDAY
+            - WEDNESDAY
+            example: THURSDAY
+            type: string
+          type: array
+        endTime:
+          description: The time of day at which the time range starts. In 24 hour kitchen clock format.
+          example: '20:00'
+          type: string
+        startTime:
+          description: The time of day at which the time range starts. In 24 hour kitchen clock format.
+          example: '11:00'
+          type: string
+        timezone:
+          description: The timezone of the time range uses [IANA timezone database](https://www.iana.org/time-zones) keys (e.g. `America/Los_Angeles`, `America/New_York`, `Europe/London`, etc.). You can find a mapping of common timezone formats to IANA timezone keys [here](https://unicode.org/cldr/charts/latest/supplemental/zone_tzid.html).
+          example: America/Los_Angeles
+          type: string
+      required:
+      - daysOfWeek
+      - endTime
+      - startTime
+      - timezone
+      type: object
+    RecipientObjectResponseBody:
+      description: Recipient of an Action. One of userId contactId or roleId needs to be set.
+      properties:
+        contactId:
+          description: The ID of the contact.
+          example: '1234'
+          type: string
+        notificationTypes:
+          description: How the user/contact/role should be notified.
+          example:
+          - push
+          - sms
+          - push
+          items:
+            description: 'The type of notification.  Valid values: `push`, `sms`, `email`'
+            enum:
+            - push
+            - sms
+            - email
+            example: email
+            type: string
+          type: array
+        roleId:
+          description: The ID of the role.
+          example: 67004a16-be3c-4ef6-a51b-1c45a2c27a92
+          type: string
+        type:
+          description: 'The type of recipients  Valid values: `user`, `contact`, `role`'
+          enum:
+          - user
+          - contact
+          - role
+          example: user
+          type: string
+        userId:
+          description: The ID of the user.
+          example: '1234'
+          type: string
+      required:
+      - type
+      type: object
+    TinyAssetObjectRequestBody:
+      description: Vehicle, trailer or other equipment to be tracked.
+      properties:
+        assetId:
+          description: ID of the asset.
+          example: '12443'
+          type: string
+        assetType:
+          default: uncategorized
+          description: 'The operational context in which the asset interacts with the Samsara system. Examples: Vehicle (eg: truck, bus...), Trailer (eg: dry van, reefer, flatbed...), Powered Equipment (eg: dozer, crane...), Unpowered Equipment (eg: container, dumpster...), or Uncategorized.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
+          enum:
+          - uncategorized
+          - trailer
+          - equipment
+          - unpowered
+          - vehicle
+          example: trailer
+          type: string
+      required:
+      - assetId
+      - assetType
+      type: object
+    DVIRSubmittedDeviceTriggerDetailsObjectResponseBody:
+      description: Details specific to DVIR Submitted by Device
+      properties:
+        dvirMinDurationMilliseconds:
+          description: The trigger will only fire if the selected DVIR types are submitted within the duration.
+          example: 600000
+          format: int64
+          type: integer
+        dvirSubmissionTypes:
+          description: Filter to these types of DVIR submissions.
+          example:
+          - SAFE_NO_DEFECTS
+          - SAFE_NO_DEFECTS
+          - UNSAFE
+          - UNSAFE
+          items:
+            description: 'DVIR submission type  Valid values: `SAFE_NO_DEFECTS`, `SAFE_WITH_DEFECTS`, `UNSAFE`'
+            enum:
+            - SAFE_NO_DEFECTS
+            - SAFE_WITH_DEFECTS
+            - UNSAFE
+            example: UNSAFE
+            type: string
+          type: array
+      type: object
+    SpeedTriggerDetailsObjectRequestBody:
+      description: Details specific to Speed
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `GREATER`, `LESS`'
+          enum:
+          - GREATER
+          - LESS
+          example: GREATER
+          type: string
+        speedKilometersPerHour:
+          description: The speed threshold value.
+          example: 120
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      - operation
+      - speedKilometersPerHour
+      type: object
+    EngineOffDetailsObjectResponseBody:
+      description: Details specific to Engine Off
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsGetConfigurationsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UnassignedDrivingTriggerDetailsObjectResponseBody:
+      description: Details specific to Unassigned Driving
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsGetConfigurationsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsPatchConfigurationsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PushNotificationOptionsObjectResponseBody:
+      description: Options for push notifications
+      properties:
+        isEnabled:
+          default: true
+          description: Whether push notifications are enabled.
+          example: true
+          type: boolean
+      required:
+      - isEnabled
+      type: object
+    OperationalSettingsObjectRequestBody:
+      description: Settings on when the alert should be operational.
+      properties:
+        timeRangeType:
+          description: 'The type of time ranges.  Valid values: `activeBetween`, `inactiveBetween`'
+          enum:
+          - activeBetween
+          - inactiveBetween
+          example: activeBetween
+          type: string
+        timeRanges:
+          description: The time ranges this alert applies to.
+          items:
+            $ref: '#/components/schemas/TimeRangeObjectRequestBody'
+          type: array
+      required:
+      - timeRangeType
+      - timeRanges
+      type: object
+    DriverAppNotificationObjectRequestBody:
+      description: Driver app notification settings
+      properties:
+        inAppNotificationOptions:
+          $ref: '#/components/schemas/InAppNotificationOptionsObjectRequestBody'
+        pushNotificationOptions:
+          $ref: '#/components/schemas/PushNotificationOptionsObjectRequestBody'
+      type: object
+    ScopeObjectRequestBody:
+      description: What the triggers are scoped to. These are the objects this alert applies to.
+      properties:
+        all:
+          description: Whether it applies to all applicable objects.
+          example: false
+          type: boolean
+        assets:
+          description: The assets these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/TinyAssetObjectRequestBody'
+          type: array
+        drivers:
+          description: The drivers these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/TinyDriverObjectRequestBody'
+          type: array
+        tags:
+          description: The tags these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseRequestBody'
+          type: array
+        widgets:
+          description: The widgets these triggers are scoped to.
+          items:
+            $ref: '#/components/schemas/TinyWidgetObjectRequestBody'
+          type: array
+      required:
+      - all
+      type: object
+    TimeRangeObjectResponseBody:
+      description: A daily time range. If start time of day is greater than end time of day, then the time range applies overnight from the specified day of week into the following day.
+      properties:
+        daysOfWeek:
+          description: Which days this timezone applies to.
+          example:
+          - WEDNESDAY
+          - SATURDAY
+          items:
+            description: 'The day of the week.  Valid values: `FRIDAY`, `MONDAY`, `SATURDAY`, `SUNDAY`, `THURSDAY`, `TUESDAY`, `WEDNESDAY`'
+            enum:
+            - FRIDAY
+            - MONDAY
+            - SATURDAY
+            - SUNDAY
+            - THURSDAY
+            - TUESDAY
+            - WEDNESDAY
+            example: FRIDAY
+            type: string
+          type: array
+        endTime:
+          description: The time of day at which the time range starts. In 24 hour kitchen clock format.
+          example: '20:00'
+          type: string
+        startTime:
+          description: The time of day at which the time range starts. In 24 hour kitchen clock format.
+          example: '11:00'
+          type: string
+        timezone:
+          description: The timezone of the time range uses [IANA timezone database](https://www.iana.org/time-zones) keys (e.g. `America/Los_Angeles`, `America/New_York`, `Europe/London`, etc.). You can find a mapping of common timezone formats to IANA timezone keys [here](https://unicode.org/cldr/charts/latest/supplemental/zone_tzid.html).
+          example: America/Los_Angeles
+          type: string
+      required:
+      - daysOfWeek
+      - endTime
+      - startTime
+      - timezone
+      type: object
+    GpsSignalLossDetailsObjectRequestBody:
+      description: Details specific to GPS Signal Loss
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    LocationObjectResponseBody:
+      description: A location. Polygon and Circle is deprecated, but may be set for old Alerts. At least one location must be selected.
+      properties:
+        addressIds:
+          description: All locations with selected address IDs will trigger.
+          example:
+          - Sequi eos sunt.
+          - Fuga quisquam distinctio nostrum rerum debitis ut.
+          - Qui sint earum cum nam voluptatum nihil.
+          items:
+            description: Id of the address.
+            example: Eos dolor magni mollitia.
+            type: string
+          type: array
+        addressTypes:
+          description: All locations with the selected address types will trigger.
+          example:
+          - industrialSite
+          - yard
+          - alertsOnly
+          - workforceSite
+          items:
+            description: 'Type of the address.  Valid values: `alertsOnly`, `industrialSite`, `riskZone`, `shortHaul`, `undefined`, `workforceSite`, `yard`'
+            enum:
+            - alertsOnly
+            - industrialSite
+            - riskZone
+            - shortHaul
+            - undefined
+            - workforceSite
+            - yard
+            example: alertsOnly
+            type: string
+          type: array
+        circle:
+          $ref: '#/components/schemas/CircleResponseBody'
+        polygon:
+          $ref: '#/components/schemas/PolygonResponseBody'
+        tagIds:
+          description: All locations with selected tag will trigger.
+          example:
+          - '4815'
+          - '4815'
+          items:
+            description: Id of the tag.
+            example: '4815'
+            type: string
+          type: array
+      type: object
+    AlertsGetConfigurationsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ScheduledMaintenanceOdometerTriggerDetailsObjectResponseBody:
+      description: Details specific to Scheduled Maintenance by Odometer
+      properties:
+        dueInMeters:
+          description: Alert when vehicle odometer has this many meters left until maintenance is due.
+          example: 5000
+          format: int64
+          type: integer
+        scheduleId:
+          description: The id of the maintenance schedule.
+          example: '123'
+          type: string
+      required:
+      - dueInMeters
+      - scheduleId
+      type: object
+    SpecificVehicleFaultCodeObjectResponseBody:
+      description: A specific vehicle fault code.
+      properties:
+        faultCode:
+          description: The specific fault code name.
+          example: '1067'
+          type: string
+        type:
+          description: 'The specific fault code type.  Valid values: `INVALID_FAULT_CODE_TYPE`, `J1939_DTC`, `J1939_SPN`, `PASSENGER_DTC`'
+          enum:
+          - INVALID_FAULT_CODE_TYPE
+          - J1939_DTC
+          - J1939_SPN
+          - PASSENGER_DTC
+          example: J1939_SPN
+          type: string
+      required:
+      - faultCode
+      - type
+      type: object
+    FuelLevelTriggerDetailsObjectRequestBody:
+      description: Details specific to Fuel Level Percentage
+      properties:
+        fuelLevelPercent:
+          description: The fuel level percentage threshold value.
+          example: 20
+          format: int64
+          type: integer
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+        operation:
+          description: 'How to evaluate the threshold.  Valid values: `LESS`'
+          enum:
+          - LESS
+          example: LESS
+          type: string
+      required:
+      - fuelLevelPercent
+      - minDurationMilliseconds
+      - operation
+      type: object
+    AlertsPostConfigurationsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsGetConfigurationsResponseBody:
+      properties:
+        data:
+          description: List of alert configurations.
+          items:
+            $ref: '#/components/schemas/GetResponseWorkflowConfigurationObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    RouteStopEstimatedArrivalDetailsObjectRequestBody:
+      description: Details specific to Route Stop Estimated Arrival
+      properties:
+        alertBeforeArrivalMilliseconds:
+          description: Time threshold for when to send an alert. Sends an alert when the ETA is less than the threshold.
+          example: 300000
+          format: int64
+          type: integer
+        hasLiveShareLink:
+          description: If true, will include a live sharing link in the alert. Defaults to false.
+          example: true
+          type: boolean
+        isAlertOnRouteStopOnly:
+          description: If true, will only alert if the vehicle is en-route to the stop. Defaults to false.
+          example: true
+          type: boolean
+        location:
+          $ref: '#/components/schemas/LocationObjectRequestBody'
+      required:
+      - alertBeforeArrivalMilliseconds
+      - location
+      type: object
+    GeofenceExitTriggerDetailsObjectResponseBody:
+      description: Details specific to Geofence Exit
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationObjectResponseBody'
+      required:
+      - location
+      type: object
+    DeviceMovementTriggerDetailsObjectResponseBody:
+      description: Details specific to Device Movement
+      properties:
+        minDurationMilliseconds:
+          description: The number of milliseconds the trigger needs to stay active before alerting.
+          example: 600000
+          format: int64
+          type: integer
+      required:
+      - minDurationMilliseconds
+      type: object
+    AlertsPatchConfigurationsRequestBody:
+      description: The configuration of a alert.
+      properties:
+        actions:
+          description: An array of actions.
+          items:
+            $ref: '#/components/schemas/ActionObjectRequestBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unqiue Samsara id of the alert configuration.
+          example: e1c5dffc-c7b7-47b0-a778-6a65de638abf
+          type: string
+        isEnabled:
+          description: Whether the alert is enabled or not.
+          example: true
+          type: boolean
+        name:
+          description: The custom name of the configuration.
+          example: My Harsh Event Alert
+          type: string
+        operationalSettings:
+          $ref: '#/components/schemas/OperationalSettingsObjectRequestBody'
+        scope:
+          $ref: '#/components/schemas/ScopeObjectRequestBody'
+        triggers:
+          description: An array of triggers.
+          items:
+            $ref: '#/components/schemas/WorkflowTriggerObjectRequestBody'
+          type: array
+      required:
+      - id
+      type: object
+    WorkflowTriggerObjectRequestBody:
+      description: The trigger of an alert.
+      properties:
+        triggerParams:
+          $ref: '#/components/schemas/TriggerParamsObjectRequestBody'
+        triggerTypeId:
+          description: 'The id of the trigger type. Reference the following list for the ids:
+
+
+            Ambient Temperature = 1003
+
+            DVIR Submitted for Asset = 5005
+
+            Driver Recorded = 5027
+
+            Vehicle Speed = 1000
+
+            Fuel Level (Percentage) = 1005
+
+            Vehicle DEF Level (Percentage) = 1006
+
+            Vehicle Battery = 1007
+
+            Gateway Unplugged = 1009
+
+            Dashcam Disconnected = 1012
+
+            Camera Connector Disconnected = 1046
+
+            Asset starts moving = 1013
+
+            Inside Geofence = 1014
+
+            Outside Geofence = 1020
+
+            Unassigned Driving = 1016
+
+            Driver HOS Violation = 1018
+
+            Vehicle Engine Idle = 1019
+
+            Asset Engine On = 1021
+
+            Asset Engine Off = 1022
+
+            Harsh Event = 1023
+
+            Scheduled Maintenance = 1024
+
+            Scheduled Maintenance by Odometer = 1025
+
+            Scheduled Maintenance by Engine Hours = 1026
+
+            Out of Route = 1027
+
+            GPS Signal Loss = 1032
+
+            Cell Signal Loss = 1033
+
+            Fault Code = 1029
+
+            Tire Faults = 1043
+
+            Gateway Disconnected = 1030
+
+            Panic Button = 1034
+
+            Tampering Detected = 1045
+
+            If vehicle is severely speeding (as defined by your organization) = 5022
+
+            Driver Document Submitted = 5009
+
+            Driver App Sign In = 5012
+
+            Driver App Sign Out = 5013
+
+            Geofence Entry = 5016
+
+            Geofence Exit = 5017
+
+            Route Stop ETA Alert = 5018
+
+            Scheduled Date And Time = 8001
+
+            '
+          example: 1000
+          format: int32
+          type: integer
+      required:
+      - triggerTypeId
+      type: object
+    LocationObjectRequestBody:
+      description: A location. Polygon and Circle is deprecated, but may be set for old Alerts. At least one location must be selected.
+      properties:
+        addressIds:
+          description: All locations with selected address IDs will trigger.
+          example:
+          - Ipsam doloremque.
+          - Quisquam rerum dolorum et unde.
+          - In culpa voluptas ab.
+          - Repellendus vel fugit iure.
+          items:
+            description: Id of the address.
+            example: Rerum consectetur ut et.
+            type: string
+          type: array
+        addressTypes:
+          description: All locations with the selected address types will trigger.
+          example:
+          - riskZone
+          - riskZone
+          items:
+            description: 'Type of the address.  Valid values: `alertsOnly`, `industrialSite`, `riskZone`, `shortHaul`, `undefined`, `workforceSite`, `yard`'
+            enum:
+            - alertsOnly
+            - industrialSite
+            - riskZone
+            - shortHaul
+            - undefined
+            - workforceSite
+            - yard
+            example: riskZone
+            type: string
+          type: array
+        circle:
+          $ref: '#/components/schemas/CircleRequestBody'
+        polygon:
+          $ref: '#/components/schemas/PolygonRequestBody'
+        tagIds:
+          description: All locations with selected tag will trigger.
+          example:
+          - '4815'
+          - '4815'
+          - '4815'
+          items:
+            description: Id of the tag.
+            example: '4815'
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

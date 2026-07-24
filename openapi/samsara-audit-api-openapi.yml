@@ -1,0 +1,395 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Audit API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Audit
+paths:
+  /fleet/safety-events/audit-logs/feed:
+    get:
+      description: "Get continuous safety events. The safety activity event feed offers a change-log for safety events. Use this endpoint to subscribe to safety event changes. See documentation below for all supported change-log types.\n\n| ActivityType      | Description |\n| ----------- | ----------- |\n| CreateSafetyEventActivityType | a new safety event is processed by Samsara      |\n| BehaviorLabelActivityType     | a label is added or removed from a safety event |\n| CoachingStateActivityType     | a safety event coaching state is updated        |\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Safety Events & Scores** under the Safety & Cameras category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getSafetyActivityEventFeed
+      parameters:
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Fetches Safety Activity Event Feed
+      tags:
+      - Audit
+components:
+  schemas:
+    SafetyEventsGetSafetyActivityEventFeedResponseBody:
+      properties:
+        data:
+          description: Paginated safety event activity feed limited to 10 events.
+          items:
+            $ref: '#/components/schemas/SafetyEventActivityFeedItemResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventActivityFeedItemResponseBody:
+      description: Safety event activity feed item.
+      properties:
+        id:
+          description: The ID of the activity event feed line item.
+          example: 1622151765-212014918174029-1550954461759
+          type: string
+        safetyEvent:
+          $ref: '#/components/schemas/SafetyEventObjectResponseBody'
+        time:
+          description: The time the activity occurred in the corresponding safety event in RFC 3339 milliseconds format.
+          example: '2019-10-12T07:20:50.52Z'
+          type: string
+        type:
+          description: 'The type of activity that occurred in the safety event. We currently only support CoachingStateActivityType, BehaviorLabelActivityType, and CreateSafetyEventActivityType, but we may add support for more activity types in the future.  Valid values: `BehaviorLabelActivityType`, `CoachingStateActivityType`, `CreateSafetyEventActivityType`'
+          enum:
+          - BehaviorLabelActivityType
+          - CoachingStateActivityType
+          - CreateSafetyEventActivityType
+          example: CreateSafetyEventActivityType
+          type: string
+      required:
+      - id
+      - safetyEvent
+      - time
+      - type
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventObjectResponseBody:
+      description: The safety event that was updated.
+      properties:
+        behaviorLabels:
+          description: Behavior labels for a safety event.
+          items:
+            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
+          type: array
+        driver:
+          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
+        id:
+          description: The unique Samsara ID of the safety event.
+          example: 212014918174029-1550954461759
+          type: string
+        time:
+          description: The time the safety event occurred in RFC 3339 milliseconds format.
+          example: '2019-06-13T19:08:25.455Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventBehaviorLabelsResponseBody:
+      description: Behavior label for a safety event.
+      properties:
+        name:
+          description: Name of the behavior label.
+          example: Acceleration
+          type: string
+        type:
+          description: 'Type of the BehaviorLabel.  Valid values: `Acceleration`, `Braking`, `Crash`, `DefensiveDriving`, `DidNotYield`, `Drinking`, `Drowsy`, `Eating`, `EatingDrinking`, `EdgeDistractedDriving`, `EdgeRailroadCrossingViolation`, `FollowingDistance`, `FollowingDistanceModerate`, `FollowingDistanceSevere`, `ForwardCollisionWarning`, `GenericDistraction`, `GenericTailgating`, `HarshTurn`, `Invalid`, `LaneDeparture`, `LateResponse`, `MobileUsage`, `NearCollison`, `NoSeatbelt`, `ObstructedCamera`, `PolicyViolationMask`, `RanRedLight`, `RollingStop`, `RolloverProtection`, `Smoking`, `Speeding`, `YawControl`'
+          enum:
+          - Acceleration
+          - Braking
+          - Crash
+          - DefensiveDriving
+          - DidNotYield
+          - Drinking
+          - Drowsy
+          - Eating
+          - EatingDrinking
+          - EdgeDistractedDriving
+          - EdgeRailroadCrossingViolation
+          - FollowingDistance
+          - FollowingDistanceModerate
+          - FollowingDistanceSevere
+          - ForwardCollisionWarning
+          - GenericDistraction
+          - GenericTailgating
+          - HarshTurn
+          - Invalid
+          - LaneDeparture
+          - LateResponse
+          - MobileUsage
+          - NearCollison
+          - NoSeatbelt
+          - ObstructedCamera
+          - PolicyViolationMask
+          - RanRedLight
+          - RollingStop
+          - RolloverProtection
+          - Smoking
+          - Speeding
+          - YawControl
+          example: Acceleration
+          type: string
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventDriverObjectResponseBody:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: 0987
+          type: string
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventVehicleObjectResponseBody:
+      description: A minified vehicle object.
+      properties:
+        id:
+          description: ID of the vehicle.
+          example: '1234'
+          type: string
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

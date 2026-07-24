@@ -1,0 +1,2361 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Submissions API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Submissions
+paths:
+  /form-submissions:
+    get:
+      description: "Returns all form submissions data for the specified IDs. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getFormSubmissions
+      parameters:
+      - description: A comma-separated list containing up to 100 form submission IDs to filter on. Can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the form submission.
+        explode: false
+        in: query
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of strings indicating whether to return additional information. Valid values: `externalIds`, `fieldLabels`'
+        explode: false
+        in: query
+        name: include
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Get a List of Specified Form Submissions.'
+      tags:
+      - Submissions
+    patch:
+      description: "Updates an instance of a form submission. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchFormSubmission
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPatchFormSubmissionBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Update a Single Form Submission.'
+      tags:
+      - Submissions
+      x-codegen-request-body-name: PatchFormSubmissionRequestBody
+    post:
+      description: "Creates a form submission. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postFormSubmission
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Create a Form Submission.'
+      tags:
+      - Submissions
+      x-codegen-request-body-name: PostFormSubmissionRequestBody
+  /form-submissions/pdf-exports:
+    get:
+      description: "Returns a PDF export for a form submission. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getFormSubmissionsPdfExports
+      parameters:
+      - description: ID of the form submission PDF export.
+        in: query
+        name: pdfId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsPdfExportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Return a PDF Export for a Form Submission.'
+      tags:
+      - Submissions
+    post:
+      description: "Creates a PDF export for a form submission. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postFormSubmissionsPdfExports
+      parameters:
+      - description: ID of the form submission to create a PDF export from.
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsResponseBody'
+          description: Accepted response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsPostFormSubmissionsPdfExportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Create a PDF Export for a Form Submission.'
+      tags:
+      - Submissions
+  /form-submissions/stream:
+    get:
+      description: "Returns all form submissions data that has been created or modified for your organization based on the time parameters passed in. Results are paginated and are sorted by last modified date. If you include an endTime, the endpoint will return data up until that point (exclusive). If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Form Submissions** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getFormSubmissionsStream
+      parameters:
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: A comma-separated list containing up to 50 template IDs to filter data to.
+        explode: false
+        in: query
+        name: formTemplateIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: A comma-separated list containing up to 50 user IDs to filter data to.
+        explode: false
+        in: query
+        name: userIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: A comma-separated list containing up to 50 user IDs to filter data to.
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of strings indicating whether to return additional information. Valid values: `externalIds`, `fieldLabels`'
+        explode: false
+        in: query
+        name: include
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSubmissionsGetFormSubmissionsStreamBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Get a Stream of Filtered Form Submissions.'
+      tags:
+      - Submissions
+components:
+  schemas:
+    FormSubmissionsGetFormSubmissionsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsPersonValueObjectResponseBody:
+      description: The value of a person form input field.
+      properties:
+        person:
+          $ref: '#/components/schemas/FormsPersonObjectResponseBody'
+      required:
+      - person
+      type: object
+    FormSubmissionsPatchFormSubmissionMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPatchFormSubmissionUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsMediaRecordObjectResponseBody:
+      description: Forms media record object.
+      properties:
+        id:
+          description: ID of the media record.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        processingStatus:
+          description: 'Status of the media record.  Valid values: `unknown`, `processing`, `finished`'
+          enum:
+          - unknown
+          - processing
+          - finished
+          example: processing
+          type: string
+        url:
+          description: URL containing a link to associated media content. Included if 'processingStatus' is 'finished'.
+          example: https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456
+          format: uri
+          type: string
+        urlExpiresAt:
+          description: Expiration time of the media record 'url'. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - id
+      - processingStatus
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FormSubmissionPdfExportResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    FormSubmissionsGetFormSubmissionsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestTableValueObjectRequestBody:
+      description: The value of a table form input field. Only valid for table form input fields.
+      properties:
+        rows:
+          description: List of rows in the table.
+          items:
+            $ref: '#/components/schemas/FormSubmissionRequestTableRowObjectRequestBody'
+          type: array
+      required:
+      - rows
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsNumberValueObjectResponseBody:
+      description: The value of a number form input field.
+      properties:
+        value:
+          description: Number value.
+          example: 123.456
+          format: double
+          type: number
+      required:
+      - value
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsTableValueObjectResponseBody:
+      description: The value of a table form input field.
+      properties:
+        columns:
+          description: List of table columns.
+          items:
+            $ref: '#/components/schemas/FormsTableColumnObjectResponseBody'
+          type: array
+        rows:
+          description: List of table rows.
+          items:
+            $ref: '#/components/schemas/FormsTableRowObjectResponseBody'
+          type: array
+      required:
+      - columns
+      - rows
+      type: object
+    FormSubmissionsPatchFormSubmissionGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionPdfExportResponseObjectResponseBody:
+      description: Form Submission PDF export response object.
+      properties:
+        completedAtTime:
+          description: Time when the PDF export job was completed. Included if 'jobStatus' is 'done'. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        errorMessage:
+          description: An error message for failed PDF export jobs. Included if 'jobStatus' is 'failed'.
+          example: PDF export timed out.
+          type: string
+        expiresAtTime:
+          description: Time when the PDF export job expires. After expiration, GET requests for this job will fail and clients must create a new one with another POST request. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        id:
+          description: ID of the form submission being exported.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        jobStatus:
+          description: 'Status of the PDF export job.  Valid values: `unknown`, `pending`, `done`, `failed`'
+          enum:
+          - unknown
+          - pending
+          - done
+          - failed
+          example: pending
+          type: string
+        pdfId:
+          description: Unique ID for the PDF export that is created.
+          example: 300af62b-5aea-43a9-b4cf-a59667e817ed
+          type: string
+        pdfUrl:
+          description: URL to download the PDF file. Expires at time specified in 'pdfUrlExpiresAtTime'. Included if 'jobStatus' is 'done'.
+          example: https://samsara-pdf-exports.s3.us-west-2.amazonaws.com/123456
+          type: string
+        pdfUrlExpiresAtTime:
+          description: Time when the PDF export's 'pdfUrl' expires. After expiration, clients can retrieve a fresh url with another GET request. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        requestedAtTime:
+          description: Time when the PDF export POST request was made. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - expiresAtTime
+      - id
+      - jobStatus
+      - pdfId
+      - requestedAtTime
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPatchFormSubmissionNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestTableCellObjectRequestBody:
+      description: The value of a cell in a table row.
+      properties:
+        checkBoxesValue:
+          $ref: '#/components/schemas/FormSubmissionRequestCheckBoxesValueObjectRequestBody'
+        dateTimeValue:
+          $ref: '#/components/schemas/FormSubmissionRequestDateTimeValueObjectRequestBody'
+        id:
+          description: Unique identifier for the cell.
+          example: 9fac4466-9d85-4768-9f1f-ff8f757f70c4
+          format: uuid
+          type: string
+        multipleChoiceValue:
+          $ref: '#/components/schemas/FormSubmissionRequestMultipleChoiceValueObjectRequestBody'
+        numberValue:
+          $ref: '#/components/schemas/FormSubmissionRequestNumberValueObjectRequestBody'
+        personValue:
+          $ref: '#/components/schemas/FormSubmissionRequestPersonValueObjectRequestBody'
+        textValue:
+          $ref: '#/components/schemas/FormSubmissionRequestTextValueObjectRequestBody'
+        type:
+          description: 'Type of the cell field.  Valid values: `number`, `text`, `multiple_choice`, `check_boxes`, `datetime`, `person`'
+          enum:
+          - number
+          - text
+          - multiple_choice
+          - check_boxes
+          - datetime
+          - person
+          example: number
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormSubmissionsGetFormSubmissionsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPatchFormSubmissionRequestBody:
+      description: Form submission fields to update.
+      properties:
+        assignedTo:
+          $ref: '#/components/schemas/FormSubmissionRequestAssignedToRequestBody'
+        dueAtTime:
+          description: Due date of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        id:
+          description: ID of the form submission.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        status:
+          description: 'Status of the form submission.  Valid values: `toDo`, `dismissed`'
+          enum:
+          - toDo
+          - dismissed
+          example: toDo
+          type: string
+        title:
+          description: Title of the form submission.
+          example: Job - J999
+          maxLength: 255
+          type: string
+      required:
+      - id
+      type: object
+    FormsScoreObjectResponseBody:
+      description: Forms score object.
+      properties:
+        maxPoints:
+          description: Total possible points of the form submission.
+          example: 80
+          format: double
+          type: number
+        scorePercent:
+          description: Percentage score of the form submission, calculated as scorePoints / maxPoints.
+          example: 75
+          format: double
+          type: number
+        scorePoints:
+          description: Score, in points, of the form submission.
+          example: 60
+          format: double
+          type: number
+      required:
+      - maxPoints
+      - scorePercent
+      - scorePoints
+      type: object
+    FormSubmissionRequestDateTimeValueObjectRequestBody:
+      description: The value of a datetime form input field. Only valid for datetime form input fields.
+      properties:
+        value:
+          description: The value of the user generated date/time field response. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - value
+      type: object
+    FormSubmissionsPatchFormSubmissionBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestPersonObjectRequestBody:
+      description: Person object.
+      properties:
+        polymorphicUserId:
+          description: Samsara polymorphicUserID of the person.
+          example: user-12345
+          type: string
+      required:
+      - polymorphicUserId
+      type: object
+    FormsPolymorphicUserObjectResponseBody:
+      description: User or driver object.
+      properties:
+        id:
+          description: ID of the polymorphic user.
+          example: '938172'
+          type: string
+        type:
+          description: 'The type of the polymorphic user.  Valid values: `driver`, `user`'
+          enum:
+          - driver
+          - user
+          example: driver
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormSubmissionsPostFormSubmissionResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FormSubmissionResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    FormsAssetObjectResponseBody:
+      description: Tracked or untracked (i.e. manually entered) asset object.
+      properties:
+        entryType:
+          description: 'The type of entry for the asset.  Valid values: `tracked`, `untracked`'
+          enum:
+          - tracked
+          - untracked
+          example: tracked
+          type: string
+        id:
+          description: ID of a tracked asset. Included if 'entryType' is 'tracked'.
+          example: '281474982859091'
+          type: string
+        name:
+          description: Name of an untracked (i.e. manually entered) asset.
+          example: trailer 123
+          type: string
+      required:
+      - entryType
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsPersonObjectResponseBody:
+      description: Tracked or untracked (i.e. manually entered) person object.
+      properties:
+        entryType:
+          description: 'The type of entry for the person.  Valid values: `tracked`, `untracked`'
+          enum:
+          - tracked
+          - untracked
+          example: tracked
+          type: string
+        name:
+          description: Name of an untracked (i.e. manually entered) person.
+          example: Jake
+          type: string
+        polymorphicUserId:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+      required:
+      - entryType
+      type: object
+    FormSubmissionsGetFormSubmissionsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestFieldInputObjectRequestBody:
+      description: Forms input field request body object.
+      properties:
+        assetValue:
+          $ref: '#/components/schemas/FormSubmissionRequestAssetValueObjectRequestBody'
+        checkBoxesValue:
+          $ref: '#/components/schemas/FormSubmissionRequestCheckBoxesValueObjectRequestBody'
+        dateTimeValue:
+          $ref: '#/components/schemas/FormSubmissionRequestDateTimeValueObjectRequestBody'
+        id:
+          description: ID of the forms input field object.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        multipleChoiceValue:
+          $ref: '#/components/schemas/FormSubmissionRequestMultipleChoiceValueObjectRequestBody'
+        numberValue:
+          $ref: '#/components/schemas/FormSubmissionRequestNumberValueObjectRequestBody'
+        personValue:
+          $ref: '#/components/schemas/FormSubmissionRequestPersonValueObjectRequestBody'
+        tableValue:
+          $ref: '#/components/schemas/FormSubmissionRequestTableValueObjectRequestBody'
+        textValue:
+          $ref: '#/components/schemas/FormSubmissionRequestTextValueObjectRequestBody'
+        type:
+          description: 'Type of the field.  Valid values: `number`, `text`, `multiple_choice`, `check_boxes`, `datetime`, `asset`, `person`, `table`'
+          enum:
+          - number
+          - text
+          - multiple_choice
+          - check_boxes
+          - datetime
+          - asset
+          - person
+          - table
+          example: number
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormsTableColumnObjectResponseBody:
+      description: Defines a column in a table form input field.
+      properties:
+        id:
+          description: Unique identifier for the column.
+          format: uuid
+          type: string
+        label:
+          description: Label of the column.
+          example: Store Number
+          type: string
+        type:
+          description: 'Type of the column field.  Valid values: `text, number, datetime, check_boxes, multiple_choice, signature, media, person`'
+          enum:
+          - text, number, datetime, check_boxes, multiple_choice, signature, media, person
+          example: number
+          type: string
+      required:
+      - id
+      - label
+      - type
+      type: object
+    FormSubmissionsGetFormSubmissionsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamResponseBody:
+      properties:
+        data:
+          description: List of form submissions.
+          items:
+            $ref: '#/components/schemas/FormSubmissionResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsLocationObjectResponseBody:
+      description: Form template location object.
+      properties:
+        latitude:
+          description: Latitude of a location.
+          example: 12333122.3
+          format: double
+          type: number
+        longitude:
+          description: Longitude of a location.
+          example: 1233331.4
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    FormTemplateReferenceObjectResponseBody:
+      description: Form template reference object.
+      properties:
+        id:
+          description: ID of the form template.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        revisionId:
+          description: ID of the form template revision.
+          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+      required:
+      - id
+      - revisionId
+      type: object
+    FormSubmissionsPatchFormSubmissionServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplateReferenceObjectRequestBody:
+      description: Form template reference object.
+      properties:
+        id:
+          description: ID of the form template.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        revisionId:
+          description: ID of the form template revision.
+          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+      required:
+      - id
+      - revisionId
+      type: object
+    FormSubmissionsPostFormSubmissionNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPatchFormSubmissionTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionRequestBody:
+      description: Form submission fields to create.
+      properties:
+        assignedTo:
+          $ref: '#/components/schemas/FormSubmissionRequestAssignedToRequestBody'
+        dueAtTime:
+          description: Due date of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        fields:
+          description: List of field inputs in a form submission.
+          items:
+            $ref: '#/components/schemas/FormSubmissionRequestFieldInputObjectRequestBody'
+          type: array
+        formTemplate:
+          $ref: '#/components/schemas/FormTemplateReferenceObjectRequestBody'
+        status:
+          description: 'Status of the form submission.  Valid values: `toDo`'
+          enum:
+          - toDo
+          example: toDo
+          type: string
+        title:
+          description: Title of the form submission.
+          example: Job - J999
+          maxLength: 255
+          type: string
+      required:
+      - formTemplate
+      - status
+      type: object
+    FormSubmissionsPostFormSubmissionNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsAssetValueObjectResponseBody:
+      description: The value of an asset form input field.
+      properties:
+        asset:
+          $ref: '#/components/schemas/FormsAssetObjectResponseBody'
+      required:
+      - asset
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestTableRowObjectRequestBody:
+      description: The value of a row in a table form input field.
+      properties:
+        cells:
+          description: List of cells in the row.
+          items:
+            $ref: '#/components/schemas/FormSubmissionRequestTableCellObjectRequestBody'
+          type: array
+        id:
+          description: Unique identifier for the row.
+          example: ee62df83-16e8-46ae-94d6-4933848f5e66
+          format: uuid
+          type: string
+      required:
+      - cells
+      - id
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestAssignedToRequestBody:
+      description: Form submission assignee update object
+      properties:
+        id:
+          description: ID of the form submission assignee.
+          example: '938172'
+          type: string
+        type:
+          description: 'Type of the form submission assignee.  Valid values: `driver`'
+          enum:
+          - driver
+          example: driver
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormSubmissionsGetFormSubmissionsResponseBody:
+      properties:
+        data:
+          description: List of form submissions.
+          items:
+            $ref: '#/components/schemas/FormSubmissionResponseObjectResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    FormSubmissionRequestNumberValueObjectRequestBody:
+      description: The value of a number form input field. Only valid for number form input fields.
+      properties:
+        value:
+          example: 123.456
+          format: double
+          type: number
+      required:
+      - value
+      type: object
+    FormSubmissionRequestAssetValueObjectRequestBody:
+      description: The value of an asset form input field. Only valid for asset form input fields.
+      properties:
+        asset:
+          $ref: '#/components/schemas/FormSubmissionRequestAssetObjectRequestBody'
+      required:
+      - asset
+      type: object
+    FormSubmissionsPostFormSubmissionTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestCheckBoxesValueObjectRequestBody:
+      description: The value of a check boxes form input field. Only valid for check boxes form input fields.
+      properties:
+        valueIds:
+          example:
+          - 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          - 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          - 2214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          - 3214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          items:
+            example: 233374f1-297f-8711-5fc3-4f6b3731ad63
+            format: uuid
+            type: string
+          type: array
+      required:
+      - valueIds
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsTableRowObjectResponseBody:
+      description: Defines a row in a table form input field.
+      properties:
+        cells:
+          description: List of cells in the row.
+          items:
+            $ref: '#/components/schemas/FormsTableCellObjectResponseBody'
+          type: array
+        id:
+          description: Unique identifier for the row.
+          format: uuid
+          type: string
+      required:
+      - cells
+      - id
+      type: object
+    FormsMediaValueObjectResponseBody:
+      description: The value of a media form input field.
+      properties:
+        mediaList:
+          description: List of forms media record objects.
+          items:
+            $ref: '#/components/schemas/FormsMediaRecordObjectResponseBody'
+          type: array
+      required:
+      - mediaList
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FormSubmissionPdfExportResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    FormSubmissionsGetFormSubmissionsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPatchFormSubmissionResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FormSubmissionResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    FormsIssueCreatedByFieldObjectResponseBody:
+      description: Issue created from this form input field input object.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the issue created from this form input field input object.
+          example: '12345'
+          type: string
+      required:
+      - id
+      type: object
+    FormSubmissionRequestAssetObjectRequestBody:
+      description: Asset object.
+      properties:
+        id:
+          description: Samsara ID of the asset.
+          example: '281474982859091'
+          type: string
+      required:
+      - id
+      type: object
+    FormSubmissionsPatchFormSubmissionBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPatchFormSubmissionNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestTextValueObjectRequestBody:
+      description: The value of a text form input field. Only valid for text form input fields.
+      properties:
+        value:
+          example: Exposed wires
+          type: string
+      required:
+      - value
+      type: object
+    FormSubmissionsPostFormSubmissionGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestMultipleChoiceValueObjectRequestBody:
+      description: The value of a multiple choice form input field. Only valid for multiple choice form input fields.
+      properties:
+        valueId:
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+      required:
+      - valueId
+      type: object
+    FormSubmissionsPostFormSubmissionBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionRequestPersonValueObjectRequestBody:
+      description: The value of an person form input field. Only valid for person form input fields.
+      properties:
+        person:
+          $ref: '#/components/schemas/FormSubmissionRequestPersonObjectRequestBody'
+      required:
+      - person
+      type: object
+    FormSubmissionsGetFormSubmissionsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsTextValueObjectResponseBody:
+      description: The value of a text form input field.
+      properties:
+        value:
+          description: Text value.
+          example: Exposed wires
+          type: string
+      required:
+      - value
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsFieldInputObjectResponseBody:
+      description: Forms input field object.
+      properties:
+        assetValue:
+          $ref: '#/components/schemas/FormsAssetValueObjectResponseBody'
+        checkBoxesValue:
+          $ref: '#/components/schemas/FormsCheckBoxesValueObjectResponseBody'
+        dateTimeValue:
+          $ref: '#/components/schemas/FormsDateTimeValueObjectResponseBody'
+        id:
+          description: ID of the forms input field object.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        issue:
+          $ref: '#/components/schemas/FormsIssueCreatedByFieldObjectResponseBody'
+        label:
+          description: Forms input field label.
+          example: Engine Hours
+          type: string
+        mediaList:
+          description: List of forms media record objects.
+          items:
+            $ref: '#/components/schemas/FormsMediaRecordObjectResponseBody'
+          type: array
+        mediaValue:
+          $ref: '#/components/schemas/FormsMediaValueObjectResponseBody'
+        multipleChoiceValue:
+          $ref: '#/components/schemas/FormsMultipleChoiceValueObjectResponseBody'
+        note:
+          description: A note attached to the field input.
+          example: Fire and oil can lead to an accident.
+          type: string
+        numberValue:
+          $ref: '#/components/schemas/FormsNumberValueObjectResponseBody'
+        personValue:
+          $ref: '#/components/schemas/FormsPersonValueObjectResponseBody'
+        signatureValue:
+          $ref: '#/components/schemas/FormsSignatureValueObjectResponseBody'
+        tableValue:
+          $ref: '#/components/schemas/FormsTableValueObjectResponseBody'
+        textValue:
+          $ref: '#/components/schemas/FormsTextValueObjectResponseBody'
+        type:
+          description: 'Type of the field.  Valid values: `number, text, multiple_choice, check_boxes, datetime, signature, media, asset, table`'
+          enum:
+          - number, text, multiple_choice, check_boxes, datetime, signature, media, asset, table
+          example: number
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsTableCellObjectResponseBody:
+      description: Defines a cell in a table row.
+      properties:
+        checkBoxesValue:
+          $ref: '#/components/schemas/FormsCheckBoxesValueObjectResponseBody'
+        dateTimeValue:
+          $ref: '#/components/schemas/FormsDateTimeValueObjectResponseBody'
+        id:
+          description: Unique identifier for the cell.
+          format: uuid
+          type: string
+        mediaValue:
+          $ref: '#/components/schemas/FormsMediaValueObjectResponseBody'
+        multipleChoiceValue:
+          $ref: '#/components/schemas/FormsMultipleChoiceValueObjectResponseBody'
+        numberValue:
+          $ref: '#/components/schemas/FormsNumberValueObjectResponseBody'
+        personValue:
+          $ref: '#/components/schemas/FormsPersonValueObjectResponseBody'
+        signatureValue:
+          $ref: '#/components/schemas/FormsSignatureValueObjectResponseBody'
+        textValue:
+          $ref: '#/components/schemas/FormsTextValueObjectResponseBody'
+        type:
+          description: 'Type of the cell field.  Valid values: `number, text, multiple_choice, check_boxes, datetime, signature, media, person`'
+          enum:
+          - number, text, multiple_choice, check_boxes, datetime, signature, media, person
+          example: number
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormSubmissionResponseObjectResponseBody:
+      description: Form Submission response object.
+      properties:
+        asset:
+          $ref: '#/components/schemas/FormsAssetObjectResponseBody'
+        assignedAtTime:
+          description: Assignment time of the form submission. Sometimes returned if the submission was assigned to a user or driver. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        assignedTo:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+        createdAtTime:
+          description: Creation time of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        dueAtTime:
+          description: Time of when the submission is due. Sometimes returned, if the submission has a due date. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        fields:
+          description: List of field inputs in a form submission.
+          items:
+            $ref: '#/components/schemas/FormsFieldInputObjectResponseBody'
+          type: array
+        formTemplate:
+          $ref: '#/components/schemas/FormTemplateReferenceObjectResponseBody'
+        id:
+          description: ID of the form submission.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        isRequired:
+          description: Indicates whether the worker is required to complete this form or not. Sometimes returned if the submission was assigned to a user or driver.
+          example: true
+          type: boolean
+        location:
+          $ref: '#/components/schemas/FormsLocationObjectResponseBody'
+        score:
+          $ref: '#/components/schemas/FormsScoreObjectResponseBody'
+        status:
+          description: 'State for the Form Submission. Always returned.  Valid values: `toDo`, `submitted`, `dismissed`'
+          enum:
+          - toDo
+          - submitted
+          - dismissed
+          example: toDo
+          type: string
+        submittedAtTime:
+          description: Submission time of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        submittedBy:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+        title:
+          description: Title of the form submission. Sometimes returned if the submission has a title.
+          example: Form Submission Title
+          type: string
+        updatedAtTime:
+          description: Update time of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - createdAtTime
+      - fields
+      - formTemplate
+      - id
+      - status
+      - submittedAtTime
+      - submittedBy
+      - updatedAtTime
+      type: object
+    FormsSignatureValueObjectResponseBody:
+      description: The value of a signature form input field.
+      properties:
+        media:
+          $ref: '#/components/schemas/FormsMediaRecordObjectResponseBody'
+      required:
+      - media
+      type: object
+    FormSubmissionsPatchFormSubmissionInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsCheckBoxesValueObjectResponseBody:
+      description: The value of a check boxes form input field.
+      properties:
+        value:
+          description: List of selected options.
+          example:
+          - Option A
+          - Option B
+          items:
+            description: Option
+            example: Repudiandae eos.
+            type: string
+          type: array
+      required:
+      - value
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsMultipleChoiceValueObjectResponseBody:
+      description: The value of a multiple choice form input field.
+      properties:
+        value:
+          description: Selected choice.
+          example: 'Yes'
+          type: string
+      required:
+      - value
+      type: object
+    FormsDateTimeValueObjectResponseBody:
+      description: The value of a datetime form input field.
+      properties:
+        type:
+          description: 'The type of datetime format.  Valid values: `datetime`, `date`, `time`'
+          enum:
+          - datetime
+          - date
+          - time
+          example: datetime
+          type: string
+        value:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2024-08-08T18:53:23Z'
+          format: date-time
+          type: string
+      required:
+      - type
+      - value
+      type: object
+    FormSubmissionsPostFormSubmissionInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsGetFormSubmissionsStreamBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionsPdfExportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormSubmissionsPostFormSubmissionMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

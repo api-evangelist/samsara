@@ -1,0 +1,633 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Csv API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Csv
+paths:
+  /ifta-detail/csv:
+    post:
+      description: "Create a job to generate csv files of IFTA mileage segments.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write IFTA (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: createIftaDetailJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IFTACreateIftaDetailJobRequestBody'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobResponseBody'
+          description: Created response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTACreateIftaDetailJobBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Create a Job to Generate Csv Files of IFTA Mileage Segments.
+      tags:
+      - Csv
+      x-codegen-request-body-name: CreateIftaDetailJobRequestBody
+  /ifta-detail/csv/{id}:
+    get:
+      description: "Get information about an existing IFTA detail job.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read IFTA (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getIftaDetailJob
+      parameters:
+      - description: ID of the requested job.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaDetailJobBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Information About an Existing IFTA Detail Job.
+      tags:
+      - Csv
+components:
+  schemas:
+    IFTACreateIftaDetailJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaDetailJobResponseBody'
+      required:
+      - data
+      type: object
+    IFTACreateIftaDetailJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaDetailJobResponseBody'
+      required:
+      - data
+      type: object
+    IFTAGetIftaDetailJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaDetailJobArgsResponseBody:
+      description: The arguments used to create this job.
+      properties:
+        endHour:
+          description: The `endHour` used to create this job.
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        startHour:
+          description: The `startHour` used to create this job.
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        vehicleIds:
+          description: The vehicleIds used to create this job. Determined by the filter list of `vehicleIds`, `vehicleTagIds`, and `vehicleParentTagIds` parameters (if provided).
+          example:
+          - 12345678
+          - 56789123
+          items:
+            description: Vehicle ID element of array.
+            example: 3492286411020528600
+            format: int64
+            type: integer
+          type: array
+      required:
+      - endHour
+      - startHour
+      - vehicleIds
+      type: object
+    IFTAGetIftaDetailJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaDetailJobOutputResponseBody:
+      description: ' The file outputs produced by a successfully completed job.'
+      properties:
+        createdAtTime:
+          description: ' When this file was created.'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        downloadUrl:
+          description: A url to download the generated file. The contents will be gzipped. This url has an expiration and will no longer be valid after expiration.
+          example: https://s3.download-url.com
+          type: string
+        downloadUrlExpirationTime:
+          description: ' The expiration time of this file''s download url. Requesting this job again by ID will refresh the download urls, if expired.'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        name:
+          description: The name of this file.
+          example: output-001.csv.gz
+          type: string
+        recordCount:
+          description: The number of records in this file.
+          example: 830907839246707300
+          format: int64
+          type: integer
+      required:
+      - createdAtTime
+      - downloadUrl
+      - downloadUrlExpirationTime
+      - name
+      - recordCount
+      type: object
+    IFTACreateIftaDetailJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaDetailJobResponseBody:
+      description: ' A job representing the async generation of IFTA mileage segments. The job should be polled until the state is terminal.'
+      properties:
+        args:
+          $ref: '#/components/schemas/IftaDetailJobArgsResponseBody'
+        completedAtTime:
+          description: ' The time this job completed successfully.'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        details:
+          description: A message containing additional details about the job, if available.
+          example: Try limiting the number of vehicles requested per job to reduce the processing duration.
+          type: string
+        failedAtTime:
+          description: ' The time this job failed.'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        files:
+          description: A list of files generated by this job. This field will be omitted when the job status is "Failed" or no data exists with the provided job arguments. Read about the file structure [here](https://developers.samsara.com/docs/ifta-detail-csv).
+          items:
+            $ref: '#/components/schemas/IftaDetailJobOutputResponseBody'
+          type: array
+        jobId:
+          description: ' The ID used to retrieve this job.'
+          example: 8cabba84-bef4-4951-8cd2-78ce898fd8e6
+          type: string
+        jobStatus:
+          description: ' The status of this job. `jobStatus` can be one of Requested, Processing, Completed, or Failed.  Valid values: `Requested`, `Processing`, `Completed`, `Failed`'
+          enum:
+          - Requested
+          - Processing
+          - Completed
+          - Failed
+          example: Processing
+          type: string
+        requestedAtTime:
+          description: ' The time this job was requested for creation.'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        startedAtTime:
+          description: ' The time this job started processing.'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+      required:
+      - args
+      - jobId
+      - jobStatus
+      - requestedAtTime
+      type: object
+    IFTAGetIftaDetailJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobRequestBody:
+      description: The payload to create a new IftaDetailJob.
+      properties:
+        endHour:
+          description: ' An end time in RFC 3339 format. Hour precision and timezones are supported. Any minutes or seconds will be truncated down to the nearest hour. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. The maximum request duration is 1 month. Limit the number of vehicles to 1000 when requesting more than 24 hours of data. (Examples: 2019-06-13T19:00:00Z, 2019-06-13T19:00:00.000Z, OR 2015-09-15T14:00:00-04:00).'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        startHour:
+          description: ' A start time in RFC 3339 format. Hour precision and timezones are supported. Any minutes or seconds will be truncated down to the nearest hour. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. The maximum request duration is 1 month. Limit the number of vehicles to 1000 when requesting more than 24 hours of data. (Examples: 2019-06-13T19:00:00Z, 2019-06-13T19:00:00.000Z, OR 2015-09-15T14:00:00-04:00).'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        vehicleIds:
+          description: 'A filter on the data based on this comma-separated list of vehicle IDs and external IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleIds: ''1234,5678,samsara.vin:1HGBH41JXMN109186''`'
+          example: 1234,5678,samsara.vin:1HGBH41JXMN109186
+          type: string
+        vehicleParentTagIds:
+          description: ' A filter on the data based on this comma-separated list of vehicle parent tag IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleParentTagIds: ''1234,5678''`'
+          example: 1234,5678
+          type: string
+        vehicleTagIds:
+          description: ' A filter on the data based on this comma-separated list of vehicle tag IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleTagIds: ''1234,5678''`'
+          example: 1234,5678
+          type: string
+      required:
+      - endHour
+      - startHour
+      type: object
+    IFTACreateIftaDetailJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,311 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Contacts API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Contacts
+paths:
+  /contacts:
+    get:
+      description: "Returns a list of all contacts in an organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Alert Contacts** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listContacts
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListContactsResponse'
+          description: List of all contacts
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Contacts
+      tags:
+      - Contacts
+    post:
+      description: "Add a contact to the organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Alert Contacts** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createContact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactRequest'
+        description: The contact create parameters.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+          description: Contact was successfully added.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create a Contact
+      tags:
+      - Contacts
+      x-codegen-request-body-name: contact
+  /contacts/{id}:
+    delete:
+      description: "Delete the given contact. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Alert Contacts** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteContact
+      parameters:
+      - description: Unique identifier for the contact.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Delete a Contact
+      tags:
+      - Contacts
+    get:
+      description: "Get a specific contact's information. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Alert Contacts** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getContact
+      parameters:
+      - description: Unique identifier for the contact.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+          description: Returns the specified contact.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve a Contact
+      tags:
+      - Contacts
+    patch:
+      description: "Update a specific contact's information. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Alert Contacts** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: updateContact
+      parameters:
+      - description: Unique identifier for the contact.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContactRequest'
+        description: Updates to the contact.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+          description: Updated contact object with given ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update a Contact
+      tags:
+      - Contacts
+      x-codegen-request-body-name: contact
+components:
+  schemas:
+    CreateContactRequest:
+      description: Information for adding a notification contact for alerts.
+      properties:
+        email:
+          description: Email address of the contact.
+          example: jane.jones@yahoo.com
+          maxLength: 255
+          type: string
+        firstName:
+          description: First name of the contact.
+          example: Jane
+          maxLength: 255
+          type: string
+        lastName:
+          description: Last name of the contact.
+          example: Jones
+          maxLength: 255
+          type: string
+        phone:
+          description: Phone number of the contact.
+          example: 111-222-3344
+          maxLength: 255
+          type: string
+      type: object
+    Contact:
+      description: Information about a notification contact for alerts.
+      properties:
+        email:
+          $ref: '#/components/schemas/ContactEmail'
+        firstName:
+          $ref: '#/components/schemas/ContactFirstName'
+        id:
+          $ref: '#/components/schemas/ContactId'
+        lastName:
+          $ref: '#/components/schemas/ContactLastName'
+        phone:
+          $ref: '#/components/schemas/ContactPhone'
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - phone
+      type: object
+    ContactLastName:
+      description: Last name of the contact.
+      example: Jones
+      maxLength: 255
+      type: string
+    ContactFirstName:
+      description: First name of the contact.
+      example: Jane
+      maxLength: 255
+      type: string
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    ContactPhone:
+      description: Phone number of the contact.
+      example: 111-222-3344
+      maxLength: 255
+      type: string
+    ListContactsResponse:
+      description: A list of contacts.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Contact'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    ContactResponse:
+      description: A single contact.
+      properties:
+        data:
+          $ref: '#/components/schemas/Contact'
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    UpdateContactRequest:
+      description: Information for adding a notification contact for alerts.
+      properties:
+        email:
+          description: Email address of the contact.
+          example: jane.jones@yahoo.com
+          maxLength: 255
+          type: string
+        firstName:
+          description: First name of the contact.
+          example: Jane
+          maxLength: 255
+          type: string
+        lastName:
+          description: Last name of the contact.
+          example: Jones
+          maxLength: 255
+          type: string
+        phone:
+          description: Phone number of the contact.
+          example: 111-222-3344
+          maxLength: 255
+          type: string
+      type: object
+    ContactEmail:
+      description: Email address of the contact.
+      example: jane.jones@yahoo.com
+      maxLength: 255
+      type: string
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    ContactId:
+      description: ID of the contact.
+      example: '22408'
+      type: string
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

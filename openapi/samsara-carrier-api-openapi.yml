@@ -1,0 +1,349 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Carrier API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Carrier
+paths:
+  /fleet/carrier-proposed-assignments:
+    get:
+      description: "Show the assignments created by the POST fleet/carrier-proposed-assignments. This endpoint will only show the assignments that are active for drivers and currently visible to them in the driver app. Once a proposed assignment has been accepted, the endpoint will not return any data. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Carrier-Proposed Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listCarrierProposedAssignments
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'If specified, shows assignments that will be active at this time. Defaults to now, which would show current active assignments. In RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: activeTime
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCarrierProposedAssignmentResponse'
+          description: Returns the assignments that drivers would see in the future, if any.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve Assignments
+      tags:
+      - Carrier
+    post:
+      description: "Creates a new assignment that a driver can later use. Each driver can only have one future assignment. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Carrier-Proposed Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createCarrierProposedAssignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCarrierProposedAssignmentRequest'
+        description: The assignment to create.
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarrierProposedAssignmentResponse'
+          description: Return the created assignment
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create an Assignment
+      tags:
+      - Carrier
+      x-codegen-request-body-name: carrierProposedAssignment
+  /fleet/carrier-proposed-assignments/{id}:
+    delete:
+      description: "Permanently delete an assignment. You can only delete assignments that are not yet active. To override a currently active assignment, create a new empty one, instead. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Carrier-Proposed Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteCarrierProposedAssignment
+      parameters:
+      - description: ID of the assignment.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Delete an Assignment
+      tags:
+      - Carrier
+components:
+  schemas:
+    CarrierProposedAssignment:
+      description: A carrier proposed assignment object
+      properties:
+        acceptedTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentAcceptedTime'
+        activeTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentActiveTime'
+        driver:
+          $ref: '#/components/schemas/CarrierProposedAssignmentDriver'
+        firstSeenTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentFirstSeenTime'
+        id:
+          $ref: '#/components/schemas/CarrierProposedAssignmentId'
+        rejectedTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentRejectedTime'
+        shippingDocs:
+          $ref: '#/components/schemas/CarrierProposedAssignmentShippingDocs'
+        trailers:
+          $ref: '#/components/schemas/CarrierProposedAssignmentTrailers'
+        vehicle:
+          $ref: '#/components/schemas/CarrierProposedAssignmentVehicle'
+      required:
+      - activeTime
+      - id
+      type: object
+    CarrierProposedAssignmentAcceptedTime:
+      description: 'Time when the driver accepted this assignment in the mobile app. Will be omitted if the driver hasn''t accepted this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    CreateCarrierProposedAssignmentRequest:
+      description: New assignment for a driver.
+      properties:
+        activeTime:
+          description: 'Time after which this assignment will be active and visible to the driver on the mobile app. Not setting it makes it active now. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        driverId:
+          description: ID for the driver for the driver that this assignment is for. This can be either a unique Samsara ID or an external ID for the driver.
+          example: '42'
+          type: string
+        shippingDocs:
+          description: Shipping Documents that this assignment will propose to the driver.
+          example: Delivery 123, chips and soda
+          maxLength: 40
+          type: string
+        trailerIds:
+          description: IDs of trailers to propose. This can be either a unique Samsara IDs or an external IDs for the trailers. (forbidden if trailerNames is set)
+          example:
+          - '123456789'
+          - maintenanceId:250020
+          items:
+            type: string
+          type: array
+        trailerNames:
+          description: Names of trailers to propose. (forbidden if trailerIds is set)
+          example:
+          - Trailer123
+          - TrailerABC
+          items:
+            type: string
+          type: array
+        vehicleId:
+          description: ID for the vehicle to propose. This can be either a unique Samsara ID or an external ID for the vehicle.
+          example: '123'
+          type: string
+      required:
+      - driverId
+      - vehicleId
+      type: object
+    vehicleTinyResponse:
+      description: A minified vehicle object.
+      properties:
+        ExternalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        id:
+          description: ID of the vehicle.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
+          type: string
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    CarrierProposedAssignmentId:
+      description: Samsara ID for the assignment.
+      example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d
+      type: string
+    CarrierProposedAssignmentTrailer:
+      allOf:
+      - description: Trailer that this assignment will propose to the driver.
+        type: object
+      - $ref: '#/components/schemas/trailerTinyResponse'
+      - $ref: '#/components/schemas/CarrierProposedAssignmentDriver_allOf'
+    CarrierProposedAssignmentFirstSeenTime:
+      description: 'Time when the driver first saw this assignment in the mobile app. Will be omitted if the driver hasn''t seen this assignment yet. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    trailerTinyResponse:
+      description: A minified trailer object.
+      properties:
+        id:
+          description: ID of the trailer.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
+          type: string
+      type: object
+    ListCarrierProposedAssignmentResponse:
+      description: A list of carrier-proposed assignments and pagination information.
+      properties:
+        data:
+          description: A list of carrier-proposed assignments
+          items:
+            $ref: '#/components/schemas/CarrierProposedAssignment'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    carrierProposedAssignmentDriverAllOf2ExternalIds:
+      additionalProperties:
+        type: string
+      description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+      example:
+        maintenanceId: '250020'
+        payrollId: ABFS18600
+      type: object
+      x-go-gen-location: models
+    CarrierProposedAssignmentRejectedTime:
+      description: 'Time when the driver rejected this assignment in the mobile app. Will be omitted if the driver hasn''t rejected this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    CarrierProposedAssignmentResponse:
+      description: A carrier-proposed assignment response object.
+      properties:
+        data:
+          $ref: '#/components/schemas/CarrierProposedAssignment'
+      required:
+      - data
+      type: object
+    CarrierProposedAssignmentDriver:
+      allOf:
+      - description: The driver that this assignment is for.
+        type: object
+      - $ref: '#/components/schemas/driverTinyResponse'
+      - $ref: '#/components/schemas/CarrierProposedAssignmentDriver_allOf'
+    CarrierProposedAssignmentVehicle:
+      allOf:
+      - description: Vehicle that this assignment will propose to the driver.
+        type: object
+      - $ref: '#/components/schemas/vehicleTinyResponse'
+    CarrierProposedAssignmentShippingDocs:
+      description: Shipping Documents that this assignment will propose to the driver.
+      example: Delivery 123, chips and soda
+      maxLength: 40
+      type: string
+    CarrierProposedAssignmentDriver_allOf:
+      properties:
+        externalIds:
+          $ref: '#/components/schemas/carrierProposedAssignmentDriverAllOf2ExternalIds'
+      type: object
+    CarrierProposedAssignmentTrailers:
+      description: Trailers that this assignment will propose to the driver.
+      items:
+        $ref: '#/components/schemas/CarrierProposedAssignmentTrailer'
+      type: array
+    CarrierProposedAssignmentActiveTime:
+      description: 'Time after which this assignment will be active and visible to the driver on the mobile app. Not setting it makes it active now. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

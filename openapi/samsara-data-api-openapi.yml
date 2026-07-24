@@ -1,0 +1,907 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Data API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Data
+paths:
+  /hos/daily-logs/log-meta-data:
+    patch:
+      description: "Update the shippingDocs field of an existing assignment.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write ELD Hours of Service (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: updateShippingDocs
+      parameters:
+      - description: A start date in yyyy-mm-dd format. Required.
+        in: query
+        name: hosDate
+        required: true
+        schema:
+          type: string
+      - description: ID of the driver for whom the duty status is being set.
+        in: query
+        name: driverID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Update the ShippingDocs Field of an Existing Assignment.'
+      tags:
+      - Data
+      x-codegen-request-body-name: UpdateShippingDocsRequestBody
+  /industrial/data-inputs:
+    get:
+      description: "Returns all data inputs, optionally filtered by tags or asset ids. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDataInputs
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`'
+        explode: false
+        in: query
+        name: assetIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataInputsTinyResponse'
+          description: List of data inputs with names, ids, and other metadata.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Unexpected error.
+      summary: List All Data Inputs
+      tags:
+      - Data
+  /industrial/data-inputs/data-points:
+    get:
+      description: "Returns last known data points for all data inputs. This can be filtered by optional tags, specific data input IDs or asset IDs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDataInputDataSnapshot
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of data input IDs. Example: `dataInputIds=1234,5678`'
+        explode: false
+        in: query
+        name: dataInputIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`'
+        explode: false
+        in: query
+        name: assetIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataInputSnapshotResponse'
+          description: List of last known data input data points and pagination parameters
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Unexpected error.
+      summary: List Most Recent Data Points for Data Inputs
+      tags:
+      - Data
+  /industrial/data-inputs/data-points/feed:
+    get:
+      description: "Follow a continuous feed of all data input data points.\n\nYour first call to this endpoint will provide you with the most recent data points for each data input and a `pagination` object that contains an `endCursor`.\n\nYou can provide the `endCursor` to the `after` parameter of this endpoint to get data point updates since that `endCursor`.\n\nIf `hasNextPage` is `false`, no updates are readily available yet. We suggest waiting a minimum of 5 seconds before requesting updates. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDataInputDataFeed
+      parameters:
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of data input IDs. Example: `dataInputIds=1234,5678`'
+        explode: false
+        in: query
+        name: dataInputIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`'
+        explode: false
+        in: query
+        name: assetIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataInputListResponse'
+          description: List of all data points for specified data inputs
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Unexpected error.
+      summary: Follow a Real-time Feed of Data Points for Data Inputs
+      tags:
+      - Data
+  /industrial/data-inputs/data-points/history:
+    get:
+      description: "Returns all known data points during the given time range for all data inputs. This can be filtered by optional tags, specific data input IDs or asset IDs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getDataInputDataHistory
+      parameters:
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of data input IDs. Example: `dataInputIds=1234,5678`'
+        explode: false
+        in: query
+        name: dataInputIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`'
+        explode: false
+        in: query
+        name: assetIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataInputListResponse'
+          description: List of all data points for the specified data inputs and time range.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Unexpected error.
+      summary: List Historical Data Points for Data Inputs
+      tags:
+      - Data
+components:
+  schemas:
+    LocationDataPoint:
+      description: A single location data point of a data input.
+      properties:
+        gpsLocation:
+          $ref: '#/components/schemas/LocationDataPoint_gpsLocation'
+        time:
+          $ref: '#/components/schemas/time'
+      type: object
+    J1939D1StatusDataPoint_value:
+      description: A single J1939D1 status
+      properties:
+        amberLampStatus:
+          format: int32
+          type: number
+        fmi:
+          format: int32
+          type: number
+        milStatus:
+          format: int32
+          type: number
+        occuranceCount:
+          format: int32
+          type: number
+        protectLampStatus:
+          format: int32
+          type: number
+        redLampStatus:
+          format: int32
+          type: number
+        spn:
+          format: int32
+          type: number
+        txId:
+          format: int32
+          type: number
+      type: object
+    DataInputSnapshot_allOf:
+      properties:
+        fftSpectraPoint:
+          $ref: '#/components/schemas/FftSpectraDataPoint'
+        j1939D1StatusPoint:
+          $ref: '#/components/schemas/J1939D1StatusDataPoint'
+        locationPoint:
+          $ref: '#/components/schemas/LocationDataPoint'
+        numberPoint:
+          $ref: '#/components/schemas/NumberDataPoint'
+        stringPoint:
+          $ref: '#/components/schemas/StringDataPoint'
+      type: object
+    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    LocationDataPoint_gpsLocation:
+      description: GPS location information of the data input's datapoint.
+      properties:
+        formattedAddress:
+          description: Formatted address of the location
+          example: 350 Rhode Island St, San Francisco CA, 94103
+          format: string
+          type: string
+        gpsMetersPerSecond:
+          description: Speed of GPS (meters per second)
+          example: 35.5
+          format: double
+          type: number
+        headingDegrees:
+          description: Heading degrees
+          example: 91.2
+          format: double
+          type: number
+        latitude:
+          description: Latitude of the location
+          example: 42.44817
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the location
+          example: -71.224716
+          format: double
+          type: number
+        place:
+          $ref: '#/components/schemas/LocationDataPoint_gpsLocation_place'
+      type: object
+    DataInputListResponse:
+      properties:
+        data:
+          description: An array of data input data points. Each object in the array represents a data input and will contain its associated data points.
+          items:
+            $ref: '#/components/schemas/DataInputResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    HosDailyLogsUpdateShippingDocsRequestBody:
+      description: Update the shippingDocs field.
+      properties:
+        shippingDocs:
+          description: ShippingDocs associated with the driver for the day.
+          example: ShippingID1, ShippingID2
+          type: string
+      required:
+      - shippingDocs
+      type: object
+    J1939D1StatusDataPoint:
+      description: Active J1939D1 statuses of a device.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: List of active statuses.
+          items:
+            $ref: '#/components/schemas/J1939D1StatusDataPoint_value'
+          type: array
+      type: object
+    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationDataPoint_gpsLocation_place:
+      description: Address of the location
+      properties:
+        city:
+          description: City
+          example: San Francisco
+          format: string
+          type: string
+        houseNumber:
+          description: House number
+          example: '350'
+          format: string
+          type: string
+        neighborhood:
+          description: Neighborhood
+          example: Castro
+          format: string
+          type: string
+        poi:
+          description: POI
+          example: '400'
+          format: string
+          type: string
+        postcode:
+          description: Postcode
+          example: '94103'
+          format: string
+          type: string
+        state:
+          description: State
+          example: CA
+          format: string
+          type: string
+        street:
+          description: Street
+          example: Rhode Island
+          format: string
+          type: string
+      type: object
+    DataInputResponse:
+      allOf:
+      - $ref: '#/components/schemas/DataInputTinyResponse'
+      - $ref: '#/components/schemas/DataInputResponse_allOf'
+    DataInputTinyResponse:
+      description: A minified data input object
+      properties:
+        assetId:
+          description: Unique identifier for the data input's asset.
+          example: 74771078-5edb-4733-88f2-7242f520d1f1
+          format: uuid
+          type: string
+        dataGroup:
+          description: Data group for this data input.
+          example: Flow
+          format: string
+          type: string
+        id:
+          description: Unique identifier for the data input.
+          format: uuid
+          type: string
+        name:
+          description: Name of this data input.
+          example: Pump Flow
+          format: string
+          type: string
+        units:
+          description: Units of data for this data input.
+          example: Gallons Per Minute
+          format: string
+          type: string
+      type: object
+    StringDataPoint:
+      description: A single string data point of a data input.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: String value of the data point.
+          example: 'On'
+          format: string
+          type: string
+      type: object
+    DataInputResponse_allOf:
+      properties:
+        fftSpectraPoints:
+          description: List of FFT spectra data points from the data input.
+          items:
+            $ref: '#/components/schemas/FftSpectraDataPoint'
+          type: array
+        j1939D1StatusPoints:
+          description: List of active J1939D1 statuses.
+          items:
+            $ref: '#/components/schemas/J1939D1StatusDataPoint'
+          type: array
+        locationPoints:
+          description: List of location data points from the data input.
+          items:
+            $ref: '#/components/schemas/LocationDataPoint'
+          type: array
+        numberPoints:
+          description: List of numeric data points from the data input.
+          items:
+            $ref: '#/components/schemas/NumberDataPoint'
+          type: array
+        stringPoints:
+          description: List of string data points from the data input.
+          items:
+            $ref: '#/components/schemas/StringDataPoint'
+          type: array
+      type: object
+    HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FftSpectraDataPoint_fftSpectra:
+      description: FFT spectrum data
+      properties:
+        frequencies:
+          description: Frequencies
+          items:
+            format: double
+            type: number
+          type: array
+        x:
+          description: X-axis data
+          items:
+            format: double
+            type: number
+          type: array
+        y:
+          description: Y-axis data
+          items:
+            format: double
+            type: number
+          type: array
+        z:
+          description: Z-axis data
+          items:
+            format: double
+            type: number
+          type: array
+      type: object
+    NumberDataPoint:
+      description: A single numeric data point of a data input.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Numeric value of the data point.
+          example: 1992.0506
+          format: double
+          type: number
+      type: object
+    HosDailyLogsUpdateShippingDocsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    DataInputsTinyResponse:
+      properties:
+        data:
+          description: An array of data input objects. Each object contains the data input's name, ID, and other metadata.
+          items:
+            $ref: '#/components/schemas/DataInputTinyResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    DataInputSnapshotResponse:
+      properties:
+        data:
+          description: An array of data inputs' latest data points. Each object in the array represents a data input and its most recent data point.
+          items:
+            $ref: '#/components/schemas/DataInputSnapshot'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PatchShippingDocsResponseBodyResponseBody:
+      description: Response after successfully updating the LogMetaData object.
+      properties:
+        adverseDrivingClaimed:
+          description: Whether the driver has claimed the [Adverse Driving Exemption](https://kb.samsara.com/hc/en-us/articles/360047336792-Adverse-Driving-Exemption) for this HOS day chart.
+          example: true
+          type: boolean
+        bigDayClaimed:
+          description: Whether the driver has claimed the [Big Day Exemption](https://kb.samsara.com/hc/en-us/articles/360057113891-16-Hour-Short-Haul-Exemption-Big-Day-) for this HOS day chart.
+          example: false
+          type: boolean
+        carrierFormattedAddress:
+          description: The address of the carrier used for this HOS chart.
+          example: 1990 Alameda Street, San Francisco, CA 94103
+          type: string
+        carrierName:
+          description: The name of the carrier used for this HOS chart.
+          example: Carrier Name
+          type: string
+        carrierUsDotNumber:
+          description: The US DOT number of the carrier used for this HOS chart.
+          example: 1234
+          format: int64
+          type: integer
+        homeTerminalFormattedAddress:
+          description: The address of the Home Terminal used for this HOS chart.
+          example: 1990 Alameda Street, San Francisco, CA 94103
+          type: string
+        homeTerminalName:
+          description: The name of the Home Terminal used for this HOS chart.
+          example: Home Terminal Name
+          type: string
+        isCertified:
+          description: Whether this HOS day chart was certified by the driver.
+          example: true
+          type: boolean
+        isUsShortHaulActive:
+          description: Whether the driver has the 150 air-mile Short Haul Exemption active for this HOS day chart.
+          example: false
+          type: boolean
+        trailerNames:
+          description: List of trailer names associated with the driver for the day. If a trailer was associated with a log through the driver app, the trailer name will be the trailer ID.
+          example:
+          - '10293'
+          - Trailer ID 1
+          items:
+            example: Nemo qui nulla dolor consectetur.
+            type: string
+          type: array
+      type: object
+    FftSpectraDataPoint:
+      description: FFT spectrum data point of a data input.
+      properties:
+        fftSpectra:
+          $ref: '#/components/schemas/FftSpectraDataPoint_fftSpectra'
+        time:
+          $ref: '#/components/schemas/time'
+      type: object
+    DataInputSnapshot:
+      allOf:
+      - $ref: '#/components/schemas/DataInputTinyResponse'
+      - $ref: '#/components/schemas/DataInputSnapshot_allOf'
+    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

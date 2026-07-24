@@ -1,0 +1,3604 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Assignments API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Assignments
+paths:
+  /coaching/driver-coach-assignments:
+    get:
+      description: "This endpoint will return coach assignments for your organization based on the parameters passed in. Results are paginated.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Coaching** under the Coaching category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getDriverCoachAssignment
+      parameters:
+      - description: Optional string of comma separated IDs of the drivers. This can be either a unique Samsara driver ID or an external ID for the driver.
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Optional string of comma separated IDs of the coaches.
+        explode: false
+        in: query
+        name: coachIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Optional boolean indicating whether to return external IDs on supported entities
+        in: query
+        name: includeExternalIds
+        schema:
+          type: boolean
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsGetDriverCoachAssignmentBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Driver Coach Assignments.
+      tags:
+      - Assignments
+    put:
+      description: "This endpoint will update an existing or create a new coach-to-driver assignment for your organization based on the parameters passed in. This endpoint should only be used for existing Coach to Driver assignments. In order to remove a driver-coach-assignment for a given driver, set coachId to null\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Coaching** under the Coaching category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: putDriverCoachAssignment
+      parameters:
+      - description: Required string ID of the driver. This is a unique Samsara ID of a driver.
+        in: query
+        name: driverId
+        required: true
+        schema:
+          type: string
+      - description: Optional string ID of the coach. This is a unique Samsara user ID. If not provided, existing coach assignment will be removed.
+        in: query
+        name: coachId
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverCoachAssignmentsPutDriverCoachAssignmentBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Put Driver Coach Assignments.
+      tags:
+      - Assignments
+  /fleet/carrier-proposed-assignments:
+    get:
+      description: "Show the assignments created by the POST fleet/carrier-proposed-assignments. This endpoint will only show the assignments that are active for drivers and currently visible to them in the driver app. Once a proposed assignment has been accepted, the endpoint will not return any data. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Carrier-Proposed Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listCarrierProposedAssignments
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'If specified, shows assignments that will be active at this time. Defaults to now, which would show current active assignments. In RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: activeTime
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCarrierProposedAssignmentResponse'
+          description: Returns the assignments that drivers would see in the future, if any.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve Assignments
+      tags:
+      - Assignments
+    post:
+      description: "Creates a new assignment that a driver can later use. Each driver can only have one future assignment. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Carrier-Proposed Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createCarrierProposedAssignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCarrierProposedAssignmentRequest'
+        description: The assignment to create.
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarrierProposedAssignmentResponse'
+          description: Return the created assignment
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create an Assignment
+      tags:
+      - Assignments
+      x-codegen-request-body-name: carrierProposedAssignment
+  /fleet/carrier-proposed-assignments/{id}:
+    delete:
+      description: "Permanently delete an assignment. You can only delete assignments that are not yet active. To override a currently active assignment, create a new empty one, instead. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Carrier-Proposed Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteCarrierProposedAssignment
+      parameters:
+      - description: ID of the assignment.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Delete an Assignment
+      tags:
+      - Assignments
+  /fleet/driver-vehicle-assignments:
+    delete:
+      description: "Delete driver assignments that were created using the `POST fleet/driver-vehicle-assignments` endpoint for the requested vehicle in the requested time range.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: deleteDriverVehicleAssignments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsRequestBody'
+        required: true
+      responses:
+        '204':
+          content: {}
+          description: No Content response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Delete API Generated Driver-vehicle Assignments
+      tags:
+      - Assignments
+      x-codegen-request-body-name: DeleteDriverVehicleAssignmentsRequestBody
+    get:
+      description: "Get all driver-vehicle assignments for the requested drivers or vehicles in the requested time range. To fetch driver-vehicle assignments out of the vehicle trips' time ranges, assignmentType needs to be specified. Note: this endpoint replaces past endpoints to fetch assignments by driver or by vehicle. Visit [this migration guide](https://developers.samsara.com/docs/migrating-from-driver-vehicle-assignment-or-vehicle-driver-assignment-endpoints) for more information.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getDriverVehicleAssignments
+      parameters:
+      - description: 'Option to filter by drivers or vehicles.  Valid values: `drivers`, `vehicles`'
+        in: query
+        name: filterBy
+        required: true
+        schema:
+          enum:
+          - drivers
+          - vehicles
+          type: string
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'ID of the vehicle. This can either be the Samsara-specified ID, or an external ID. External IDs are customer specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: "key:value". For example, "maintenanceId:250020".'
+        explode: false
+        in: query
+        name: vehicleIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' A filter on the data based on this comma-separated list of driver tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: driverTagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of vehicle tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: vehicleTagIds
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'Specifies which assignment type to filter by.  Valid values: `HOS`, `idCard`, `static`, `faceId`, `tachograph`, `safetyManual`, `RFID`, `trailer`, `external`, `qrCode`'
+        in: query
+        name: assignmentType
+        schema:
+          enum:
+          - HOS
+          - idCard
+          - static
+          - faceId
+          - tachograph
+          - safetyManual
+          - RFID
+          - trailer
+          - external
+          - qrCode
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get All Driver-vehicle Assignments
+      tags:
+      - Assignments
+    patch:
+      description: "Update driver assignments that were created using the `POST fleet/driver-vehicle-assignments`. Vehicle Id, Driver Id, and Start Time must match an existing assignment.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: updateDriverVehicleAssignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentRequestBody'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentResponseBody'
+          description: Accepted response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Update API Generated Driver-vehicle Assignments
+      tags:
+      - Assignments
+      x-codegen-request-body-name: UpdateDriverVehicleAssignmentRequestBody
+    post:
+      description: "Assign vehicle drive-time to a driver via API. For a step-by-step instruction on how to leverage this endpoint, see [this guide](https://developers.samsara.com/docs/creating-driver-vehicle-assignments)\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: createDriverVehicleAssignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentRequestBody'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentResponseBody'
+          description: Created response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Create a New Driver-vehicle Assignment
+      tags:
+      - Assignments
+      x-codegen-request-body-name: CreateDriverVehicleAssignmentRequestBody
+  /fleet/drivers/vehicle-assignments:
+    get:
+      description: "**Note: This is a legacy endpoint, consider using [this endpoint](https://developers.samsara.com/reference/getdrivervehicleassignments) instead. The endpoint will continue to function as documented.** Get all vehicle assignments for the requested drivers in the requested time range. The only type of assignment supported right now are assignments created through the driver app.\n\n <b>Rate limit:</b> 25 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getDriversVehicleAssignments
+      parameters:
+      - description: ' A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). The maximum allowed startTime-endTime range is 7 days.'
+        in: query
+        name: startTime
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). The maximum allowed startTime-endTime range is 7 days.'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: 'If value is `deactivated`, only drivers that are deactivated will appear in the response. This parameter will default to `active` if not provided (fetching only active drivers).  Valid values: `active`, `deactivated`'
+        in: query
+        name: driverActivationStatus
+        schema:
+          default: active
+          enum:
+          - active
+          - deactivated
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[legacy] Get All Vehicles Assigned to a Set of Drivers'
+      tags:
+      - Assignments
+  /fleet/vehicles/driver-assignments:
+    get:
+      description: "**Note: This is a legacy endpoint, consider using [this endpoint](https://developers.samsara.com/reference/getdrivervehicleassignments) instead. The endpoint will continue to function as documented.** Get all driver assignments for the requested vehicles in the requested time range. The only type of assignment supported right now are assignments created through the driver app.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getVehiclesDriverAssignments
+      parameters:
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). The maximum allowed startTime-endTime range is 7 days.'
+        in: query
+        name: startTime
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). The maximum allowed startTime-endTime range is 7 days.'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[legacy] Get All Drivers Assigned to a Set of Vehicles'
+      tags:
+      - Assignments
+  /training-assignments:
+    post:
+      description: "Create training assignments. Existing assignments will remain unchanged. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Training APIs enabled for your organization.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Training Assignments** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postTrainingAssignments
+      parameters:
+      - description: String for the course ID.
+        in: query
+        name: courseId
+        required: true
+        schema:
+          type: string
+      - description: Due date of the training assignment in RFC 3339 format. Millisecond precision and timezones are supported.
+        in: query
+        name: dueAtTime
+        required: true
+        schema:
+          type: string
+      - description: 'Optional string of comma separated learner IDs. If learner ID is present, training assignments for the specified learner(s) will be returned. Max value for this value is 100 objects. Example: `learnerIds=driver-281474,driver-46282156`'
+        explode: false
+        in: query
+        name: learnerIds
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPostTrainingAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Create Training Assignments.'
+      tags:
+      - Assignments
+  /training-assignments/stream:
+    get:
+      description: "Returns all training assignments data that has been created or modified for your organization based on the time parameters passed in. Results are paginated and are sorted by last modified date. If you include an endTime, the endpoint will return data up until that point (exclusive). If you don't include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Training APIs enabled for your organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Training Assignments** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getTrainingAssignmentsStream
+      parameters:
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: 'Optional string of comma separated learner IDs. If learner ID is present, training assignments for the specified learner(s) will be returned. Max value for this value is 100 objects. Example: `learnerIds=driver-281474,driver-46282156`'
+        explode: false
+        in: query
+        name: learnerIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'Optional string of comma separated course IDs. If course ID is present, training assignments for the specified course ID(s) will be returned. Max value for this value is 100 objects. Defaults to returning all courses. Example: `courseIds=a4db8702-79d5-4396-a717-e301d52ecc11,c6490f6a-d84e-49b5-b0ad-b6baae304075`'
+        explode: false
+        in: query
+        name: courseIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'Optional string of comma separated values. If status is present, training assignments for the specified status(s) will be returned. Valid values: "notStarted", "inProgress", "completed". Defaults to returning all courses.'
+        explode: false
+        in: query
+        name: status
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsGetTrainingAssignmentsStreamBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Get a Stream of Filtered Training Assignments.'
+      tags:
+      - Assignments
+  /v1/fleet/trailers/{trailerId}/assignments:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch trailer assignment data for a single trailer. \n\n <b>Rate limit:</b> 100 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getFleetTrailerAssignments
+      parameters:
+      - description: ID of trailer. Must contain only digits 0-9.
+        in: path
+        name: trailerId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in Unix epoch milliseconds representing the start of the period to fetch. Omitting both startMs and endMs only returns current assignments.
+        in: query
+        name: startMs
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in Unix epoch milliseconds representing the end of the period to fetch. Omitting endMs sets endMs as the current time
+        in: query
+        name: endMs
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          description: Returns trailer assignment data for a single trailer
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Trailer Assignments for a Given Trailer
+      tags:
+      - Assignments
+components:
+  schemas:
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of driver assignment objects and their respective vehcile and driver info.
+          items:
+            $ref: '#/components/schemas/DriverVehicleAssignmentV2ObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PatchDriverVehicleAssignmentsV2ResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentId:
+      description: Samsara ID for the assignment.
+      example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d
+      type: string
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingCourseObjectResponseBody:
+      description: Course that is associated with the training assignments.
+      properties:
+        id:
+          description: ID of the course.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        revisionId:
+          description: ID of the course's specific version.
+          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+      required:
+      - id
+      - revisionId
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAssignmentMetadataTinyObjectResponseBody:
+      description: Metadata object for external assignment source data.
+      properties:
+        sourceName:
+          description: Assigned source name from an external source.
+          example: ExternalSourceName
+          type: string
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of vehicles and their driver assignments.
+          items:
+            $ref: '#/components/schemas/VehiclesDriverAssignmentsObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrainingAssignmentPostResponseObjectResponseBody:
+      description: Training Assignment response object.
+      properties:
+        course:
+          $ref: '#/components/schemas/TrainingCourseObjectResponseBody'
+        createdAtTime:
+          description: Creation time of the training assignment. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        createdById:
+          description: ID of the user who created the training assignment.
+          example: user-4392
+          type: string
+        dueAtTime:
+          description: Time training assignment is due. UTC timestamp in RFC 3339 format. Returned when an assignment has a due date set by an admin.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        id:
+          description: ID of the training assignment.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        isExistingAssignment:
+          description: Indicates whether the training assignment was already created.
+          example: true
+          type: boolean
+        learner:
+          $ref: '#/components/schemas/TrainingLearnerObjectResponseBody'
+      required:
+      - course
+      - createdAtTime
+      - createdById
+      - id
+      - isExistingAssignment
+      - learner
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostDriverVehicleAssignmentsV2ResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentRequestBody:
+      description: Driver Assignment to be created
+      properties:
+        assignedAtTime:
+          description: 'The time at which the assignment was made in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        driverId:
+          description: ID of the driver. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
+          example: '494123'
+          type: string
+        endTime:
+          description: 'The end time in RFC 3339 format. Defaults to max-time (meaning it''s an ongoing assignment) if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Is this driver a passenger? Defaults to false if not provided
+          example: true
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/PostDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody'
+        startTime:
+          description: 'The start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicleId:
+          description: ID of the vehicle. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
+          example: '281474978683353'
+          type: string
+      required:
+      - driverId
+      - vehicleId
+      type: object
+    VehiclesDriverAssignmentsObjectResponseBody:
+      properties:
+        driverAssignments:
+          description: List of driver assignment objects.
+          items:
+            $ref: '#/components/schemas/DriverAssignmentObjectResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle.
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle.
+          example: Bus-123
+          type: string
+      required:
+      - driverAssignments
+      - id
+      type: object
+    GoaDriverTinyResponseResponseBody:
+      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+      required:
+      - id
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentShippingDocs:
+      description: Shipping Documents that this assignment will propose to the driver.
+      example: Delivery 123, chips and soda
+      maxLength: 40
+      type: string
+    CarrierProposedAssignmentDriver_allOf:
+      properties:
+        externalIds:
+          $ref: '#/components/schemas/carrierProposedAssignmentDriverAllOf2ExternalIds'
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of created training assignments.
+          items:
+            $ref: '#/components/schemas/TrainingAssignmentPostResponseObjectResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    CarrierProposedAssignmentTrailers:
+      description: Trailers that this assignment will propose to the driver.
+      items:
+        $ref: '#/components/schemas/CarrierProposedAssignmentTrailer'
+      type: array
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsObjectResponseBody:
+      properties:
+        driverActivationStatus:
+          description: 'A value indicating whether the driver is active or deactivated.  Valid values: `active`, `deactivated`'
+          enum:
+          - active
+          - deactivated
+          example: active
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver.
+          example: '494123'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Joe Driver
+          type: string
+        vehicleAssignments:
+          description: List of vehicle assignment objects.
+          items:
+            $ref: '#/components/schemas/VehicleAssignmentObjectResponseBody'
+          type: array
+      required:
+      - driverActivationStatus
+      - id
+      - name
+      - vehicleAssignments
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentV2ObjectResponseBody:
+      description: Object with driver assignment info and associated driver and vehicle info.
+      properties:
+        assignedAtTime:
+          description: ' An assigned at time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        assignmentType:
+          description: 'Name of the assigning source for the driver assignment record.  Valid values: `invalid`, `unknown`, `HOS`, `idCard`, `static`, `faceId`, `tachograph`, `safetyManual`, `RFID`, `trailer`, `external`, `qrCode`'
+          enum:
+          - invalid
+          - unknown
+          - HOS
+          - idCard
+          - static
+          - faceId
+          - tachograph
+          - safetyManual
+          - RFID
+          - trailer
+          - external
+          - qrCode
+          example: idCard
+          type: string
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        endTime:
+          description: ' An end time in RFC 3339 format. Omitted if not applicable. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Boolean indicating whether the driver is a passenger.
+          example: false
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/DriverAssignmentMetadataTinyObjectResponseBody'
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - driver
+      - isPassenger
+      - startTime
+      - vehicle
+      type: object
+    V1TrailerAssignmentsResponse_allOf:
+      properties:
+        trailerAssignments:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
+          type: array
+      type: object
+    CarrierProposedAssignmentAcceptedTime:
+      description: 'Time when the driver accepted this assignment in the mobile app. Will be omitted if the driver hasn''t accepted this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentFirstSeenTime:
+      description: 'Time when the driver first saw this assignment in the mobile app. Will be omitted if the driver hasn''t seen this assignment yet. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    trailerTinyResponse:
+      description: A minified trailer object.
+      properties:
+        id:
+          description: ID of the trailer.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
+          type: string
+      type: object
+    V1TrailerAssignmentResponse:
+      properties:
+        driverId:
+          description: The ID of the driver associated with this trailer.
+          example: 2047
+          format: int64
+          type: integer
+        endMs:
+          description: The time at which the driver ended the assignment. If the assignment is current, this value will be omitted.
+          example: 1462881998034
+          format: int64
+          type: integer
+        startMs:
+          description: The time at which the driver started the assignment
+          example: 1462878398034
+          format: int64
+          type: integer
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    carrierProposedAssignmentDriverAllOf2ExternalIds:
+      additionalProperties:
+        type: string
+      description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+      example:
+        maintenanceId: '250020'
+        payrollId: ABFS18600
+      type: object
+      x-go-gen-location: models
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/CoachAssignmentWithoutDriverExternalIdsResponseResponseBody'
+      required:
+      - data
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentActiveTime:
+      description: 'Time after which this assignment will be active and visible to the driver on the mobile app. Not setting it makes it active now. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachAssignmentWithoutDriverExternalIdsResponseResponseBody:
+      description: Driver coach assignment object.
+      properties:
+        coachId:
+          description: Coach ID associated with coach assignment. Optional. Will be empty if no driver coach is assigned
+          example: '45646'
+          type: string
+        createdAtTime:
+          description: Time coach assignment was created in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        driverId:
+          description: Unique user ID for the driver of the driver coach assignment
+          example: '45646'
+          type: string
+        updatedAtTime:
+          description: Time coaching assignment was updated in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - createdAtTime
+      - driverId
+      - updatedAtTime
+      type: object
+    DriverAssignmentObjectResponseBody:
+      properties:
+        assignmentType:
+          description: 'Assignment type of the driver-vehicle assignment, indicating the provenance of the assignment. The only type of assignment supported right now is `driverApp` assignments. This list could change, so it is recommended that clients gracefully handle any types not enumerated in this list.  Valid values: `driverApp`'
+          enum:
+          - driverApp
+          example: driverApp
+          type: string
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        endTime:
+          description: ' An end time in RFC 3339 format. Omitted if not applicable. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Boolean indicating whether the driver is a passenger.
+          example: false
+          type: boolean
+        startTime:
+          description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CreateCarrierProposedAssignmentRequest:
+      description: New assignment for a driver.
+      properties:
+        activeTime:
+          description: 'Time after which this assignment will be active and visible to the driver on the mobile app. Not setting it makes it active now. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        driverId:
+          description: ID for the driver for the driver that this assignment is for. This can be either a unique Samsara ID or an external ID for the driver.
+          example: '42'
+          type: string
+        shippingDocs:
+          description: Shipping Documents that this assignment will propose to the driver.
+          example: Delivery 123, chips and soda
+          maxLength: 40
+          type: string
+        trailerIds:
+          description: IDs of trailers to propose. This can be either a unique Samsara IDs or an external IDs for the trailers. (forbidden if trailerNames is set)
+          example:
+          - '123456789'
+          - maintenanceId:250020
+          items:
+            type: string
+          type: array
+        trailerNames:
+          description: Names of trailers to propose. (forbidden if trailerIds is set)
+          example:
+          - Trailer123
+          - TrailerABC
+          items:
+            type: string
+          type: array
+        vehicleId:
+          description: ID for the vehicle to propose. This can be either a unique Samsara ID or an external ID for the vehicle.
+          example: '123'
+          type: string
+      required:
+      - driverId
+      - vehicleId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    vehicleTinyResponse:
+      description: A minified vehicle object.
+      properties:
+        ExternalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        id:
+          description: ID of the vehicle.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
+          type: string
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentTrailer:
+      allOf:
+      - description: Trailer that this assignment will propose to the driver.
+        type: object
+      - $ref: '#/components/schemas/trailerTinyResponse'
+      - $ref: '#/components/schemas/CarrierProposedAssignmentDriver_allOf'
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ListCarrierProposedAssignmentResponse:
+      description: A list of carrier-proposed assignments and pagination information.
+      properties:
+        data:
+          description: A list of carrier-proposed assignments
+          items:
+            $ref: '#/components/schemas/CarrierProposedAssignment'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentRejectedTime:
+      description: 'Time when the driver rejected this assignment in the mobile app. Will be omitted if the driver hasn''t rejected this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    TrainingAssignmentsGetTrainingAssignmentsStreamTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1TrailerBase:
+      properties:
+        id:
+          description: ID of the trailer
+          example: 2041
+          format: int64
+          type: integer
+        name:
+          description: Assignment trailer name (given when creating trailer via the trailer portal)
+          example: myTrailer
+          format: string
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    PostDriverVehicleAssignmentsV2ResponseBodyResponseBody:
+      description: Response after successfully submitting a Driver Assignment
+      properties:
+        message:
+          description: A description of the outcome from submitting Driver Assignment information
+          example: Driver assignment was successfully submitted
+          type: string
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentResponseBody:
+      properties:
+        data:
+          description: List of driver coach assignment objects
+          items:
+            $ref: '#/components/schemas/CoachAssignmentWithDriverExternalIdsResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentDriver:
+      allOf:
+      - description: The driver that this assignment is for.
+        type: object
+      - $ref: '#/components/schemas/driverTinyResponse'
+      - $ref: '#/components/schemas/CarrierProposedAssignmentDriver_allOf'
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignmentVehicle:
+      allOf:
+      - description: Vehicle that this assignment will propose to the driver.
+        type: object
+      - $ref: '#/components/schemas/vehicleTinyResponse'
+    PostDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody:
+      description: Metadata about this driver assignment
+      properties:
+        sourceName:
+          description: Describes where the external assignment is coming from
+          example: My custom assignment source
+          maxLength: 100
+          type: string
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentRequestBody:
+      description: Updated Driver Assignment details
+      properties:
+        assignedAtTime:
+          description: 'The time at which the assignment was made in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        driverId:
+          description: ID of the driver. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
+          example: '494123'
+          type: string
+        endTime:
+          description: 'The end time in RFC 3339 format. To make this an ongoing assignment (ie. an assignment with no end time), provide an endTime value of ''null''. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Is this driver a passenger?
+          example: true
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/PatchDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody'
+        startTime:
+          description: 'The start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicleId:
+          description: ID of the vehicle. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
+          example: '281474978683353'
+          type: string
+      required:
+      - driverId
+      - startTime
+      - vehicleId
+      type: object
+    V1TrailerAssignmentsResponse:
+      allOf:
+      - $ref: '#/components/schemas/V1TrailerBase'
+      - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingLearnerObjectResponseBody:
+      description: Learner that is associated with the training assignment. Only driver learners are supported currently.
+      properties:
+        id:
+          description: ID of the polymorphic user.
+          example: '938172'
+          type: string
+        type:
+          description: 'The type of the polymorphic user.  Valid values: `driver`'
+          enum:
+          - driver
+          example: driver
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsRequestBody:
+      description: Driver assignments to be deleted
+      properties:
+        assignedAtTime:
+          description: ' Assigned at time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        endTime:
+          description: ' An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Indicates if assigned driver is passenger
+          example: true
+          type: boolean
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicleId:
+          description: ID of the vehicle. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
+          example: '281474978683353'
+          type: string
+      required:
+      - vehicleId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CarrierProposedAssignment:
+      description: A carrier proposed assignment object
+      properties:
+        acceptedTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentAcceptedTime'
+        activeTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentActiveTime'
+        driver:
+          $ref: '#/components/schemas/CarrierProposedAssignmentDriver'
+        firstSeenTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentFirstSeenTime'
+        id:
+          $ref: '#/components/schemas/CarrierProposedAssignmentId'
+        rejectedTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentRejectedTime'
+        shippingDocs:
+          $ref: '#/components/schemas/CarrierProposedAssignmentShippingDocs'
+        trailers:
+          $ref: '#/components/schemas/CarrierProposedAssignmentTrailers'
+        vehicle:
+          $ref: '#/components/schemas/CarrierProposedAssignmentVehicle'
+      required:
+      - activeTime
+      - id
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PatchDriverVehicleAssignmentsV2ResponseBodyResponseBody:
+      description: Response after successfully updating a Driver Assignment
+      properties:
+        message:
+          description: A description of the outcome from updating Driver Assignment information
+          example: Driver assignment was successfully updated
+          type: string
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamResponseBody:
+      properties:
+        data:
+          description: List of training assignments.
+          items:
+            $ref: '#/components/schemas/TrainingAssignmentResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsGetTrainingAssignmentsStreamInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of driver and their vehicle assignments.
+          items:
+            $ref: '#/components/schemas/DriversVehicleAssignmentsObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    PatchDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody:
+      description: Metadata about this driver assignment
+      properties:
+        sourceName:
+          description: Describes where the external assignment is coming from
+          example: My custom assignment source
+          maxLength: 100
+          type: string
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleAssignmentObjectResponseBody:
+      properties:
+        assignmentType:
+          description: 'Assignment type of the driver-vehicle assignment, indicating the provenance of the assignment. The only type of assignment supported right now is `driverApp` assignments. This list could change, so it is recommended that clients gracefully handle any types not enumerated in this list.  Valid values: `driverApp`'
+          enum:
+          - driverApp
+          example: driverApp
+          type: string
+        endTime:
+          description: ' An end time in RFC 3339 format. Omitted if not applicable. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Boolean indicating whether the driver is a passenger.
+          example: false
+          type: boolean
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - assignmentType
+      - isPassenger
+      - startTime
+      - vehicle
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehiclesDriverAssignmentsGetVehiclesDriverAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverWithExternalIdObjectResponseBody:
+      description: A driver object with an id and map of external ids.
+      properties:
+        driverId:
+          description: Samsara ID of the driver.
+          example: 0987
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+      required:
+      - driverId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachAssignmentWithDriverExternalIdsResponseResponseBody:
+      description: Driver coach assignment object.
+      properties:
+        coachId:
+          description: Coach ID associated with coach assignment. Always returned.
+          example: '45646'
+          type: string
+        createdAtTime:
+          description: Time coach assignment was created in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        driver:
+          $ref: '#/components/schemas/DriverWithExternalIdObjectResponseBody'
+        updatedAtTime:
+          description: Time coaching assignment was updated in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - coachId
+      - createdAtTime
+      - driver
+      - updatedAtTime
+      type: object
+    CarrierProposedAssignmentResponse:
+      description: A carrier-proposed assignment response object.
+      properties:
+        data:
+          $ref: '#/components/schemas/CarrierProposedAssignment'
+      required:
+      - data
+      type: object
+    DriversVehicleAssignmentsGetDriversVehicleAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentResponseObjectResponseBody:
+      description: Training Assignment response object.
+      properties:
+        completedAtTime:
+          description: Time training assignment is completed. UTC timestamp in RFC 3339 format. Returned when a training assignment completion status is "complete".
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        course:
+          $ref: '#/components/schemas/TrainingCourseObjectResponseBody'
+        createdAtTime:
+          description: Creation time of the training assignment. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        createdById:
+          description: ID of the user who created the training assignment.
+          example: user-4392
+          type: string
+        deletedAtTime:
+          description: Time training assignment is deleted. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        dueAtTime:
+          description: Time training assignment is due. UTC timestamp in RFC 3339 format. Returned when an assignment has a due date set by an admin.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        durationMinutes:
+          description: Time spent on the training assignment.
+          example: 2750596961262481000
+          format: int64
+          type: integer
+        id:
+          description: ID of the training assignment.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        isCompletedLate:
+          description: Indicates whether the training assignment was completed on time or not. Returned when a training assignment completion status is "complete" and has a dueAtTime set by an admin.
+          example: true
+          type: boolean
+        isOverdue:
+          description: Indicates whether the training assignment is past the due date. Returned when a training assignment completion status is 'inProgress' or 'notStarted' and has a dueAtTime set by an admin.
+          example: true
+          type: boolean
+        learner:
+          $ref: '#/components/schemas/TrainingLearnerObjectResponseBody'
+        scorePercent:
+          description: Quiz score associated with training assignment. Returned when a training assignment completion status is "complete".
+          example: 0.5695960957385368
+          format: double
+          type: number
+        startedAtTime:
+          description: Time training assignment is started. UTC timestamp in RFC 3339 format. Returned when a training assignment completion status is "complete" or "inProgress".
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        status:
+          description: 'State for the Training Assignment. Always returned.  Valid values: `notStarted`, `inProgress`, `completed`'
+          enum:
+          - notStarted
+          - inProgress
+          - completed
+          example: inProgress
+          type: string
+        updatedAtTime:
+          description: Time training assignment was updated by either a learner or an admin. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        updatedById:
+          description: ID of the user who updated the training assignment, either an admin or a learner.
+          example: user-3112
+          type: string
+      required:
+      - course
+      - createdAtTime
+      - createdById
+      - durationMinutes
+      - id
+      - learner
+      - status
+      - updatedAtTime
+      - updatedById
+      type: object
+    TrainingAssignmentsPostTrainingAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

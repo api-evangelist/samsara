@@ -1,0 +1,201 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Trips API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Trips
+paths:
+  /v1/fleet/trips:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet historical trips data for specified vehicle. This method returns a set of historical trips data for the specified vehicle in the specified time range. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Vehicle Trips** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getFleetTrips
+      parameters:
+      - description: Vehicle ID to query.
+        in: query
+        name: vehicleId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Beginning of the time range, specified in milliseconds UNIX time. Limited to a 90 day window with respect to startMs and endMs
+        in: query
+        name: startMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: End of the time range, specified in milliseconds UNIX time.
+        in: query
+        name: endMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1TripResponse'
+          description: List of trips taken by the requested vehicle within the specified timeframe. Ongoing trips will be returned with 9223372036854775807 as their endMs.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Get Vehicle Trips
+      tags:
+      - Trips
+components:
+  schemas:
+    V1TripResponse:
+      description: Contains the trips for the vehicle in the requested timeframe. A trip is represented as an object that contains startMs, startLocation, startAddress, startCoordinates, endMs, endLocation, endAddress and endCoordinates. Ongoing trips will be returned with 9223372036854775807 as their endMs.
+      properties:
+        trips:
+          items:
+            $ref: '#/components/schemas/V1TripResponse_trips'
+          type: array
+      type: object
+    V1TripResponse_trips:
+      properties:
+        assetIds:
+          description: List of associated asset IDs
+          example:
+          - 122
+          items:
+            format: int64
+            type: integer
+          type: array
+        codriverIds:
+          description: List of codriver IDs
+          example:
+          - 122
+          items:
+            format: int64
+            type: integer
+          type: array
+        distanceMeters:
+          description: Length of the trip in meters. This value is calculated from the GPS data collected by the Samsara Vehicle Gateway.
+          example: 2500
+          type: integer
+        driverId:
+          description: ID of the driver.
+          example: 719
+          type: integer
+        endAddress:
+          $ref: '#/components/schemas/V1TripResponse_endAddress'
+        endCoordinates:
+          $ref: '#/components/schemas/V1TripResponse_endCoordinates'
+        endLocation:
+          description: Geocoded street address of start (latitude, longitude) coordinates.
+          example: 571 S Lake Ave, Pasadena, CA 91101
+          type: string
+        endMs:
+          description: End of the trip in UNIX milliseconds. Ongoing trips are indicated by an endMs value of 9223372036854775807.
+          example: 1462881998034
+          type: integer
+        endOdometer:
+          description: Odometer reading (in meters) at the end of the trip. This is read from the vehicle's on-board diagnostics. If Samsara cannot read the vehicle's odometer values from on-board diagnostics, this value will be 0.
+          example: 210430500
+          type: integer
+        fuelConsumedMl:
+          description: Amount in milliliters of fuel consumed on this trip.
+          example: 75700
+          type: integer
+        startAddress:
+          $ref: '#/components/schemas/V1TripResponse_startAddress'
+        startCoordinates:
+          $ref: '#/components/schemas/V1TripResponse_startCoordinates'
+        startLocation:
+          description: Geocoded street address of start (latitude, longitude) coordinates.
+          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
+          type: string
+        startMs:
+          description: Beginning of the trip in UNIX milliseconds.
+          example: 1462878398034
+          type: integer
+        startOdometer:
+          description: Odometer reading (in meters) at the beginning of the trip. This is read from the vehicle's on-board diagnostics. If Samsara cannot read the vehicle's odometer values from on-board diagnostics, this value will be 0.
+          example: 210430450
+          type: integer
+        tollMeters:
+          description: Length in meters trip spent on toll roads.
+          example: 32000
+          type: integer
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1TripResponse_endCoordinates:
+      description: End (latitude, longitude) in decimal degrees.
+      properties:
+        latitude:
+          example: 23.413702345
+          format: double
+          type: number
+        longitude:
+          example: -91.502888123
+          format: double
+          type: number
+      type: object
+    V1TripResponse_startCoordinates:
+      description: Start (latitude, longitude) in decimal degrees.
+      properties:
+        latitude:
+          example: 29.443702345
+          format: double
+          type: number
+        longitude:
+          example: -98.502888123
+          format: double
+          type: number
+      type: object
+    V1TripResponse_endAddress:
+      description: Text representation of nearest identifiable location to the end (latitude, longitude) coordinates.
+      properties:
+        address:
+          description: The formatted address
+          example: 123 Main St, Sunnyvale, CA 94089
+          type: string
+        id:
+          description: The ID of the address
+          example: 581
+          format: int64
+          type: number
+        name:
+          description: The name of the address
+          example: Ramen Tatsunoya
+          type: string
+      type: object
+    V1TripResponse_startAddress:
+      description: Text representation of nearest identifiable location to the start (latitude, longitude) coordinates.
+      properties:
+        address:
+          description: The formatted address
+          example: 123 Main St, Sunnyvale, CA 94089
+          type: string
+        id:
+          description: The ID of the address
+          example: 581
+          format: int64
+          type: number
+        name:
+          description: The name of the address
+          example: Ramen Tatsunoya
+          type: string
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

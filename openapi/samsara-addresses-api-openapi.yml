@@ -1,0 +1,626 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Addresses API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Addresses
+paths:
+  /addresses:
+    get:
+      description: "Returns a list of all addresses in an organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Addresses** under the Addresses category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: listAddresses
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on data to have a created at time after or equal to this specified time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: createdAfterTime
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - addressTypes:
+                  - yard
+                  contacts:
+                  - firstName: Jane
+                    id: '22408'
+                    lastName: Jones
+                  createdAtTime: '2019-05-18T20:27:35Z'
+                  externalIds:
+                    maintenanceId: '250020'
+                    payrollId: ABFS18600
+                  formattedAddress: 350 Rhode Island St, San Francisco, CA
+                  geofence:
+                    circle:
+                      latitude: 37.765363
+                      longitude: -122.4029238
+                      radiusMeters: 25
+                    polygon:
+                      vertices:
+                      - latitude: 37.765363
+                        longitude: -122.403098
+                      - latitude: 38.765363
+                        longitude: -122.403098
+                      - latitude: 37.765363
+                        longitude: -123.403098
+                  id: '22408'
+                  latitude: 37.765363
+                  longitude: -122.4029238
+                  name: Samsara HQ
+                  notes: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
+                  tags:
+                  - id: '3914'
+                    name: East Coast
+                    parentTagId: '4815'
+                pagination:
+                  endCursor: MjkY
+                  hasNextPage: true
+              schema:
+                $ref: '#/components/schemas/ListAddressesResponse'
+          description: List of all addresses in the organization
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Addresses
+      tags:
+      - Addresses
+    post:
+      description: "Creates a new address in the organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Addresses** under the Addresses category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createAddress
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAddressRequest'
+        description: The address to create.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+          description: Newly created address object with ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create an Address
+      tags:
+      - Addresses
+      x-codegen-request-body-name: address
+  /addresses/{id}:
+    delete:
+      description: "Delete a specific address. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Addresses** under the Addresses category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteAddress
+      parameters:
+      - description: 'ID of the Address. This can either be the Samsara-provided ID or an external ID. External IDs are customer-specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `crmId:abc123`'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Unexpected error.
+      summary: Delete an Address
+      tags:
+      - Addresses
+    get:
+      description: "Returns a specific address. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Addresses** under the Addresses category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getAddress
+      parameters:
+      - description: 'ID of the Address. This can either be the Samsara-provided ID or an external ID. External IDs are customer-specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `crmId:abc123`'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+          description: An Address.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Retrieve an Address
+      tags:
+      - Addresses
+    patch:
+      description: "Update a specific address. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Addresses** under the Addresses category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: updateAddress
+      parameters:
+      - description: 'ID of the Address. This can either be the Samsara-provided ID or an external ID. External IDs are customer-specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: `key:value`. For example, `crmId:abc123`'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAddressRequest'
+        description: The address fields to update.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+          description: Updated address object with ID.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update an Address
+      tags:
+      - Addresses
+      x-codegen-request-body-name: address
+components:
+  schemas:
+    Address:
+      description: An Address object.
+      properties:
+        addressTypes:
+          description: 'Reporting location type associated with the address (used for ELD reporting purposes). Valid values: `yard`, `shortHaul`, `workforceSite`, `riskZone`, `industrialSite`, `alertsOnly`.'
+          items:
+            enum:
+            - yard
+            - shortHaul
+            - workforceSite
+            - riskZone
+            - industrialSite
+            - alertsOnly
+            example: yard
+            type: string
+          type: array
+        contacts:
+          description: An array Contact mini-objects that are associated the Address.
+          items:
+            $ref: '#/components/schemas/contactTinyResponse'
+          type: array
+        createdAtTime:
+          description: The date and time this address was created in RFC 3339 format.
+          example: '2019-05-18T20:27:35Z'
+          format: date-time
+          type: string
+        externalIds:
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          properties: {}
+          type: object
+        formattedAddress:
+          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
+          example: 350 Rhode Island St, San Francisco, CA
+          maxLength: 1024
+          type: string
+        geofence:
+          $ref: '#/components/schemas/AddressGeofence'
+        id:
+          description: ID of the Address.
+          example: '22408'
+          type: string
+        latitude:
+          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: 37.765363
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: -122.4029238
+          format: double
+          type: number
+        name:
+          description: Name of the address.
+          example: Samsara HQ
+          maxLength: 255
+          type: string
+        notes:
+          description: Notes about the address.
+          example: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
+          maxLength: 280
+          type: string
+        tags:
+          description: An array of all tag mini-objects that are associated with the given address entry.
+          items:
+            $ref: '#/components/schemas/tagTinyResponse'
+          type: array
+      required:
+      - formattedAddress
+      - geofence
+      - id
+      - name
+      type: object
+    AddressGeofence:
+      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+      properties:
+        circle:
+          $ref: '#/components/schemas/AddressGeofence_circle'
+        polygon:
+          $ref: '#/components/schemas/AddressGeofence_polygon'
+        settings:
+          $ref: '#/components/schemas/AddressGeofence_settings'
+      type: object
+    AddressGeofence_polygon_vertices:
+      properties:
+        latitude:
+          description: The latitude of a geofence vertex in decimal degrees.
+          format: double
+          type: number
+        longitude:
+          description: The longitude of a geofence vertex in decimal degrees.
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    CreateAddressRequest:
+      description: A request body to create an Address.
+      properties:
+        addressTypes:
+          description: 'Reporting location type associated with the address (used for ELD reporting purposes). Valid values: `yard`, `shortHaul`, `workforceSite`, `riskZone`, `industrialSite`, `alertsOnly`.'
+          items:
+            enum:
+            - yard
+            - shortHaul
+            - workforceSite
+            - riskZone
+            - industrialSite
+            - alertsOnly
+            example: yard
+            type: string
+          type: array
+        contactIds:
+          description: An array of Contact IDs associated with this Address.
+          items:
+            example: '22408'
+            type: string
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        formattedAddress:
+          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
+          example: 350 Rhode Island St, San Francisco, CA
+          maxLength: 1024
+          type: string
+        geofence:
+          $ref: '#/components/schemas/CreateAddressRequest_geofence'
+        latitude:
+          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: 37.765363
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: -122.4029238
+          format: double
+          type: number
+        name:
+          description: Name of the address.
+          example: Samsara HQ
+          maxLength: 255
+          type: string
+        notes:
+          description: Notes about the address.
+          example: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
+          maxLength: 280
+          type: string
+        tagIds:
+          description: An array of IDs of tags to associate with this address.
+          items:
+            example: '3914'
+            type: string
+          type: array
+      required:
+      - formattedAddress
+      - geofence
+      - name
+      type: object
+    CreateAddressRequest_geofence_settings:
+      description: Information about a geofence's settings.
+      properties:
+        showAddresses:
+          description: If this property is set to true, then underlying geofence addresses will be shown in reports instead of a geofence's name.
+          example: true
+          type: boolean
+      type: object
+    CreateAddressRequest_geofence:
+      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+      properties:
+        circle:
+          $ref: '#/components/schemas/AddressGeofence_circle'
+        polygon:
+          $ref: '#/components/schemas/AddressGeofence_polygon'
+        settings:
+          $ref: '#/components/schemas/CreateAddressRequest_geofence_settings'
+      type: object
+    AddressResponse:
+      description: An Address response body.
+      properties:
+        data:
+          $ref: '#/components/schemas/Address'
+      required:
+      - data
+      type: object
+    UpdateAddressRequest:
+      description: A request body to update an Address.
+      properties:
+        addressTypes:
+          description: 'Reporting location type associated with the address (used for ELD reporting purposes). Valid values: `yard`, `shortHaul`, `workforceSite`, `riskZone`, `industrialSite`, `alertsOnly`.'
+          items:
+            enum:
+            - yard
+            - shortHaul
+            - workforceSite
+            - riskZone
+            - industrialSite
+            - alertsOnly
+            example: yard
+            type: string
+          type: array
+        contactIds:
+          description: An array of Contact IDs associated with this Address.
+          items:
+            example: '22408'
+            type: string
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        formattedAddress:
+          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
+          example: 350 Rhode Island St, San Francisco, CA
+          maxLength: 1024
+          type: string
+        geofence:
+          $ref: '#/components/schemas/UpdateAddressRequest_geofence'
+        latitude:
+          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: 37.765363
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: -122.4029238
+          format: double
+          type: number
+        name:
+          description: Name of the address.
+          example: Samsara HQ
+          maxLength: 255
+          type: string
+        notes:
+          description: Notes about the address.
+          example: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
+          maxLength: 280
+          type: string
+        tagIds:
+          description: An array of IDs of tags to associate with this address.
+          items:
+            example: '3914'
+            type: string
+          type: array
+      type: object
+    UpdateAddressRequest_geofence:
+      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+      properties:
+        circle:
+          $ref: '#/components/schemas/AddressGeofence_circle'
+        polygon:
+          $ref: '#/components/schemas/AddressGeofence_polygon'
+        settings:
+          $ref: '#/components/schemas/AddressGeofence_settings'
+      type: object
+    ListAddressesResponse:
+      description: A list of Addresses and pagination information.
+      properties:
+        data:
+          description: A list of Addresses.
+          items:
+            $ref: '#/components/schemas/Address'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    AddressGeofence_settings:
+      description: Information about a geofence's settings.
+      properties:
+        showAddresses:
+          description: If this property is set to true, then underlying geofence addresses will be shown in reports instead of a geofence's name.
+          example: false
+          type: boolean
+      type: object
+    AddressGeofence_circle:
+      description: Information about a circular geofence. This field is only needed if the geofence is a circle.
+      properties:
+        latitude:
+          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: 37.765363
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: -122.4029238
+          format: double
+          type: number
+        radiusMeters:
+          description: The radius of the circular geofence in meters.
+          example: 25
+          format: int64
+          type: integer
+      required:
+      - radiusMeters
+      type: object
+    contactTinyResponse:
+      description: A minified contact object
+      properties:
+        firstName:
+          description: First name of the contact.
+          example: Jane
+          type: string
+        id:
+          description: ID of the contact.
+          example: '22408'
+          type: string
+        lastName:
+          description: Last name of the contact.
+          example: Jones
+          type: string
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    AddressGeofence_polygon:
+      description: Information about a polygon geofence. This field is only needed if the geofence is a polygon.
+      properties:
+        vertices:
+          description: The vertices of the polygon geofence. These geofence vertices describe the perimeter of the polygon, and must consist of at least 3 vertices and less than 40.
+          example:
+          - latitude: 37.765363
+            longitude: -122.403098
+          - latitude: 38.765363
+            longitude: -122.403098
+          - latitude: 37.765363
+            longitude: -123.403098
+          items:
+            $ref: '#/components/schemas/AddressGeofence_polygon_vertices'
+          maxItems: 40
+          minItems: 3
+          type: array
+      required:
+      - vertices
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

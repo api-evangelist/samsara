@@ -1,0 +1,588 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Applications API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Applications
+paths:
+  /fleet/settings/driver-app:
+    get:
+      description: "Get driver app settings.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Driver App Settings** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getDriverAppSettings
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Driver App Settings
+      tags:
+      - Applications
+    patch:
+      description: "Update driver app settings.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Driver App Settings** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchDriverAppSettings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsPatchDriverAppSettingsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Update Driver App Settings
+      tags:
+      - Applications
+      x-codegen-request-body-name: PatchDriverAppSettingsRequestBody
+components:
+  schemas:
+    SettingsGetDriverAppSettingsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsResponseObjectResponseBody:
+      description: The configuration settings for the Samsara Driver App. Can be set or updated through the Samsara Settings page or the API at any time.
+      properties:
+        driverFleetId:
+          description: Login user name for the fleet driver app
+          example: abc_trucking_co
+          type: string
+        gamification:
+          description: Driver gamification feature. Enabling this will turn on the feature for all drivers using the mobile app. Drivers can be configured into peer groups within the Drivers Page. Unconfigured drivers will be grouped on an organization level.
+          example: false
+          type: boolean
+        gamificationConfig:
+          $ref: '#/components/schemas/DriverAppSettingsGamificationConfigTinyObjectResponseBody'
+        orgVehicleSearch:
+          description: Allow drivers to search for vehicles outside of their selection tag when connected to the internet.
+          example: true
+          type: boolean
+        trailerSelection:
+          description: 'Allow drivers to see and select trailers in the Samsara Driver app. '
+          example: false
+          type: boolean
+        trailerSelectionConfig:
+          $ref: '#/components/schemas/DriverAppSettingsTrailerSelectionConfigTinyObjectResponseBody'
+      type: object
+    SettingsPatchDriverAppSettingsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverAppSettingsResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    SettingsGetDriverAppSettingsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsGamificationConfigTinyObjectResponseBody:
+      description: Gamification configuration for the Driver App.
+      properties:
+        anonymizeDriverNames:
+          description: Hide the names of other drivers when viewing the driver leaderboard in the mobile app.
+          example: true
+          type: boolean
+      type: object
+    SettingsGetDriverAppSettingsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverAppSettingsResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    SettingsGetDriverAppSettingsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsRequestBody:
+      description: The configuration settings for the Samsara Driver App. Can be set or updated through the Samsara Settings page or the API at any time.
+      properties:
+        driverFleetId:
+          description: Global login user name for the fleet driver app
+          example: abc-trucking-co
+          pattern: ^[a-zA-Z0-9-:]*$
+          type: string
+        gamification:
+          description: Driver gamification feature. Enabling this will turn on the feature for all drivers using the mobile app. Drivers can be configured into peer groups within the Drivers Page. Unconfigured drivers will be grouped on an organization level.
+          example: false
+          type: boolean
+        gamificationConfig:
+          $ref: '#/components/schemas/DriverAppSettingsGamificationConfigTinyObjectRequestBody'
+        orgVehicleSearch:
+          description: Allow drivers to search for vehicles outside of their selection tag when connected to the internet.
+          example: false
+          type: boolean
+        trailerSelection:
+          description: 'Allow drivers to see and select trailers in the Samsara Driver app. '
+          example: false
+          type: boolean
+        trailerSelectionConfig:
+          $ref: '#/components/schemas/DriverAppSettingsTrailerSelectionConfigTinyObjectRequestBody'
+      type: object
+    SettingsPatchDriverAppSettingsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsTrailerSelectionConfigTinyObjectResponseBody:
+      description: Trailer selection setting configuration for the Driver App.
+      properties:
+        driverTrailerCreationEnabled:
+          description: Allow drivers to create new trailers in the Samsara Driver app.
+          example: true
+          type: boolean
+        maxNumOfTrailersSelected:
+          description: Trailer selection limit.
+          maximum: 8
+          type: integer
+        orgTrailerSearch:
+          description: Allow drivers to search for trailers outside of their selection tag when connected to the internet
+          example: true
+          type: boolean
+      type: object
+    SettingsGetDriverAppSettingsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsTrailerSelectionConfigTinyObjectRequestBody:
+      description: Trailer selection setting configuration for the Driver App.
+      properties:
+        driverTrailerCreationEnabled:
+          description: Allow drivers to create new trailers in the Samsara Driver app.
+          example: true
+          type: boolean
+        maxNumOfTrailersSelected:
+          description: Trailer selection limit.
+          maximum: 8
+          type: integer
+        orgTrailerSearch:
+          description: Allow drivers to search for trailers outside of their selection tag when connected to the internet
+          example: true
+          type: boolean
+      type: object
+    SettingsGetDriverAppSettingsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsGamificationConfigTinyObjectRequestBody:
+      description: Gamification configuration for the Driver App.
+      properties:
+        anonymizeDriverNames:
+          description: Hide the names of other drivers when viewing the driver leaderboard in the mobile app.
+          example: true
+          type: boolean
+      type: object
+    SettingsPatchDriverAppSettingsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

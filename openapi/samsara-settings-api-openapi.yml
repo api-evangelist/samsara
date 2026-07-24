@@ -1,0 +1,2018 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Settings API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Settings
+paths:
+  /fleet/settings/compliance:
+    get:
+      description: "Get organization's compliance settings, including carrier name, office address, and DOT number\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read ELD Compliance Settings (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getComplianceSettings
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetComplianceSettingsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Compliance Settings
+      tags:
+      - Settings
+    patch:
+      description: "Update organization's compliance settings, including carrier name, office address, and DOT number\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write ELD Compliance Settings (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchComplianceSettings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsPatchComplianceSettingsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchComplianceSettingsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Update Compliance Settings
+      tags:
+      - Settings
+      x-codegen-request-body-name: PatchComplianceSettingsRequestBody
+  /fleet/settings/driver-app:
+    get:
+      description: "Get driver app settings.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Driver App Settings** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getDriverAppSettings
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGetDriverAppSettingsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Driver App Settings
+      tags:
+      - Settings
+    patch:
+      description: "Update driver app settings.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Driver App Settings** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchDriverAppSettings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsPatchDriverAppSettingsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchDriverAppSettingsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Update Driver App Settings
+      tags:
+      - Settings
+      x-codegen-request-body-name: PatchDriverAppSettingsRequestBody
+  /fleet/settings/safety:
+    get:
+      description: "Get safety settings\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Safety Events & Scores** under the Safety & Cameras category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getSafetySettings
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetySettingsGetSafetySettingsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Safety Settings
+      tags:
+      - Settings
+components:
+  schemas:
+    HarshAccelSensitivityGForceSettingsObjectResponseBody:
+      description: The harsh acceleration sensitivity settings.
+      properties:
+        heavyDuty:
+          description: Harsh acceleration sensitivity settings for heavy duty vehicle.
+          example: '0.29'
+          type: string
+        lightDuty:
+          description: Harsh acceleration sensitivity settings for light duty vehicle.
+          example: '0.33'
+          type: string
+        passenger:
+          description: Harsh acceleration sensitivity settings for passenger car.
+          example: '0.43'
+          type: string
+      type: object
+    SafetySettingsGetSafetySettingsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsGamificationConfigTinyObjectResponseBody:
+      description: Gamification configuration for the Driver App.
+      properties:
+        anonymizeDriverNames:
+          description: Hide the names of other drivers when viewing the driver leaderboard in the mobile app.
+          example: true
+          type: boolean
+      type: object
+    HarshBrakeSensitivityV2SettingsObjectResponseBody:
+      description: The harsh brake sensitivity settings.
+      properties:
+        heavyDuty:
+          description: 'Harsh brake sensitivity settings for heavy duty vehicle.  Valid values: `unknown`, `invalid`, `off`, `veryLow`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - veryLow
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+        lightDuty:
+          description: 'Harsh brake sensitivity settings for light duty vehicle.  Valid values: `unknown`, `invalid`, `off`, `veryLow`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - veryLow
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+        passenger:
+          description: 'Harsh brake sensitivity settings for passenger car.  Valid values: `unknown`, `invalid`, `off`, `veryLow`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - veryLow
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+      type: object
+    SettingsGetDriverAppSettingsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchComplianceSettingsRequestBody:
+      description: Information set here will be displayed in roadside inspections and in the transferred US DOT datafile. Can be set or updated through the Samsara Settings page or the API at any time. To override these fields for specific drivers, please visit Driver Settings
+      properties:
+        allowUnregulatedVehiclesEnabled:
+          description: '[deprecated] Allow Unregulated Vehicles. This setting is deprecated as all organizations can now mark vehicles as unregulated.'
+          example: false
+          type: boolean
+        canadaHosEnabled:
+          description: Enable Canada HOS
+          example: true
+          type: boolean
+        carrierName:
+          description: Carrier Name / Principal Place of Business Name
+          example: ABC Trucking
+          type: string
+        dotNumber:
+          description: Carrier US DOT Number
+          example: 12345678
+          format: int64
+          type: integer
+        driverAutoDutyEnabled:
+          description: Enable Driver Auto-Duty
+          example: true
+          type: boolean
+        editCertifiedLogsEnabled:
+          description: Drivers Can Edit Certified Log
+          example: false
+          type: boolean
+        forceManualLocationForDutyStatusChangesEnabled:
+          description: Force Manual Location For Duty Status Changes
+          example: false
+          type: boolean
+        forceReviewUnassignedHosEnabled:
+          description: Force Review of Unassigned HOS
+          example: false
+          type: boolean
+        mainOfficeFormattedAddress:
+          description: Main Office Address / Principal Place of Businesss Address
+          example: 123 Main Street
+          type: string
+        persistentDutyStatusEnabled:
+          description: Persistent Duty Status
+          example: true
+          type: boolean
+      type: object
+    SettingsPatchDriverAppSettingsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetComplianceSettingsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchComplianceSettingsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsTrailerSelectionConfigTinyObjectResponseBody:
+      description: Trailer selection setting configuration for the Driver App.
+      properties:
+        driverTrailerCreationEnabled:
+          description: Allow drivers to create new trailers in the Samsara Driver app.
+          example: true
+          type: boolean
+        maxNumOfTrailersSelected:
+          description: Trailer selection limit.
+          maximum: 8
+          type: integer
+        orgTrailerSearch:
+          description: Allow drivers to search for trailers outside of their selection tag when connected to the internet
+          example: true
+          type: boolean
+      type: object
+    SettingsGetComplianceSettingsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    InattentiveDrivingDetectionAlertSettingsObjectResponseBody:
+      description: Enables AI detection of inattentive driving events.
+      properties:
+        hasInCabAudioAlertsEnabled:
+          description: Indicates whether in-cab audio alerts for inattentive driving are turned on.
+          example: true
+          type: boolean
+        isEnabled:
+          description: Indicates whether AI event detection for inattentive driving is turned on.
+          example: true
+          type: boolean
+        severity:
+          description: 'Severity of inattentive driving events. Options include low (alerts for all events), medium (alerts for medium and high severity events), and high (alerts for high severity events only).  Valid values: `low`, `medium`, `high`'
+          enum:
+          - low
+          - medium
+          - high
+          example: low
+          type: string
+        speedingThresholdMph:
+          description: Alert when speed is over this many miles per hour.
+          example: 10
+          format: double
+          type: number
+      type: object
+    SettingsGetComplianceSettingsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    speedingSeverityLevelResponseBody:
+      description: The settings for a specific speeding severity level.
+      properties:
+        durationMs:
+          description: The amount of time the vehicle is speeding in this category before being attributed to this level
+          example: 60
+          format: int32
+          type: integer
+        isEnabled:
+          default: true
+          description: Indicates the severity level is enabled
+          example: true
+          type: boolean
+        severityLevel:
+          description: 'The severity level name.  Valid values: `light`, `moderate`, `heavy`, `severe`'
+          enum:
+          - light
+          - moderate
+          - heavy
+          - severe
+          example: light
+          type: string
+        speedOverLimitThreshold:
+          description: The minimum speed above the speed limit that will get attributed to this severity level.
+          example: 10
+          format: float
+          type: number
+      required:
+      - durationMs
+      - isEnabled
+      - severityLevel
+      - speedOverLimitThreshold
+      type: object
+    SettingsGetComplianceSettingsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsTrailerSelectionConfigTinyObjectRequestBody:
+      description: Trailer selection setting configuration for the Driver App.
+      properties:
+        driverTrailerCreationEnabled:
+          description: Allow drivers to create new trailers in the Samsara Driver app.
+          example: true
+          type: boolean
+        maxNumOfTrailersSelected:
+          description: Trailer selection limit.
+          maximum: 8
+          type: integer
+        orgTrailerSearch:
+          description: Allow drivers to search for trailers outside of their selection tag when connected to the internet
+          example: true
+          type: boolean
+      type: object
+    SafetySettingsGetSafetySettingsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetySettingsGetSafetySettingsResponseBody:
+      properties:
+        data:
+          description: Safety settings for a single organization.
+          items:
+            $ref: '#/components/schemas/SafetySettingsObjectResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    SettingsGetDriverAppSettingsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HarshEventSensitivitySettingsObjectResponseBody:
+      description: 'The configurable sensitivity for Harsh Event Detection on CM11/CM12/CM22 devices. Sensitivity can be measured as a numeric g-force value or the following values: `Normal`, `Less Sensitive`, `More Sensitive`.'
+      properties:
+        harshAccelSensitivityGForce:
+          $ref: '#/components/schemas/HarshAccelSensitivityGForceSettingsObjectResponseBody'
+        harshBrakeSensitivityGForce:
+          $ref: '#/components/schemas/HarshBrakeSensitivityGForceSettingsObjectResponseBody'
+        harshTurnSensitivityGForce:
+          $ref: '#/components/schemas/HarshTurnSensitivityGForceSettingsObjectResponseBody'
+      type: object
+    SettingsPatchComplianceSettingsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/SettingsComplianceResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    SafetySettingsGetSafetySettingsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetComplianceSettingsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VoiceCoachingSettingsObjectResponseBody:
+      description: Enabling voice coaching will play messages for harsh events, speeding, and unbuckled seat belts.
+      properties:
+        eventsToCoach:
+          description: Selected driving events will be enabled for voice coaching. Harsh driving events include harsh acceleration and harsh brake.
+          example:
+          - crash
+          - inCabSpeeding
+          - maximumSpeed
+          items:
+            description: 'Selected driving events will be enabled for voice coaching. Harsh driving events include harsh acceleration and harsh brake.  Valid values: `crash`, `inCabSpeeding`, `maximumSpeed`, `seatbeltUnbuckled`, `harshDriving`'
+            enum:
+            - crash
+            - inCabSpeeding
+            - maximumSpeed
+            - seatbeltUnbuckled
+            - harshDriving
+            example: crash
+            type: string
+          type: array
+        isEnabled:
+          description: Indicates whether voice coaching is turned on.
+          example: true
+          type: boolean
+        language:
+          description: 'The coaching language. The default language is English.  Valid values: `english`, `spanish`, `dutch`, `englishUk`, `italian`, `french`, `german`'
+          enum:
+          - english
+          - spanish
+          - dutch
+          - englishUk
+          - italian
+          - french
+          - german
+          example: english
+          type: string
+        speedingThresholdMph:
+          description: Alert when speed is over this many miles per hour.
+          example: 10
+          format: double
+          type: number
+      type: object
+    SettingsPatchDriverAppSettingsRequestBody:
+      description: The configuration settings for the Samsara Driver App. Can be set or updated through the Samsara Settings page or the API at any time.
+      properties:
+        driverFleetId:
+          description: Global login user name for the fleet driver app
+          example: abc-trucking-co
+          pattern: ^[a-zA-Z0-9-:]*$
+          type: string
+        gamification:
+          description: Driver gamification feature. Enabling this will turn on the feature for all drivers using the mobile app. Drivers can be configured into peer groups within the Drivers Page. Unconfigured drivers will be grouped on an organization level.
+          example: false
+          type: boolean
+        gamificationConfig:
+          $ref: '#/components/schemas/DriverAppSettingsGamificationConfigTinyObjectRequestBody'
+        orgVehicleSearch:
+          description: Allow drivers to search for vehicles outside of their selection tag when connected to the internet.
+          example: false
+          type: boolean
+        trailerSelection:
+          description: 'Allow drivers to see and select trailers in the Samsara Driver app. '
+          example: false
+          type: boolean
+        trailerSelectionConfig:
+          $ref: '#/components/schemas/DriverAppSettingsTrailerSelectionConfigTinyObjectRequestBody'
+      type: object
+    SettingsPatchDriverAppSettingsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ForwardCollisionDetectionAlertSettingsObjectResponseBody:
+      description: Enables AI detection of near forward collisions, surfaces events in Safety Inbox, and enables configurable alerts. While the feature is in beta, it is only enabled during daytime driving hours. In-cab alerts are recommended for testing use only.
+      properties:
+        hasInCabAudioAlertsEnabled:
+          description: Indicates whether in-cab audio alerts for forward collision are turned on.
+          example: true
+          type: boolean
+        isEnabled:
+          description: Indicates whether AI event detection for forward collision is turned on.
+          example: true
+          type: boolean
+        sensitivity:
+          description: 'Ranges from near forward collision (results in fewer events) to far forward collision (results in more events).  Valid values: `near`, `medium`, `far`'
+          enum:
+          - near
+          - medium
+          - far
+          example: near
+          type: string
+      type: object
+    FollowingDistanceDetectionAlertSettingsObjectResponseBody:
+      description: Enables AI detection of tailgating or unsafe following distances, surfaces events in Safety Inbox, and enables configurable alerts. By default, Following Distance will impact the drivers' safety score.
+      properties:
+        durationMs:
+          description: Duration of following distance at which to alert, measured in milliseconds.
+          example: 15000
+          format: int64
+          type: integer
+        hasInCabAudioAlertsEnabled:
+          description: Indicates whether in-cab audio alerts for following distance are turned on.
+          example: true
+          type: boolean
+        isEnabled:
+          description: Indicates whether AI event detection for following distance is turned on.
+          example: true
+          type: boolean
+        speedingThresholdMph:
+          description: Alert when speed is over this many miles per hour.
+          example: 35
+          format: double
+          type: number
+      type: object
+    SafetySettingsGetSafetySettingsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetySettingsGetSafetySettingsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetySettingsGetSafetySettingsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchComplianceSettingsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HarshAccelSensitivityV2SettingsObjectResponseBody:
+      description: The harsh acceleration sensitivity settings.
+      properties:
+        heavyDuty:
+          description: 'Harsh acceleration sensitivity settings for heavy duty vehicle.  Valid values: `unknown`, `invalid`, `off`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+        lightDuty:
+          description: 'Harsh acceleration sensitivity settings for light duty vehicle.  Valid values: `unknown`, `invalid`, `off`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+        passenger:
+          description: 'Harsh acceleration sensitivity settings for passenger car.  Valid values: `unknown`, `invalid`, `off`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+      type: object
+    SettingsGetDriverAppSettingsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DistractedDrivingDetectionAlertSettingsObjectResponseBody:
+      description: Enables AI detection of distracted driving, surfaces events in Safety Inbox, and enables configurable alerts. By default, Distracted Driving will impact the drivers' safety score.
+      properties:
+        inattentiveDrivingDetectionAlerts:
+          $ref: '#/components/schemas/InattentiveDrivingDetectionAlertSettingsObjectResponseBody'
+        isEnabled:
+          description: Indicates whether AI event detection for distracted driving behaviors is turned on.
+          example: true
+          type: boolean
+        mobileUsageDetectionAlerts:
+          $ref: '#/components/schemas/MobileUsageDetectionAlertSettingsObjectResponseBody'
+      type: object
+    SettingsPatchComplianceSettingsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAppSettingsResponseObjectResponseBody:
+      description: The configuration settings for the Samsara Driver App. Can be set or updated through the Samsara Settings page or the API at any time.
+      properties:
+        driverFleetId:
+          description: Login user name for the fleet driver app
+          example: abc_trucking_co
+          type: string
+        gamification:
+          description: Driver gamification feature. Enabling this will turn on the feature for all drivers using the mobile app. Drivers can be configured into peer groups within the Drivers Page. Unconfigured drivers will be grouped on an organization level.
+          example: false
+          type: boolean
+        gamificationConfig:
+          $ref: '#/components/schemas/DriverAppSettingsGamificationConfigTinyObjectResponseBody'
+        orgVehicleSearch:
+          description: Allow drivers to search for vehicles outside of their selection tag when connected to the internet.
+          example: true
+          type: boolean
+        trailerSelection:
+          description: 'Allow drivers to see and select trailers in the Samsara Driver app. '
+          example: false
+          type: boolean
+        trailerSelectionConfig:
+          $ref: '#/components/schemas/DriverAppSettingsTrailerSelectionConfigTinyObjectResponseBody'
+      type: object
+    SettingsPatchDriverAppSettingsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverAppSettingsResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    SafetySettingsGetSafetySettingsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverAppSettingsResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    HarshEventSensitivityV2SettingsObjectResponseBody:
+      description: The configurable sensitivity for Harsh Event Detection. Does not apply to CM11/12/22 devices.
+      properties:
+        harshAccelSensitivity:
+          $ref: '#/components/schemas/HarshAccelSensitivityV2SettingsObjectResponseBody'
+        harshBrakeSensitivity:
+          $ref: '#/components/schemas/HarshBrakeSensitivityV2SettingsObjectResponseBody'
+        harshTurnSensitivity:
+          $ref: '#/components/schemas/HarshTurnSensitivityV2SettingsObjectResponseBody'
+      type: object
+    RollingStopDetectionAlertSettingsObjectResponseBody:
+      description: AI event detection settings for the rolling stop behavior. Detection is available in vehicles with compatible dash cams.
+      properties:
+        isEnabled:
+          description: Indicates whether AI event detection for rolling stops is turned on.
+          example: true
+          type: boolean
+        speedingThresholdMph:
+          description: Alert when speed is over this many miles per hour.
+          example: 0
+          format: double
+          type: number
+      type: object
+    SafetyScoreConfigurationSettingsObjectResponseBody:
+      description: The configurable safety infraction weights.
+      properties:
+        aiInattentiveDrivingDetectionWeight:
+          description: Score weight for AI-detected inattentive driving behavior.
+          example: 2
+          format: int64
+          type: integer
+        crashWeight:
+          description: Score weight for crash behavior.
+          example: 1
+          format: int64
+          type: integer
+        defensiveDrivingWeight:
+          description: Score weight for defensive driving behavior. This behavior has a positive impact on the safety score.
+          example: 0
+          format: int64
+          type: integer
+        didNotYieldWeight:
+          description: Score weight for driver not yielding.
+          example: 0
+          format: int64
+          type: integer
+        drowsyWeight:
+          description: Score weight for drowsy behavior.
+          example: 0
+          format: int64
+          type: integer
+        eatingDrinkingWeight:
+          description: Score weight for eating/drinking behavior.
+          example: 0
+          format: int64
+          type: integer
+        followingDistanceModerateWeight:
+          description: Score weight for moderate (2-4s) following distance behavior.
+          example: 0
+          format: int64
+          type: integer
+        followingDistanceSevereWeight:
+          description: Score weight for severe (0-2s) following distance behavior.
+          example: 0
+          format: int64
+          type: integer
+        followingDistanceWeight:
+          description: Score weight for following distance behavior.
+          example: 2
+          format: int64
+          type: integer
+        forwardCollisionWarningWeight:
+          description: Score weight for forward collision warning behavior.
+          example: 0
+          format: int64
+          type: integer
+        harshAccelWeight:
+          description: Score weight for harsh acceleration behavior.
+          example: 1
+          format: int64
+          type: integer
+        harshBrakeWeight:
+          description: Score weight for harsh braking behavior.
+          example: 1
+          format: int64
+          type: integer
+        harshTurnWeight:
+          description: Score weight for harsh turn behavior.
+          example: 1
+          format: int64
+          type: integer
+        heavySpeedingWeight:
+          description: Score weight for heavy speeding (20-30% over limit).
+          example: 1
+          format: int64
+          type: integer
+        inattentiveDrivingWeight:
+          description: Score weight for inattentive driving behavior.
+          example: 0
+          format: int64
+          type: integer
+        laneDepartureWeight:
+          description: Score weight for lane departure behavior.
+          example: 0
+          format: int64
+          type: integer
+        lateResponseWeight:
+          description: Score weight for late response behavior.
+          example: 0
+          format: int64
+          type: integer
+        lightSpeedingWeight:
+          description: Score weight for light speeding (0-10% over limit).
+          example: 0
+          format: int64
+          type: integer
+        maxSpeedWeight:
+          description: Score weight for max speed events.
+          example: 1
+          format: int64
+          type: integer
+        mobileUsageWeight:
+          description: Score weight for mobile usage behavior.
+          example: 0
+          format: int64
+          type: integer
+        moderateSpeedingWeight:
+          description: Score weight for moderate speeding (10-20% over limit).
+          example: 1
+          format: int64
+          type: integer
+        nearCollisionWeight:
+          description: Score weight for near collision behavior.
+          example: 0
+          format: int64
+          type: integer
+        noSeatbeltWeight:
+          description: Score weight for no seatbelt behavior.
+          example: 0
+          format: int64
+          type: integer
+        obstructedCameraWeight:
+          description: Score weight for obstructed camera behavior.
+          example: 0
+          format: int64
+          type: integer
+        ranRedLightWeight:
+          description: Score weight for driver running red light.
+          example: 0
+          format: int64
+          type: integer
+        rollingStopWeight:
+          description: Score weight for rolling stop behavior.
+          example: 0
+          format: int64
+          type: integer
+        severeSpeedingWeight:
+          description: Score weight for severe speeding (over 30% over limit).
+          example: 1
+          format: int64
+          type: integer
+        smokingWeight:
+          description: Score weight for smoking behavior.
+          example: 0
+          format: int64
+          type: integer
+        speedingWeight:
+          description: Score weight for manual speeding event.
+          example: 0
+          format: int64
+          type: integer
+      type: object
+    HarshTurnSensitivityGForceSettingsObjectResponseBody:
+      description: The harsh turn sensitivity settings.
+      properties:
+        heavyDuty:
+          description: Harsh turn sensitivity settings for heavy duty vehicle.
+          example: '0.29'
+          type: string
+        lightDuty:
+          description: Harsh turn sensitivity settings for light duty vehicle.
+          example: '0.33'
+          type: string
+        passenger:
+          description: Harsh turn sensitivity settings for passenger car.
+          example: '0.43'
+          type: string
+      type: object
+    SettingsPatchComplianceSettingsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetComplianceSettingsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetComplianceSettingsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetySettingsGetSafetySettingsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchComplianceSettingsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchComplianceSettingsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetySettingsObjectResponseBody:
+      description: Safety settings for a single organization.
+      properties:
+        defaultVehicleType:
+          description: 'Default vehicle type (for newly added or activated vehicles).  Valid values: `off`, `automatic`, `passengerCar`, `lightTruck`, `heavyDuty`'
+          enum:
+          - 'off'
+          - automatic
+          - passengerCar
+          - lightTruck
+          - heavyDuty
+          example: heavyDuty
+          type: string
+        distractedDrivingDetectionAlerts:
+          $ref: '#/components/schemas/DistractedDrivingDetectionAlertSettingsObjectResponseBody'
+        followingDistanceDetectionAlerts:
+          $ref: '#/components/schemas/FollowingDistanceDetectionAlertSettingsObjectResponseBody'
+        forwardCollisionDetectionAlerts:
+          $ref: '#/components/schemas/ForwardCollisionDetectionAlertSettingsObjectResponseBody'
+        harshEventSensitivity:
+          $ref: '#/components/schemas/HarshEventSensitivitySettingsObjectResponseBody'
+        harshEventSensitivityV2:
+          $ref: '#/components/schemas/HarshEventSensitivityV2SettingsObjectResponseBody'
+        policyViolationsDetectionAlerts:
+          $ref: '#/components/schemas/PolicyViolationsDetectionAlertSettingsObjectResponseBody'
+        rollingStopDetectionAlerts:
+          $ref: '#/components/schemas/RollingStopDetectionAlertSettingsObjectResponseBody'
+        safetyScoreConfiguration:
+          $ref: '#/components/schemas/SafetyScoreConfigurationSettingsObjectResponseBody'
+        safetyScoreTarget:
+          description: The fleet-wide target safety score that is shown on safety score graphs. A safety score goal of 0 means that score benchmarking is disabled.
+          example: 90
+          format: int64
+          type: integer
+        speedingSettings:
+          $ref: '#/components/schemas/SpeedingSettingsObjectResponseBody'
+        voiceCoaching:
+          $ref: '#/components/schemas/VoiceCoachingSettingsObjectResponseBody'
+      required:
+      - defaultVehicleType
+      - distractedDrivingDetectionAlerts
+      - followingDistanceDetectionAlerts
+      - forwardCollisionDetectionAlerts
+      - harshEventSensitivity
+      - harshEventSensitivityV2
+      - policyViolationsDetectionAlerts
+      - rollingStopDetectionAlerts
+      - safetyScoreConfiguration
+      - safetyScoreTarget
+      - speedingSettings
+      - voiceCoaching
+      type: object
+    SettingsPatchComplianceSettingsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetySettingsGetSafetySettingsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PolicyViolationsDetectionAlertSettingsObjectResponseBody:
+      description: Enables detection of policy violations, surfaces events in Safety Inbox, and enables configurable alerts. While the feature is in beta, in-cab alerts are recommended for testing use only.
+      properties:
+        eventsAvailableForTesting:
+          description: List of selectable beta policy violation events to be tested.
+          example:
+          - smoking
+          - eatingDrinking
+          items:
+            description: 'Enables testing for selected policy violation beta events.  Valid values: `mobileUsage`, `smoking`, `eatingDrinking`, `inwardCameraObstruction`, `outwardCameraObstruction`'
+            enum:
+            - mobileUsage
+            - smoking
+            - eatingDrinking
+            - inwardCameraObstruction
+            - outwardCameraObstruction
+            example: smoking
+            type: string
+          type: array
+        eventsToCoach:
+          description: List of selectable policy violation events to enable coaching for.
+          example:
+          - noSeatbelt
+          - noMask
+          items:
+            description: 'Enables coaching for selected policy violation events.  Valid values: `noSeatbelt`, `noMask`, `mobileUsage`, `smoking`, `eatingDrinking`, `inwardCameraObstruction`, `outwardCameraObstruction`'
+            enum:
+            - noSeatbelt
+            - noMask
+            - mobileUsage
+            - smoking
+            - eatingDrinking
+            - inwardCameraObstruction
+            - outwardCameraObstruction
+            example: noSeatbelt
+            type: string
+          type: array
+        hasInCabAudioAlertsEnabled:
+          description: Indicates whether in-cab audio alerts for rolling stops are turned on.
+          example: true
+          type: boolean
+        isEnabled:
+          description: Indicates whether AI event detection for rolling stops is turned on.
+          example: true
+          type: boolean
+        speedingThresholdMph:
+          description: Alert when speed is over this many miles per hour.
+          example: 5
+          format: double
+          type: number
+      type: object
+    DriverAppSettingsGamificationConfigTinyObjectRequestBody:
+      description: Gamification configuration for the Driver App.
+      properties:
+        anonymizeDriverNames:
+          description: Hide the names of other drivers when viewing the driver leaderboard in the mobile app.
+          example: true
+          type: boolean
+      type: object
+    SettingsPatchDriverAppSettingsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchComplianceSettingsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HarshTurnSensitivityV2SettingsObjectResponseBody:
+      description: The harsh turn sensitivity settings.
+      properties:
+        heavyDuty:
+          description: 'Harsh turn sensitivity settings for heavy duty vehicle.  Valid values: `unknown`, `invalid`, `off`, `veryLow`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - veryLow
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+        lightDuty:
+          description: 'Harsh turn sensitivity settings for light duty vehicle.  Valid values: `unknown`, `invalid`, `off`, `veryLow`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - veryLow
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+        passenger:
+          description: 'Harsh turn sensitivity settings for passenger car.  Valid values: `unknown`, `invalid`, `off`, `veryLow`, `low`, `normal`, `high`'
+          enum:
+          - unknown
+          - invalid
+          - 'off'
+          - veryLow
+          - low
+          - normal
+          - high
+          example: normal
+          type: string
+      type: object
+    SafetySettingsGetSafetySettingsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchComplianceSettingsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HarshBrakeSensitivityGForceSettingsObjectResponseBody:
+      description: The harsh brake sensitivity settings.
+      properties:
+        heavyDuty:
+          description: Harsh brake sensitivity settings for heavy duty vehicle.
+          example: '0.29'
+          type: string
+        lightDuty:
+          description: Harsh brake sensitivity settings for light duty vehicle.
+          example: '0.33'
+          type: string
+        passenger:
+          description: Harsh brake sensitivity settings for passenger car.
+          example: '0.43'
+          type: string
+      type: object
+    SettingsPatchComplianceSettingsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetComplianceSettingsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SpeedingSettingsObjectResponseBody:
+      description: Enables custom speeding levels.
+      properties:
+        severityLevels:
+          description: The speeding severity levels for an organization.
+          items:
+            $ref: '#/components/schemas/speedingSeverityLevelResponseBody'
+          type: array
+        unit:
+          description: 'The unit of measurement for speeding  Valid values: `milesPerHour`, `kilometersPerHour`, `percentage`'
+          enum:
+          - milesPerHour
+          - kilometersPerHour
+          - percentage
+          example: milesPerHour
+          type: string
+      type: object
+    SettingsGetComplianceSettingsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/SettingsComplianceResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    SettingsPatchDriverAppSettingsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetComplianceSettingsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsComplianceResponseObjectResponseBody:
+      description: Information set here will be displayed in roadside inspections and in the transferred US DOT datafile.
+      properties:
+        allowUnregulatedVehiclesEnabled:
+          description: '[deprecated] Allow Unregulated Vehicles. This setting is deprecated as all organizations can now mark vehicles as unregulated.'
+          example: true
+          type: boolean
+        canadaHosEnabled:
+          description: Enable Canada HOS
+          example: true
+          type: boolean
+        carrierName:
+          description: Carrier name of the organization
+          example: ABC Trucking
+          type: string
+        dotNumber:
+          description: DOT Number
+          example: 12345678
+          format: int64
+          type: integer
+        driverAutoDutyEnabled:
+          description: Enable Driver Auto-Duty
+          example: true
+          type: boolean
+        editCertifiedLogsEnabled:
+          description: Drivers Can Edit Certified Log
+          example: true
+          type: boolean
+        forceManualLocationForDutyStatusChangesEnabled:
+          description: Force Manual Location For Duty Status Changes
+          example: true
+          type: boolean
+        forceReviewUnassignedHosEnabled:
+          description: Force Review of Unassigned HOS
+          example: false
+          type: boolean
+        mainOfficeFormattedAddress:
+          description: Office Address
+          example: 123 Main Street
+          type: string
+        persistentDutyStatusEnabled:
+          description: Persistent Duty Status
+          example: true
+          type: boolean
+      type: object
+    SettingsGetComplianceSettingsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsGetDriverAppSettingsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MobileUsageDetectionAlertSettingsObjectResponseBody:
+      description: Enables AI detection of mobile usage events.
+      properties:
+        hasInCabAudioAlertsEnabled:
+          description: Indicates whether in-cab audio alerts for mobile usage are turned on.
+          example: true
+          type: boolean
+        isEnabled:
+          description: Indicates whether AI event detection for mobile usage is turned on.
+          example: true
+          type: boolean
+        speedingThresholdMph:
+          description: Alert when speed is over this many miles per hour.
+          example: 5
+          format: double
+          type: number
+      type: object
+    SettingsPatchDriverAppSettingsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SettingsPatchDriverAppSettingsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,1060 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Runs API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Runs
+paths:
+  /preview/custom-reports/runs:
+    get:
+      description: "Get all custom report runs with the provided IDs or customReportIds.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Custom Reports** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getCustomReportRuns
+      parameters:
+      - description: Required array of custom report IDs for the custom report runs wanted. Only one of customReportIds or ids is allowed.
+        explode: false
+        in: query
+        name: customReportIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Required array of custom report run IDs to fetch. Only one of ids or customReportIds is allowed.
+        explode: false
+        in: query
+        name: ids
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Get Custom Report Runs'
+      tags:
+      - Runs
+    post:
+      description: "Create a custom report run which then gets queued up to generate custom report data for the report run.\n\n <b>Rate limit:</b> 240 requests/day (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Custom Reports** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: postCustomReportRun
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomReportsPostCustomReportRunRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsPostCustomReportRunBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Create a Custom Report Run'
+      tags:
+      - Runs
+      x-codegen-request-body-name: PostCustomReportRunRequestBody
+  /preview/custom-reports/runs/data:
+    get:
+      description: "This endpoint will return the custom report data for a given custom report run ID. For more information regarding custom report columns, please see our [KB article section on Custom Report Fields](https://kb.samsara.com/hc/en-us/articles/360052711232-Manage-Custom-Reports).\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Custom Reports** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getCustomReportRunData
+      parameters:
+      - description: The ID of the specified run for the requested custom report.
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Get Custom Report Run Data'
+      tags:
+      - Runs
+components:
+  schemas:
+    CustomReportsPostCustomReportRunUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportColumnsObjectResponseBody:
+      description: Information about a custom report column.
+      properties:
+        baseUnit:
+          description: '[deprecated] Use unit instead.  Valid values: `bar`, `celsius`, `fahrenheit`, `foot`, `gallon`, `galpermi`, `gforce`, `gperliter`, `gperm`, `impgallon`, `impgalpermi`, `inch`, `kelvin`, `kgpergallon`, `kgperkm`, `kgperliter`, `kgpermi`, `kilogram`, `kilometer`, `kilopascal`, `kilowatthour`, `kmperhr`, `lbpermi`, `liter`, `lper100km`, `lperkm`, `lperm`, `meter`, `meterspersec`, `mile`, `milliknot`, `milliseconds`, `millivolt`, `mipergal`, `miperhr`, `miperimpgal`, `pound`, `poundsPerSquareInch`, `poundspergallon`, `poundsperliter`, `volt`, `watthour`'
+          enum:
+          - bar
+          - celsius
+          - fahrenheit
+          - foot
+          - gallon
+          - galpermi
+          - gforce
+          - gperliter
+          - gperm
+          - impgallon
+          - impgalpermi
+          - inch
+          - kelvin
+          - kgpergallon
+          - kgperkm
+          - kgperliter
+          - kgpermi
+          - kilogram
+          - kilometer
+          - kilopascal
+          - kilowatthour
+          - kmperhr
+          - lbpermi
+          - liter
+          - lper100km
+          - lperkm
+          - lperm
+          - meter
+          - meterspersec
+          - mile
+          - milliknot
+          - milliseconds
+          - millivolt
+          - mipergal
+          - miperhr
+          - miperimpgal
+          - pound
+          - poundsPerSquareInch
+          - poundspergallon
+          - poundsperliter
+          - volt
+          - watthour
+          example: meter
+          type: string
+        displayName:
+          description: The display name of the column that appears in the dashboard or exported csv, xlsx, and pdf reports. This value can contain whitespaces and special characters. It is not used to key the values below in the `data` array.
+          example: 'Attribute: Driver skill'
+          type: string
+        type:
+          description: 'The type of data for this column.  Valid values: `string`, `numeric`'
+          enum:
+          - string
+          - numeric
+          example: string
+          type: string
+        unit:
+          description: 'The unit of the data for this column. If the data is a string or custom score (ie, anticipation score), unit will not be returned.  Valid values: `bar`, `degreesCelsius`, `degreesFahrenheit`, `feet`, `gForces`, `gallons`, `gallonsPerMile`, `gramsPerLiter`, `gramsPerMeter`, `imperialGallons`, `imperialGallonsPerMile`, `inches`, `kelvin`, `kilograms`, `kilogramsPerGallon`, `kilogramsPerKilometer`, `kilogramsPerLiter`, `kilogramsPerMile`, `kilometers`, `kilometersPerHour`, `kilopascals`, `kilowattHours`, `liters`, `litersPer100Kilometers`, `litersPerKilometer`, `litersPerMeter`, `meters`, `metersPerSecond`, `miles`, `milesPerGallon`, `milesPerHour`, `milesPerImperialGallon`, `milliknots`, `milliseconds`, `millivolts`, `pounds`, `poundsPerGallon`, `poundsPerLiter`, `poundsPerMile`, `poundsPerSquareInch`, `volts`, `wattHours`'
+          enum:
+          - bar
+          - degreesCelsius
+          - degreesFahrenheit
+          - feet
+          - gForces
+          - gallons
+          - gallonsPerMile
+          - gramsPerLiter
+          - gramsPerMeter
+          - imperialGallons
+          - imperialGallonsPerMile
+          - inches
+          - kelvin
+          - kilograms
+          - kilogramsPerGallon
+          - kilogramsPerKilometer
+          - kilogramsPerLiter
+          - kilogramsPerMile
+          - kilometers
+          - kilometersPerHour
+          - kilopascals
+          - kilowattHours
+          - liters
+          - litersPer100Kilometers
+          - litersPerKilometer
+          - litersPerMeter
+          - meters
+          - metersPerSecond
+          - miles
+          - milesPerGallon
+          - milesPerHour
+          - milesPerImperialGallon
+          - milliknots
+          - milliseconds
+          - millivolts
+          - pounds
+          - poundsPerGallon
+          - poundsPerLiter
+          - poundsPerMile
+          - poundsPerSquareInch
+          - volts
+          - wattHours
+          example: meter
+          type: string
+      required:
+      - displayName
+      - type
+      type: object
+    GetCustomReportRunObjectResponseBody:
+      description: The full custom report run object.
+      properties:
+        attributeValueIds:
+          description: The optional array of attribute value ids to filter the custom report run data by.
+          example:
+          - 19abdecf-54f0-41de-991c-ee1e031134d1
+          - ab83dfce-54f0-41de-991c-ee1e031134d2
+          items:
+            example: Quibusdam beatae.
+            type: string
+          type: array
+        createdAtTime:
+          description: Time of when the custom report run was created in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        customReportId:
+          description: Unique ID for the custom report that it belongs to.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+        endTime:
+          description: The end time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+        id:
+          description: Unique ID for the custom report run object.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+        percentComplete:
+          description: The percentage completed of this custom report run. Valid values from 0-100, inclusive.
+          example: 5264689607490754000
+          format: int64
+          type: integer
+        startTime:
+          description: The start time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+        status:
+          description: 'The status of the custom report run.  Valid values: `completed`, `pending`, `failed`, `cancelled`'
+          enum:
+          - completed
+          - pending
+          - failed
+          - cancelled
+          example: completed
+          type: string
+        tagIds:
+          description: The optional array of tag ids to filter the custom report run by.
+          example:
+          - 4f71fd67-54f0-41de-991c-ee1e031134d1
+          - a0befd37-54f0-41de-991c-ee1e031134d2
+          items:
+            example: Rerum veritatis quia et repellat vero.
+            type: string
+          type: array
+        updatedAtTime:
+          description: Time of when the custom report run was last updated in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - createdAtTime
+      - customReportId
+      - endTime
+      - id
+      - percentComplete
+      - startTime
+      - status
+      - updatedAtTime
+      type: object
+    CustomReportsGetCustomReportRunsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    CustomReportsPostCustomReportRunServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunRequestBody:
+      description: This creates and queues a new custom report run for the given body parameters.
+      properties:
+        attributeValueIds:
+          description: The optional array of attribute value ids to filter the custom report run by.
+          example:
+          - 19abdecf-54f0-41de-991c-ee1e031134d1
+          - ab83dfce-54f0-41de-991c-ee1e031134d2
+          items:
+            description: Attribute value ids.
+            example: Culpa dolore.
+            type: string
+          type: array
+        customReportId:
+          description: Required unique ID for the custom report linked to this run.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+        endTime:
+          description: The end time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+        startTime:
+          description: The start time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        tagIds:
+          description: The optional array of tag ids to filter the custom report run by.
+          example:
+          - 48923049
+          - 198349
+          items:
+            description: Tag ids.
+            example: 7325739965213532000
+            format: int64
+            type: integer
+          type: array
+      required:
+      - customReportId
+      - endTime
+      - startTime
+      type: object
+    CustomReportsGetCustomReportRunDataMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsResponseBody:
+      properties:
+        data:
+          description: List of custom report runs.
+          items:
+            $ref: '#/components/schemas/GetCustomReportRunObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    CustomReportsPostCustomReportRunInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GetCustomReportRunDataObjectResponseBody:
+      properties:
+        columns:
+          description: An array of objects containing data about column definitions
+          items:
+            $ref: '#/components/schemas/CustomReportColumnsObjectResponseBody'
+          type: array
+        rows:
+          description: 'An array of arrays that represents each row in a custom report. The first index represents which row the data is for and the second index represents which column the data is for. For example, rows[1][3] accesses the second row''s fourth column data. '
+          example:
+          - - Labore eius ex.
+            - Commodi dolorum voluptatem iure.
+            - Et nemo recusandae maiores eum et.
+          - - Ullam optio voluptas quos neque sunt.
+            - Ducimus aut sequi natus ut ut.
+            - Aut nobis ut ratione fugiat.
+            - Voluptatem incidunt dolore autem corporis quae velit.
+          items:
+            description: An array of arrays that represents a custom report. The first index represents which row the data is for and the second index represents which column the data is for. For example, rows[1][3] accesses the second row's fourth column data.  See our [custom reports KB article](https://kb.samsara.com/hc/en-us/articles/360052711232-Manage-Custom-Reports) for more info on all available columns.  Always returned.
+            example:
+            - Quo molestiae similique consequuntur molestiae vel laudantium.
+            - Eius aut magnam nemo ea.
+            items:
+              example: Magni facere dolores aut blanditiis.
+              type: object
+            type: array
+          type: array
+      required:
+      - rows
+      type: object
+    PostCustomReportRunResponseObjectResponseBody:
+      description: Full post custom report run response object
+      properties:
+        createdAtTime:
+          description: Time of when the custom report run was created and queued in UTC.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        customReportId:
+          description: Unique Id for the custom report (config) linked to this run.
+          example: a0befd37-54f0-41de-991c-ee1e031134d2
+          type: string
+        id:
+          description: Unique id for the custom report run object.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+      required:
+      - createdAtTime
+      - customReportId
+      - id
+      type: object
+    CustomReportsGetCustomReportRunsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/GetCustomReportRunDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    CustomReportsGetCustomReportRunDataServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostCustomReportRunResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    CustomReportsGetCustomReportRunsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

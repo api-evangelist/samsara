@@ -1,0 +1,72 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Sensors API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Sensors
+paths:
+  /v1/sensors/list:
+    post:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet sensor objects. This method returns a list of the sensor objects in the Samsara Cloud and information about them. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Sensors** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getSensors
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_9'
+          description: List of sensor objects.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Get All Sensors
+      tags:
+      - Sensors
+components:
+  schemas:
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    inline_response_200_9:
+      properties:
+        sensors:
+          items:
+            $ref: '#/components/schemas/V1Sensor'
+          type: array
+      type: object
+    V1Sensor:
+      description: Contains information about a sensor.
+      properties:
+        id:
+          description: ID of the sensor.
+          example: 123
+          format: int64
+          type: integer
+        macAddress:
+          description: MAC address of the sensor.
+          example: '11:11:11:11:11:11'
+          type: string
+        name:
+          description: Name of the sensor.
+          example: Freezer ABC
+          type: string
+      required:
+      - id
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

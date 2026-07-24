@@ -1,0 +1,1353 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Assets API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Assets
+paths:
+  /industrial/assets:
+    get:
+      description: "List all assets in the organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: getIndustrialAssets
+      parameters:
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: 'A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        explode: false
+        in: query
+        name: parentTagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        explode: false
+        in: query
+        name: tagIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`'
+        explode: false
+        in: query
+        name: assetIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListIndustrialAssetsResponse'
+          description: Assets in the organization.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: List All Assets
+      tags:
+      - Assets
+    post:
+      description: "Create an asset with optional configuration parameters. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Equipment** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: createIndustrialAsset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetCreate'
+        description: The asset to create
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: Newly created asset object
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Create an Asset
+      tags:
+      - Assets
+      x-codegen-request-body-name: asset
+  /industrial/assets/{id}:
+    delete:
+      description: "Delete asset. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Equipment** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: deleteIndustrialAsset
+      parameters:
+      - description: Id of the asset to be deleted.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardDeleteResponse'
+          description: A successful DELETE response is a 204 with no content.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Delete an Existing Asset
+      tags:
+      - Assets
+    patch:
+      description: "Update an existing asset. Only the provided fields will be updated. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Equipment** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: patchIndustrialAsset
+      parameters:
+      - description: Id of the asset to be updated
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetPatch'
+        description: The updated asset fields
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: The updated asset
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardErrorResponse'
+          description: Error response
+      summary: Update an Asset
+      tags:
+      - Assets
+      x-codegen-request-body-name: asset
+  /industrial/assets/{id}/data-outputs:
+    patch:
+      description: "Writes values to multiple data outputs on an asset simultaneously. Only the provided data outputs will be updated.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchAssetDataOutputs
+      parameters:
+      - description: Asset ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDataOutputsPatchAssetDataOutputsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Writes to Data Outputs on an Asset
+      tags:
+      - Assets
+      x-codegen-request-body-name: PatchAssetDataOutputsRequestBody
+  /v1/fleet/assets:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch all of the assets. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getAllAssets
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: List of assets.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List All Assets
+      tags:
+      - Assets
+  /v1/fleet/assets/locations:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch current locations of all assets. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getAllAssetCurrentLocations
+      parameters:
+      - description: Pagination parameter indicating the cursor position to continue returning results after. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'endingBefore' parameter.
+        in: query
+        name: startingAfter
+        schema:
+          type: string
+      - description: Pagination parameter indicating the cursor position to return results before. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'startingAfter' parameter.
+        in: query
+        name: endingBefore
+        schema:
+          type: string
+      - description: Pagination parameter indicating the number of results to return in this request. Used in conjunction with either 'startingAfter' or 'endingBefore'.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+          description: List of assets and their current locations.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Current Location for All Assets
+      tags:
+      - Assets
+  /v1/fleet/assets/reefers:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetches all reefers and reefer-specific stats. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getAssetsReefers
+      parameters:
+      - description: Timestamp in milliseconds representing the start of the period to fetch, inclusive. Used in combination with endMs.
+        in: query
+        name: startMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the end of the period to fetch, inclusive. Used in combination with startMs.
+        in: query
+        name: endMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Pagination parameter indicating the cursor position to continue returning results after. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'endingBefore' parameter.
+        in: query
+        name: startingAfter
+        schema:
+          type: string
+      - description: Pagination parameter indicating the cursor position to return results before. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'startingAfter' parameter.
+        in: query
+        name: endingBefore
+        schema:
+          type: string
+      - description: Pagination parameter indicating the number of results to return in this request. Used in conjunction with either 'startingAfter' or 'endingBefore'.
+        in: query
+        name: limit
+        schema:
+          format: int64
+          type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+          description: All org reefers and reefer-specific details.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Stats for All Reefers
+      tags:
+      - Assets
+  /v1/fleet/assets/{asset_id}/locations:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nList historical locations for a given asset. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getAssetLocation
+      parameters:
+      - description: ID of the asset. Must contain only digits 0-9.
+        in: path
+        name: asset_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the start of the period to fetch, inclusive. Used in combination with endMs.
+        in: query
+        name: startMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the end of the period to fetch, inclusive. Used in combination with startMs.
+        in: query
+        name: endMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1AssetLocationResponse'
+          description: Asset location details.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Historical Locations for a Given Asset
+      tags:
+      - Assets
+  /v1/fleet/assets/{asset_id}/reefer:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch the reefer-specific stats of an asset. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getAssetReefer
+      parameters:
+      - description: ID of the asset. Must contain only digits 0-9.
+        in: path
+        name: asset_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the start of the period to fetch, inclusive. Used in combination with endMs.
+        in: query
+        name: startMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - description: Timestamp in milliseconds representing the end of the period to fetch, inclusive. Used in combination with startMs.
+        in: query
+        name: endMs
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1AssetReeferResponse'
+          description: Reefer-specific asset details.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: List Stats for a Given Reefer
+      tags:
+      - Assets
+components:
+  schemas:
+    PatchAssetDataOutputsSingleResponseResponseBody:
+      description: A response that corresponds to an element in the original request body.
+      properties:
+        errorMessage:
+          description: If the request failed, this displays the error message.
+          example: 'Failed to write to Device: GFRV-43N-VGX'
+          type: string
+        id:
+          description: The data output ID.
+          example: 8a9371af-82d1-4158-bf91-4ecc8d3a114c
+          type: string
+        statusCode:
+          description: The status code of the request. 200 indicates the request succeeded for this data output. 500 indicates an internal server error.
+          example: 200
+          format: int64
+          type: integer
+      required:
+      - id
+      - statusCode
+      type: object
+    AssetDataInput_lastPoint:
+      description: The last reported point of a data input.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Numeric value of the data point.
+          example: 1992.0506
+          format: double
+          type: number
+      type: object
+    V1AssetReeferResponse_reeferStats_alarms:
+      properties:
+        alarmCode:
+          description: ID of the alarm
+          example: 102
+          format: int64
+          type: integer
+        description:
+          description: Description of the alarm
+          example: Check Return Air Sensor
+          type: string
+        operatorAction:
+          description: Recommended operator action
+          example: Check and repair at end of trip
+          type: string
+        severity:
+          description: 'Severity of the alarm: 1: OK to run, 2: Check as specified, 3: Take immediate action'
+          example: 1
+          format: int64
+          type: integer
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    inline_response_200_1:
+      properties:
+        assets:
+          items:
+            $ref: '#/components/schemas/V1Asset'
+          type: array
+      type: object
+    inline_response_200_3:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/V1AssetsReefer'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    AssetResponse_runningStatusDataInput:
+      description: The associated running status data input. isRunning will be true when the data input's value is 1.
+      properties:
+        id:
+          description: Id of the data input
+          example: '12345'
+          type: string
+      required:
+      - id
+      type: object
+    AssetResponse_parentAsset:
+      description: The asset's parent
+      properties:
+        id:
+          $ref: '#/components/schemas/ParentId'
+        name:
+          $ref: '#/components/schemas/AssetName'
+      required:
+      - id
+      - name
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1AssetReeferResponse_reeferStats:
+      properties:
+        alarms:
+          description: Reefer alarms
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms_1'
+          type: array
+        engineHours:
+          description: Engine hours of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_engineHours'
+          type: array
+        fuelPercentage:
+          description: Fuel percentage of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_fuelPercentage'
+          type: array
+        powerStatus:
+          description: Power status of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_powerStatus'
+          type: array
+        returnAirTemp:
+          description: Return air temperature of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_returnAirTemp'
+          type: array
+        setPoint:
+          description: Set point temperature of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_setPoint'
+          type: array
+      type: object
+    V1Asset_cable:
+      description: The cable connected to the asset
+      properties:
+        assetType:
+          description: Asset type
+          example: Thermo King
+          type: string
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    AssetDataOutput:
+      properties:
+        dataGroup:
+          description: Name of the data group that the data output is associated with
+          example: Control Pressure
+          type: string
+        dataInput:
+          $ref: '#/components/schemas/AssetDataInput'
+        deviceId:
+          description: ID of the device that the data output is configured on
+          example: '123'
+          type: string
+        id:
+          description: ID of the data output
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          type: string
+        name:
+          description: Name of the data output
+          example: Digital Output 1
+          type: string
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    CustomMetadata:
+      additionalProperties:
+        type: string
+      description: The custom fields of an asset.
+      example:
+        manufacturer: Samsara
+        serialNumber: 123ABC
+      type: object
+    V1Asset:
+      description: Basic information of an asset
+      properties:
+        assetSerialNumber:
+          description: Serial number of the host asset
+          example: SNTEST123
+          type: string
+        cable:
+          $ref: '#/components/schemas/V1Asset_cable'
+        engineHours:
+          description: Engine hours
+          example: 104
+          type: integer
+        id:
+          description: Asset ID
+          example: 1
+          format: int64
+          type: integer
+        name:
+          description: Asset name
+          example: Trailer 123
+          type: string
+        vehicleId:
+          description: The ID of the Vehicle associated to the Asset (if present)
+          example: 2
+          format: int64
+          type: integer
+      required:
+      - id
+      type: object
+    V1Pagination:
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results after this response.
+          type: boolean
+        hasPrevPage:
+          description: True if there are more pages of results before this response.
+          type: boolean
+        startCursor:
+          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+      required:
+      - endCursor
+      - hasNextPage
+      - hasPrevPage
+      - startCursor
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsResponseBody:
+      properties:
+        data:
+          description: List of responses for each data output from the original request.
+          items:
+            $ref: '#/components/schemas/PatchAssetDataOutputsSingleResponseResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1AssetReeferResponse_reeferStats_fuelPercentage:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        fuelPercentage:
+          description: Fuel percentage of the reefer.
+          example: 99
+          format: int64
+          type: integer
+      type: object
+    latitude:
+      description: The latitude of the asset in decimal degrees.
+      example: 37.765363
+      format: double
+      type: number
+    AssetDataOutputsPatchAssetDataOutputsRequestBody:
+      properties:
+        values:
+          description: A map of data output IDs to values. All data outputs must belong to the same asset. Only the specified IDs will be written to.
+          example: ''
+          type: object
+      required:
+      - values
+      type: object
+    AssetCreate:
+      description: The asset creation arguments
+      properties:
+        customMetadata:
+          $ref: '#/components/schemas/CustomMetadata'
+        location:
+          $ref: '#/components/schemas/AssetLocation'
+        locationDataInputId:
+          description: Required if locationType is "dataInput". Specifies the id of a location data input which will determine the asset's location. **The data input will be moved to the new asset.**
+          example: '12345'
+          type: string
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        name:
+          $ref: '#/components/schemas/AssetName'
+        parentId:
+          $ref: '#/components/schemas/ParentId'
+        runningStatusDataInputId:
+          description: The asset's isRunning status will be true when the associated data input's value is 1. Data input cannot be of location format. **The data input will be moved to the new asset.**
+          example: '67890'
+          type: string
+        tagIds:
+          $ref: '#/components/schemas/TagIds'
+      required:
+      - name
+      type: object
+    V1AssetReeferResponse:
+      description: Reefer-specific asset details
+      properties:
+        assetType:
+          description: Asset type
+          example: Thermo King
+          type: string
+        id:
+          description: Asset ID
+          example: 1
+          type: integer
+        name:
+          description: Asset name
+          example: Reefer 123
+          type: string
+        reeferStats:
+          $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats'
+      type: object
+    V1AssetReeferResponse_reeferStats_alarms_1:
+      properties:
+        alarms:
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms'
+          type: array
+        changedAtMs:
+          description: Timestamp when the alarms were reported, in Unix milliseconds since epoch
+          example: 1453449599999
+          format: int64
+          type: integer
+      type: object
+    AssetName:
+      description: The name of the asset.
+      type: string
+    LocationType:
+      description: 'The format of the location. This field is required if a location is provided. Valid values: `point`, `address`, `dataInput`.'
+      enum:
+      - point
+      - address
+      - dataInput
+      type: string
+    inline_response_200_2:
+      properties:
+        assets:
+          items:
+            $ref: '#/components/schemas/V1AssetCurrentLocationsResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+      type: object
+    V1AssetsReefer_reeferStats:
+      description: Contains all the state changes of the reefer for the included stat types. Each state change is recorded independently, so the number of records in each array may differ depending on when that stat changed state. Stat types with a continuous value (such as temperature) will be recorded at different rates depending on the reefer, but generally readings have a frequency on the order of seconds.
+      properties:
+        ambientAirTemperature:
+          description: Ambient temperature of the reefer. This is the temperature of the air around the Samsara Asset Gateway.
+          items:
+            $ref: '#/components/schemas/V1AssetsReefer_reeferStats_ambientAirTemperature'
+          type: array
+        dischargeAirTemperature:
+          description: Discharge air temperature of the reefer. This is the temperature of the air as it leaves the cooling unit.
+          items:
+            $ref: '#/components/schemas/V1AssetsReefer_reeferStats_dischargeAirTemperature'
+          type: array
+        engineHours:
+          description: Engine hours of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_engineHours'
+          type: array
+        fuelPercentage:
+          description: Fuel percentage of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_fuelPercentage'
+          type: array
+        powerStatus:
+          description: Power status of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetsReefer_reeferStats_powerStatus'
+          type: array
+        reeferAlarms:
+          description: Reefer alarms
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms_1'
+          type: array
+        returnAirTemperature:
+          description: Return air temperature of the reefer. This is the temperature read by the reefer module (Carrier, Thermo King) that shows the temperature of the air as it enters the system.
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_returnAirTemp'
+          type: array
+        setPoint:
+          description: Set point temperature of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_setPoint'
+          type: array
+      type: object
+    ParentId:
+      description: The id of the parent asset that the asset belongs to.
+      example: 123abcde-4567-8910-1112-fghi1314jklm
+      type: string
+    V1AssetCurrentLocation:
+      description: Current location of an asset
+      properties:
+        latitude:
+          description: The latitude of the location in degrees.
+          example: 37
+          type: number
+        location:
+          description: The best effort (street,city,state) for the latitude and longitude.
+          example: 525 York, San Francisco, CA
+          type: string
+        longitude:
+          description: The longitude of the location in degrees.
+          example: -122.7
+          type: number
+        speedMilesPerHour:
+          description: The speed calculated from GPS that the asset was traveling at in miles per hour.
+          example: 35
+          type: number
+        timeMs:
+          description: Time in Unix milliseconds since epoch when the asset was at the location.
+          example: 12314151
+          type: number
+      type: object
+    V1AssetReeferResponse_reeferStats_powerStatus:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        status:
+          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
+          example: Active (Continuous)
+          type: string
+      type: object
+    V1AssetsReefer_reeferStats_ambientAirTemperature:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        tempInMilliC:
+          description: Ambient temperature in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      type: object
+    AssetDataInput:
+      properties:
+        dataGroup:
+          description: Name of the data group that the data input is associated with
+          example: Pressure
+          type: string
+        id:
+          description: ID of the data input
+          example: '123456'
+          type: string
+        lastPoint:
+          $ref: '#/components/schemas/AssetDataInput_lastPoint'
+        name:
+          description: Name of the data input
+          example: Digital Input 1
+          type: string
+        units:
+          description: Units of data for this data input
+          example: PSI
+          type: string
+      type: object
+    V1AssetReeferResponse_reeferStats_setPoint:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        tempInMilliC:
+          description: Set point temperature in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      type: object
+    AssetLocation:
+      description: For locationType "point", latitude and longitude are required. For "address", formattedAddress must be provided, and lat/long can be optionally included for displaying a dot on the assets map. For "dataInput", this object should not be passed in.
+      properties:
+        formattedAddress:
+          description: Formatted address of the location
+          example: 350 Rhode Island St, San Francisco CA, 94103
+          type: string
+        latitude:
+          $ref: '#/components/schemas/latitude'
+        longitude:
+          $ref: '#/components/schemas/longitude'
+      type: object
+    TagIds:
+      description: The ids of the tags that the asset should belong to.
+      items:
+        example: '123'
+        type: string
+      type: array
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    AssetDataOutputsPatchAssetDataOutputsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1AssetReeferResponse_reeferStats_returnAirTemp:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        tempInMilliC:
+          description: Return air temperature in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      type: object
+    AssetResponse:
+      description: Asset
+      properties:
+        customMetadata:
+          $ref: '#/components/schemas/CustomMetadata'
+        dataOutputs:
+          description: The list of data outputs configured on the asset.
+          items:
+            $ref: '#/components/schemas/AssetDataOutput'
+          type: array
+        id:
+          description: The id of the asset
+          example: 123abcde-4567-8910-1112-fghi1314jklm
+          type: string
+        isRunning:
+          description: The running status of the asset. Returns True for On, and False for Off.
+          type: boolean
+        location:
+          $ref: '#/components/schemas/AssetLocation'
+        locationDataInput:
+          $ref: '#/components/schemas/AssetResponse_locationDataInput'
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        name:
+          $ref: '#/components/schemas/AssetName'
+        parentAsset:
+          $ref: '#/components/schemas/AssetResponse_parentAsset'
+        runningStatusDataInput:
+          $ref: '#/components/schemas/AssetResponse_runningStatusDataInput'
+        tags:
+          description: 'The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Industrial Asset. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          items:
+            $ref: '#/components/schemas/tagTinyResponse'
+          type: array
+      required:
+      - id
+      - isRunning
+      - name
+      type: object
+    inline_response_200:
+      properties:
+        data:
+          $ref: '#/components/schemas/AssetResponse'
+      type: object
+    V1AssetsReefer_reeferStats_dischargeAirTemperature:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        tempInMilliC:
+          description: Discharge temperature in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      type: object
+    ListIndustrialAssetsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AssetResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    V1AssetReeferResponse_reeferStats_engineHours:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        engineHours:
+          description: Engine hours of the reefer.
+          example: 1200
+          format: int64
+          type: integer
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetResponse_locationDataInput:
+      description: The associated location data input (only applicable when locationType is "dataInput").
+      properties:
+        id:
+          description: Id of the data input
+          type: string
+      required:
+      - id
+      type: object
+    V1AssetsReefer_reeferStats_powerStatus:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        status:
+          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
+          enum:
+          - 'Off'
+          - Active
+          - Active (Start/Stop)
+          - Active (Continuous)
+          example: Active (Continuous)
+          type: string
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetPatch:
+      description: The asset creation arguments
+      properties:
+        customMetadata:
+          $ref: '#/components/schemas/CustomMetadata'
+        location:
+          $ref: '#/components/schemas/AssetLocation'
+        locationDataInputId:
+          description: Required if locationType is "dataInput". Specifies the id of a location data input which will determine the asset's location. The data input must be in the asset.
+          example: '12345'
+          type: string
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        name:
+          $ref: '#/components/schemas/AssetName'
+        parentId:
+          description: The id of the parent asset that the asset belongs to. Pass in an empty string to remove the child from the parent.
+          example: ''
+          type: string
+        runningStatusDataInputId:
+          description: The asset's isRunning status will be true when the associated data input's value is 1. Data input cannot be of location format. The data input must be in the asset.
+          example: '67890'
+          type: string
+        tagIds:
+          $ref: '#/components/schemas/TagIds'
+      type: object
+    V1AssetLocationResponse:
+      description: A list of historical asset locations.
+      items:
+        description: Asset location details.
+        properties:
+          latitude:
+            description: The latitude of the location in degrees.
+            example: 37
+            type: number
+          location:
+            description: The best effort (street,city,state) for the latitude and longitude.
+            example: 525 York, San Francisco, CA
+            type: string
+          longitude:
+            description: The longitude of the location in degrees.
+            example: -122.7
+            type: number
+          speedMilesPerHour:
+            description: The speed calculated from GPS that the asset was traveling at in miles per hour.
+            example: 35
+            type: number
+          time:
+            description: Time in Unix milliseconds since epoch when the asset was at the location.
+            example: 12314151
+            type: number
+        type: object
+      type: array
+    AssetDataOutputsPatchAssetDataOutputsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1AssetsReefer:
+      description: Reefer-specific details
+      properties:
+        assetType:
+          description: Asset type
+          example: Thermo King
+          type: string
+        id:
+          description: Asset ID
+          example: 1
+          type: integer
+        name:
+          description: Asset name
+          example: Reefer 123
+          type: string
+        reeferStats:
+          $ref: '#/components/schemas/V1AssetsReefer_reeferStats'
+      type: object
+    longitude:
+      description: The longitude of the asset in decimal degrees.
+      example: -122.403098
+      format: double
+      type: number
+    V1AssetCurrentLocationsResponse:
+      description: Basic information of an asset
+      properties:
+        assetSerialNumber:
+          description: Asset serial number
+          example: 8dka2810
+          type: string
+        cable:
+          $ref: '#/components/schemas/V1Asset_cable'
+        engineHours:
+          description: Engine hours
+          example: 104
+          type: integer
+        id:
+          description: Asset ID
+          example: 1
+          format: int64
+          type: integer
+        location:
+          description: Current location of an asset
+          items:
+            $ref: '#/components/schemas/V1AssetCurrentLocation'
+          type: array
+        name:
+          description: Asset name
+          example: Trailer 123
+          type: string
+      required:
+      - id
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

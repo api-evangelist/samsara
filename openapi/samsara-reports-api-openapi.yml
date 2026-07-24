@@ -1,0 +1,1892 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Reports API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Reports
+paths:
+  /fleet/reports/drivers/fuel-energy:
+    get:
+      description: "Get fuel and energy efficiency driver reports for the requested time range.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getFuelEnergyDriverReports
+      parameters:
+      - description: A start date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time.
+        in: query
+        name: startDate
+        required: true
+        schema:
+          type: string
+      - description: An end date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time.
+        in: query
+        name: endDate
+        required: true
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`'
+        explode: false
+        in: query
+        name: driverIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyDriverReportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Fuel and Energy Efficiency Driver Reports.
+      tags:
+      - Reports
+  /fleet/reports/ifta/jurisdiction:
+    get:
+      description: "Get all jurisdiction IFTA reports for the requested time duration. Data is returned in your organization's defined timezone.\n\n**Note:** The most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read IFTA (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getIftaJurisdictionReports
+      parameters:
+      - description: ' The year of the requested IFTA report summary. Must be provided with a month or quarter param. Example: `year=2021`'
+        in: query
+        name: year
+        required: true
+        schema:
+          maximum: 2100
+          minimum: 2015
+          type: integer
+      - description: ' The month of the requested IFTA report summary. Can not be provided with the quarter param. Example: `month=January`  Valid values: `January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`'
+        in: query
+        name: month
+        schema:
+          enum:
+          - January
+          - February
+          - March
+          - April
+          - May
+          - June
+          - July
+          - August
+          - September
+          - October
+          - November
+          - December
+          type: string
+      - description: ' The quarter of the requested IFTA report summary. Can not be provided with the month param. Q1: January, February, March. Q2: April, May, June. Q3: July, August, September. Q4: October, November, December. Example: `quarter=Q1`  Valid values: `Q1`, `Q2`, `Q3`, `Q4`'
+        in: query
+        name: quarter
+        schema:
+          enum:
+          - Q1
+          - Q2
+          - Q3
+          - Q4
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of jurisdictions. Example: `jurisdictions=GA`'
+        in: query
+        name: jurisdictions
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of IFTA fuel types. Example: `fuelType=Diesel`  Valid values: `Unspecified`, `A55`, `Biodiesel`, `CompressedNaturalGas`, `Diesel`, `E85`, `Electricity`, `Ethanol`, `Gasohol`, `Gasoline`, `Hydrogen`, `LiquifiedNaturalGas`, `M85`, `Methanol`, `Propane`, `Other`'
+        in: query
+        name: fuelType
+        schema:
+          enum:
+          - Unspecified
+          - A55
+          - Biodiesel
+          - CompressedNaturalGas
+          - Diesel
+          - E85
+          - Electricity
+          - Ethanol
+          - Gasohol
+          - Gasoline
+          - Hydrogen
+          - LiquifiedNaturalGas
+          - M85
+          - Methanol
+          - Propane
+          - Other
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get IFTA Jurisdiction Reports.
+      tags:
+      - Reports
+  /fleet/reports/ifta/vehicle:
+    get:
+      description: "Get all vehicle IFTA reports for the requested time duration. Data is returned in your organization's defined timezone.\n\n**Note:** The most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours.\n\n <b>Rate limit:</b> 25 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read IFTA (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getIftaVehicleReports
+      parameters:
+      - description: ' The year of the requested IFTA report summary. Must be provided with a month or quarter param. Example: `year=2021`'
+        in: query
+        name: year
+        required: true
+        schema:
+          maximum: 2100
+          minimum: 2015
+          type: integer
+      - description: ' The month of the requested IFTA report summary. Can not be provided with the quarter param. Example: `month=January`  Valid values: `January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`'
+        in: query
+        name: month
+        schema:
+          enum:
+          - January
+          - February
+          - March
+          - April
+          - May
+          - June
+          - July
+          - August
+          - September
+          - October
+          - November
+          - December
+          type: string
+      - description: ' The quarter of the requested IFTA report summary. Can not be provided with the month param. Q1: January, February, March. Q2: April, May, June. Q3: July, August, September. Q4: October, November, December. Example: `quarter=Q1`  Valid values: `Q1`, `Q2`, `Q3`, `Q4`'
+        in: query
+        name: quarter
+        schema:
+          enum:
+          - Q1
+          - Q2
+          - Q3
+          - Q4
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of jurisdictions. Example: `jurisdictions=GA`'
+        in: query
+        name: jurisdictions
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of IFTA fuel types. Example: `fuelType=Diesel`  Valid values: `Unspecified`, `A55`, `Biodiesel`, `CompressedNaturalGas`, `Diesel`, `E85`, `Electricity`, `Ethanol`, `Gasohol`, `Gasoline`, `Hydrogen`, `LiquifiedNaturalGas`, `M85`, `Methanol`, `Propane`, `Other`'
+        in: query
+        name: fuelType
+        schema:
+          enum:
+          - Unspecified
+          - A55
+          - Biodiesel
+          - CompressedNaturalGas
+          - Diesel
+          - E85
+          - Electricity
+          - Ethanol
+          - Gasohol
+          - Gasoline
+          - Hydrogen
+          - LiquifiedNaturalGas
+          - M85
+          - Methanol
+          - Propane
+          - Other
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IFTAGetIftaVehicleReportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get IFTA Vehicle Reports.
+      tags:
+      - Reports
+  /fleet/reports/vehicle/idling:
+    get:
+      description: "Get all vehicle idling reports for the requested time duration.\n\n <b>Rate limit:</b> 25 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getVehicleIdlingReports
+      parameters:
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
+        in: query
+        name: limit
+        schema:
+          default: 512
+          maximum: 512
+          minimum: 1
+          type: integer
+      - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: A filter on the data based on power take-off being active or inactive.
+        in: query
+        name: isPtoActive
+        schema:
+          type: boolean
+      - description: A filter on the data based on a minimum idling duration.
+        in: query
+        name: minIdlingDurationMinutes
+        schema:
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdlingReportsGetVehicleIdlingReportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Vehicle Idling Reports.
+      tags:
+      - Reports
+  /fleet/reports/vehicles/fuel-energy:
+    get:
+      description: "Get fuel and energy efficiency vehicle reports for the requested time range.\n\n <b>Rate limit:</b> 25 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getFuelEnergyVehicleReports
+      parameters:
+      - description: A start date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time.
+        in: query
+        name: startDate
+        required: true
+        schema:
+          type: string
+      - description: An end date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time.
+        in: query
+        name: endDate
+        required: true
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        schema:
+          type: string
+      - description: 'The type of energy used by the vehicle.  Valid values: `fuel`, `hybrid`, `electric`'
+        in: query
+        name: energyType
+        schema:
+          enum:
+          - fuel
+          - hybrid
+          - electric
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`'
+        in: query
+        name: tagIds
+        schema:
+          type: string
+      - description: ' A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`'
+        in: query
+        name: parentTagIds
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuelEnergyGetFuelEnergyVehicleReportsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Fuel and Energy Efficiency Vehicle Reports.
+      tags:
+      - Reports
+components:
+  schemas:
+    IdlingReportEventAddressResponseBody:
+      description: Address where the idling event took place.
+      properties:
+        formatted:
+          description: The formatted address of the idling location.
+          example: 123 Main Street Atlanta, GA 30307
+          type: string
+        latitude:
+          description: The latitude of the idling location.
+          example: 34.654567
+          format: double
+          type: number
+        longitude:
+          description: The longitude of the idling location.
+          example: 34.654567
+          format: double
+          type: number
+      required:
+      - formatted
+      - latitude
+      - longitude
+      type: object
+    FuelEnergyCostResponseResponseBody:
+      description: Estimated cost of fuel and energy over the given time range.
+      properties:
+        amount:
+          description: Amount of the currency.
+          example: 94.01
+          format: double
+          type: number
+        currencyCode:
+          description: Type of the currency.
+          example: USD
+          type: string
+      required:
+      - amount
+      - currencyCode
+      type: object
+    IdlingReportEventResponseBody:
+      description: A summary of the idling event.
+      properties:
+        address:
+          $ref: '#/components/schemas/IdlingReportEventAddressResponseBody'
+        durationMs:
+          description: The duration of this idling event in milliseconds.
+          example: 860000
+          format: int64
+          type: integer
+        endTime:
+          description: The end time of this idling event in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        fuelConsumptionMl:
+          description: The amount of fuel consumed in milliliters during this idling event.
+          example: 2500
+          format: double
+          type: number
+        isPtoActive:
+          description: Whether or not power take-off was active during this idling event.
+          example: false
+          type: boolean
+        startTime:
+          description: The start time of this idling event in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - address
+      - durationMs
+      - endTime
+      - fuelConsumptionMl
+      - isPtoActive
+      - startTime
+      - vehicle
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaJurisdictionSummaryObjectResponseBody:
+      description: A summary of this jurisdiction's IFTA data.
+      properties:
+        jurisdiction:
+          description: Jurisdiction code.
+          example: GA
+          type: string
+        taxPaidLiters:
+          description: Liters purchased for all qualified vehicles.
+          example: 25.5
+          format: double
+          type: number
+        taxableMeters:
+          description: Distance in meters traveled on public roads in an IFTA jurisdiction.
+          example: 2350
+          format: double
+          type: number
+        totalMeters:
+          description: Total meters driven in this jurisdiction, taxable and non-taxable.
+          example: 2350
+          format: double
+          type: number
+      required:
+      - jurisdiction
+      - taxableMeters
+      - totalMeters
+      type: object
+    IdlingReportsGetVehicleIdlingReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaJurisdictionReportDataObjectResponseBody'
+      required:
+      - data
+      type: object
+    FuelEnergyDriverReportDataObjectResponseBody:
+      description: Dictionary containing summarized driver report data.
+      properties:
+        driverReports:
+          description: List of summarized driver reports.
+          items:
+            $ref: '#/components/schemas/FuelEnergyDriverReportObjectResponseBody'
+          type: array
+      required:
+      - driverReports
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FuelEnergyDriverReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    IFTAGetIftaVehicleReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaVehicleReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyVehicleReportDataObjectResponseBody:
+      description: Dictionary containing summarized vehicle report data.
+      properties:
+        vehicleReports:
+          description: List of summarized vehicle reports.
+          items:
+            $ref: '#/components/schemas/FuelEnergyVehicleReportObjectResponseBody'
+          type: array
+      required:
+      - vehicleReports
+      type: object
+    IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaJurisdictionReportDataObjectResponseBody:
+      description: Dictionary containing summarized jurisdiction report data.
+      properties:
+        jurisdictionReports:
+          description: List of summarized jurisdiction reports.
+          items:
+            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
+          type: array
+        month:
+          description: The specified month duration for this IFTA report.
+          example: January
+          type: string
+        quarter:
+          description: The specified quarter duration for this IFTA report.
+          example: Q4
+          type: string
+        troubleshooting:
+          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
+        year:
+          description: The specified year for this IFTA report.
+          example: 2021
+          format: int64
+          type: integer
+      required:
+      - jurisdictionReports
+      - year
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FuelEnergyVehicleReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    IftaReportTroubleshootingObjectResponseBody:
+      description: IFTA report troubleshooting information.
+      properties:
+        noPurchasesFound:
+          description: Whether or not fuel purchases were found for this report.
+          example: false
+          type: boolean
+        unassignedFuelTypePurchases:
+          description: The number of fuel purchases without a fuel type assigned. Fuel purchases are used to calculate tax paid gallons.
+          example: 200
+          format: int64
+          type: integer
+        unassignedFuelTypeVehicles:
+          description: The number of vehicles without a fuel type assigned. Vehicles without an assigned fuel type may affect total mileage.
+          example: 2500
+          format: int64
+          type: integer
+        unassignedVehiclePurchases:
+          description: Purchases without an assigned fuel type may affect tax-paid gallons and fleet mpg.
+          example: 2500
+          format: int64
+          type: integer
+      required:
+      - noPurchasesFound
+      - unassignedFuelTypePurchases
+      - unassignedFuelTypeVehicles
+      - unassignedVehiclePurchases
+      type: object
+    FuelEnergyVehicleObjectResponseBody:
+      description: A minified vehicle object.
+      properties:
+        energyType:
+          description: 'Type of energy used by the vehicle  Valid values: `fuel`, `hybrid`, `electric`'
+          enum:
+          - fuel
+          - hybrid
+          - electric
+          example: fuel
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      required:
+      - energyType
+      type: object
+    IftaVehicleReportObjectResponseBody:
+      description: A summary of this vehicle's IFTA data.
+      properties:
+        jurisdictions:
+          description: List of jurisdiction summaries.
+          items:
+            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
+          type: array
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - jurisdictions
+      - vehicle
+      type: object
+    IdlingReportsGetVehicleIdlingReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaDriverTinyResponseResponseBody:
+      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+      required:
+      - id
+      type: object
+    IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsResponseBody:
+      properties:
+        data:
+          description: Multiple idling events.
+          items:
+            $ref: '#/components/schemas/IdlingReportEventResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+        requestEndTime:
+          description: The requested end time in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        requestStartTime:
+          description: The requested start time in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - data
+      - pagination
+      - requestEndTime
+      - requestStartTime
+      type: object
+    IFTAGetIftaVehicleReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyVehicleReportObjectResponseBody:
+      description: A summary of this vehicle's fuel and energy data.
+      properties:
+        distanceTraveledMeters:
+          description: Meters traveled over the given time range.
+          example: 1384000
+          format: double
+          type: number
+        efficiencyMpge:
+          description: Efficiency in MPG or MPGE over the given time range. For fuel vehicles this will be provided in MPG, for hybrid and electric vehicles this will be provided in MPGE. MPG/MPGE values are provided based on US gallons.
+          example: 21.4
+          format: double
+          type: number
+        energyUsedKwh:
+          description: Kilowatt-hours of energy used over the given time range. Only provided for hybrid and electric vehicles.
+          example: 73.2
+          format: double
+          type: number
+        engineIdleTimeDurationMs:
+          description: Milliseconds of engine idle time over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 4320000
+          format: int64
+          type: integer
+        engineRunTimeDurationMs:
+          description: Milliseconds of engine run time over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 576000
+          format: int64
+          type: integer
+        estCarbonEmissionsKg:
+          description: Estimated kilograms of carbon emissions over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 22.7
+          format: double
+          type: number
+        estFuelEnergyCost:
+          $ref: '#/components/schemas/FuelEnergyCostResponseResponseBody'
+        fuelConsumedMl:
+          description: Milliliters of fuel consumed over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 162773
+          format: double
+          type: number
+        vehicle:
+          $ref: '#/components/schemas/FuelEnergyVehicleObjectResponseBody'
+      required:
+      - distanceTraveledMeters
+      - efficiencyMpge
+      - estFuelEnergyCost
+      - vehicle
+      type: object
+    IftaVehicleReportDataObjectResponseBody:
+      description: Dictionary containing summarized vehicle report data.
+      properties:
+        month:
+          description: The specified month duration for this IFTA report.
+          example: January
+          type: string
+        quarter:
+          description: The specified quarter duration for this IFTA report.
+          example: Q4
+          type: string
+        troubleshooting:
+          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
+        vehicleReports:
+          description: List of summarized vehicle reports.
+          items:
+            $ref: '#/components/schemas/IftaVehicleReportObjectResponseBody'
+          type: array
+        year:
+          description: The specified year for this IFTA report.
+          example: 2021
+          format: int64
+          type: integer
+      required:
+      - vehicleReports
+      - year
+      type: object
+    IFTAGetIftaJurisdictionReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyDriverReportObjectResponseBody:
+      description: A summary of this driver's fuel and energy data.
+      properties:
+        distanceTraveledMeters:
+          description: Meters traveled over the given time range.
+          example: 1384000
+          format: double
+          type: number
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        efficiencyMpge:
+          description: Efficiency in MPG or MPGE over the given time range. For fuel vehicles this will be provided in MPG, for hybrid and electric vehicles this will be provided in MPGE. MPG/MPGE values are provided based on US gallons.
+          example: 21.4
+          format: double
+          type: number
+        energyUsedKwh:
+          description: Kilowatt-hours of energy used over the given time range. Only provided for hybrid and electric vehicles.
+          example: 73.2
+          format: double
+          type: number
+        engineIdleTimeDurationMs:
+          description: Milliseconds of engine idle time over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 4320000
+          format: int64
+          type: integer
+        engineRunTimeDurationMs:
+          description: Milliseconds of engine run time over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 576000
+          format: int64
+          type: integer
+        estCarbonEmissionsKg:
+          description: Estimated kilograms of carbon emissions over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 22.7
+          format: double
+          type: number
+        estFuelEnergyCost:
+          $ref: '#/components/schemas/FuelEnergyCostResponseResponseBody'
+        fuelConsumedMl:
+          description: Milliliters of fuel consumed over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 162773
+          format: double
+          type: number
+      required:
+      - distanceTraveledMeters
+      - driver
+      - efficiencyMpge
+      - estFuelEnergyCost
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

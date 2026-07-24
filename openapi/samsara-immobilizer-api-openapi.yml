@@ -1,0 +1,288 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Immobilizer API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Immobilizer
+paths:
+  /beta/fleet/vehicles/{id}/immobilizer:
+    patch:
+      description: "Update the engine immobilizer state of a vehicle. This requires an engine immobilizer to be installed on the vehicle gateway.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Vehicle Immobilization** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: updateEngineImmobilizerState
+      parameters:
+      - description: Vehicle ID
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateRequestBody'
+        required: true
+      responses:
+        '202':
+          content: {}
+          description: Accepted response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Update Engine Immobilizer State of a Vehicle.'
+      tags:
+      - Immobilizer
+      x-codegen-request-body-name: UpdateEngineImmobilizerStateRequestBody
+components:
+  schemas:
+    EngineImmobilizerUpdateEngineImmobilizerStateServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateRequestBody:
+      description: A request body to update the engine immobilizer state.
+      properties:
+        relayStates:
+          description: A list of relay states. If a relay is omitted, its state won't be updated. If the list is empty, a 400 bad request status code will be returned. If there are multiple states for the same relay, a 400 bad request status code will be returned.
+          items:
+            $ref: '#/components/schemas/UpdateEngineImmobilizerRelayStateRequestBodyRequestBody'
+          type: array
+      required:
+      - relayStates
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UpdateEngineImmobilizerRelayStateRequestBodyRequestBody:
+      description: A request object to update a relay state.
+      properties:
+        id:
+          description: 'The ID of the relay  Valid values: `relay1`, `relay2`'
+          enum:
+          - relay1
+          - relay2
+          example: relay1
+          type: string
+        isOpen:
+          description: The desired state of the relay. Provide `true` to open the relay, or `false` to close the relay.
+          example: true
+          type: boolean
+      required:
+      - id
+      - isOpen
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

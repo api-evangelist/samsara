@@ -1,0 +1,424 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Cameras API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Cameras
+paths:
+  /preview/cameras/media:
+    get:
+      description: "This endpoint returns a list of all uploaded media (video and still images) matching query parameters. Additional media can be retrieved with the [Create a media retrieval request](https://developers.samsara.com/reference/postmediaretrieval) endpoint, and they will be included in the list after they are uploaded. Urls provided by this endpoint expire in 8 hours.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Preview** under the  category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: listUploadedMedia
+      parameters:
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        required: true
+        schema:
+          type: string
+      - description: A list of desired camera inputs for which to return captured media. If empty, media for all available inputs will be returned.
+        explode: true
+        in: query
+        name: inputs
+        required: true
+        schema:
+          items:
+            enum:
+            - dashcamRoadFacing
+            - dashcamDriverFacing
+            - analog
+            type: string
+          type: array
+        style: form
+      - description: A list of desired media types for which to return captured media. If empty, media for all available media types will be returned.
+        explode: true
+        in: query
+        name: mediaTypes
+        required: true
+        schema:
+          items:
+            enum:
+            - image
+            type: string
+          type: array
+        style: form
+      - description: A list of desired trigger reasons for which to return captured media. If empty, media for all available trigger reasons will be returned.
+        explode: true
+        in: query
+        name: triggerReasons
+        required: true
+        schema:
+          items:
+            enum:
+            - api
+            - panicButton
+            - periodicStill
+            - tripEndStill
+            - tripStartStill
+            - videoRetrieval
+            type: string
+          type: array
+        style: form
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A timestamp in RFC 3339 format that can act as a cursor to track which media has previously been retrieved; only media whose availableAtTime comes after this parameter will be returned. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+        in: query
+        name: availableAfterTime
+        required: true
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] List Uploaded Media by Time Range.'
+      tags:
+      - Cameras
+components:
+  schemas:
+    MediaRetrievalListUploadedMediaNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ListUploadedMediaObjectResponseBody:
+      properties:
+        media:
+          description: List of media retrieval objects.
+          items:
+            $ref: '#/components/schemas/UploadedMediaObjectResponseBody'
+          type: array
+      required:
+      - media
+      type: object
+    MediaRetrievalListUploadedMediaMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UploadedMediaObjectResponseBody:
+      properties:
+        availableAtTime:
+          description: 'Timestamp, in RFC 3339 format, at which the media item was made available. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+        endTime:
+          description: ' An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        input:
+          description: 'Input type for this media. Examples: dashcamForwardFacing  Valid values: `dashcamForwardFacing`, `dashcamInwardFacing`, `dashcamRearFacing`'
+          enum:
+          - dashcamForwardFacing
+          - dashcamInwardFacing
+          - dashcamRearFacing
+          example: dashcamForwardFacing
+          type: string
+        mediaType:
+          description: 'Type of media. Examples: image  Valid values: `image`'
+          enum:
+          - image
+          example: image
+          type: string
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        triggerReason:
+          description: 'Trigger reason for this media capture. Examples: api  Valid values: `api`, `panicButton`, `periodicStill`, `tripEndStill`, `tripStartStill`, `videoRetrieval`'
+          enum:
+          - api
+          - panicButton
+          - periodicStill
+          - tripEndStill
+          - tripStartStill
+          - videoRetrieval
+          example: api
+          type: string
+        urlInfo:
+          $ref: '#/components/schemas/UrlInfoObjectResponseBody'
+        vehicleId:
+          description: 'Vehicle ID for which this media was captured. Examples: 1234'
+          example: '1234'
+          type: string
+      required:
+      - availableAtTime
+      - endTime
+      - input
+      - mediaType
+      - startTime
+      - triggerReason
+      - vehicleId
+      type: object
+    MediaRetrievalListUploadedMediaInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UrlInfoObjectResponseBody:
+      description: URL info for this piece of media. This field is only populated when the 'status' response field is 'available'
+      properties:
+        url:
+          description: 'Signed URL for this piece of media. Examples: https://sample.s3.url.com/image.jpeg'
+          example: https://sample.s3.url.com/image.jpeg
+          type: string
+        urlExpiryTime:
+          description: 'Timestamp, in RFC 3339 format, at which the URL expires. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+      required:
+      - url
+      - urlExpiryTime
+      type: object
+    MediaRetrievalListUploadedMediaNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    MediaRetrievalListUploadedMediaResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/ListUploadedMediaObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    MediaRetrievalListUploadedMediaUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

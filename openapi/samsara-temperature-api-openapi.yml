@@ -1,0 +1,135 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Temperature API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Temperature
+paths:
+  /v1/sensors/temperature:
+    post:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet temperature for requested sensors. This method returns the current ambient temperature (and probe temperature if applicable) for the requested sensors. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Sensors** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getSensorsTemperature
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_8'
+        content:
+          application/json:
+            schema:
+              properties:
+                sensors:
+                  description: List of sensor IDs to query.
+                  example:
+                  - 122
+                  items:
+                    format: int64
+                    type: integer
+                  type: array
+              required:
+              - sensors
+              type: object
+        description: List of sensor IDs to query.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1TemperatureResponse'
+          description: List of sensor objects containing the current temperature reported by each sensor.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Get Temperature
+      tags:
+      - Temperature
+      x-codegen-request-body-name: V1sensorParam
+components:
+  schemas:
+    V1TemperatureResponse_sensors:
+      properties:
+        ambientTemperature:
+          description: Currently reported ambient temperature in millidegrees celsius.
+          example: 11057
+          type: integer
+        ambientTemperatureTime:
+          description: The timestamp of reported ambient temperature, specified in RFC 3339 time.
+          example: '2019-04-17T16:42:55Z'
+          type: string
+        id:
+          description: ID of the sensor.
+          example: 122
+          format: int64
+          type: integer
+        name:
+          description: Name of the sensor.
+          example: Freezer Temp V1Sensor
+          type: string
+        probeTemperature:
+          description: Currently reported probe temperature in millidegrees celsius. If no probe is connected, this parameter will not be reported.
+          example: -20145
+          type: integer
+        probeTemperatureTime:
+          description: The timestamp of reported probe temperature, specified in RFC 3339 time.
+          example: '2019-04-17T16:42:55Z'
+          type: string
+        trailerId:
+          description: ID of the trailer associated with the sensor for the data point. If no trailer is connected, this parameter will not be reported.
+          example: 123
+          type: integer
+        vehicleId:
+          description: ID of the vehicle associated with the sensor for the data point. If no vehicle is connected, this parameter will not be reported.
+          example: 124
+          type: integer
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1TemperatureResponse:
+      description: Contains the current temperatures of a sensor.
+      properties:
+        groupId:
+          description: Deprecated.
+          example: 101
+          format: int64
+          type: integer
+        sensors:
+          items:
+            $ref: '#/components/schemas/V1TemperatureResponse_sensors'
+          type: array
+      type: object
+    inline_object_8:
+      properties:
+        sensors:
+          description: List of sensor IDs to query.
+          example:
+          - 122
+          items:
+            format: int64
+            type: integer
+          type: array
+      required:
+      - sensors
+      type: object
+  requestBodies:
+    inline_object_8:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_8'
+      required: true
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

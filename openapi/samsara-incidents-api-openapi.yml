@@ -1,0 +1,2919 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Incidents API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Incidents
+paths:
+  /alerts/incidents/stream:
+    get:
+      description: "Get Alert Incidents for specific Alert Configurations over a specified period of time.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Alerts** under the Alerts category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getIncidents
+      parameters:
+      - description: Required RFC 3339 timestamp that indicates when to begin receiving data. This will be based on updatedAtTime.
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: Required array of alert configuration ids to return incident data for.
+        explode: true
+        in: query
+        name: configurationIds
+        required: true
+        schema:
+          items:
+            type: string
+          maxItems: 50
+          minItems: 1
+          type: array
+        style: form
+      - description: Optional RFC 3339 timestamp to stop receiving data. Defaults to now if not provided. This will be based on updatedAtTime.
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertsGetIncidentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: Get Alert Incidents.
+      tags:
+      - Incidents
+components:
+  schemas:
+    FormsPersonValueObjectResponseBody:
+      description: The value of a person form input field.
+      properties:
+        person:
+          $ref: '#/components/schemas/FormsPersonObjectResponseBody'
+      required:
+      - person
+      type: object
+    RouteStopDetailsObjectResponseBody:
+      properties:
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        operation:
+          description: 'The operation that was performed as part of this route update.  Valid values: `stop arrived`, `stop departed`'
+          enum:
+          - stop arrived
+          - stop departed
+          example: stop arrived
+          type: string
+        route:
+          $ref: '#/components/schemas/WebhookRouteResponseObjectResponseBody'
+        routeStopDetails:
+          $ref: '#/components/schemas/MinimalRouteStopResponseBody'
+        time:
+          description: The timestamp of the route in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          format: date-time
+          type: string
+        type:
+          description: 'The type of route update. The route tracking updates occur as a route is completed and stops transition from one state to another. Currently only Route Tracking updates are supported, but this will change in the future when additional types are added.  Valid values: `route tracking`'
+          enum:
+          - route tracking
+          example: route tracking
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/VehicleWithGatewayTinyResponseResponseBody'
+      required:
+      - route
+      - routeStopDetails
+      - time
+      - type
+      type: object
+    AlertsGetIncidentsResponseBody:
+      properties:
+        data:
+          description: List of workflow incidents.
+          items:
+            $ref: '#/components/schemas/GetWorkflowIncidentResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    WorkflowAddressEventWithGeofenceObjectResponseBody:
+      description: A minimal Address object representation used in AddressEventObject objects
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        formattedAddress:
+          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
+          example: 350 Rhode Island St, San Francisco, CA
+          type: string
+        geofence:
+          $ref: '#/components/schemas/WorkflowGeofenceResponseBody'
+        id:
+          description: Id of the address
+          example: '494123'
+          type: string
+        name:
+          description: Name of the address
+          example: 'Company Office #1'
+          type: string
+      required:
+      - formattedAddress
+      - id
+      - name
+      type: object
+    DriverDocumentSubmittedResponseBody:
+      description: Details specific to Driver Document Submitted.
+      properties:
+        document:
+          $ref: '#/components/schemas/documentResponseObjectResponseBody'
+      type: object
+    VehicleWithGatewayTinyResponseResponseBody:
+      description: ' A minified vehicle object. This object is only returned if the route is assigned to the vehicle.'
+      properties:
+        assetType:
+          description: 'The type of the asset.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
+          enum:
+          - uncategorized
+          - trailer
+          - equipment
+          - unpowered
+          - vehicle
+          example: vehicle
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        gateway:
+          $ref: '#/components/schemas/GoaGatewayTinyResponseResponseBody'
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        licensePlate:
+          description: The license plate of the vehicle.
+          example: 6SAM123
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+        vin:
+          description: The VIN of the vehicle.
+          example: 1GBJ6P1B2HV112765
+          type: string
+      type: object
+    FormsMediaRecordObjectResponseBody:
+      description: Forms media record object.
+      properties:
+        id:
+          description: ID of the media record.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        processingStatus:
+          description: 'Status of the media record.  Valid values: `unknown`, `processing`, `finished`'
+          enum:
+          - unknown
+          - processing
+          - finished
+          example: processing
+          type: string
+        url:
+          description: URL containing a link to associated media content. Included if 'processingStatus' is 'finished'.
+          example: https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456
+          format: uri
+          type: string
+        urlExpiresAt:
+          description: Expiration time of the media record 'url'. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - id
+      - processingStatus
+      type: object
+    DriverRecordedResponseBody:
+      description: Details specific to Driver Recorded.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    scannedDocumentValueObjectResponseBody:
+      properties:
+        id:
+          description: Id of the scanned document.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        url:
+          description: Url of the scanned document.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
+      type: object
+    PanicButtonResponseBody:
+      description: Details specific to Panic Button.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    IssueCreatedResponseBody:
+      description: Details specific to Issue Created.
+      properties:
+        issue:
+          $ref: '#/components/schemas/IssueResponseObjectResponseBody'
+      required:
+      - issue
+      type: object
+    DataInputValueResponseBody:
+      description: Details specific to Data Input Value.
+      properties:
+        machineInput:
+          $ref: '#/components/schemas/alertObjectMachineInputResponseBody'
+      type: object
+    FormsNumberValueObjectResponseBody:
+      description: The value of a number form input field.
+      properties:
+        value:
+          description: Number value.
+          example: 123.456
+          format: double
+          type: number
+      required:
+      - value
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    GoaAttributeTinyResponseBody:
+      description: Attribute properties.
+      properties:
+        id:
+          description: Id of the attribute
+          example: '494123'
+          type: string
+        name:
+          description: Name of the attribute
+          example: Compliance/ELD
+          type: string
+        numberValues:
+          description: List of number values associated with the attribute
+          example:
+          - 867
+          - 5309
+          items:
+            example: 0.7405685598633346
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: List of string values associated with the attribute.
+          example:
+          - HQ
+          - Leased
+          items:
+            example: Tempora dolorum placeat.
+            type: string
+          type: array
+      type: object
+    EngineIdleDataResponseBody:
+      description: Details specific to Engine Idle.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    DashcamDisconnectedResponseBody:
+      description: Details specific to Dashcam Disconnected.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    FuelLevelPercentageResponseBody:
+      description: Details specific to Fuel Level Percentage.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    FormsTableValueObjectResponseBody:
+      description: The value of a table form input field.
+      properties:
+        columns:
+          description: List of table columns.
+          items:
+            $ref: '#/components/schemas/FormsTableColumnObjectResponseBody'
+          type: array
+        rows:
+          description: List of table rows.
+          items:
+            $ref: '#/components/schemas/FormsTableRowObjectResponseBody'
+          type: array
+      required:
+      - columns
+      - rows
+      type: object
+    VehicleDetectedResponseBody:
+      description: Details specific to Vehicle Detected.
+      properties:
+        cameraStream:
+          $ref: '#/components/schemas/alertObjectOnvifCameraStreamResponseBody'
+      type: object
+    VehicleFaultsResponseBody:
+      description: Details specific to Vehicle Faults.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    GoaDriverTinyResponseResponseBody:
+      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+      required:
+      - id
+      type: object
+    multipleChoiceValueObjectResponseBody:
+      properties:
+        selected:
+          description: Boolean representing if the choice has been selected.
+          example: false
+          type: boolean
+        value:
+          description: Description of the choice.
+          example: 'Yes'
+          type: string
+      type: object
+    AlertsGetIncidentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    alertObjectWorkforceCameraDeviceResponseBody:
+      description: A camera device associated with the alert
+      properties:
+        id:
+          description: The ID of the camera device associated with the alert
+          example: '22222'
+          type: string
+        name:
+          description: The name of the camera device
+          example: Camera-123
+          type: string
+        sites:
+          description: The list of sites associated with the camera device.
+          items:
+            $ref: '#/components/schemas/alertObjectSitesResponseBody'
+          type: array
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the camera device.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      type: object
+    WorkflowIncidentConditionObjectResponseBody:
+      description: Object representing the granular details of the condition. These details will vary depending on the condition.
+      properties:
+        description:
+          description: Descriptive name of the condition.
+          example: Alert Type Description
+          type: string
+        details:
+          $ref: '#/components/schemas/WorkflowIncidentDetailsObjectResponseBody'
+        triggerId:
+          description: Unique identifier describing the type of condition being represented.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - description
+      - details
+      - triggerId
+      type: object
+    DriverAppSignOutResponseBody:
+      description: Details specific to Driver App Sign Out.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+      type: object
+    GatewayDisconnectedResponseBody:
+      description: Details specific to Gateway Disconnected.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    DriverMessageReceivedResponseBody:
+      description: Details specific to Driver Message Received.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+      type: object
+    FormsScoreObjectResponseBody:
+      description: Forms score object.
+      properties:
+        maxPoints:
+          description: Total possible points of the form submission.
+          example: 80
+          format: double
+          type: number
+        scorePercent:
+          description: Percentage score of the form submission, calculated as scorePoints / maxPoints.
+          example: 75
+          format: double
+          type: number
+        scorePoints:
+          description: Score, in points, of the form submission.
+          example: 60
+          format: double
+          type: number
+      required:
+      - maxPoints
+      - scorePercent
+      - scorePoints
+      type: object
+    GoaRouteStopTinyResponseResponseBody:
+      description: A minified route stop object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Id of the route stop
+          example: '494123'
+          type: string
+        name:
+          description: Name of the route stop
+          example: 'Company Warehouse #1'
+          type: string
+      type: object
+    MinimalRouteStopResponseBody:
+      description: A single route stop for a route.
+      properties:
+        actualArrivalTime:
+          description: Actual arrival time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        actualDepartureTime:
+          description: Actual departure time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        enRouteTime:
+          description: The time the stop became en-route, in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        eta:
+          description: Estimated time of arrival, if this stop is currently en-route, in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Unique identifier for the route stop.
+          example: '141414'
+          type: string
+        liveSharingUrl:
+          description: The shareable url of the stop's current status.
+          example: https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token
+          type: string
+        skippedTime:
+          description: Skipped time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        state:
+          description: 'The current state of the route stop.  Valid values: `unassigned`, `scheduled`, `en route`, `skipped`, `arrived`, `departed`'
+          enum:
+          - unassigned
+          - scheduled
+          - en route
+          - skipped
+          - arrived
+          - departed
+          example: scheduled
+          type: string
+      required:
+      - id
+      - state
+      type: object
+    JammingDetectedResponseBody:
+      description: Details specific to Jamming Detected.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    AmbientTemperatureResponseBody:
+      description: Details specific to Ambient Temperature.
+      properties:
+        sensor:
+          $ref: '#/components/schemas/alertObjectSensorResponseBody'
+      type: object
+    FormsPolymorphicUserObjectResponseBody:
+      description: User or driver object.
+      properties:
+        id:
+          description: ID of the polymorphic user.
+          example: '938172'
+          type: string
+        type:
+          description: 'The type of the polymorphic user.  Valid values: `driver`, `user`'
+          enum:
+          - driver
+          - user
+          example: driver
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    DvirDefectsObject_v2022_09_13ResponseBody:
+      description: A description of a DVIR defect
+      properties:
+        comment:
+          description: Comment on the defect.
+          example: Air compressor not working
+          type: string
+        createdAtTime:
+          description: Time when the defect was created. UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        defectType:
+          description: The type of DVIR defect.
+          example: Air Compressor
+          type: string
+        id:
+          description: The ID of the defect.
+          example: '18'
+          type: string
+        isResolved:
+          description: Signifies if this defect is resolved.
+          example: false
+          type: boolean
+        mechanicNotes:
+          description: The mechanic notes on this defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        mechanicNotesUpdatedAtTime:
+          description: Time when mechanic notes were last updated. UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedAtTime:
+          description: Time when this defect was resolved. Will not be returned if the defect is unresolved. UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/DvirResolvedByObjectResponseBody'
+        trailer:
+          $ref: '#/components/schemas/GoaTrailerTinyResponseResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/VehicleWithGatewayTinyResponseResponseBody'
+      required:
+      - createdAtTime
+      - defectType
+      - id
+      - isResolved
+      type: object
+    FormsAssetObjectResponseBody:
+      description: Tracked or untracked (i.e. manually entered) asset object.
+      properties:
+        entryType:
+          description: 'The type of entry for the asset.  Valid values: `tracked`, `untracked`'
+          enum:
+          - tracked
+          - untracked
+          example: tracked
+          type: string
+        id:
+          description: ID of a tracked asset. Included if 'entryType' is 'tracked'.
+          example: '281474982859091'
+          type: string
+        name:
+          description: Name of an untracked (i.e. manually entered) asset.
+          example: trailer 123
+          type: string
+      required:
+      - entryType
+      type: object
+    HosViolationDataResponseBody:
+      description: Details specific to Hos Violation.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+      type: object
+    TamperingDetectedResponseBody:
+      description: Details specific to Tampering Detected.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    EngineOffResponseBody:
+      description: Details specific to Engine Off.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    IssueSourceObjectResponseBody:
+      description: Contains information about where an issue came from.
+      properties:
+        id:
+          description: ID of the issue's source object. The format depends on the 'type'. Included if 'type' is not 'ad-hoc'.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        type:
+          description: 'The type of issue source.  Valid values: `form`, `ad-hoc`'
+          enum:
+          - form
+          - ad-hoc
+          example: form
+          type: string
+      required:
+      - type
+      type: object
+    RoutesStopResponseObjectResponseBody:
+      properties:
+        actualArrivalTime:
+          description: Actual arrival time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        actualDepartureTime:
+          description: Actual departure time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        address:
+          $ref: '#/components/schemas/GoaAddressTinyResponseResponseBody'
+        documents:
+          description: List of documents associated with the stop.
+          items:
+            $ref: '#/components/schemas/GoaDocumentTinyResponseResponseBody'
+          type: array
+        enRouteTime:
+          description: The time the stop became en-route, in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        eta:
+          description: Estimated time of arrival, if this stop is currently en-route, in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Id of the stop
+          example: '324231'
+          type: string
+        liveSharingUrl:
+          description: The shareable url of the stop's current status.
+          example: https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token
+          type: string
+        locationLiveSharingLinks:
+          description: List of shareable, non-expired 'By Location' Live Sharing Links.
+          items:
+            $ref: '#/components/schemas/LiveSharingLinkResponseObjectResponseBody'
+          type: array
+        name:
+          description: Name of the stop
+          example: 'Stop #1'
+          type: string
+        notes:
+          description: Notes for the stop
+          example: These are my notes
+          maxLength: 2000
+          type: string
+        ontimeWindowAfterArrivalMs:
+          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          format: int64
+          type: integer
+        ontimeWindowBeforeArrivalMs:
+          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          format: int64
+          type: integer
+        scheduledArrivalTime:
+          description: Scheduled arrival time, if it exists, for the stop in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        scheduledDepartureTime:
+          description: Scheduled departure time, if it exists, for the stop in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        singleUseLocation:
+          $ref: '#/components/schemas/RoutesSingleUseAddressObjectResponseBody'
+        skippedTime:
+          description: Skipped time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        state:
+          description: 'The current state of the route stop.  Valid values: `unassigned`, `scheduled`, `en route`, `skipped`, `arrived`, `departed`'
+          enum:
+          - unassigned
+          - scheduled
+          - en route
+          - skipped
+          - arrived
+          - departed
+          example: scheduled
+          type: string
+      required:
+      - id
+      - name
+      - state
+      type: object
+    GoaAddressTinyResponseResponseBody:
+      description: A minified Address object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Id of the address
+          example: '494123'
+          type: string
+        name:
+          description: Name of the address
+          example: 'Company Office #1'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    SiteGatewayDisconnectedResponseBody:
+      description: Details specific to Site Gateway Disconnected.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    IssueResponseObjectResponseBody:
+      description: Issue response object.
+      properties:
+        asset:
+          $ref: '#/components/schemas/FormsAssetObjectResponseBody'
+        assignedTo:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+        createdAtTime:
+          description: Creation time of the issue. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        description:
+          description: Description of the issue. Included if the issue was given a description.
+          example: Oil spill in left corner of SF1
+          type: string
+        dueDate:
+          description: Due date of the issue. UTC timestamp in RFC 3339 format. Included if the issue was assigned a due date.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the issue.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        issueSource:
+          $ref: '#/components/schemas/IssueSourceObjectResponseBody'
+        mediaList:
+          description: List of media objects for the issue. Included if the issue has media.
+          items:
+            $ref: '#/components/schemas/FormsMediaRecordObjectResponseBody'
+          type: array
+        priority:
+          description: 'Priority of the issue. Included if the issue was assigned a priority.  Valid values: `low`, `medium`, `high`'
+          enum:
+          - low
+          - medium
+          - high
+          example: high
+          type: string
+        status:
+          description: 'Status of the issue.  Valid values: `open`, `inProgress`, `resolved`, `dismissed`'
+          enum:
+          - open
+          - inProgress
+          - resolved
+          - dismissed
+          example: open
+          type: string
+        submittedAtTime:
+          description: Submission time of the issue. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        submittedBy:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+        title:
+          description: Title of the issue.
+          example: Oil spill
+          type: string
+        updatedAtTime:
+          description: Update time of the issue. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - createdAtTime
+      - id
+      - issueSource
+      - status
+      - submittedAtTime
+      - submittedBy
+      - title
+      - updatedAtTime
+      type: object
+    GoaGatewayTinyResponseResponseBody:
+      description: A minified gateway object
+      properties:
+        model:
+          description: 'The model of the gateway installed on the asset.  Valid values: `AG15`, `AG24`, `AG24EU`, `AG26`, `AG26EU`, `AG41`, `AG41EU`, `AG45`, `AG45EU`, `AG46`, `AG46EU`, `AG46P`, `AG46PEU`, `AG51`, `AG51EU`, `AG52`, `AG52EU`, `AG53`, `AG53EU`, `IG15`, `IG21`, `IG41`, `IG61`, `SG1`, `SG1B`, `SG1G`, `SG1G32`, `SG1x`, `VG32`, `VG33`, `VG34`, `VG34EU`, `VG34FN`, `VG34M`, `VG54ATT`, `VG54EU`, `VG54FN`, `VG54NA`, `VG54NAE`, `VG54NAH`, `VG55EU`, `VG55FN`, `VG55NA`'
+          enum:
+          - AG15
+          - AG24
+          - AG24EU
+          - AG26
+          - AG26EU
+          - AG41
+          - AG41EU
+          - AG45
+          - AG45EU
+          - AG46
+          - AG46EU
+          - AG46P
+          - AG46PEU
+          - AG51
+          - AG51EU
+          - AG52
+          - AG52EU
+          - AG53
+          - AG53EU
+          - IG15
+          - IG21
+          - IG41
+          - IG61
+          - SG1
+          - SG1B
+          - SG1G
+          - SG1G32
+          - SG1x
+          - VG32
+          - VG33
+          - VG34
+          - VG34EU
+          - VG34FN
+          - VG34M
+          - VG54ATT
+          - VG54EU
+          - VG54FN
+          - VG54NA
+          - VG54NAE
+          - VG54NAH
+          - VG55EU
+          - VG55FN
+          - VG55NA
+          example: VG34
+          type: string
+        serial:
+          description: The serial number of the gateway installed on the asset.
+          example: GFRV-43N-VGX
+          type: string
+      required:
+      - model
+      - serial
+      type: object
+    alertObjectSitesResponseBody:
+      description: A site associated with the alert.
+      properties:
+        id:
+          description: The ID of the site associated with the alert
+          example: 1111aaaa-11aa-11aa-11aa-111111aaaaaa
+          type: string
+        name:
+          description: The name of the site
+          example: Site-123
+          type: string
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Site.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      type: object
+    documentResponseObjectResponseBody:
+      description: A single document.
+      properties:
+        conditionalFieldSections:
+          description: List of the document conditional field sections.
+          items:
+            $ref: '#/components/schemas/conditionalFieldSectionObjectResponseBody'
+          type: array
+        createdAtTime:
+          description: Time the document was created in RFC 3339 format.
+          example: '1971-05-04T11:43:21Z'
+          format: date-time
+          type: string
+        documentType:
+          $ref: '#/components/schemas/GoaDocumentTypeTinyResponseResponseBody'
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        fields:
+          description: The fields associated with this document.
+          items:
+            $ref: '#/components/schemas/fieldObjectResponseBody'
+          type: array
+        id:
+          description: Universally unique identifier for the document.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        name:
+          description: Name of the document.
+          example: Dropoff Slip 123
+          type: string
+        notes:
+          description: Notes on the document.
+          example: Missing a crate
+          type: string
+        route:
+          $ref: '#/components/schemas/GoaRouteTinyResponseResponseBody'
+        routeStop:
+          $ref: '#/components/schemas/GoaRouteStopTinyResponseResponseBody'
+        state:
+          description: 'The condition of the document created for the driver. Can be either Required or Submitted. Required documents are pre-populated documents for the Driver to fill out in the Driver App and have not yet been submitted. Submitted documents have been submitted by the driver in the Driver App. Archived documents have been archived by the admin in the cloud dashboard.  Valid values: `submitted`, `required`, `archived`'
+          enum:
+          - submitted
+          - required
+          - archived
+          example: submitted
+          type: string
+        updatedAtTime:
+          description: Time the document was updated in RFC 3339 format.
+          example: '1979-12-10T00:51:01Z'
+          format: date-time
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - createdAtTime
+      - documentType
+      - driver
+      - fields
+      - id
+      - state
+      type: object
+    VehicleDefLevelPercentageResponseBody:
+      description: Details specific to Vehicle DEF Level Percentage.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    FormSubmittedResponseBody:
+      description: Details specific to Form Submitted.
+      properties:
+        form:
+          $ref: '#/components/schemas/FormSubmissionResponseObjectResponseBody'
+      required:
+      - form
+      type: object
+    dateTimeValueObjectResponseBody:
+      description: The value of a date time field. Only present for date time fields.
+      properties:
+        dateTime:
+          description: Date time value inin RFC 3339 format.
+          example: '1975-05-13T14:12:59Z'
+          format: date-time
+          type: string
+      type: object
+    VertexResponseBody:
+      description: The vertex of the polygon geofence. These geofence vertices describe the perimeter of the polygon, and must consist of at least 3 vertices and less than 40.
+      properties:
+        latitude:
+          description: The latitude of a geofence vertex in decimal degrees.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: The longitude of a geofence vertex in decimal degrees.
+          example: 137.7749
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    GoaRouteTinyResponseResponseBody:
+      description: A minified representation of a single route.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Unique identifier for the route.
+          example: '131313'
+          type: string
+        name:
+          description: Name of the route.
+          example: Pineapple delivery
+          maxLength: 255
+          type: string
+      required:
+      - id
+      type: object
+    FormsPersonObjectResponseBody:
+      description: Tracked or untracked (i.e. manually entered) person object.
+      properties:
+        entryType:
+          description: 'The type of entry for the person.  Valid values: `tracked`, `untracked`'
+          enum:
+          - tracked
+          - untracked
+          example: tracked
+          type: string
+        name:
+          description: Name of an untracked (i.e. manually entered) person.
+          example: Jake
+          type: string
+        polymorphicUserId:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+      required:
+      - entryType
+      type: object
+    AlertsGetIncidentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WorkflowPolygonResponseBody:
+      description: Information about a polygon geofence. This field is only needed if the geofence is a polygon.
+      properties:
+        vertices:
+          description: The vertices of the polygon geofence. These geofence vertices describe the perimeter of the polygon, and must consist of at least 3 vertices and less than 40.
+          items:
+            $ref: '#/components/schemas/VertexResponseBody'
+          type: array
+      type: object
+    GatewayWithVehicleTinyResponseResponseBody:
+      properties:
+        model:
+          description: 'The model of the gateway installed on the asset.  Valid values: `AG15`, `AG24`, `AG24EU`, `AG26`, `AG26EU`, `AG41`, `AG41EU`, `AG45`, `AG45EU`, `AG46`, `AG46EU`, `AG46P`, `AG46PEU`, `AG51`, `AG51EU`, `AG52`, `AG52EU`, `AG53`, `AG53EU`, `IG15`, `IG21`, `IG41`, `IG61`, `SG1`, `SG1B`, `SG1G`, `SG1G32`, `SG1x`, `VG32`, `VG33`, `VG34`, `VG34EU`, `VG34FN`, `VG34M`, `VG54ATT`, `VG54EU`, `VG54FN`, `VG54NA`, `VG54NAE`, `VG54NAH`, `VG55EU`, `VG55FN`, `VG55NA`'
+          enum:
+          - AG15
+          - AG24
+          - AG24EU
+          - AG26
+          - AG26EU
+          - AG41
+          - AG41EU
+          - AG45
+          - AG45EU
+          - AG46
+          - AG46EU
+          - AG46P
+          - AG46PEU
+          - AG51
+          - AG51EU
+          - AG52
+          - AG52EU
+          - AG53
+          - AG53EU
+          - IG15
+          - IG21
+          - IG41
+          - IG61
+          - SG1
+          - SG1B
+          - SG1G
+          - SG1G32
+          - SG1x
+          - VG32
+          - VG33
+          - VG34
+          - VG34EU
+          - VG34FN
+          - VG34M
+          - VG54ATT
+          - VG54EU
+          - VG54FN
+          - VG54NA
+          - VG54NAE
+          - VG54NAH
+          - VG55EU
+          - VG55FN
+          - VG55NA
+          example: VG34
+          type: string
+        serial:
+          description: The serial number of the gateway installed on the asset.
+          example: GFRV-43N-VGX
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - model
+      - serial
+      type: object
+    FormsTableColumnObjectResponseBody:
+      description: Defines a column in a table form input field.
+      properties:
+        id:
+          description: Unique identifier for the column.
+          format: uuid
+          type: string
+        label:
+          description: Label of the column.
+          example: Store Number
+          type: string
+        type:
+          description: 'Type of the column field.  Valid values: `text, number, datetime, check_boxes, multiple_choice, signature, media, person`'
+          enum:
+          - text, number, datetime, check_boxes, multiple_choice, signature, media, person
+          example: number
+          type: string
+      required:
+      - id
+      - label
+      - type
+      type: object
+    WorkflowDvirSubmittedResponseObjectResponseBody:
+      description: Details specific to DVIR Submitted.
+      properties:
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        dvir:
+          $ref: '#/components/schemas/WorkflowDvirObjectResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/VehicleWithGatewayTinyResponseResponseBody'
+      type: object
+    EngineOnResponseBody:
+      description: Details specific to Engine On.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    DriverMessageSentResponseBody:
+      description: Details specific to Driver Message Sent.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+      type: object
+    WorkflowSignatoryUserObjectResponseBody:
+      description: The user who signed the DVIR.
+      properties:
+        id:
+          description: ID of the user.
+          example: '938172'
+          type: string
+        name:
+          description: Name of the user.
+          example: Joe Driver
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    AlertsGetIncidentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WorkflowIncidentDetailsObjectResponseBody:
+      description: Object representing the granular details of the condition. These details will vary depending on the condition.
+      properties:
+        ambientTemperature:
+          $ref: '#/components/schemas/AmbientTemperatureResponseBody'
+        cameraConnectorDisconected:
+          $ref: '#/components/schemas/CameraConnectorDisconectedResponseBody'
+        cameraStreamIssue:
+          $ref: '#/components/schemas/CameraStreamIssueResponseBody'
+        cellSignalLoss:
+          $ref: '#/components/schemas/CellSignalLossResponseBody'
+        cloudBackupUploadIssue:
+          $ref: '#/components/schemas/CloudBackupUploadIssueResponseBody'
+        dashcamDisconnected:
+          $ref: '#/components/schemas/DashcamDisconnectedResponseBody'
+        dataInputValue:
+          $ref: '#/components/schemas/DataInputValueResponseBody'
+        deviceMovement:
+          $ref: '#/components/schemas/DeviceMovementDataResponseBody'
+        deviceMovementStopped:
+          $ref: '#/components/schemas/DeviceMovementStoppedDataResponseBody'
+        driverAppSignIn:
+          $ref: '#/components/schemas/DriverAppSignInResponseBody'
+        driverAppSignOut:
+          $ref: '#/components/schemas/DriverAppSignOutResponseBody'
+        driverDocumentSubmitted:
+          $ref: '#/components/schemas/DriverDocumentSubmittedResponseBody'
+        driverMessageReceived:
+          $ref: '#/components/schemas/DriverMessageReceivedResponseBody'
+        driverMessageSent:
+          $ref: '#/components/schemas/DriverMessageSentResponseBody'
+        driverRecorded:
+          $ref: '#/components/schemas/DriverRecordedResponseBody'
+        dvirSubmittedDevice:
+          $ref: '#/components/schemas/WorkflowDvirSubmittedResponseObjectResponseBody'
+        engineIdle:
+          $ref: '#/components/schemas/EngineIdleDataResponseBody'
+        engineOff:
+          $ref: '#/components/schemas/EngineOffResponseBody'
+        engineOn:
+          $ref: '#/components/schemas/EngineOnResponseBody'
+        formSubmitted:
+          $ref: '#/components/schemas/FormSubmittedResponseBody'
+        fuelLevelPercentage:
+          $ref: '#/components/schemas/FuelLevelPercentageResponseBody'
+        gatewayDisconnected:
+          $ref: '#/components/schemas/GatewayDisconnectedResponseBody'
+        gatewayUnplugged:
+          $ref: '#/components/schemas/GatewayWithVehicleTinyResponseResponseBody'
+        geofenceEntry:
+          $ref: '#/components/schemas/WorkflowGeofenceEventResponseObjectResponseBody'
+        geofenceExit:
+          $ref: '#/components/schemas/WorkflowGeofenceEventResponseObjectResponseBody'
+        gpsSignalLoss:
+          $ref: '#/components/schemas/GpsSignalLossResponseBody'
+        harshEvent:
+          $ref: '#/components/schemas/HarshEventDataResponseBody'
+        hosViolation:
+          $ref: '#/components/schemas/HosViolationDataResponseBody'
+        inactivity:
+          $ref: '#/components/schemas/InactivityResponseBody'
+        insideGeofence:
+          $ref: '#/components/schemas/InsideGeofenceDataResponseBody'
+        issueCreated:
+          $ref: '#/components/schemas/IssueCreatedResponseBody'
+        jammingDetected:
+          $ref: '#/components/schemas/JammingDetectedResponseBody'
+        motionDetected:
+          $ref: '#/components/schemas/MotionDetectedResponseBody'
+        outOfRoute:
+          $ref: '#/components/schemas/OutOfRouteResponseBody'
+        outsideGeofence:
+          $ref: '#/components/schemas/OutsideGeofenceDataResponseBody'
+        panicButton:
+          $ref: '#/components/schemas/PanicButtonResponseBody'
+        personDetected:
+          $ref: '#/components/schemas/PersonDetectedResponseBody'
+        reeferTemperature:
+          $ref: '#/components/schemas/ReeferTemperatureResponseBody'
+        routeStopArrival:
+          $ref: '#/components/schemas/RouteStopDetailsObjectResponseBody'
+        routeStopDeparture:
+          $ref: '#/components/schemas/RouteStopDetailsObjectResponseBody'
+        routeStopETA:
+          $ref: '#/components/schemas/RouteStopETAResponseBody'
+        scheduledMaintenance:
+          $ref: '#/components/schemas/ScheduledMaintenanceDataResponseBody'
+        scheduledMaintenanceByEngineHours:
+          $ref: '#/components/schemas/ScheduledMaintenanceByEngineHoursResponseBody'
+        scheduledMaintenanceOdometer:
+          $ref: '#/components/schemas/ScheduledMaintenanceOdometerDataResponseBody'
+        severeSpeeding:
+          $ref: '#/components/schemas/SevereSpeedingStartedResponseObjectResponseBody'
+        siteGatewayDisconnected:
+          $ref: '#/components/schemas/SiteGatewayDisconnectedResponseBody'
+        speed:
+          $ref: '#/components/schemas/SpeedDataResponseBody'
+        tamperingDetected:
+          $ref: '#/components/schemas/TamperingDetectedResponseBody'
+        tireFaults:
+          $ref: '#/components/schemas/TireFaultsResponseBody'
+        unassignedDriving:
+          $ref: '#/components/schemas/UnassignedDrivingDataResponseBody'
+        vehicleBatteryVoltage:
+          $ref: '#/components/schemas/VehicleBatteryVoltageResponseBody'
+        vehicleDefLevelPercentage:
+          $ref: '#/components/schemas/VehicleDefLevelPercentageResponseBody'
+        vehicleDetected:
+          $ref: '#/components/schemas/VehicleDetectedResponseBody'
+        vehicleFaults:
+          $ref: '#/components/schemas/VehicleFaultsResponseBody'
+      type: object
+    DriverAppSignInResponseBody:
+      description: Details specific to Driver App Sign In.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+      type: object
+    WorkflowDvirObjectResponseBody:
+      description: A DVIR description
+      properties:
+        authorSignature:
+          $ref: '#/components/schemas/WorkflowAuthorSignatureObjectResponseBody'
+        defects:
+          description: Defects registered for the DVIR.
+          items:
+            $ref: '#/components/schemas/DvirDefectsObject_v2022_09_13ResponseBody'
+          type: array
+        endTime:
+          description: Time when the driver signed and completed this DVIR. UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        formattedLocation:
+          description: Optional string if your jurisdiction requires a location of the DVIR.
+          example: 350 Rhode Island St Ste. 400S, San Francisco, CA 94103
+          type: string
+        id:
+          description: The unique id of the DVIR
+          example: '12345'
+          type: string
+        mechanicNotes:
+          description: The mechanics notes on the DVIR.
+          example: Replaced headlight on passenger side.
+          type: string
+        needsCorrection:
+          description: Indicates if a defect needs correction.
+          example: false
+          type: boolean
+        odometerMeters:
+          description: The odometer reading in meters.
+          example: 91823
+          format: int64
+          type: integer
+        safetyStatus:
+          description: 'The condition of vehicle on which DVIR was done.  Valid values: `safe`, `unsafe`, `resolved`'
+          enum:
+          - safe
+          - unsafe
+          - resolved
+          example: unsafe
+          type: string
+        secondSignature:
+          $ref: '#/components/schemas/WorkflowAuthorSignatureObjectResponseBody'
+        startTime:
+          description: Time when driver began filling out this DVIR in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        thirdSignature:
+          $ref: '#/components/schemas/WorkflowAuthorSignatureObjectResponseBody'
+        trailer:
+          $ref: '#/components/schemas/GoaTrailerTinyResponseResponseBody'
+        type:
+          description: 'Inspection type of the DVIR.  Valid values: `preTrip`, `postTrip`, `mechanic`, `unspecified`'
+          enum:
+          - preTrip
+          - postTrip
+          - mechanic
+          - unspecified
+          example: mechanic
+          type: string
+      required:
+      - authorSignature
+      - endTime
+      - id
+      - needsCorrection
+      - safetyStatus
+      - startTime
+      - type
+      type: object
+    CameraConnectorDisconectedResponseBody:
+      description: Details specific to Camera Connector Disconnected.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    alertObjectVehicleResponseBody:
+      description: The vehicle associated with the alert.
+      properties:
+        attributes:
+          description: List of attributes associated with the entity
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The ID of the vehicle.
+          example: '494123'
+          type: string
+        name:
+          description: The name of the vehicle.
+          example: 'Fleet Truck #1'
+          type: string
+        serial:
+          description: The serial number of the gateway installed on the asset.
+          example: GFRV-43N-VGX
+          type: string
+        staticAssignedDriver:
+          $ref: '#/components/schemas/DriverObjectResponseBody'
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the vehicle.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      - serial
+      type: object
+    InactivityResponseBody:
+      description: Details specific to Inactivity.
+      properties:
+        cameraStream:
+          $ref: '#/components/schemas/alertObjectOnvifCameraStreamResponseBody'
+      type: object
+    FormsLocationObjectResponseBody:
+      description: Form template location object.
+      properties:
+        latitude:
+          description: Latitude of a location.
+          example: 12333122.3
+          format: double
+          type: number
+        longitude:
+          description: Longitude of a location.
+          example: 1233331.4
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    HarshEventDataResponseBody:
+      description: Details specific to Harsh Event.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    FormTemplateReferenceObjectResponseBody:
+      description: Form template reference object.
+      properties:
+        id:
+          description: ID of the form template.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        revisionId:
+          description: ID of the form template revision.
+          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+      required:
+      - id
+      - revisionId
+      type: object
+    GoaDocumentTypeTinyResponseResponseBody:
+      description: A minified document type object
+      properties:
+        id:
+          description: ID of the document type.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        name:
+          description: Name of the document type.
+          example: Fleet Truck List
+          type: string
+      type: object
+    GoaTrailerTinyResponseResponseBody:
+      description: A minified trailer object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the trailer
+          example: '494123'
+          type: string
+        name:
+          description: Name of the trailer
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    alertObjectTrailerResponseBody:
+      description: A trailer associated with the alert
+      properties:
+        attributes:
+          description: List of attributes associated with the entity
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The ID of the trailer. This is automatically generated when the trailer is created. It cannot be changed.
+          example: '494123'
+          type: string
+        name:
+          description: The name of the trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Trailer.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
+          type: string
+      required:
+      - id
+      type: object
+    GoaTagTinyResponseResponseBody:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    SpeedDataResponseBody:
+      description: Details specific to Speed.
+      properties:
+        currentSpeedKilometersPerHour:
+          description: Current speed of the vehicle in kilometers per hour.
+          example: 100
+          format: int32
+          type: integer
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        minDurationMilliseconds:
+          description: Minimum duration of the current speed in milliseconds.
+          example: 100000
+          format: int64
+          type: integer
+        operation:
+          description: 'Operation of the current and threshold comparison.  Valid values: `GREATER`, `INSIDE_RANGE`, `LESS`, `OUTSIDE_RANGE`'
+          enum:
+          - GREATER
+          - INSIDE_RANGE
+          - LESS
+          - OUTSIDE_RANGE
+          example: GREATER
+          type: string
+        thresholdSpeedKilometersPerHour:
+          description: Threshold speed of the vehicle in kilometers per hour.
+          example: 100
+          format: int32
+          type: integer
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      required:
+      - currentSpeedKilometersPerHour
+      - minDurationMilliseconds
+      - operation
+      - thresholdSpeedKilometersPerHour
+      type: object
+    InsideGeofenceDataResponseBody:
+      description: Details specific to Inside Geofence.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    alertObjectMachineInputResponseBody:
+      description: A machine input associated with the alert
+      properties:
+        id:
+          description: The ID of the machine input associated with the alert.
+          example: '20170306'
+          type: string
+        name:
+          description: The name of the machine input.
+          example: DataInput-123
+          type: string
+      required:
+      - id
+      type: object
+    AlertsGetIncidentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UnassignedDrivingDataResponseBody:
+      description: Details specific to Unassigned Driving.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    FormsAssetValueObjectResponseBody:
+      description: The value of an asset form input field.
+      properties:
+        asset:
+          $ref: '#/components/schemas/FormsAssetObjectResponseBody'
+      required:
+      - asset
+      type: object
+    DeviceMovementDataResponseBody:
+      description: Details specific to Device Movement.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    WorkflowGeofenceEventResponseObjectResponseBody:
+      properties:
+        address:
+          $ref: '#/components/schemas/WorkflowAddressEventWithGeofenceObjectResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/VehicleWithGatewayTinyResponseResponseBody'
+      type: object
+    TireFaultsResponseBody:
+      description: Details specific to Tire Faults.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    GoaDocumentTinyResponseResponseBody:
+      description: A minified Document object
+      properties:
+        id:
+          description: Id of the document
+          example: '494123'
+          type: string
+        name:
+          description: Name of the document
+          example: Fuel Receipt Wichita
+          type: string
+      required:
+      - id
+      type: object
+    AlertsGetIncidentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RouteStopETAResponseBody:
+      description: Details specific to Route Stop ETA.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    AlertsGetIncidentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SevereSpeedingStartedResponseObjectResponseBody:
+      description: The start of a severe speeding event
+      properties:
+        data:
+          $ref: '#/components/schemas/SevereSpeedingStartedObjectResponseBody'
+      required:
+      - data
+      type: object
+    GpsSignalLossResponseBody:
+      description: Details specific to GPS Signal Loss.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    AlertsGetIncidentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AlertsGetIncidentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ReeferTemperatureResponseBody:
+      description: Details specific to Reefer Temperature.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    OutOfRouteResponseBody:
+      description: Details specific to Out Of Route.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    RoutesSingleUseAddressObjectResponseBody:
+      description: This field is used to indicate stops along the route for which an address has not been persisted. This field is mutually exclusive with addressId.
+      properties:
+        address:
+          description: Address of the stop.
+          example: 1234 Main St, San Jose, CA
+          maxLength: 255
+          type: string
+        latitude:
+          description: The latitude of the location
+          example: 123.456
+          format: double
+          type: number
+        longitude:
+          description: The longitude of the location
+          example: 37.459
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    SevereSpeedingStartedObjectResponseBody:
+      description: The start of a severe speeding event
+      properties:
+        startTime:
+          description: 'The speeding start time in RFC 3339 format (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        tripStartTime:
+          description: 'The trip start time in RFC 3339 format (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/VehicleResponseResponseBody'
+      required:
+      - startTime
+      - vehicle
+      type: object
+    WorkflowGeofenceResponseBody:
+      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+      properties:
+        circle:
+          $ref: '#/components/schemas/WorkflowCircleResponseBody'
+        polygon:
+          $ref: '#/components/schemas/WorkflowPolygonResponseBody'
+        settings:
+          $ref: '#/components/schemas/SettingsResponseBody'
+      type: object
+    FormsTableRowObjectResponseBody:
+      description: Defines a row in a table form input field.
+      properties:
+        cells:
+          description: List of cells in the row.
+          items:
+            $ref: '#/components/schemas/FormsTableCellObjectResponseBody'
+          type: array
+        id:
+          description: Unique identifier for the row.
+          format: uuid
+          type: string
+      required:
+      - cells
+      - id
+      type: object
+    fieldObjectValueResponseBody:
+      description: The value of the document field. The shape of value depends on the type.
+      properties:
+        barcodeValue:
+          description: The value of a barcode scanning field. Only present for barcode scanning fields.
+          items:
+            $ref: '#/components/schemas/barcodeValueObjectResponseBody'
+          type: array
+        dateTimeValue:
+          $ref: '#/components/schemas/dateTimeValueObjectResponseBody'
+        multipleChoiceValue:
+          description: The value of a multiple choice field. Only present for multiple choice fields.
+          items:
+            $ref: '#/components/schemas/multipleChoiceValueObjectResponseBody'
+          type: array
+        numberValue:
+          description: The value of a number field. Only present for number fields.
+          example: 123.456
+          format: double
+          type: number
+        photoValue:
+          description: The value of a photo field. Only present for photo fields.
+          items:
+            $ref: '#/components/schemas/photoValueObjectResponseBody'
+          type: array
+        scannedDocumentValue:
+          description: The value of a scanned document field. Only present for scanned document fields.
+          items:
+            $ref: '#/components/schemas/scannedDocumentValueObjectResponseBody'
+          type: array
+        signatureValue:
+          $ref: '#/components/schemas/signatureValueObjectResponseBody'
+        stringValue:
+          description: The value of a string field. Only present for string fields.
+          example: Red Truck
+          type: string
+      type: object
+    FormsMediaValueObjectResponseBody:
+      description: The value of a media form input field.
+      properties:
+        mediaList:
+          description: List of forms media record objects.
+          items:
+            $ref: '#/components/schemas/FormsMediaRecordObjectResponseBody'
+          type: array
+      required:
+      - mediaList
+      type: object
+    alertObjectDriverResponseBody:
+      description: A driver associated with the alert
+      properties:
+        attributes:
+          description: List of attributes associated with the entity
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: The name of the driver.
+          example: Driver Bob
+          type: string
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the driver.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      type: object
+    GetWorkflowIncidentResponseObjectResponseBody:
+      properties:
+        conditions:
+          description: An array of conditions associated with the incident.
+          items:
+            $ref: '#/components/schemas/WorkflowIncidentConditionObjectResponseBody'
+          type: array
+        configurationId:
+          description: Unique ID of the alert configuration.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        happenedAtTime:
+          description: Time and date that the alert incident occurred in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        incidentUrl:
+          description: Url of alert incident in the cloud dashboard.
+          example: https://cloud.samsara.com/o/1/fleet/workflows/123
+          type: string
+        isResolved:
+          description: Indicates whether the incident is resolved or not.
+          example: true
+          type: boolean
+        resolvedAtTime:
+          description: Time and date that the alert incident was resolved in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        updatedAtTime:
+          description: Time and date that the alert incident updated in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - conditions
+      - configurationId
+      - happenedAtTime
+      - incidentUrl
+      - isResolved
+      - updatedAtTime
+      type: object
+    photoValueObjectResponseBody:
+      properties:
+        id:
+          description: Id of the photo.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        url:
+          description: Url of the photo.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
+      type: object
+    FormsIssueCreatedByFieldObjectResponseBody:
+      description: Issue created from this form input field input object.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the issue created from this form input field input object.
+          example: '12345'
+          type: string
+      required:
+      - id
+      type: object
+    alertObjectSensorResponseBody:
+      description: A sensor associated with the alert.
+      properties:
+        id:
+          description: Thye ID of the sensor associated with the alert
+          example: '22222'
+          type: string
+        name:
+          description: The name of the sensor.
+          example: Sensor-123
+          type: string
+        pinnedDeviceId:
+          description: The Pinned Device ID associated with the alert
+          example: '22222'
+          type: string
+        product:
+          $ref: '#/components/schemas/alertObjectProductResponseBody'
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the sensor.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      type: object
+    CellSignalLossResponseBody:
+      description: Details specific to Cell Signal Loss.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    WebhookRouteResponseObjectResponseBody:
+      properties:
+        actualRouteEndTime:
+          description: Actual end time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        actualRouteStartTime:
+          description: Actual start time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the route
+          example: '342341'
+          type: string
+        name:
+          description: Route name
+          example: Bid 123
+          type: string
+        notes:
+          description: Notes for the route
+          example: These are my notes
+          type: string
+        scheduledRouteEndTime:
+          description: Scheduled end time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        scheduledRouteStartTime:
+          description: Scheduled start time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        settings:
+          $ref: '#/components/schemas/RouteSettingsResponseBody'
+        stops:
+          description: List of stops along the route
+          items:
+            $ref: '#/components/schemas/RoutesStopResponseObjectResponseBody'
+          minItems: 2
+          type: array
+      required:
+      - id
+      type: object
+    OutsideGeofenceDataResponseBody:
+      description: Details specific to Outside Geofence.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    PersonDetectedResponseBody:
+      description: Details specific to Person Detected.
+      properties:
+        cameraStream:
+          $ref: '#/components/schemas/alertObjectOnvifCameraStreamResponseBody'
+      type: object
+    DeviceMovementStoppedDataResponseBody:
+      description: Details specific to Device Movement Stopped.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    AlertsGetIncidentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleResponseResponseBody:
+      description: A vehicle object
+      properties:
+        assetType:
+          description: 'The type of the asset.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
+          enum:
+          - uncategorized
+          - trailer
+          - equipment
+          - unpowered
+          - vehicle
+          example: vehicle
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        licensePlate:
+          description: The license plate of the vehicle.
+          example: 6SAM123
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+        vehicleVin:
+          description: The VIN of the vehicle.
+          example: 1GBJ6P1B2HV112765
+          type: string
+      type: object
+    MotionDetectedResponseBody:
+      description: Details specific to Motion Detected.
+      properties:
+        cameraStream:
+          $ref: '#/components/schemas/alertObjectOnvifCameraStreamResponseBody'
+      type: object
+    VehicleBatteryVoltageResponseBody:
+      description: Details specific to Vehicle Battery Voltage.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    CameraStreamIssueResponseBody:
+      description: Details specific to Camera Stream Issue.
+      properties:
+        cameraDevice:
+          $ref: '#/components/schemas/alertObjectWorkforceCameraDeviceResponseBody'
+      type: object
+    AlertsGetIncidentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    alertObjectProductResponseBody:
+      description: The product associated with the alert
+      properties:
+        shortName:
+          description: The short name associated with the product.
+          example: EM1
+          type: string
+      type: object
+    RouteSettingsResponseBody:
+      description: An optional dictionary, only necessary to override the defaults for route start and end conditions.
+      properties:
+        routeCompletionCondition:
+          default: arriveLastStop
+          description: "Defaults to 'arriveLastStop' which ends the route upon arriving at the final stop. The condition 'departLastStop' \nends the route upon departing the last stop. If 'arriveLastStop' is set, then the departure time of the final stop should not be set.  Valid values: `arriveLastStop`, `departLastStop`"
+          enum:
+          - arriveLastStop
+          - departLastStop
+          example: arriveLastStop
+          type: string
+        routeStartingCondition:
+          default: departFirstStop
+          description: "Defaults to 'departFirstStop' which starts the route upon departing the first stop in the route.\n The condition 'arriveFirstStop' starts the route upon arriving at the first stop in the route. If 'departFirstStop' is set,\nthe arrival time of the first stop should not be set.  Valid values: `departFirstStop`, `arriveFirstStop`"
+          enum:
+          - departFirstStop
+          - arriveFirstStop
+          example: departFirstStop
+          type: string
+      type: object
+    ScheduledMaintenanceOdometerDataResponseBody:
+      description: Details specific to Scheduled Maintenance By Odometer.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    SettingsResponseBody:
+      description: Information about a geofence settings.
+      properties:
+        showAddresses:
+          description: The geofence setting. If this setting set to true, then underlying geofence addresses will be shown in reports instead of a geofence's name.
+          items:
+            $ref: '#/components/schemas/VertexResponseBody'
+          type: array
+      type: object
+    FormsTextValueObjectResponseBody:
+      description: The value of a text form input field.
+      properties:
+        value:
+          description: Text value.
+          example: Exposed wires
+          type: string
+      required:
+      - value
+      type: object
+    LiveSharingLinkResponseObjectResponseBody:
+      description: Live Sharing Link response object.
+      properties:
+        expiresAtTime:
+          description: Date that this link expires, in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        liveSharingUrl:
+          description: The shareable URL of the vehicle's location.
+          example: https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU
+          type: string
+        name:
+          description: Name of the Live Sharing Link.
+          example: Name
+          type: string
+      required:
+      - liveSharingUrl
+      - name
+      type: object
+    CloudBackupUploadIssueResponseBody:
+      description: Details specific to Cloud Backup Upload Issue.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    FormsFieldInputObjectResponseBody:
+      description: Forms input field object.
+      properties:
+        assetValue:
+          $ref: '#/components/schemas/FormsAssetValueObjectResponseBody'
+        checkBoxesValue:
+          $ref: '#/components/schemas/FormsCheckBoxesValueObjectResponseBody'
+        dateTimeValue:
+          $ref: '#/components/schemas/FormsDateTimeValueObjectResponseBody'
+        id:
+          description: ID of the forms input field object.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        issue:
+          $ref: '#/components/schemas/FormsIssueCreatedByFieldObjectResponseBody'
+        label:
+          description: Forms input field label.
+          example: Engine Hours
+          type: string
+        mediaList:
+          description: List of forms media record objects.
+          items:
+            $ref: '#/components/schemas/FormsMediaRecordObjectResponseBody'
+          type: array
+        mediaValue:
+          $ref: '#/components/schemas/FormsMediaValueObjectResponseBody'
+        multipleChoiceValue:
+          $ref: '#/components/schemas/FormsMultipleChoiceValueObjectResponseBody'
+        note:
+          description: A note attached to the field input.
+          example: Fire and oil can lead to an accident.
+          type: string
+        numberValue:
+          $ref: '#/components/schemas/FormsNumberValueObjectResponseBody'
+        personValue:
+          $ref: '#/components/schemas/FormsPersonValueObjectResponseBody'
+        signatureValue:
+          $ref: '#/components/schemas/FormsSignatureValueObjectResponseBody'
+        tableValue:
+          $ref: '#/components/schemas/FormsTableValueObjectResponseBody'
+        textValue:
+          $ref: '#/components/schemas/FormsTextValueObjectResponseBody'
+        type:
+          description: 'Type of the field.  Valid values: `number, text, multiple_choice, check_boxes, datetime, signature, media, asset, table`'
+          enum:
+          - number, text, multiple_choice, check_boxes, datetime, signature, media, asset, table
+          example: number
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    barcodeValueObjectResponseBody:
+      properties:
+        barcodeType:
+          description: The barcode type that was scanned.
+          example: org.gs1.EAN-13
+          type: string
+        barcodeValue:
+          description: The captured barcode value.
+          example: 0853883003114
+          type: string
+      type: object
+    ScheduledMaintenanceDataResponseBody:
+      description: Details specific to Scheduled Maintenance.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    WorkflowAuthorSignatureObjectResponseBody:
+      description: An author signature for DVIRs with a signed time.
+      properties:
+        signatoryUser:
+          $ref: '#/components/schemas/WorkflowSignatoryUserObjectResponseBody'
+        signedAtTime:
+          description: The time when the DVIR was signed. UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        type:
+          description: 'Whether the DVIR was submitted by a driver or mechanic.  Valid values: `driver`, `mechanic`'
+          enum:
+          - driver
+          - mechanic
+          example: driver
+          type: string
+      required:
+      - signatoryUser
+      - signedAtTime
+      - type
+      type: object
+    FormsTableCellObjectResponseBody:
+      description: Defines a cell in a table row.
+      properties:
+        checkBoxesValue:
+          $ref: '#/components/schemas/FormsCheckBoxesValueObjectResponseBody'
+        dateTimeValue:
+          $ref: '#/components/schemas/FormsDateTimeValueObjectResponseBody'
+        id:
+          description: Unique identifier for the cell.
+          format: uuid
+          type: string
+        mediaValue:
+          $ref: '#/components/schemas/FormsMediaValueObjectResponseBody'
+        multipleChoiceValue:
+          $ref: '#/components/schemas/FormsMultipleChoiceValueObjectResponseBody'
+        numberValue:
+          $ref: '#/components/schemas/FormsNumberValueObjectResponseBody'
+        personValue:
+          $ref: '#/components/schemas/FormsPersonValueObjectResponseBody'
+        signatureValue:
+          $ref: '#/components/schemas/FormsSignatureValueObjectResponseBody'
+        textValue:
+          $ref: '#/components/schemas/FormsTextValueObjectResponseBody'
+        type:
+          description: 'Type of the cell field.  Valid values: `number, text, multiple_choice, check_boxes, datetime, signature, media, person`'
+          enum:
+          - number, text, multiple_choice, check_boxes, datetime, signature, media, person
+          example: number
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormSubmissionResponseObjectResponseBody:
+      description: Form Submission response object.
+      properties:
+        asset:
+          $ref: '#/components/schemas/FormsAssetObjectResponseBody'
+        assignedAtTime:
+          description: Assignment time of the form submission. Sometimes returned if the submission was assigned to a user or driver. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        assignedTo:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+        createdAtTime:
+          description: Creation time of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        dueAtTime:
+          description: Time of when the submission is due. Sometimes returned, if the submission has a due date. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        fields:
+          description: List of field inputs in a form submission.
+          items:
+            $ref: '#/components/schemas/FormsFieldInputObjectResponseBody'
+          type: array
+        formTemplate:
+          $ref: '#/components/schemas/FormTemplateReferenceObjectResponseBody'
+        id:
+          description: ID of the form submission.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        isRequired:
+          description: Indicates whether the worker is required to complete this form or not. Sometimes returned if the submission was assigned to a user or driver.
+          example: true
+          type: boolean
+        location:
+          $ref: '#/components/schemas/FormsLocationObjectResponseBody'
+        score:
+          $ref: '#/components/schemas/FormsScoreObjectResponseBody'
+        status:
+          description: 'State for the Form Submission. Always returned.  Valid values: `toDo`, `submitted`, `dismissed`'
+          enum:
+          - toDo
+          - submitted
+          - dismissed
+          example: toDo
+          type: string
+        submittedAtTime:
+          description: Submission time of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        submittedBy:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+        title:
+          description: Title of the form submission. Sometimes returned if the submission has a title.
+          example: Form Submission Title
+          type: string
+        updatedAtTime:
+          description: Update time of the form submission. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - createdAtTime
+      - fields
+      - formTemplate
+      - id
+      - status
+      - submittedAtTime
+      - submittedBy
+      - updatedAtTime
+      type: object
+    alertObjectOnvifCameraStreamResponseBody:
+      description: A camera stream associated with the alert.
+      properties:
+        cameraDevice:
+          $ref: '#/components/schemas/alertObjectWorkforceCameraDeviceResponseBody'
+        id:
+          description: The ID of the camera stream associated with the alert.
+          example: '54321'
+          type: string
+        name:
+          description: The name of the camera stream.
+          example: Stream-123
+          type: string
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the camera stream.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      type: object
+    FormsSignatureValueObjectResponseBody:
+      description: The value of a signature form input field.
+      properties:
+        media:
+          $ref: '#/components/schemas/FormsMediaRecordObjectResponseBody'
+      required:
+      - media
+      type: object
+    fieldObjectResponseBody:
+      properties:
+        label:
+          description: The name of the field.
+          example: Load weight
+          type: string
+        type:
+          description: 'The type of field.  Valid values: `photo`, `string`, `number`, `multipleChoice`, `signature`, `dateTime`, `scannedDocument`, `barcode`'
+          enum:
+          - photo
+          - string
+          - number
+          - multipleChoice
+          - signature
+          - dateTime
+          - scannedDocument
+          - barcode
+          example: photo
+          type: string
+        value:
+          $ref: '#/components/schemas/fieldObjectValueResponseBody'
+      required:
+      - label
+      - type
+      - value
+      type: object
+    FormsCheckBoxesValueObjectResponseBody:
+      description: The value of a check boxes form input field.
+      properties:
+        value:
+          description: List of selected options.
+          example:
+          - Option A
+          - Option B
+          items:
+            description: Option
+            example: Repudiandae eos.
+            type: string
+          type: array
+      required:
+      - value
+      type: object
+    signatureValueObjectResponseBody:
+      description: The value of a signature field. Only present for signature fields.
+      properties:
+        id:
+          description: Id of the signature field.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        name:
+          description: Name of the signee for a signature field.
+          example: John Smith
+          type: string
+        signedAtTime:
+          description: Time the signature was captured in RFC 3339 format.
+          example: '2015-01-26T12:08:59Z'
+          format: date-time
+          type: string
+        url:
+          description: Url of a signature field's PNG signature image.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
+      type: object
+    DriverObjectResponseBody:
+      description: 'Current driver of the vehicle. Note: this parameter includes all assignment sources, not just static assignments.'
+      properties:
+        id:
+          description: ID of the driver.
+          example: 0987
+          type: string
+        name:
+          description: Name of the driver.
+          example: Driver Name
+          type: string
+      type: object
+    WorkflowCircleResponseBody:
+      description: Information about a circular geofence. This field is only needed if the geofence is a circle.
+      properties:
+        latitude:
+          description: Latitude of the address. Will be geocoded from formattedAddress if not provided.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from formattedAddress if not provided.
+          example: 137.7749
+          format: double
+          type: number
+        radiusMeters:
+          description: The radius of the circular geofence in meters.
+          example: 23
+          format: int64
+          type: integer
+      required:
+      - radiusMeters
+      type: object
+    FormsMultipleChoiceValueObjectResponseBody:
+      description: The value of a multiple choice form input field.
+      properties:
+        value:
+          description: Selected choice.
+          example: 'Yes'
+          type: string
+      required:
+      - value
+      type: object
+    FormsDateTimeValueObjectResponseBody:
+      description: The value of a datetime form input field.
+      properties:
+        type:
+          description: 'The type of datetime format.  Valid values: `datetime`, `date`, `time`'
+          enum:
+          - datetime
+          - date
+          - time
+          example: datetime
+          type: string
+        value:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2024-08-08T18:53:23Z'
+          format: date-time
+          type: string
+      required:
+      - type
+      - value
+      type: object
+    conditionalFieldSectionObjectResponseBody:
+      properties:
+        conditionalFieldFirstIndex:
+          description: The index of the first conditional field associated with the triggeringFieldValue in the fieldTypes list.
+          example: 1442355805701948200
+          format: int64
+          type: integer
+        conditionalFieldLastIndex:
+          description: The index of the last conditional field associated with the triggeringFieldValue in the fieldTypes list.
+          example: 8587732987390647000
+          format: int64
+          type: integer
+        triggeringFieldIndex:
+          description: The index of the multiple choice field in the fieldTypes list that triggers one or more conditional fields.
+          example: 7703795094721638000
+          format: int64
+          type: integer
+        triggeringFieldValue:
+          description: The multiple choice option value that triggers the conditional fields.
+          example: Optiona 1
+          type: string
+      type: object
+    ScheduledMaintenanceByEngineHoursResponseBody:
+      description: Details specific to Scheduled Maintenance By Engine Hours.
+      properties:
+        driver:
+          $ref: '#/components/schemas/alertObjectDriverResponseBody'
+        trailer:
+          $ref: '#/components/schemas/alertObjectTrailerResponseBody'
+        vehicle:
+          $ref: '#/components/schemas/alertObjectVehicleResponseBody'
+      type: object
+    DvirResolvedByObjectResponseBody:
+      description: The person who resolved this defect.
+      properties:
+        id:
+          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
+          example: '8172'
+          type: string
+        name:
+          description: Name of the person who resolved this defect.
+          example: Jane Mechanic
+          type: string
+        type:
+          description: 'Indicates whether this defect was resolved by a driver or a mechanic.  Valid values: `driver`, `mechanic`'
+          enum:
+          - driver
+          - mechanic
+          example: mechanic
+          type: string
+      required:
+      - id
+      - name
+      - type
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

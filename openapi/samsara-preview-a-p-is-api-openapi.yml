@@ -1,0 +1,1934 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Preview  A P Is API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Preview  A P Is
+paths:
+  /preview/cameras/media:
+    get:
+      description: "This endpoint returns a list of all uploaded media (video and still images) matching query parameters. Additional media can be retrieved with the [Create a media retrieval request](https://developers.samsara.com/reference/postmediaretrieval) endpoint, and they will be included in the list after they are uploaded. Urls provided by this endpoint expire in 8 hours.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Preview** under the  category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: listUploadedMedia
+      parameters:
+      - description: ' A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`'
+        in: query
+        name: vehicleIds
+        required: true
+        schema:
+          type: string
+      - description: A list of desired camera inputs for which to return captured media. If empty, media for all available inputs will be returned.
+        explode: true
+        in: query
+        name: inputs
+        required: true
+        schema:
+          items:
+            enum:
+            - dashcamRoadFacing
+            - dashcamDriverFacing
+            - analog
+            type: string
+          type: array
+        style: form
+      - description: A list of desired media types for which to return captured media. If empty, media for all available media types will be returned.
+        explode: true
+        in: query
+        name: mediaTypes
+        required: true
+        schema:
+          items:
+            enum:
+            - image
+            type: string
+          type: array
+        style: form
+      - description: A list of desired trigger reasons for which to return captured media. If empty, media for all available trigger reasons will be returned.
+        explode: true
+        in: query
+        name: triggerReasons
+        required: true
+        schema:
+          items:
+            enum:
+            - api
+            - panicButton
+            - periodicStill
+            - tripEndStill
+            - tripStartStill
+            - videoRetrieval
+            type: string
+          type: array
+        style: form
+      - description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+      - description: 'An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+      - description: 'A timestamp in RFC 3339 format that can act as a cursor to track which media has previously been retrieved; only media whose availableAtTime comes after this parameter will be returned. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+        in: query
+        name: availableAfterTime
+        required: true
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaRetrievalListUploadedMediaBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] List Uploaded Media by Time Range.'
+      tags:
+      - Preview  A P Is
+  /preview/custom-reports/runs/data:
+    get:
+      description: "This endpoint will return the custom report data for a given custom report run ID. For more information regarding custom report columns, please see our [KB article section on Custom Report Fields](https://kb.samsara.com/hc/en-us/articles/360052711232-Manage-Custom-Reports).\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Custom Reports** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getCustomReportRunData
+      parameters:
+      - description: The ID of the specified run for the requested custom report.
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomReportsGetCustomReportRunDataBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Get Custom Report Run Data'
+      tags:
+      - Preview  A P Is
+  /preview/form-templates:
+    get:
+      description: "Returns a list of the organization's form templates.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Preview** under the  category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getFormTemplates
+      parameters:
+      - description: A comma-separated list containing up to 100 template IDs to filter on.
+        explode: false
+        in: query
+        name: ids
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormTemplatesGetFormTemplatesBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Get a List of Form Templates.'
+      tags:
+      - Preview  A P Is
+  /preview/training-assignments:
+    delete:
+      description: "This endpoint supports batch deletion operations. The response does not indicate which specific deletions, if any, have failed. On a successful deletion or partial failure, a 204 No Content status is returned.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Training Assignments** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: deleteTrainingAssignments
+      parameters:
+      - description: 'String of comma separated assignments IDs. Max value for this value is 100 objects .Example: `ids=a4db8702-79d5-4396-a717-e301d52ecc11,c6490f6a-d84e-49b5-b0ad-b6baae304075`'
+        explode: false
+        in: query
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        '204':
+          content: {}
+          description: No Content response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsDeleteTrainingAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Delete Training Assignments.'
+      tags:
+      - Preview  A P Is
+    patch:
+      description: "**Preview:** This endpoint is in preview and is likely to change before being broadly available. Reach out to your Samsara Representative to have Training APIs enabled for your organization.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Preview** under the  category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n\nEndpoints in this section are in Preview. These APIs are not functional and are instead for soliciting feedback from our API users on the intended design of this API. Additionally, it is not guaranteed that we will be releasing an endpoint included in this section to production. This means that developers should **NOT** rely on these APIs to build business critical applications\n\n- Samsara may change the structure of a preview API's interface without versioning or any notice to API users.\n\n- When an endpoint becomes generally available, it will be announced in the API [changelog](https://developers.samsara.com/changelog).\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchTrainingAssignments
+      parameters:
+      - description: 'String of comma separated assignments IDs. Max value for this value is 100 objects .Example: `ids=a4db8702-79d5-4396-a717-e301d52ecc11,c6490f6a-d84e-49b5-b0ad-b6baae304075`'
+        explode: false
+        in: query
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Due date of the training assignment in RFC 3339 format. Millisecond precision and timezones are supported.
+        in: query
+        name: dueAtTime
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingAssignmentsPatchTrainingAssignmentsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[preview] Update Training Assignments.'
+      tags:
+      - Preview  A P Is
+components:
+  schemas:
+    TrainingAssignmentsDeleteTrainingAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplateSectionObjectResponseBody:
+      description: Form Template section object.
+      properties:
+        fieldIndexFirstInclusive:
+          description: The index of the first field from the fields array that is in this section. Index 0 represents the first field definition of the fields array.
+          example: 0
+          format: int64
+          type: integer
+        fieldIndexLastInclusive:
+          description: The index of the last field from the fields array that is in this section.
+          example: 9
+          format: int64
+          type: integer
+        label:
+          description: Label of the section.
+          example: Engine Hours
+          type: string
+      required:
+      - fieldIndexFirstInclusive
+      - fieldIndexLastInclusive
+      - label
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of updated training assignments.
+          items:
+            $ref: '#/components/schemas/TrainingAssignmentResponseObjectResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    FormTemplateResponseObjectResponseBody:
+      description: Form Template response object.
+      properties:
+        approvalConfig:
+          $ref: '#/components/schemas/FormsApprovalConfigObjectResponseBody'
+        createdAtTime:
+          description: Creation time of the form template. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        createdBy:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+        description:
+          description: Description of the form template.
+          example: This is a form template for job J999.
+          type: string
+        fields:
+          description: List of fields in the form template.
+          items:
+            $ref: '#/components/schemas/FormsFieldDefinitionObjectResponseBody'
+          type: array
+        id:
+          description: Unique identifier of the form template.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        revisionId:
+          description: Unique identifier of the form template revision.
+          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        sections:
+          description: List of sections in the form template.
+          items:
+            $ref: '#/components/schemas/FormTemplateSectionObjectResponseBody'
+          type: array
+        title:
+          description: Title of the form template.
+          example: Job - J999
+          type: string
+        updatedAtTime:
+          description: Update time of the form template. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        updatedBy:
+          $ref: '#/components/schemas/FormsPolymorphicUserObjectResponseBody'
+      required:
+      - createdAtTime
+      - createdBy
+      - description
+      - fields
+      - id
+      - revisionId
+      - sections
+      - title
+      - updatedAtTime
+      - updatedBy
+      type: object
+    MediaRetrievalListUploadedMediaBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsFieldDefinitionObjectResponseBody:
+      description: Forms field definition object.
+      properties:
+        allowManualEntry:
+          description: Indicates whether the field allows manual entry of a person. Only present for person fields.
+          example: true
+          type: boolean
+        allowedAssetTypes:
+          description: List of allowed asset types that can be selected for this field. Only present for asset fields.
+          example:
+          - Vehicle
+          - Trailer
+          items:
+            description: '  Valid values: `Vehicle`, `Trailer`, `Equipment`, `UnpoweredAsset`'
+            enum:
+            - Vehicle
+            - Trailer
+            - Equipment
+            - UnpoweredAsset
+            example: Vehicle
+            type: string
+          type: array
+        allowedDateTimeValueType:
+          description: 'Type of date/time entry allowed for this question. Only present for datetime fields.  Valid values: `datetime`, `date`, `time`'
+          enum:
+          - datetime
+          - date
+          - time
+          example: datetime
+          type: string
+        filterByCurrentDriverTags:
+          description: Indicates whether the person search filters by the current logged in worker's tags. Only present for person fields.
+          example: true
+          type: boolean
+        filterByRoleIds:
+          description: List of role IDs to filter org users by, representing which roles are selectable people for this field. Only present for person fields.
+          example:
+          - 23d4d8d3-dc10-4e7a-a183-69968751f23e
+          items:
+            example: Natus aspernatur est est qui quae.
+            type: string
+          type: array
+        id:
+          description: Identifier of the field.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        includeDrivers:
+          description: Indicates whether the field includes drivers as selectable people. Only present for person fields.
+          example: true
+          type: boolean
+        includeUsers:
+          description: Indicates whether the field includes users as selectable people. Only present for person fields.
+          example: true
+          type: boolean
+        isRequired:
+          description: Indicates whether the form field is required to be filled out by the user.
+          example: true
+          type: boolean
+        label:
+          description: Label of the field.
+          example: Engine Hours
+          type: string
+        legalText:
+          description: Legal text for the field. Only present for signature fields.
+          example: I consent to using electronic signatures in this transaction.
+          type: string
+        numDecimalPlaces:
+          description: Number of decimal places allowed. Only present for number fields.
+          example: 2
+          format: int64
+          type: integer
+        options:
+          description: List of select options for checkboxes or multiple choice fields.
+          items:
+            $ref: '#/components/schemas/FormsSelectOptionObjectResponseBody'
+          type: array
+        questionWeight:
+          description: The maximum possible score weight for this field. For multiple choice fields, this number is the highest option score weight of the given options. For checkboxes fields, this number is the sum of the score weights for all scored options. Only present for multiple choice or checkboxes fields that have scoring.
+          example: 5
+          format: int64
+          type: integer
+        type:
+          description: 'Type of the field.  Valid values: `number`, `text`, `multiple_choice`, `check_boxes`, `media`, `datetime`, `signature`, `asset`, `person`, `geofence`, `instruction`, `media_instruction`'
+          enum:
+          - number
+          - text
+          - multiple_choice
+          - check_boxes
+          - media
+          - datetime
+          - signature
+          - asset
+          - person
+          - geofence
+          - instruction
+          - media_instruction
+          example: number
+          type: string
+      required:
+      - id
+      - isRequired
+      - label
+      - type
+      type: object
+    FormTemplatesGetFormTemplatesUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportColumnsObjectResponseBody:
+      description: Information about a custom report column.
+      properties:
+        baseUnit:
+          description: '[deprecated] Use unit instead.  Valid values: `bar`, `celsius`, `fahrenheit`, `foot`, `gallon`, `galpermi`, `gforce`, `gperliter`, `gperm`, `impgallon`, `impgalpermi`, `inch`, `kelvin`, `kgpergallon`, `kgperkm`, `kgperliter`, `kgpermi`, `kilogram`, `kilometer`, `kilopascal`, `kilowatthour`, `kmperhr`, `lbpermi`, `liter`, `lper100km`, `lperkm`, `lperm`, `meter`, `meterspersec`, `mile`, `milliknot`, `milliseconds`, `millivolt`, `mipergal`, `miperhr`, `miperimpgal`, `pound`, `poundsPerSquareInch`, `poundspergallon`, `poundsperliter`, `volt`, `watthour`'
+          enum:
+          - bar
+          - celsius
+          - fahrenheit
+          - foot
+          - gallon
+          - galpermi
+          - gforce
+          - gperliter
+          - gperm
+          - impgallon
+          - impgalpermi
+          - inch
+          - kelvin
+          - kgpergallon
+          - kgperkm
+          - kgperliter
+          - kgpermi
+          - kilogram
+          - kilometer
+          - kilopascal
+          - kilowatthour
+          - kmperhr
+          - lbpermi
+          - liter
+          - lper100km
+          - lperkm
+          - lperm
+          - meter
+          - meterspersec
+          - mile
+          - milliknot
+          - milliseconds
+          - millivolt
+          - mipergal
+          - miperhr
+          - miperimpgal
+          - pound
+          - poundsPerSquareInch
+          - poundspergallon
+          - poundsperliter
+          - volt
+          - watthour
+          example: meter
+          type: string
+        displayName:
+          description: The display name of the column that appears in the dashboard or exported csv, xlsx, and pdf reports. This value can contain whitespaces and special characters. It is not used to key the values below in the `data` array.
+          example: 'Attribute: Driver skill'
+          type: string
+        type:
+          description: 'The type of data for this column.  Valid values: `string`, `numeric`'
+          enum:
+          - string
+          - numeric
+          example: string
+          type: string
+        unit:
+          description: 'The unit of the data for this column. If the data is a string or custom score (ie, anticipation score), unit will not be returned.  Valid values: `bar`, `degreesCelsius`, `degreesFahrenheit`, `feet`, `gForces`, `gallons`, `gallonsPerMile`, `gramsPerLiter`, `gramsPerMeter`, `imperialGallons`, `imperialGallonsPerMile`, `inches`, `kelvin`, `kilograms`, `kilogramsPerGallon`, `kilogramsPerKilometer`, `kilogramsPerLiter`, `kilogramsPerMile`, `kilometers`, `kilometersPerHour`, `kilopascals`, `kilowattHours`, `liters`, `litersPer100Kilometers`, `litersPerKilometer`, `litersPerMeter`, `meters`, `metersPerSecond`, `miles`, `milesPerGallon`, `milesPerHour`, `milesPerImperialGallon`, `milliknots`, `milliseconds`, `millivolts`, `pounds`, `poundsPerGallon`, `poundsPerLiter`, `poundsPerMile`, `poundsPerSquareInch`, `volts`, `wattHours`'
+          enum:
+          - bar
+          - degreesCelsius
+          - degreesFahrenheit
+          - feet
+          - gForces
+          - gallons
+          - gallonsPerMile
+          - gramsPerLiter
+          - gramsPerMeter
+          - imperialGallons
+          - imperialGallonsPerMile
+          - inches
+          - kelvin
+          - kilograms
+          - kilogramsPerGallon
+          - kilogramsPerKilometer
+          - kilogramsPerLiter
+          - kilogramsPerMile
+          - kilometers
+          - kilometersPerHour
+          - kilopascals
+          - kilowattHours
+          - liters
+          - litersPer100Kilometers
+          - litersPerKilometer
+          - litersPerMeter
+          - meters
+          - metersPerSecond
+          - miles
+          - milesPerGallon
+          - milesPerHour
+          - milesPerImperialGallon
+          - milliknots
+          - milliseconds
+          - millivolts
+          - pounds
+          - poundsPerGallon
+          - poundsPerLiter
+          - poundsPerMile
+          - poundsPerSquareInch
+          - volts
+          - wattHours
+          example: meter
+          type: string
+      required:
+      - displayName
+      - type
+      type: object
+    CustomReportsGetCustomReportRunDataBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UrlInfoObjectResponseBody:
+      description: URL info for this piece of media. This field is only populated when the 'status' response field is 'available'
+      properties:
+        url:
+          description: 'Signed URL for this piece of media. Examples: https://sample.s3.url.com/image.jpeg'
+          example: https://sample.s3.url.com/image.jpeg
+          type: string
+        urlExpiryTime:
+          description: 'Timestamp, in RFC 3339 format, at which the URL expires. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+      required:
+      - url
+      - urlExpiryTime
+      type: object
+    FormsPolymorphicUserObjectResponseBody:
+      description: User or driver object.
+      properties:
+        id:
+          description: ID of the polymorphic user.
+          example: '938172'
+          type: string
+        type:
+          description: 'The type of the polymorphic user.  Valid values: `driver`, `user`'
+          enum:
+          - driver
+          - user
+          example: driver
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormTemplatesGetFormTemplatesNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsSingleApprovalConfigObjectResponseBody:
+      description: Single approval configuration object.
+      properties:
+        allowManualApproverSelection:
+          description: Indicates whether approver can be manually selected. True by default.
+          example: true
+          type: boolean
+        requirements:
+          $ref: '#/components/schemas/SingleApprovalRequirementsObjectResponseBody'
+      required:
+      - allowManualApproverSelection
+      - requirements
+      type: object
+    FormTemplatesGetFormTemplatesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesResponseBody:
+      properties:
+        data:
+          description: List of form templates.
+          items:
+            $ref: '#/components/schemas/FormTemplateResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingCourseObjectResponseBody:
+      description: Course that is associated with the training assignments.
+      properties:
+        id:
+          description: ID of the course.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        revisionId:
+          description: ID of the course's specific version.
+          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+      required:
+      - id
+      - revisionId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SingleApprovalRequirementsObjectResponseBody:
+      description: Single approval requirements object.
+      properties:
+        roleIds:
+          description: List of role IDs representing which user roles can be approvers.
+          example:
+          - 23d4d8d3-dc10-4e7a-a183-69968751f23e
+          items:
+            example: Minus temporibus fugit.
+            type: string
+          type: array
+      required:
+      - roleIds
+      type: object
+    MediaRetrievalListUploadedMediaServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsSelectOptionObjectResponseBody:
+      description: Multiple choice or checkbox value option object.
+      properties:
+        id:
+          description: Identifier of the option.
+          example: e879028d-bce5-0238-ffec-11cd9236bcda
+          type: string
+        ignoreQuestionFromScoreIfSelected:
+          description: Indicates whether the question should be ignored from the total score if this option is selected. Returns true if a score weight was not given to this option. Only present when the select form field has scoring.
+          example: false
+          type: boolean
+        label:
+          description: Label of the option.
+          example: 'Yes'
+          type: string
+        optionScoreWeight:
+          description: Score weight of the option, indicates number of score points received if this option is selected. Only present if the select form field has scoring.
+          example: 5
+          format: int64
+          type: integer
+      required:
+      - id
+      - label
+      type: object
+    CustomReportsGetCustomReportRunDataInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingLearnerObjectResponseBody:
+      description: Learner that is associated with the training assignment. Only driver learners are supported currently.
+      properties:
+        id:
+          description: ID of the polymorphic user.
+          example: '938172'
+          type: string
+        type:
+          description: 'The type of the polymorphic user.  Valid values: `driver`'
+          enum:
+          - driver
+          example: driver
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    ListUploadedMediaObjectResponseBody:
+      properties:
+        media:
+          description: List of media retrieval objects.
+          items:
+            $ref: '#/components/schemas/UploadedMediaObjectResponseBody'
+          type: array
+      required:
+      - media
+      type: object
+    FormTemplatesGetFormTemplatesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GetCustomReportRunDataObjectResponseBody:
+      properties:
+        columns:
+          description: An array of objects containing data about column definitions
+          items:
+            $ref: '#/components/schemas/CustomReportColumnsObjectResponseBody'
+          type: array
+        rows:
+          description: 'An array of arrays that represents each row in a custom report. The first index represents which row the data is for and the second index represents which column the data is for. For example, rows[1][3] accesses the second row''s fourth column data. '
+          example:
+          - - Labore eius ex.
+            - Commodi dolorum voluptatem iure.
+            - Et nemo recusandae maiores eum et.
+          - - Ullam optio voluptas quos neque sunt.
+            - Ducimus aut sequi natus ut ut.
+            - Aut nobis ut ratione fugiat.
+            - Voluptatem incidunt dolore autem corporis quae velit.
+          items:
+            description: An array of arrays that represents a custom report. The first index represents which row the data is for and the second index represents which column the data is for. For example, rows[1][3] accesses the second row's fourth column data.  See our [custom reports KB article](https://kb.samsara.com/hc/en-us/articles/360052711232-Manage-Custom-Reports) for more info on all available columns.  Always returned.
+            example:
+            - Quo molestiae similique consequuntur molestiae vel laudantium.
+            - Eius aut magnam nemo ea.
+            items:
+              example: Magni facere dolores aut blanditiis.
+              type: object
+            type: array
+          type: array
+      required:
+      - rows
+      type: object
+    FormTemplatesGetFormTemplatesBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/ListUploadedMediaObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    FormsApprovalConfigObjectResponseBody:
+      description: Form Template approval configuration object.
+      properties:
+        singleApprovalConfig:
+          $ref: '#/components/schemas/FormsSingleApprovalConfigObjectResponseBody'
+        type:
+          description: 'Type of approval.  Valid values: `singleApproval`'
+          enum:
+          - singleApproval
+          example: singleApproval
+          type: string
+      required:
+      - type
+      type: object
+    TrainingAssignmentResponseObjectResponseBody:
+      description: Training Assignment response object.
+      properties:
+        completedAtTime:
+          description: Time training assignment is completed. UTC timestamp in RFC 3339 format. Returned when a training assignment completion status is "complete".
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        course:
+          $ref: '#/components/schemas/TrainingCourseObjectResponseBody'
+        createdAtTime:
+          description: Creation time of the training assignment. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        createdById:
+          description: ID of the user who created the training assignment.
+          example: user-4392
+          type: string
+        deletedAtTime:
+          description: Time training assignment is deleted. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        dueAtTime:
+          description: Time training assignment is due. UTC timestamp in RFC 3339 format. Returned when an assignment has a due date set by an admin.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        durationMinutes:
+          description: Time spent on the training assignment.
+          example: 2750596961262481000
+          format: int64
+          type: integer
+        id:
+          description: ID of the training assignment.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        isCompletedLate:
+          description: Indicates whether the training assignment was completed on time or not. Returned when a training assignment completion status is "complete" and has a dueAtTime set by an admin.
+          example: true
+          type: boolean
+        isOverdue:
+          description: Indicates whether the training assignment is past the due date. Returned when a training assignment completion status is 'inProgress' or 'notStarted' and has a dueAtTime set by an admin.
+          example: true
+          type: boolean
+        learner:
+          $ref: '#/components/schemas/TrainingLearnerObjectResponseBody'
+        scorePercent:
+          description: Quiz score associated with training assignment. Returned when a training assignment completion status is "complete".
+          example: 0.5695960957385368
+          format: double
+          type: number
+        startedAtTime:
+          description: Time training assignment is started. UTC timestamp in RFC 3339 format. Returned when a training assignment completion status is "complete" or "inProgress".
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        status:
+          description: 'State for the Training Assignment. Always returned.  Valid values: `notStarted`, `inProgress`, `completed`'
+          enum:
+          - notStarted
+          - inProgress
+          - completed
+          example: inProgress
+          type: string
+        updatedAtTime:
+          description: Time training assignment was updated by either a learner or an admin. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        updatedById:
+          description: ID of the user who updated the training assignment, either an admin or a learner.
+          example: user-3112
+          type: string
+      required:
+      - course
+      - createdAtTime
+      - createdById
+      - durationMinutes
+      - id
+      - learner
+      - status
+      - updatedAtTime
+      - updatedById
+      type: object
+    CustomReportsGetCustomReportRunDataNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/GetCustomReportRunDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    UploadedMediaObjectResponseBody:
+      properties:
+        availableAtTime:
+          description: 'Timestamp, in RFC 3339 format, at which the media item was made available. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+        endTime:
+          description: ' An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        input:
+          description: 'Input type for this media. Examples: dashcamForwardFacing  Valid values: `dashcamForwardFacing`, `dashcamInwardFacing`, `dashcamRearFacing`'
+          enum:
+          - dashcamForwardFacing
+          - dashcamInwardFacing
+          - dashcamRearFacing
+          example: dashcamForwardFacing
+          type: string
+        mediaType:
+          description: 'Type of media. Examples: image  Valid values: `image`'
+          enum:
+          - image
+          example: image
+          type: string
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        triggerReason:
+          description: 'Trigger reason for this media capture. Examples: api  Valid values: `api`, `panicButton`, `periodicStill`, `tripEndStill`, `tripStartStill`, `videoRetrieval`'
+          enum:
+          - api
+          - panicButton
+          - periodicStill
+          - tripEndStill
+          - tripStartStill
+          - videoRetrieval
+          example: api
+          type: string
+        urlInfo:
+          $ref: '#/components/schemas/UrlInfoObjectResponseBody'
+        vehicleId:
+          description: 'Vehicle ID for which this media was captured. Examples: 1234'
+          example: '1234'
+          type: string
+      required:
+      - availableAtTime
+      - endTime
+      - input
+      - mediaType
+      - startTime
+      - triggerReason
+      - vehicleId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

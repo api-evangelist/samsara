@@ -1,0 +1,1468 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Industrial API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Industrial
+paths:
+  /beta/industrial/jobs:
+    delete:
+      description: "Deletes an existing job.\n\nTo use this endpoint, select **Write Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: deleteJob
+      parameters:
+      - description: 'A jobId or uuid in STRING format. JobId must be prefixed with `jobId:`(Examples: `"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596"`, `"jobId:98765"`).'
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsDeleteJobBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Deletes an Existing Job'
+      tags:
+      - Industrial
+    get:
+      description: "Fetches jobs based on id/uuid or provided filters.\n\nTo use this endpoint, select **Read Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: getJobs
+      parameters:
+      - description: 'A jobId or uuid in STRING format. JobId must be prefixed with `jobId:`(Examples: `"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596"`, `"jobId:98765"`).'
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: startDate
+        schema:
+          type: string
+      - description: ' An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+        in: query
+        name: endDate
+        schema:
+          type: string
+      - description: 'IndustrialAssetId in STRING format. (Example: `"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596"`).'
+        explode: true
+        in: query
+        name: industrialAssetIds
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: 'FleetDeviceId in INTEGER format. (Example: `123456`).'
+        explode: true
+        in: query
+        name: fleetDeviceIds
+        schema:
+          items:
+            type: integer
+          type: array
+        style: form
+      - description: 'A job status in STRING format. Job statuses can be one of three (ignores case): `"active", "scheduled", "completed"`  Valid values: `active`, `scheduled`, `completed`'
+        in: query
+        name: status
+        schema:
+          enum:
+          - active
+          - scheduled
+          - completed
+          type: string
+      - description: Customer name to filter by
+        in: query
+        name: customerName
+        schema:
+          type: string
+      - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsGetJobsBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Fetches All Jobs'
+      tags:
+      - Industrial
+    patch:
+      description: "Patches an existing job and returns it.\n\nTo use this endpoint, select **Write Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: patchJob
+      parameters:
+      - description: 'A jobId or uuid in STRING format. JobId must be prefixed with `jobId:`(Examples: `"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596"`, `"jobId:98765"`).'
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobsPatchJobRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsPatchJobBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Patches a Job'
+      tags:
+      - Industrial
+      x-codegen-request-body-name: PatchJobRequestBody
+    post:
+      description: "Creates a new job and returns it.\n\nTo use this endpoint, select **Write Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      operationId: createJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobsCreateJobRequestBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobResponseBody'
+          description: OK response.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobUnauthorizedErrorResponseBody'
+          description: Unauthorized response.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobNotFoundErrorResponseBody'
+          description: Not Found response.
+        '405':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobMethodNotAllowedErrorResponseBody'
+          description: Method Not Allowed response.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobTooManyRequestsErrorResponseBody'
+          description: Too Many Requests response.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobInternalServerErrorResponseBody'
+          description: Internal Server Error response.
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobNotImplementedErrorResponseBody'
+          description: Not Implemented response.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobBadGatewayErrorResponseBody'
+          description: Bad Gateway response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobServiceUnavailableErrorResponseBody'
+          description: Service Unavailable response.
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobGatewayTimeoutErrorResponseBody'
+          description: Gateway Timeout response.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsCreateJobBadRequestErrorResponseBody'
+          description: Bad Request response.
+      summary: '[beta] Create a Job'
+      tags:
+      - Industrial
+      x-codegen-request-body-name: CreateJobRequestBody
+  /v1/machines/list:
+    post:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet machine objects. This method returns a list of the machine objects in the Samsara Cloud and information about them. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getMachines
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_8'
+          description: List of machine objects.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Get Machines
+      tags:
+      - Industrial
+components:
+  schemas:
+    JobsDeleteJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    JobsCreateJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsResponseBody:
+      properties:
+        data:
+          description: List of Job Objects
+          items:
+            $ref: '#/components/schemas/JobResponseObjectResponseBody'
+          type: array
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      required:
+      - data
+      - pagination
+      type: object
+    JobsCreateJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1Machine:
+      description: Contains information about a machine.
+      properties:
+        id:
+          description: ID of the machine.
+          example: 123
+          format: int64
+          type: integer
+        name:
+          description: Name of the machine.
+          example: Freezer ABC
+          type: string
+        notes:
+          description: Notes about the machine
+          example: This is in the left hallway behind the conveyor belt
+          type: string
+      required:
+      - id
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    JobsDeleteJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobResponseBody:
+      properties:
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      type: object
+    inline_response_200_8:
+      properties:
+        machines:
+          items:
+            $ref: '#/components/schemas/V1Machine'
+          type: array
+      type: object
+    JobsPatchJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PatchJobObjectjobLocationRequestObjectRequestBody:
+      description: A location object for the job
+      properties:
+        address:
+          description: Address of a location
+          example: 1990 Alameda st, San Francisco, Ca 94103
+          type: string
+        latitude:
+          description: Latitude of a location
+          example: 37.456345
+          format: double
+          type: number
+        longitude:
+          description: Longitude of a location
+          example: 34.5633749
+          format: double
+          type: number
+        name:
+          description: Name of the location
+          example: 'Worksite #1'
+          type: string
+      required:
+      - address
+      - latitude
+      - longitude
+      - name
+      type: object
+    JobsDeleteJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    industrialAssetObjectResponseBody:
+      description: industrialAssetObject
+      properties:
+        id:
+          description: Id of the device
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+        name:
+          description: Name of the industrial asset
+          example: My asset
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    JobsCreateJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobRequestBody:
+      description: Job object with fields to update. If a field is not provided, it will not be updated
+      properties:
+        job:
+          $ref: '#/components/schemas/PatchJobObjectRequestBody'
+        keepHistory:
+          default: true
+          description: Defaults to true if user does not want to overwrite entire history for an active job (irrelevant for scheduled/completed jobs)
+          example: true
+          type: boolean
+      required:
+      - job
+      type: object
+    JobsGetJobsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    jobLocationResponseObjectResponseBody:
+      description: jobLocation object
+      properties:
+        address:
+          description: Address of a location
+          example: 1990 Alameda st, San Francisco, Ca 94103
+          type: string
+        latitude:
+          description: Latitude of a location
+          example: 37.456345
+          format: double
+          type: number
+        longitude:
+          description: Longitude of a location
+          example: 34.5633749
+          format: double
+          type: number
+        name:
+          description: Name of a location
+          example: 'Worksite #1'
+          type: string
+      required:
+      - address
+      - latitude
+      - longitude
+      - name
+      type: object
+    JobsCreateJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/JobResponseObjectResponseBody'
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      required:
+      - data
+      type: object
+    JobsCreateJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    fleetDeviceObjectResponseBody:
+      description: fleetDeviceObject
+      properties:
+        id:
+          description: Id of the device
+          example: 123456
+          format: int64
+          type: integer
+        name:
+          description: Name of the device
+          example: My Device
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    JobResponseObjectResponseBody:
+      description: Job object to be passed back
+      properties:
+        address:
+          $ref: '#/components/schemas/jobLocationResponseObjectResponseBody'
+        createdAt:
+          description: When the job was created
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        customerName:
+          description: Customer name for job
+          example: Samsara
+          type: string
+        endDate:
+          description: End date of job in RFC 3339 format
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        fleetDevices:
+          description: fleet devices in this job (cannot have both industrial assets and fleet devices in the same job)
+          items:
+            $ref: '#/components/schemas/fleetDeviceObjectResponseBody'
+          type: array
+        id:
+          description: Job id
+          example: '1553'
+          type: string
+        industrialAssets:
+          description: Industrial Assets in this job (cannot have both industrial assets and fleet devices in the same job)
+          items:
+            $ref: '#/components/schemas/industrialAssetObjectResponseBody'
+          type: array
+        modifiedAt:
+          description: When the job was last modified
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        name:
+          description: Job name
+          example: My Job Name
+          type: string
+        notes:
+          description: Notes for the upcoming job
+          example: These are my notes
+          maxLength: 2000
+          type: string
+        ontimeWindowAfterArrivalMs:
+          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          format: int64
+          type: integer
+        ontimeWindowBeforeArrivalMs:
+          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          format: int64
+          type: integer
+        startDate:
+          description: Start date of job in RFC 3339 format
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        status:
+          description: 'The current job status  Valid values: `active`, `scheduled`, `completed`'
+          enum:
+          - active
+          - scheduled
+          - completed
+          example: active
+          type: string
+        uuid:
+          description: Samsara uuid
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      required:
+      - address
+      - createdAt
+      - customerName
+      - endDate
+      - id
+      - modifiedAt
+      - name
+      - notes
+      - startDate
+      - status
+      - uuid
+      type: object
+    JobsGetJobsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostJobObjectRequestBody:
+      description: Job object to be created
+      properties:
+        address:
+          $ref: '#/components/schemas/PostJobObjectjobLocationRequestObjectRequestBody'
+        customerName:
+          description: Customer name for job
+          example: Samsara
+          type: string
+        endDate:
+          description: End date of job in RFC 3339 format. Must be greater than or equal to the start date
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        fleetDeviceIds:
+          description: Fleet devices to be added to this job (cannot have both industrial assets and fleet devices in the same job)
+          example:
+          - 1234567
+          - 654321
+          items:
+            example: 2041379700111686100
+            format: int64
+            type: integer
+          type: array
+        id:
+          description: Job Id
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+        industrialAssetIds:
+          description: IndustrialAssets to be added to this job (cannot have both industrial assets and fleet devices in the same job)
+          example:
+          - 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          - ba84a7e2-9c8d-481f-a248-7cce6b22be9d
+          items:
+            example: Beatae atque explicabo voluptatibus vitae.
+            type: string
+          type: array
+        name:
+          description: Job name
+          example: My Job Name
+          type: string
+        notes:
+          description: Notes for the upcoming job
+          example: These are my notes
+          maxLength: 2000
+          type: string
+        ontimeWindowAfterArrivalMs:
+          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        ontimeWindowBeforeArrivalMs:
+          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        startDate:
+          description: Start date of job in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - endDate
+      - id
+      - name
+      - startDate
+      type: object
+    PatchJobObjectRequestBody:
+      description: Job object with fields to update. If a field is not provided, it will not be updated
+      properties:
+        address:
+          $ref: '#/components/schemas/PatchJobObjectjobLocationRequestObjectRequestBody'
+        customerName:
+          description: Customer name for job
+          example: Samsara
+          type: string
+        endDate:
+          description: End date of job in RFC 3339 format. Must be greater than or equal to the start date
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        fleetDeviceIds:
+          description: Fleet devices to be added to this job (cannot have both industrial assets and fleet devices in the same job)
+          example:
+          - 1234567
+          - 654321
+          items:
+            example: 2152573018252048100
+            format: int64
+            type: integer
+          type: array
+        id:
+          description: Job Id
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+        industrialAssetIds:
+          description: IndustrialAssets to be added to this job (cannot have both industrial assets and fleet devices in the same job)
+          example:
+          - 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          - ba84a7e2-9c8d-481f-a248-7cce6b22be9d
+          items:
+            example: Quia est explicabo quas doloremque sit ratione.
+            type: string
+          type: array
+        name:
+          description: Job name
+          example: My Job Name
+          type: string
+        notes:
+          description: Notes for the upcoming job
+          example: These are my notes
+          maxLength: 2000
+          type: string
+        ontimeWindowAfterArrivalMs:
+          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        ontimeWindowBeforeArrivalMs:
+          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        startDate:
+          description: Start date of job in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    JobsCreateJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/JobResponseObjectResponseBody'
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      required:
+      - data
+      type: object
+    JobsGetJobsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobRequestBody:
+      description: Job object to be created
+      properties:
+        job:
+          $ref: '#/components/schemas/PostJobObjectRequestBody'
+      required:
+      - job
+      type: object
+    JobsCreateJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostJobObjectjobLocationRequestObjectRequestBody:
+      description: A location object for the job
+      properties:
+        address:
+          description: Address of a location
+          example: 1990 Alameda st, San Francisco, Ca 94103
+          type: string
+        latitude:
+          description: Latitude of a location
+          example: 37.456345
+          format: double
+          type: number
+        longitude:
+          description: Longitude of a location
+          example: 34.5633749
+          format: double
+          type: number
+        name:
+          description: Name of the location
+          example: 'Worksite #1'
+          type: string
+      required:
+      - address
+      - latitude
+      - longitude
+      - name
+      type: object
+    JobsDeleteJobNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

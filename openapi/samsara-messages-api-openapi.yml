@@ -1,0 +1,212 @@
+openapi: 3.0.1
+info:
+  description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
+  title: Samsara Messages API
+  version: '2024-11-18'
+servers:
+- url: https://api.samsara.com/
+- url: https://api.eu.samsara.com/
+security:
+- AccessTokenHeader: []
+tags:
+- name: Messages
+paths:
+  /v1/fleet/messages:
+    get:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet all messages. \n\n <b>Rate limit:</b> 75 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Messages** under the Driver Workflow category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1getMessages
+      parameters:
+      - description: Time in unix milliseconds that represents the end of time range of messages to return. Used in combination with durationMs. Defaults to now.
+        in: query
+        name: endMs
+        schema:
+          format: int64
+          type: integer
+      - description: Time in milliseconds that represents the duration before endMs to query. Defaults to 24 hours.
+        in: query
+        name: durationMs
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_5'
+          description: Returns the fetched messages from most recently sent to least recently sent.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Get All Messages.
+      tags:
+      - Messages
+    post:
+      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nSend a message to a list of driver ids. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Messages** under the Driver Workflow category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      operationId: V1createMessages
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_2'
+        content:
+          application/json:
+            schema:
+              properties:
+                driverIds:
+                  description: IDs of the drivers for whom the messages are sent to.
+                  example:
+                  - 111
+                  - 222
+                  - 333
+                  items:
+                    example: 555
+                    format: int64
+                    type: number
+                  type: array
+                text:
+                  description: The text sent in the message. Max 2500 characters allowed.
+                  example: This is a message.
+                  type: string
+              required:
+              - driverIds
+              - text
+              type: object
+        description: Text to send to a list of driverIds.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_6'
+          description: Returns the created messages.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ErrorResponse'
+          description: Unexpected error.
+      summary: Send a Message to a List of Driver Ids.
+      tags:
+      - Messages
+      x-codegen-request-body-name: createMessages
+components:
+  schemas:
+    V1Message:
+      properties:
+        driverId:
+          description: ID of the driver for whom the message is sent to or sent by.
+          example: 555
+          format: int64
+          type: integer
+        text:
+          description: The text sent in the message.
+          example: This is a message.
+          type: string
+      required:
+      - driverId
+      - text
+      type: object
+    V1Messages:
+      items:
+        $ref: '#/components/schemas/V1Message'
+      type: array
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    inline_response_200_5:
+      description: A list of messages.
+      properties:
+        data:
+          $ref: '#/components/schemas/V1MessagesResponse'
+      type: object
+    V1MessageSender:
+      properties:
+        name:
+          description: Name of user that is sending the message.
+          example: John Doe
+          type: string
+        type:
+          description: Type of user that is sending the message. It will be either dispatch or driver.
+          example: dispatch
+          type: string
+      required:
+      - name
+      - type
+      type: object
+    inline_response_200_6:
+      description: A list of created messages.
+      properties:
+        data:
+          $ref: '#/components/schemas/V1Messages'
+      type: object
+    inline_object_2:
+      properties:
+        driverIds:
+          description: IDs of the drivers for whom the messages are sent to.
+          example:
+          - 111
+          - 222
+          - 333
+          items:
+            example: 555
+            format: int64
+            type: number
+          type: array
+        text:
+          description: The text sent in the message. Max 2500 characters allowed.
+          example: This is a message.
+          type: string
+      required:
+      - driverIds
+      - text
+      type: object
+    V1MessageResponse:
+      properties:
+        driverId:
+          description: ID of the driver for whom the message is sent to or sent by.
+          example: 555
+          format: int64
+          type: integer
+        isRead:
+          description: True if the message was read by the recipient.
+          example: true
+          type: boolean
+        sender:
+          $ref: '#/components/schemas/V1MessageSender'
+        sentAtMs:
+          description: The time in Unix epoch milliseconds that the message is sent to the recipient.
+          example: 1462881998034
+          format: int64
+          type: integer
+        text:
+          description: The text sent in the message.
+          example: This is a message.
+          type: string
+      required:
+      - driverId
+      - isRead
+      - sender
+      - sentAtMs
+      - text
+      type: object
+    V1MessagesResponse:
+      items:
+        $ref: '#/components/schemas/V1MessageResponse'
+      type: array
+  requestBodies:
+    inline_object_2:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      required: true
+  securitySchemes:
+    AccessTokenHeader:
+      type: http
+      scheme: bearer
+x-original-swagger-version: '2.0'
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

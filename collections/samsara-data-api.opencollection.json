@@ -1,0 +1,237 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Data API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[beta] Update the ShippingDocs Field of an Existing Assignment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/hos/daily-logs/log-meta-data",
+            "params": [
+              {
+                "name": "hosDate",
+                "value": "",
+                "type": "query",
+                "description": "A start date in yyyy-mm-dd format. Required."
+              },
+              {
+                "name": "driverID",
+                "value": "",
+                "type": "query",
+                "description": "ID of the driver for whom the duty status is being set."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the shippingDocs field of an existing assignment.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write ELD Hours of Service (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, "
+        },
+        {
+          "info": {
+            "name": "List All Data Inputs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/industrial/data-inputs",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit for how many objects will be in the response. Default and max for this value is 512 objects."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`"
+              }
+            ]
+          },
+          "docs": "Returns all data inputs, optionally filtered by tags or asset ids. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Equipment Statistics** under th"
+        },
+        {
+          "info": {
+            "name": "List Most Recent Data Points for Data Inputs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/industrial/data-inputs/data-points",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "dataInputIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of data input IDs. Example: `dataInputIds=1234,5678`"
+              },
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`"
+              }
+            ]
+          },
+          "docs": "Returns last known data points for all data inputs. This can be filtered by optional tags, specific data input IDs or asset IDs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo us"
+        },
+        {
+          "info": {
+            "name": "Follow a Real-time Feed of Data Points for Data Inputs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/industrial/data-inputs/data-points/feed",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "dataInputIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of data input IDs. Example: `dataInputIds=1234,5678`"
+              },
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`"
+              }
+            ]
+          },
+          "docs": "Follow a continuous feed of all data input data points.\n\nYour first call to this endpoint will provide you with the most recent data points for each data input and a `pagination` object that contains an `endCursor`.\n\nYou can provide the `endCursor` to the `after` parameter of this endpoint to get data point updates since that `endCursor`.\n\nIf `hasNextPage` is `false`, no updates are readily available yet. We suggest waiting a minimum of 5 seconds before requesting updates. \n\n **Submit Feedback**"
+        },
+        {
+          "info": {
+            "name": "List Historical Data Points for Data Inputs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/industrial/data-inputs/data-points/history",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "dataInputIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of data input IDs. Example: `dataInputIds=1234,5678`"
+              },
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of industrial asset UUIDs. Example: `assetIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`"
+              }
+            ]
+          },
+          "docs": "Returns all known data points during the given time range for all data inputs. This can be filtered by optional tags, specific data input IDs or asset IDs. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

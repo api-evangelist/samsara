@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Trailers API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Trailers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Trailers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/fleet/trailers",
+            "params": [
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit for how many objects will be in the response. Default and max for this value is 512 objects."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              }
+            ]
+          },
+          "docs": "List all trailers.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in ou"
+        },
+        {
+          "info": {
+            "name": "Creates a New Trailer Asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.samsara.com/fleet/trailers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new trailer asset.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as f"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Trailer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/fleet/trailers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the trailer. This can either be the Samsara-specified ID, or an external ID. External IDs are customer specified key-value pairs created in the POST or PATCH requests of this resource. To specify an external ID as part of a path parameter, use the following format: \"key:value\". For example, \"maintenanceId:250020\"."
+              }
+            ]
+          },
+          "docs": "Retrieve a trailer with given ID.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as"
+        },
+        {
+          "info": {
+            "name": "Update a Trailer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/fleet/trailers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the trailer. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the trailer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a trailer.  **Note** this implementation of patch uses [the JSON merge patch](https://tools.ietf.org/html/rfc7396) proposed standard.\n This means that any fields included in the patch request will _overwrite_ fields which exist on the target resource.\n For arrays, this means any array included in the request will _replace_ the array that exists at the specified path, it will not _add_ to the existing array\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https:"
+        },
+        {
+          "info": {
+            "name": "Delete a Trailer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.samsara.com/fleet/trailers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the trailer to delete."
+              }
+            ]
+          },
+          "docs": "Delete a trailer with the given ID.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be fil"
+        },
+        {
+          "info": {
+            "name": "List Trailer Assignments for All Trailers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/v1/fleet/trailers/assignments",
+            "params": [
+              {
+                "name": "startMs",
+                "value": "",
+                "type": "query",
+                "description": "Timestamp in Unix epoch miliseconds representing the start of the period to fetch. Omitting both startMs and endMs only returns current assignments."
+              },
+              {
+                "name": "endMs",
+                "value": "",
+                "type": "query",
+                "description": "Timestamp in Unix epoch miliseconds representing the end of the period to fetch. Omitting endMs sets endMs as the current time"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Pagination parameter indicating the number of results to return in this request. Used in conjunction with either 'startingAfter' or 'endingBefore'."
+              },
+              {
+                "name": "startingAfter",
+                "value": "",
+                "type": "query",
+                "description": "Pagination parameter indicating the cursor position to continue returning results after. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'endingBefore' parameter."
+              },
+              {
+                "name": "endingBefore",
+                "value": "",
+                "type": "query",
+                "description": "Pagination parameter indicating the cursor position to return results before. Used in conjunction with the 'limit' parameter. Mutually exclusive with 'startingAfter' parameter."
+              }
+            ]
+          },
+          "docs": "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch trailer assignment data for all trailers in your organization. \n\n <b>Rate limit:</b> 100 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_b"
+        },
+        {
+          "info": {
+            "name": "List Trailer Assignments for a Given Trailer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/v1/fleet/trailers/:trailerId/assignments",
+            "params": [
+              {
+                "name": "trailerId",
+                "value": "",
+                "type": "path",
+                "description": "ID of trailer. Must contain only digits 0-9."
+              },
+              {
+                "name": "startMs",
+                "value": "",
+                "type": "query",
+                "description": "Timestamp in Unix epoch milliseconds representing the start of the period to fetch. Omitting both startMs and endMs only returns current assignments."
+              },
+              {
+                "name": "endMs",
+                "value": "",
+                "type": "query",
+                "description": "Timestamp in Unix epoch milliseconds representing the end of the period to fetch. Omitting endMs sets endMs as the current time"
+              }
+            ]
+          },
+          "docs": "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch trailer assignment data for a single trailer. \n\n <b>Rate limit:</b> 100 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedbac"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

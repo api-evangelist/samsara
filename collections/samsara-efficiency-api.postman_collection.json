@@ -1,0 +1,272 @@
+{
+  "item": [
+    {
+      "id": "57b11d6c-f798-481e-8b0c-983a0c3af336",
+      "name": "Efficiency",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b6560470-63d9-4d37-bb46-dc29c150cdc6",
+          "name": "[beta] List Driver Efficiency",
+          "request": {
+            "name": "[beta] List Driver Efficiency",
+            "description": {
+              "content": "Get all driver and associated vehicle efficiency data. \n\n <b>Rate limit:</b> 50 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "beta",
+                "fleet",
+                "drivers",
+                "efficiency"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "driverActivationStatus",
+                  "value": "<string>",
+                  "description": "If value is `deactivated`, only drivers that are deactivated will appear in the response. This parameter will default to `active` if not provided (fetching only active drivers)."
+                },
+                {
+                  "disabled": false,
+                  "key": "driverIds",
+                  "value": "<string>,<string>",
+                  "description": "A filter on the data based on this comma-separated list of driver IDs. Cannot be used with tag filtering or driver status. Example: `driverIds=1234,5678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "driverTagIds",
+                  "value": "<string>,<string>",
+                  "description": "Filters summary to drivers based on this comma-separated list of tag IDs. Data from all the drivers' respective vehicles will be included in the summary, regardless of which tag the vehicle is associated with. Should not be provided in addition to `driverIds`. Example: driverTagIds=1234,5678"
+                },
+                {
+                  "disabled": false,
+                  "key": "driverParentTagIds",
+                  "value": "<string>,<string>",
+                  "description": "Filters like `driverTagIds` but includes descendants of all the given parent tags. Should not be provided in addition to `driverIds`. Example: `driverParentTagIds=1234,5678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<dateTime>",
+                  "description": "A start time in RFC 3339 format. The results will be truncated to the hour mark for the provided time. For example, if `startTime` is 2020-03-17T12:06:19Z then the results will include data starting from 2020-03-17T12:00:00Z. The provided start time cannot be in the future. Start time can be at most 31 days before the end time. If the start time is within the last hour, the results will be empty. Default: 24 hours prior to endTime.\n\nNote that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<dateTime>",
+                  "description": "An end time in RFC 3339 format. The results will be truncated to the hour mark for the provided time. For example, if `endTime` is 2020-03-17T12:06:19Z then the results will include data up until 2020-03-17T12:00:00Z. The provided end time cannot be in the future. End time can be at most 31 days after the start time. Default: The current time truncated to the hour mark.\n\nNote that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b4e7f2b2-5cb9-4a24-be23-3437f2f3e1e1",
+              "name": "List of all driver and associated vehicle efficiency data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beta",
+                    "fleet",
+                    "drivers",
+                    "efficiency"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "driverParentTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"driverSummaries\": [\n      {\n        \"anticipationBrakeEventCount\": 183.39841231589605,\n        \"coastingDurationMs\": 4948.227371979453,\n        \"cruiseControlDurationMs\": 7398.717984799637,\n        \"driver\": {\n          \"externalIds\": {\n            \"maintenanceId\": \"250020\",\n            \"payrollId\": \"ABFS18600\"\n          },\n          \"id\": \"88668\",\n          \"name\": \"Susan Bob\",\n          \"username\": \"susanbob\"\n        },\n        \"greenBandDrivingDurationMs\": 2377.7990223038114,\n        \"highTorqueMs\": 7525.128712473042,\n        \"overSpeedMs\": 1731.1800065656134,\n        \"totalBrakeEventCount\": 8348.865713339923,\n        \"totalDistanceDrivenMeters\": 7524.658360756099,\n        \"totalDriveTimeDurationMs\": 2214.811421192141,\n        \"totalFuelConsumedMl\": 9309.35336210929,\n        \"totalIdleTimeDurationMs\": 3085.324529016085,\n        \"totalPowerTakeOffDurationMs\": 8106.510529172308,\n        \"vehicleSummaries\": [\n          {\n            \"anticipationBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"coastingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cruiseControlDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"distanceDrivenMeters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"driveTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"fuelConsumedMl\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"greenBandDrivingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"highTorqueMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"idleTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"overSpeedMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"powerTakeOffDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"totalBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"vehicle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"anticipationBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"coastingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cruiseControlDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"distanceDrivenMeters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"driveTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"fuelConsumedMl\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"greenBandDrivingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"highTorqueMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"idleTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"overSpeedMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"powerTakeOffDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"totalBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"vehicle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      {\n        \"anticipationBrakeEventCount\": 4673.34744368412,\n        \"coastingDurationMs\": 7900.133666547383,\n        \"cruiseControlDurationMs\": 9291.256555242768,\n        \"driver\": {\n          \"externalIds\": {\n            \"maintenanceId\": \"250020\",\n            \"payrollId\": \"ABFS18600\"\n          },\n          \"id\": \"88668\",\n          \"name\": \"Susan Bob\",\n          \"username\": \"susanbob\"\n        },\n        \"greenBandDrivingDurationMs\": 1698.9645616540993,\n        \"highTorqueMs\": 6213.533641722248,\n        \"overSpeedMs\": 4102.838426833738,\n        \"totalBrakeEventCount\": 1855.764093361505,\n        \"totalDistanceDrivenMeters\": 1044.1537119128564,\n        \"totalDriveTimeDurationMs\": 5274.924583894367,\n        \"totalFuelConsumedMl\": 1727.9549989913978,\n        \"totalIdleTimeDurationMs\": 3971.4017489703624,\n        \"totalPowerTakeOffDurationMs\": 4018.939197250787,\n        \"vehicleSummaries\": [\n          {\n            \"anticipationBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"coastingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cruiseControlDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"distanceDrivenMeters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"driveTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"fuelConsumedMl\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"greenBandDrivingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"highTorqueMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"idleTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"overSpeedMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"powerTakeOffDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"totalBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"vehicle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"anticipationBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"coastingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"cruiseControlDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"distanceDrivenMeters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"driveTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"fuelConsumedMl\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"greenBandDrivingDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"highTorqueMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"idleTimeDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"overSpeedMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"powerTakeOffDurationMs\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"totalBrakeEventCount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"vehicle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    ],\n    \"summaryEndTime\": \"2020-03-16T16:00:00Z\",\n    \"summaryStartTime\": \"2020-03-15T16:00:00Z\"\n  },\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "825b8681-0266-415d-b1ac-a6e3495a2e1e",
+              "name": "Unexpected error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "beta",
+                    "fleet",
+                    "drivers",
+                    "efficiency"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "driverParentTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"An error has occurred.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f38c464d-6df2-4b4b-9809-c72cf26635a4",
+    "name": "Samsara Efficiency API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

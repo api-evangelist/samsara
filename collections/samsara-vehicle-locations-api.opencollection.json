@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Vehicle  Locations API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Vehicle  Locations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Locations Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/fleet/vehicles/locations",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "time",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data that returns the last known data points with timestamps less than or equal to this value. Defaults to now if not provided. Must be a string in RFC 3339 format. Millisecond precision and timezones are supported. (Example: `2020-01-27T07:06:25Z`)."
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "vehicleIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of vehicle IDs. Example: `vehicleIds=1234,5678`"
+              }
+            ]
+          },
+          "docs": "***NOTE: The Vehicle Locations API is an older API that does not combine GPS data with onboard diagnostics. Try our new [Vehicle Stats API](ref:getvehiclestats) instead.***\n\nReturns the last known location of all vehicles at the given `time`. If no `time` is specified, the current time is used. This can be optionally filtered by tags or specific vehicle IDs.\n\nRelated guide: <a href=\"/docs/vehicle-locations-1\" target=\"_blank\">Vehicle Locations</a>. \n\n **Submit Feedback**: Likes, dislikes, and API"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

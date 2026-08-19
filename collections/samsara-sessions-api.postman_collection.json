@@ -1,0 +1,985 @@
+{
+  "item": [
+    {
+      "id": "3fefce3f-9a42-40be-ad51-f8323e0468c3",
+      "name": "Sessions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "22383ddd-5c45-4151-b5b9-9db3f6d4747c",
+          "name": "Get Coaching Sessions.",
+          "request": {
+            "name": "Get Coaching Sessions.",
+            "description": {
+              "content": "This endpoint will return coaching sessions for your organization based on the time parameters passed in. Results are paginated by sessions. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Coaching** under the Coaching category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "coaching",
+                "sessions",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "driverIds",
+                  "value": "<string>,<string>",
+                  "description": "Optional string of comma separated driver IDs. If driver ID is present, sessions for the specified driver(s) will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "coachIds",
+                  "value": "<string>,<string>",
+                  "description": "Optional string of comma separated user IDs. If coach ID is present, sessions for the specified coach(s) will be returned for either assignedCoach or completedCoach. If both driverId(s) and coachId(s) are present, sessions with specified driver(s) and coach(es) will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "sessionStatuses",
+                  "value": "<string>,<string>",
+                  "description": "Optional string of comma separated statuses. Valid values:  upcoming, completed, deleted."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeCoachableEvents",
+                  "value": "<boolean>",
+                  "description": "Optional boolean to control whether behaviors will include coachableEvents in the response. Defaults to false."
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<dateTime>",
+                  "description": "(Required) Required RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime`"
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<dateTime>",
+                  "description": "Optional RFC 3339 timestamp. If not provided then the endpoint behaves as an unending feed of changes. If endTime is set the same as startTime, the most recent data point before that time will be returned per asset. Value is compared against `updatedAtTime`"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeExternalIds",
+                  "value": "<boolean>",
+                  "description": "Optional boolean indicating whether to return external IDs on supported entities"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "23d79985-26ea-427a-b0d1-9d5ff9d9b50f",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"behaviors\": [\n        {\n          \"coachableBehaviorType\": \"forwardCollisionWarning\",\n          \"id\": \"f5271458-21f9-4a9f-a290-780c6d8840ff\",\n          \"lastCoachedTime\": \"2019-06-13T19:08:25Z\",\n          \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n          \"coachableEvents\": [\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"note\": \"Need to wear seatbelt even for short trips.\"\n        },\n        {\n          \"coachableBehaviorType\": \"forwardCollisionWarning\",\n          \"id\": \"f5271458-21f9-4a9f-a290-780c6d8840ff\",\n          \"lastCoachedTime\": \"2019-06-13T19:08:25Z\",\n          \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n          \"coachableEvents\": [\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"note\": \"Need to wear seatbelt even for short trips.\"\n        }\n      ],\n      \"coachingType\": \"unshared\",\n      \"driver\": {\n        \"driverId\": \"string\",\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        }\n      },\n      \"dueAtTime\": \"2019-06-13T19:08:25Z\",\n      \"id\": \"f5271458-21f9-4a9f-a290-780c6d8840ff\",\n      \"sessionStatus\": \"completed\",\n      \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"assignedCoachId\": \"45646\",\n      \"completedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"completedCoachId\": \"45646\",\n      \"sessionNote\": \"Need to wear seatbelt even for short trips.\"\n    },\n    {\n      \"behaviors\": [\n        {\n          \"coachableBehaviorType\": \"forwardCollisionWarning\",\n          \"id\": \"f5271458-21f9-4a9f-a290-780c6d8840ff\",\n          \"lastCoachedTime\": \"2019-06-13T19:08:25Z\",\n          \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n          \"coachableEvents\": [\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"note\": \"Need to wear seatbelt even for short trips.\"\n        },\n        {\n          \"coachableBehaviorType\": \"forwardCollisionWarning\",\n          \"id\": \"f5271458-21f9-4a9f-a290-780c6d8840ff\",\n          \"lastCoachedTime\": \"2019-06-13T19:08:25Z\",\n          \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n          \"coachableEvents\": [\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"note\": \"Need to wear seatbelt even for short trips.\"\n        }\n      ],\n      \"coachingType\": \"unshared\",\n      \"driver\": {\n        \"driverId\": \"string\",\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        }\n      },\n      \"dueAtTime\": \"2019-06-13T19:08:25Z\",\n      \"id\": \"f5271458-21f9-4a9f-a290-780c6d8840ff\",\n      \"sessionStatus\": \"completed\",\n      \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"assignedCoachId\": \"45646\",\n      \"completedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"completedCoachId\": \"45646\",\n      \"sessionNote\": \"Need to wear seatbelt even for short trips.\"\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "019bd6df-5c82-49d5-b283-8219173b21d8",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fab854d8-4e0d-4b3e-b939-ca2f6beb2558",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c2bc33e7-0a92-43c0-ad62-c054acba0dd5",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11c1319f-a59f-45ee-b6af-2d79d162d530",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45788dac-e33a-411e-ab9f-05bd92970cf2",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e7e5bcc1-5147-42b4-8183-cbc4b1434878",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70decfc1-cbfc-45af-8ac4-d8ca7f1a81ef",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9bdf8b52-c37b-4225-93ae-3420b0ced275",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "caab848f-9bd4-4319-aa0a-97e46a7613ac",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6804c11d-9692-40e5-912e-0f25dde688a8",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "coaching",
+                    "sessions",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "coachIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sessionStatuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeCoachableEvents",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fa671165-e6ee-4b15-8fd6-340241b31b2b",
+    "name": "Samsara Sessions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

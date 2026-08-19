@@ -1,0 +1,1803 @@
+{
+  "item": [
+    {
+      "id": "4723ff09-e0fe-468b-ae8c-fe2f3550fcb6",
+      "name": "Fuel",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7a5b8709-6e56-4772-9ee1-d5abd332ab04",
+          "name": "Get Fuel and Energy Efficiency Driver Reports.",
+          "request": {
+            "name": "Get Fuel and Energy Efficiency Driver Reports.",
+            "description": {
+              "content": "Get fuel and energy efficiency driver reports for the requested time range.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fleet",
+                "reports",
+                "drivers",
+                "fuel-energy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": "(Required) A start date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": "(Required) An end date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time."
+                },
+                {
+                  "disabled": false,
+                  "key": "driverIds",
+                  "value": "<string>,<string>",
+                  "description": " A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`"
+                },
+                {
+                  "disabled": false,
+                  "key": "tagIds",
+                  "value": "<string>",
+                  "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "parentTagIds",
+                  "value": "<string>",
+                  "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "78cda192-9a6e-438c-acbc-339d20f298bd",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"driverReports\": [\n      {\n        \"distanceTraveledMeters\": 1384000,\n        \"driver\": {\n          \"id\": \"45646\",\n          \"externalIds\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"name\": \"Driver Bob\"\n        },\n        \"efficiencyMpge\": 21.4,\n        \"estFuelEnergyCost\": {\n          \"amount\": 94.01,\n          \"currencyCode\": \"USD\"\n        },\n        \"energyUsedKwh\": 73.2,\n        \"engineIdleTimeDurationMs\": 4320000,\n        \"engineRunTimeDurationMs\": 576000,\n        \"estCarbonEmissionsKg\": 22.7,\n        \"fuelConsumedMl\": 162773\n      },\n      {\n        \"distanceTraveledMeters\": 1384000,\n        \"driver\": {\n          \"id\": \"45646\",\n          \"externalIds\": {\n            \"key_0\": \"string\"\n          },\n          \"name\": \"Driver Bob\"\n        },\n        \"efficiencyMpge\": 21.4,\n        \"estFuelEnergyCost\": {\n          \"amount\": 94.01,\n          \"currencyCode\": \"USD\"\n        },\n        \"energyUsedKwh\": 73.2,\n        \"engineIdleTimeDurationMs\": 4320000,\n        \"engineRunTimeDurationMs\": 576000,\n        \"estCarbonEmissionsKg\": 22.7,\n        \"fuelConsumedMl\": 162773\n      }\n    ]\n  },\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae309dd9-5f46-44bd-a78c-8e901653ee15",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5cda6bac-ecec-41a7-9fa0-e9774c132779",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5126ef0f-dac7-41c6-91d7-6ab4a2a5deed",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "178fd124-71b4-4af3-96bb-81f30bad6981",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7a45046-d751-4977-b660-b914edd668e2",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "247a6fc2-8b7e-4daf-81d8-2ddf5503e1e2",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba9e96e0-8e8f-4e9d-bac2-751f0b41974c",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98e9bb80-298c-48e6-a08a-5ee537dd0caf",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e7719e1-2ce9-4322-85bf-818fe7569bfe",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2289271-9332-4a7e-8805-3f0251501611",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "drivers",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "73f377e3-8a54-4c07-a42d-d0c1c00c239d",
+          "name": "Get Fuel and Energy Efficiency Vehicle Reports.",
+          "request": {
+            "name": "Get Fuel and Energy Efficiency Vehicle Reports.",
+            "description": {
+              "content": "Get fuel and energy efficiency vehicle reports for the requested time range.\n\n <b>Rate limit:</b> 25 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fleet",
+                "reports",
+                "vehicles",
+                "fuel-energy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": "(Required) A start date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": "(Required) An end date in RFC 3339 format. This parameter ignores everything (i.e. hour, minutes, seconds, nanoseconds, etc.) besides the date and timezone. If no time zone is passed in, then the UTC time zone will be used. This parameter is inclusive, so data on the date specified will be considered. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. For example, 2022-07-13T14:20:50.52-07:00 is a time in Pacific Daylight Time."
+                },
+                {
+                  "disabled": false,
+                  "key": "vehicleIds",
+                  "value": "<string>",
+                  "description": " A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`"
+                },
+                {
+                  "disabled": false,
+                  "key": "energyType",
+                  "value": "<string>",
+                  "description": "The type of energy used by the vehicle.  Valid values: `fuel`, `hybrid`, `electric`"
+                },
+                {
+                  "disabled": false,
+                  "key": "tagIds",
+                  "value": "<string>",
+                  "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "parentTagIds",
+                  "value": "<string>",
+                  "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2fbcef2d-842d-4d05-9307-4023afdd1ea4",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"vehicleReports\": [\n      {\n        \"distanceTraveledMeters\": 1384000,\n        \"efficiencyMpge\": 21.4,\n        \"estFuelEnergyCost\": {\n          \"amount\": 94.01,\n          \"currencyCode\": \"USD\"\n        },\n        \"vehicle\": {\n          \"energyType\": \"fuel\",\n          \"externalIds\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"id\": \"494123\",\n          \"name\": \"Fleet Truck #1\"\n        },\n        \"energyUsedKwh\": 73.2,\n        \"engineIdleTimeDurationMs\": 4320000,\n        \"engineRunTimeDurationMs\": 576000,\n        \"estCarbonEmissionsKg\": 22.7,\n        \"fuelConsumedMl\": 162773\n      },\n      {\n        \"distanceTraveledMeters\": 1384000,\n        \"efficiencyMpge\": 21.4,\n        \"estFuelEnergyCost\": {\n          \"amount\": 94.01,\n          \"currencyCode\": \"USD\"\n        },\n        \"vehicle\": {\n          \"energyType\": \"fuel\",\n          \"externalIds\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"id\": \"494123\",\n          \"name\": \"Fleet Truck #1\"\n        },\n        \"energyUsedKwh\": 73.2,\n        \"engineIdleTimeDurationMs\": 4320000,\n        \"engineRunTimeDurationMs\": 576000,\n        \"estCarbonEmissionsKg\": 22.7,\n        \"fuelConsumedMl\": 162773\n      }\n    ]\n  },\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4bb74422-0793-4fb5-966d-7ea81a35a187",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4bd5151b-9e2e-4bf7-be70-e6cb4dc93aeb",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab1f5417-8dda-44cd-a2d6-aca5a748d5c4",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b15970ed-630e-4f61-a798-22f5e75e0b02",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c21dd75b-9828-48e7-81b0-2e3495f00fe6",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38257658-ab6b-4b0d-b6f0-4934d87e7c39",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fdb3eec-bf5a-435b-bdd2-0b8e4d4817e6",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f15b0e9f-84d8-4cf3-a466-bc135b3c06b7",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66fe59fc-8250-4008-bfb6-64b6be9e2b60",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19f3fad5-cace-410b-8863-6863b43a1860",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "reports",
+                    "vehicles",
+                    "fuel-energy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "energyType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0116f477-42af-49ea-9962-b6918dfd1fd4",
+    "name": "Samsara Fuel API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

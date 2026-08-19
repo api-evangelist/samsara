@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Defects API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Defects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get All Defects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/fleet/defects/history",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit for how many objects will be in the response. Default and max for this value is 512 objects."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). *The maximum time period you can query for is 30 days.*"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00). *The maximum time period you can query for is 30 days.*"
+              },
+              {
+                "name": "isResolved",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on resolution status. Example: `isResolved=true`"
+              }
+            ]
+          },
+          "docs": "Returns a list of DVIR defects in an organization, filtered by creation time. The maximum time period you can query for is 30 days. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo"
+        },
+        {
+          "info": {
+            "name": "Update a Defect",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/fleet/defects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the defect."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a given defect. Can be used to resolve a defect by marking its `isResolved` field to `true`. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Wr"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

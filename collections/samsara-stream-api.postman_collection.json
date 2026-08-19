@@ -1,0 +1,5219 @@
+{
+  "item": [
+    {
+      "id": "92c2a764-06ed-4f36-b784-1e7146bbde9e",
+      "name": "Stream",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5972eeae-23ae-441a-a88d-18eaa1dee607",
+          "name": "List Asset Location and Speed Data in an Organization.",
+          "request": {
+            "name": "List Asset Location and Speed Data in an Organization.",
+            "description": {
+              "content": "This endpoint will return asset locations and speed data that has been collected for your organization based on the time parameters passed in. Results are paginated. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. The endpoint will only return data up until the endTime that has been processed by the server at the time of the original request. You will need to request the same [startTime, endTime) range again to receive data for assets processed after the original request time. This endpoint sorts the time-series data by device.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Vehicles** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "assets",
+                "location-and-speed",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "512",
+                  "description": "The limit for how many objects will be in the response. Default and max for this value is 512 objects."
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": " A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": " An end time in RFC 3339 format. Defaults to never if not provided; if not provided then pagination will not cease, and a valid pagination cursor will always be returned. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of asset IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeSpeed",
+                  "value": "<boolean>",
+                  "description": "Optional boolean indicating whether or not to return the 'speed' object"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeReverseGeo",
+                  "value": "<boolean>",
+                  "description": "Optional boolean indicating whether or not to return the 'address' object"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeGeofenceLookup",
+                  "value": "<boolean>",
+                  "description": "Optional boolean indicating whether or not to return the 'geofence' object"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeExternalIds",
+                  "value": "<boolean>",
+                  "description": "Optional boolean indicating whether to return external IDs on supported entities"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ce31ca1f-6f1f-43b7-b166-3a7975bfa0e9",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"asset\": {\n        \"id\": \"12345\",\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        }\n      },\n      \"happenedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"location\": {\n        \"headingDegrees\": 120,\n        \"latitude\": 37.7749,\n        \"longitude\": 137.2719,\n        \"accuracyMeters\": 5.801,\n        \"address\": {\n          \"city\": \"New York\",\n          \"country\": \"USA\",\n          \"neighborhood\": \"Mission District\",\n          \"pointOfInterest\": \"The Eiffel Tower\",\n          \"postalCode\": \"10010\",\n          \"state\": \"New York\",\n          \"street\": \"Main Street\",\n          \"streetNumber\": \"16\"\n        },\n        \"geofence\": {\n          \"externalIds\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"id\": \"12345\"\n        }\n      },\n      \"speed\": {\n        \"ecuSpeedMetersPerSecond\": 30.2,\n        \"gpsSpeedMetersPerSecond\": 30.2\n      }\n    },\n    {\n      \"asset\": {\n        \"id\": \"12345\",\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        }\n      },\n      \"happenedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"location\": {\n        \"headingDegrees\": 120,\n        \"latitude\": 37.7749,\n        \"longitude\": 137.2719,\n        \"accuracyMeters\": 5.801,\n        \"address\": {\n          \"city\": \"New York\",\n          \"country\": \"USA\",\n          \"neighborhood\": \"Mission District\",\n          \"pointOfInterest\": \"The Eiffel Tower\",\n          \"postalCode\": \"10010\",\n          \"state\": \"New York\",\n          \"street\": \"Main Street\",\n          \"streetNumber\": \"16\"\n        },\n        \"geofence\": {\n          \"externalIds\": {\n            \"key_0\": \"string\"\n          },\n          \"id\": \"12345\"\n        }\n      },\n      \"speed\": {\n        \"ecuSpeedMetersPerSecond\": 30.2,\n        \"gpsSpeedMetersPerSecond\": 30.2\n      }\n    }\n  ],\n  \"pagination\": {\n    \"hasNextPage\": true,\n    \"endCursor\": \"MjkY\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ca3f850-3209-4cd5-b7cb-b7667cb8d800",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e99a20b-f1a8-4fe4-bf45-a55508fc1eb1",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fff708ac-08b5-402c-91b5-3c2193751ec9",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9cfc7188-9996-449e-80a4-73da4a7c8a26",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "789c79d4-5db0-4074-953a-c5bf9734dc29",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d824066f-db6d-4982-9735-151984169089",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "031a191c-bd35-4b5d-b047-a711b4d4842a",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e10b2060-c2c3-48b0-8fae-d6844ff70ec2",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59beb73c-7c01-4cfd-a4f6-803dcf078fc7",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19f7523f-b928-4424-a634-d83828aae381",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "assets",
+                    "location-and-speed",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "512"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "includeSpeed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeReverseGeo",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeGeofenceLookup",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e0f98b4-2de9-44b7-80da-a9a3342862b8",
+          "name": "Stream DVIR Defects.",
+          "request": {
+            "name": "Stream DVIR Defects.",
+            "description": {
+              "content": "Stream DVIR defects.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Defects** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "defects",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "200",
+                  "description": "The limit for how many objects will be in the response. Default and max for this value is 200 objects."
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": "(Required) Required RFC 3339 timestamp to begin the feed or history by `updatedAtTime` at `startTime`."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": "Optional RFC 3339 timestamp. If not provided then the endpoint behaves as an unending feed of changes."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeExternalIds",
+                  "value": "<boolean>",
+                  "description": "Optional boolean indicating whether to return external IDs on supported entities"
+                },
+                {
+                  "disabled": false,
+                  "key": "isResolved",
+                  "value": "<boolean>",
+                  "description": "Boolean value for whether filter defects by resolved status."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "32761192-fee9-4185-83fb-36ae7141ec2f",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"comment\": \"Engine failure.\",\n      \"dvirId\": \"292371177\",\n      \"id\": \"9700544\",\n      \"isResolved\": true,\n      \"createdAtTime\": \"2020-01-27T07:06:25Z\",\n      \"defectTypeId\": \"25d6151e-29b5-453e-875a-7c5425332e09\",\n      \"mechanicNotes\": \"Broken passenger side window.\",\n      \"resolvedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"resolvedBy\": {\n        \"id\": \"8172\",\n        \"name\": \"Jane Mechanic\",\n        \"type\": \"mechanic\"\n      },\n      \"trailer\": {\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"id\": \"494123\"\n      },\n      \"updatedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"vehicle\": {\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": \"string\",\n          \"key_3\": \"string\"\n        },\n        \"id\": \"494125\"\n      }\n    },\n    {\n      \"comment\": \"Engine failure.\",\n      \"dvirId\": \"292371177\",\n      \"id\": \"9700544\",\n      \"isResolved\": true,\n      \"createdAtTime\": \"2020-01-27T07:06:25Z\",\n      \"defectTypeId\": \"25d6151e-29b5-453e-875a-7c5425332e09\",\n      \"mechanicNotes\": \"Broken passenger side window.\",\n      \"resolvedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"resolvedBy\": {\n        \"id\": \"8172\",\n        \"name\": \"Jane Mechanic\",\n        \"type\": \"mechanic\"\n      },\n      \"trailer\": {\n        \"externalIds\": {\n          \"key_0\": \"string\"\n        },\n        \"id\": \"494123\"\n      },\n      \"updatedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"vehicle\": {\n        \"externalIds\": {\n          \"key_0\": \"string\"\n        },\n        \"id\": \"494125\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "da5c88aa-1763-402e-b334-a9f85bb36775",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d115fb44-656a-478d-919d-18285308bddb",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cefe60f8-0cc4-400a-b998-587b6fb59f8a",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d128e875-e83e-4e5c-8c1c-091349163446",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90c8e2b5-8052-4d4d-bb6d-4fd5e5db79a4",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a350a080-4886-4862-83f3-424a8081d10e",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1236cd5d-5ec8-4186-a331-ecb379079a1b",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f2a6d356-734d-4a98-99b2-a3be87f23f21",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e219d31-fed9-413e-b6cb-053d8a1e4338",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "833f15db-83d1-44ad-a1c2-0d2a4c9e241b",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "defects",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "isResolved",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e626b7bc-fd69-45f8-bf29-664ea4b44dc3",
+          "name": "Stream DVIRs",
+          "request": {
+            "name": "Stream DVIRs",
+            "description": {
+              "content": "Returns a history/feed of changed DVIRs by updatedAtTime between startTime and endTime parameters. In case of missing `endTime` parameter it will return a never ending stream of data.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read DVIRs** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dvirs",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "200",
+                  "description": "The limit for how many objects will be in the response. Default and max for this value is 200 objects."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeExternalIds",
+                  "value": "<boolean>",
+                  "description": "Optional boolean indicating whether to return external IDs on supported entities"
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": "(Required) Required RFC 3339 timestamp to begin the feed or history by `updatedAtTime` at `startTime`."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": "Optional RFC 3339 timestamp. If not provided then the endpoint behaves as an unending feed of changes."
+                },
+                {
+                  "disabled": false,
+                  "key": "safetyStatus",
+                  "value": "<string>",
+                  "description": "Optional list of safety statuses. Valid values: [safe, unsafe, resolved]"
+                },
+                {
+                  "disabled": false,
+                  "key": "safetyStatus",
+                  "value": "<string>",
+                  "description": "Optional list of safety statuses. Valid values: [safe, unsafe, resolved]"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d5be2106-fa44-4cbe-bdaf-1ff2aa02f9c8",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"authorSignature\": {\n        \"signatoryUser\": {\n          \"id\": \"938172\"\n        },\n        \"signedAtTime\": \"2020-01-27T07:06:25Z\",\n        \"type\": \"driver\"\n      },\n      \"dvirSubmissionBeginTime\": \"2020-01-27T07:06:25Z\",\n      \"dvirSubmissionTime\": \"2020-01-27T07:06:25Z\",\n      \"id\": \"12345\",\n      \"type\": \"mechanic\",\n      \"updatedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"defectIds\": [\n        \"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596\",\n        \"25d6151e-29b5-453e-875a-7c5425332e09\"\n      ],\n      \"formattedAddress\": \"350 Rhode Island St Ste. 400S, San Francisco, CA 94103\",\n      \"mechanicNotes\": \"Replaced headlight on passenger side.\",\n      \"odometerMeters\": 91823,\n      \"safetyStatus\": \"unsafe\",\n      \"secondSignature\": {\n        \"signatoryUser\": {\n          \"id\": \"938172\"\n        },\n        \"signedAtTime\": \"2020-01-27T07:06:25Z\",\n        \"type\": \"driver\"\n      },\n      \"thirdSignature\": {\n        \"signatoryUser\": {\n          \"id\": \"938172\"\n        },\n        \"signedAtTime\": \"2020-01-27T07:06:25Z\",\n        \"type\": \"driver\"\n      },\n      \"trailer\": {\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"id\": \"494123\"\n      },\n      \"vehicle\": {\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"id\": \"494123\"\n      }\n    },\n    {\n      \"authorSignature\": {\n        \"signatoryUser\": {\n          \"id\": \"938172\"\n        },\n        \"signedAtTime\": \"2020-01-27T07:06:25Z\",\n        \"type\": \"driver\"\n      },\n      \"dvirSubmissionBeginTime\": \"2020-01-27T07:06:25Z\",\n      \"dvirSubmissionTime\": \"2020-01-27T07:06:25Z\",\n      \"id\": \"12345\",\n      \"type\": \"mechanic\",\n      \"updatedAtTime\": \"2020-01-27T07:06:25Z\",\n      \"defectIds\": [\n        \"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596\",\n        \"25d6151e-29b5-453e-875a-7c5425332e09\"\n      ],\n      \"formattedAddress\": \"350 Rhode Island St Ste. 400S, San Francisco, CA 94103\",\n      \"mechanicNotes\": \"Replaced headlight on passenger side.\",\n      \"odometerMeters\": 91823,\n      \"safetyStatus\": \"unsafe\",\n      \"secondSignature\": {\n        \"signatoryUser\": {\n          \"id\": \"938172\"\n        },\n        \"signedAtTime\": \"2020-01-27T07:06:25Z\",\n        \"type\": \"driver\"\n      },\n      \"thirdSignature\": {\n        \"signatoryUser\": {\n          \"id\": \"938172\"\n        },\n        \"signedAtTime\": \"2020-01-27T07:06:25Z\",\n        \"type\": \"driver\"\n      },\n      \"trailer\": {\n        \"externalIds\": {\n          \"key_0\": \"string\"\n        },\n        \"id\": \"494123\"\n      },\n      \"vehicle\": {\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"id\": \"494123\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c87320d-b5d5-4f85-979d-c59b99808f7d",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "651a07c6-4f56-4d24-9069-7a892d5893e6",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9567cd52-bd74-4cc4-af31-086eb5687e7b",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f965dea-c235-4936-9ae5-89330bc42f6a",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19de3b4b-cc4e-44ee-933f-6500cf76418d",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2aabc4d-87b1-4a0e-91d4-c9c0e9c94d25",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "041f27b2-5d84-496e-8c34-b7fa8df1ba6f",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8d91684-9b0a-464e-b01f-63569720a741",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e2d08bc-66d3-4aaf-b586-6d16def9a744",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87f1c32a-da74-4c98-aad6-b3c9044ea679",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dvirs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "includeExternalIds",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safetyStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "58032751-e489-4edf-a4f3-1301b31d7044",
+          "name": "[beta] Get Engine Immobilizer States",
+          "request": {
+            "name": "[beta] Get Engine Immobilizer States",
+            "description": {
+              "content": "Get the engine immobilizer states of the queried vehicles. If a vehicle has never had an engine immobilizer connected, there won't be any state returned for that vehicle.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Vehicle Immobilization** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fleet",
+                "vehicles",
+                "immobilizer",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "vehicleIds",
+                  "value": "<string>",
+                  "description": "(Required)  A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`"
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": "(Required) A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": " An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fdcca995-59e8-4106-9edb-d87bcea556a6",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"happenedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"isConnectedToVehicle\": false,\n      \"relayStates\": [\n        {\n          \"id\": \"relay1\",\n          \"isOpen\": false\n        },\n        {\n          \"id\": \"relay1\",\n          \"isOpen\": false\n        }\n      ],\n      \"vehicleId\": \"1234\"\n    },\n    {\n      \"happenedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"isConnectedToVehicle\": false,\n      \"relayStates\": [\n        {\n          \"id\": \"relay1\",\n          \"isOpen\": false\n        },\n        {\n          \"id\": \"relay1\",\n          \"isOpen\": false\n        }\n      ],\n      \"vehicleId\": \"1234\"\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d2e8ec6-8199-427e-a813-b952a07168b4",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91285956-cdb6-4f44-945c-57153b12718c",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26751bcb-f841-47e6-bae8-5637498d7f0e",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e3ed2b3-71a8-4595-8cb4-37148ac2c9a1",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e33b98b2-a8a1-4314-b394-1ebf015c6c75",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04b12d64-eaca-4c6e-a91c-02453e1cc9a6",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a08ba136-70e8-4f9a-bd26-42d8d7cf7387",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5f7a653-0f35-4117-9efb-a572d420a79b",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9adf7cee-14b4-4590-b2fd-bc0a9ecc88e2",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ccf482d9-8be3-483a-8af8-06b49136c1d1",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "immobilizer",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "640802e7-5e42-4105-9721-d058b0bacd49",
+          "name": "[beta] Get a Stream of Filtered Issues.",
+          "request": {
+            "name": "[beta] Get a Stream of Filtered Issues.",
+            "description": {
+              "content": "Returns all issues data that has been created or modified for your organization based on the time parameters passed in. Results are paginated and are sorted by last modified date. If you include an endTime, the endpoint will return data up until that point (exclusive). If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Issues** under the Closed Beta category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "issues",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": "(Required)  A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": " An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list containing status values to filter issues on. Valid values: `open`, `inProgress`, `resolved`, `dismissed`"
+                },
+                {
+                  "disabled": false,
+                  "key": "assetIds",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list containing up to 50 asset IDs to filter issues on. Issues with untracked assets can also be included by passing the value: 'untracked'."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>,<string>",
+                  "description": "A comma separated list of additional fields to include on requested objects. Valid values: `externalIds`"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "131e6f48-5461-4d08-a039-022eec0db1f6",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"createdAtTime\": \"2019-06-13T19:08:25Z\",\n      \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\",\n      \"issueSource\": {\n        \"type\": \"form\",\n        \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\"\n      },\n      \"status\": \"open\",\n      \"submittedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"submittedBy\": {\n        \"id\": \"938172\",\n        \"type\": \"driver\"\n      },\n      \"title\": \"Oil spill\",\n      \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"asset\": {\n        \"entryType\": \"tracked\",\n        \"id\": \"281474982859091\",\n        \"name\": \"trailer 123\"\n      },\n      \"assignedTo\": {\n        \"id\": \"938172\",\n        \"type\": \"driver\"\n      },\n      \"description\": \"Oil spill in left corner of SF1\",\n      \"dueDate\": \"2019-06-13T19:08:25Z\",\n      \"externalIds\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"mediaList\": [\n        {\n          \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\",\n          \"processingStatus\": \"processing\",\n          \"url\": \"https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456\",\n          \"urlExpiresAt\": \"2019-06-13T19:08:25Z\"\n        },\n        {\n          \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\",\n          \"processingStatus\": \"processing\",\n          \"url\": \"https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456\",\n          \"urlExpiresAt\": \"2019-06-13T19:08:25Z\"\n        }\n      ],\n      \"priority\": \"high\"\n    },\n    {\n      \"createdAtTime\": \"2019-06-13T19:08:25Z\",\n      \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\",\n      \"issueSource\": {\n        \"type\": \"form\",\n        \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\"\n      },\n      \"status\": \"open\",\n      \"submittedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"submittedBy\": {\n        \"id\": \"938172\",\n        \"type\": \"driver\"\n      },\n      \"title\": \"Oil spill\",\n      \"updatedAtTime\": \"2019-06-13T19:08:25Z\",\n      \"asset\": {\n        \"entryType\": \"tracked\",\n        \"id\": \"281474982859091\",\n        \"name\": \"trailer 123\"\n      },\n      \"assignedTo\": {\n        \"id\": \"938172\",\n        \"type\": \"driver\"\n      },\n      \"description\": \"Oil spill in left corner of SF1\",\n      \"dueDate\": \"2019-06-13T19:08:25Z\",\n      \"externalIds\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"mediaList\": [\n        {\n          \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\",\n          \"processingStatus\": \"processing\",\n          \"url\": \"https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456\",\n          \"urlExpiresAt\": \"2019-06-13T19:08:25Z\"\n        },\n        {\n          \"id\": \"9814a1fa-f0c6-408b-bf85-51dc3bc71ac7\",\n          \"processingStatus\": \"processing\",\n          \"url\": \"https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456\",\n          \"urlExpiresAt\": \"2019-06-13T19:08:25Z\"\n        }\n      ],\n      \"priority\": \"high\"\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83296c13-e40d-4d84-9280-887cb3a195b4",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "528296fe-7cc0-4801-bc73-ce9ff4d2c585",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8508cd08-3bc3-4546-b364-c62bf62837dc",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9707ed0-f8c8-402f-a91f-4702cdc93ecc",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b14bcfee-af7e-4050-9fcd-4e7df794d413",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5dcf98f9-928f-4751-9705-092a81ba0580",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc156257-e468-483a-b83f-a2572a48e17d",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ecf8514-8fb3-4b90-a2ea-209f2c67a334",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79a1a069-4ee2-4c22-b810-9bcca7e101d3",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f8964a5-3b10-4d7a-9fb5-d61368962645",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b77ea97-9eac-4c33-801a-00b3f5aa293c",
+          "name": "[beta] Get Trips",
+          "request": {
+            "name": "[beta] Get Trips",
+            "description": {
+              "content": "This endpoint will return trips that have been collected for your organization based on the time parameters passed in. Results are paginated. Reach out to your Samsara Representative to have this API enabled for your organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Trips** under the Trips category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "trips",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeAsset",
+                  "value": "false",
+                  "description": "Indicates whether or not to return expanded asset data"
+                },
+                {
+                  "disabled": false,
+                  "key": "completionStatus",
+                  "value": "all",
+                  "description": "Filters trips based on a specific completion status  Valid values: `inProgress`, `completed`, `all`"
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": "(Required) RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": "RFC 3339 timestamp which is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter. If not provided then the endpoint behaves as an unending feed of changes."
+                },
+                {
+                  "disabled": false,
+                  "key": "queryBy",
+                  "value": "updatedAtTime",
+                  "description": "Decide which timestamp the `startTime` and `endTime` are compared to.  Valid values: `updatedAtTime`, `tripStartTime`"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>,<string>",
+                  "description": "(Required) Comma-separated list of asset IDs. Include up to 50 asset IDs."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "76e4c280-c8d9-4415-aee4-671030090c46",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"asset\": {\n        \"id\": \"12345\",\n        \"name\": \"MyAsset-1234\",\n        \"type\": \"trailer\",\n        \"vin\": \"1GBJ6P1B2HV112765\"\n      },\n      \"completionStatus\": \"completed\",\n      \"createdAtTime\": \"2024-04-16T19:08:25Z\",\n      \"startLocation\": {\n        \"headingDegrees\": 120,\n        \"latitude\": 37.7749,\n        \"longitude\": 137.2719,\n        \"accuracyMeters\": 5.801,\n        \"address\": {\n          \"city\": \"New York\",\n          \"country\": \"USA\",\n          \"neighborhood\": \"Mission District\",\n          \"pointOfInterest\": \"The Eiffel Tower\",\n          \"postalCode\": \"10010\",\n          \"state\": \"New York\",\n          \"street\": \"Main Street\",\n          \"streetNumber\": \"16\"\n        },\n        \"geofence\": {\n          \"externalIds\": {\n            \"key_0\": \"string\"\n          },\n          \"id\": \"12345\"\n        }\n      },\n      \"tripStartTime\": \"2024-04-16T19:08:25Z\",\n      \"updatedAtTime\": \"2024-04-16T19:08:25Z\",\n      \"endLocation\": {\n        \"headingDegrees\": 120,\n        \"latitude\": 37.7749,\n        \"longitude\": 137.2719,\n        \"accuracyMeters\": 5.801,\n        \"address\": {\n          \"city\": \"New York\",\n          \"country\": \"USA\",\n          \"neighborhood\": \"Mission District\",\n          \"pointOfInterest\": \"The Eiffel Tower\",\n          \"postalCode\": \"10010\",\n          \"state\": \"New York\",\n          \"street\": \"Main Street\",\n          \"streetNumber\": \"16\"\n        },\n        \"geofence\": {\n          \"externalIds\": {\n            \"key_0\": \"string\"\n          },\n          \"id\": \"12345\"\n        }\n      },\n      \"tripEndTime\": \"2024-04-16T20:00:00Z\"\n    },\n    {\n      \"asset\": {\n        \"id\": \"12345\",\n        \"name\": \"MyAsset-1234\",\n        \"type\": \"trailer\",\n        \"vin\": \"1GBJ6P1B2HV112765\"\n      },\n      \"completionStatus\": \"completed\",\n      \"createdAtTime\": \"2024-04-16T19:08:25Z\",\n      \"startLocation\": {\n        \"headingDegrees\": 120,\n        \"latitude\": 37.7749,\n        \"longitude\": 137.2719,\n        \"accuracyMeters\": 5.801,\n        \"address\": {\n          \"city\": \"New York\",\n          \"country\": \"USA\",\n          \"neighborhood\": \"Mission District\",\n          \"pointOfInterest\": \"The Eiffel Tower\",\n          \"postalCode\": \"10010\",\n          \"state\": \"New York\",\n          \"street\": \"Main Street\",\n          \"streetNumber\": \"16\"\n        },\n        \"geofence\": {\n          \"externalIds\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"id\": \"12345\"\n        }\n      },\n      \"tripStartTime\": \"2024-04-16T19:08:25Z\",\n      \"updatedAtTime\": \"2024-04-16T19:08:25Z\",\n      \"endLocation\": {\n        \"headingDegrees\": 120,\n        \"latitude\": 37.7749,\n        \"longitude\": 137.2719,\n        \"accuracyMeters\": 5.801,\n        \"address\": {\n          \"city\": \"New York\",\n          \"country\": \"USA\",\n          \"neighborhood\": \"Mission District\",\n          \"pointOfInterest\": \"The Eiffel Tower\",\n          \"postalCode\": \"10010\",\n          \"state\": \"New York\",\n          \"street\": \"Main Street\",\n          \"streetNumber\": \"16\"\n        },\n        \"geofence\": {\n          \"externalIds\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"id\": \"12345\"\n        }\n      },\n      \"tripEndTime\": \"2024-04-16T20:00:00Z\"\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d14affc4-1278-4d08-b6a4-f91bf555c053",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cee18119-419a-4702-8a7b-db4846536b17",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1457638-72c7-42ee-b11e-89e1d1528315",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed1f22c5-86f0-4710-b25b-4ffd35f2aa1c",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e3f7800f-2764-4c6c-83c7-4885c99722ad",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f33af76c-9768-412e-831a-17501d01e959",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "823b0493-b308-470b-902c-6379a47e828b",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e6bd3ab-c15a-49a0-8d28-08a28ba1872f",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc678b60-9117-4cec-b28c-c2cc7a790218",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b51bc1f9-cb76-46c6-aa62-d040d67049b6",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trips",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "completionStatus",
+                      "value": "all"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4a75756d-2cac-4291-8d33-b9becf5f6a7f",
+    "name": "Samsara Stream API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

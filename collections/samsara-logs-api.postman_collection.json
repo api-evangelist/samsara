@@ -1,0 +1,2558 @@
+{
+  "item": [
+    {
+      "id": "5f22e4a2-a177-4b85-ae2e-50ec0906f26f",
+      "name": "Logs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0dd1349f-4228-4838-b619-66ab9039f64a",
+          "name": "Get All Driver HOS Daily Logs",
+          "request": {
+            "name": "Get All Driver HOS Daily Logs",
+            "description": {
+              "content": "Get summarized daily Hours of Service charts for the specified drivers.\n\nThe time range for a log is defined by the `driver`'s `eldDayStartHour`. This value is configurable per driver.\n\nThe `startDate` and `endDate` parameters indicate the date range you'd like to retrieve daily logs for. A daily log will be returned if its `startTime` is on any of the days within in this date range (inclusive of `startDate` and `endDate`).\n\n**Note:** If data is still being uploaded from the Samsara Driver App, it may not be completely reflected in the response from this endpoint. The best practice is to wait a couple of days before querying this endpoint to make sure that all data from the Samsara Driver App has been uploaded.\n\nIf you are using the legacy version of this endpoint and looking for its documentation, you can find it [here](https://www.samsara.com/api-legacy#operation/getFleetDriversHosDailyLogs).\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read ELD Compliance Settings (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fleet",
+                "hos",
+                "daily-logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "driverIds",
+                  "value": "<string>,<string>",
+                  "description": " A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`"
+                },
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": " A start date in YYYY-MM-DD. This is a date only without an associated time. Example: `2019-06-13`. This is a required field"
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": " An end date in YYYY-MM-DD. This is a date only without an associated time. Must be greater than or equal to the start date. Example: `2019-07-21`. This is a required field"
+                },
+                {
+                  "disabled": false,
+                  "key": "tagIds",
+                  "value": "<string>",
+                  "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "parentTagIds",
+                  "value": "<string>",
+                  "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "driverActivationStatus",
+                  "value": "active",
+                  "description": "If value is `deactivated`, only drivers that are deactivated will appear in the response. This parameter will default to `active` if not provided (fetching only active drivers).  Valid values: `active`, `deactivated`"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Expands the specified value(s) in the response object. Expansion populates additional fields in an object, if supported. Unsupported fields are ignored. To expand multiple fields, input a comma-separated list.\n\nValid value: `vehicle`  Valid values: `vehicle`"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c2c83c36-8fd5-42f6-8c83-bb8187f13ed9",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"driver\": {\n        \"id\": \"45646\",\n        \"name\": \"Driver Bob\",\n        \"eldSettings\": {\n          \"rulesets\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"externalIds\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"timezone\": \"America/Los_Angeles\"\n      },\n      \"endTime\": \"2019-06-20T19:08:25Z\",\n      \"startTime\": \"2019-06-13T19:08:25Z\",\n      \"distanceTraveled\": {\n        \"driveDistanceMeters\": 796625,\n        \"personalConveyanceDistanceMeters\": 27358,\n        \"yardMoveDistanceMeters\": 1287\n      },\n      \"dutyStatusDurations\": {\n        \"activeDurationMs\": 38825000,\n        \"driveDurationMs\": 31970000,\n        \"offDutyDurationMs\": 20555000,\n        \"onDutyDurationMs\": 5423000,\n        \"personalConveyanceDurationMs\": 4358000,\n        \"sleeperBerthDurationMs\": 27020000,\n        \"waitingTimeDurationMs\": 1560000,\n        \"yardMoveDurationMs\": 1432000\n      },\n      \"logMetaData\": {\n        \"adverseDrivingClaimed\": true,\n        \"bigDayClaimed\": true,\n        \"carrierFormattedAddress\": \"1990 Alameda Street, San Francisco, CA 94103\",\n        \"carrierName\": \"Carrier Name\",\n        \"carrierUsDotNumber\": 1234,\n        \"certifiedAtTime\": \"2020-01-01T06:00:00Z\",\n        \"homeTerminalFormattedAddress\": \"1990 Alameda Street, San Francisco, CA 94103\",\n        \"homeTerminalName\": \"Home Terminal Name\",\n        \"isCertified\": false,\n        \"isUsShortHaulActive\": true,\n        \"shippingDocs\": \"Delivery 123, chips and soda\",\n        \"trailerNames\": [\n          \"10293\",\n          \"Trailer ID 1\"\n        ],\n        \"vehicles\": [\n          {\n            \"assetType\": \"vehicle\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"id\": \"494123\",\n            \"licensePlate\": \"6SAM123\",\n            \"name\": \"Fleet Truck #1\",\n            \"vehicleVin\": \"1GBJ6P1B2HV112765\"\n          },\n          {\n            \"assetType\": \"vehicle\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_2\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"id\": \"494123\",\n            \"licensePlate\": \"6SAM123\",\n            \"name\": \"Fleet Truck #1\",\n            \"vehicleVin\": \"1GBJ6P1B2HV112765\"\n          }\n        ]\n      },\n      \"pendingDutyStatusDurations\": {\n        \"activeDurationMs\": 38825000,\n        \"driveDurationMs\": 31970000,\n        \"offDutyDurationMs\": 20555000,\n        \"onDutyDurationMs\": 5423000,\n        \"personalConveyanceDurationMs\": 4358000,\n        \"sleeperBerthDurationMs\": 27020000,\n        \"waitingTimeDurationMs\": 1560000,\n        \"yardMoveDurationMs\": 1432000\n      }\n    },\n    {\n      \"driver\": {\n        \"id\": \"45646\",\n        \"name\": \"Driver Bob\",\n        \"eldSettings\": {\n          \"rulesets\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"externalIds\": {\n          \"key_0\": \"string\"\n        },\n        \"timezone\": \"America/Los_Angeles\"\n      },\n      \"endTime\": \"2019-06-20T19:08:25Z\",\n      \"startTime\": \"2019-06-13T19:08:25Z\",\n      \"distanceTraveled\": {\n        \"driveDistanceMeters\": 796625,\n        \"personalConveyanceDistanceMeters\": 27358,\n        \"yardMoveDistanceMeters\": 1287\n      },\n      \"dutyStatusDurations\": {\n        \"activeDurationMs\": 38825000,\n        \"driveDurationMs\": 31970000,\n        \"offDutyDurationMs\": 20555000,\n        \"onDutyDurationMs\": 5423000,\n        \"personalConveyanceDurationMs\": 4358000,\n        \"sleeperBerthDurationMs\": 27020000,\n        \"waitingTimeDurationMs\": 1560000,\n        \"yardMoveDurationMs\": 1432000\n      },\n      \"logMetaData\": {\n        \"adverseDrivingClaimed\": true,\n        \"bigDayClaimed\": true,\n        \"carrierFormattedAddress\": \"1990 Alameda Street, San Francisco, CA 94103\",\n        \"carrierName\": \"Carrier Name\",\n        \"carrierUsDotNumber\": 1234,\n        \"certifiedAtTime\": \"2020-01-01T06:00:00Z\",\n        \"homeTerminalFormattedAddress\": \"1990 Alameda Street, San Francisco, CA 94103\",\n        \"homeTerminalName\": \"Home Terminal Name\",\n        \"isCertified\": false,\n        \"isUsShortHaulActive\": true,\n        \"shippingDocs\": \"Delivery 123, chips and soda\",\n        \"trailerNames\": [\n          \"10293\",\n          \"Trailer ID 1\"\n        ],\n        \"vehicles\": [\n          {\n            \"assetType\": \"vehicle\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_2\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"id\": \"494123\",\n            \"licensePlate\": \"6SAM123\",\n            \"name\": \"Fleet Truck #1\",\n            \"vehicleVin\": \"1GBJ6P1B2HV112765\"\n          },\n          {\n            \"assetType\": \"vehicle\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_2\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_3\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"id\": \"494123\",\n            \"licensePlate\": \"6SAM123\",\n            \"name\": \"Fleet Truck #1\",\n            \"vehicleVin\": \"1GBJ6P1B2HV112765\"\n          }\n        ]\n      },\n      \"pendingDutyStatusDurations\": {\n        \"activeDurationMs\": 38825000,\n        \"driveDurationMs\": 31970000,\n        \"offDutyDurationMs\": 20555000,\n        \"onDutyDurationMs\": 5423000,\n        \"personalConveyanceDurationMs\": 4358000,\n        \"sleeperBerthDurationMs\": 27020000,\n        \"waitingTimeDurationMs\": 1560000,\n        \"yardMoveDurationMs\": 1432000\n      }\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ef2baad-2ba9-4d99-8e86-3970c9712632",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a80ddb9-056a-48f4-b6ec-7f9937d03323",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "50de623b-2d4d-4276-bf74-43d679f5ddbc",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6178a588-70d9-4453-9613-638f0bd527a4",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7effa3b-e199-4ce2-a90d-62b25a8df28b",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53c19c01-5b8e-4930-8dce-f84c39eb96a8",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efd9eac9-6964-476b-929f-d02fcc5c5b88",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "deebf36b-8d43-4fb9-93ca-e0c794c90790",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8336a005-58b7-47c5-998e-f962e8523570",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f6b6026-d531-49f1-a234-770edd77237c",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "hos",
+                    "daily-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverActivationStatus",
+                      "value": "active"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7b0c0aa8-6fcc-4281-9b02-7db4ae9ef62d",
+          "name": "Get Route Updates",
+          "request": {
+            "name": "Get Route Updates",
+            "description": {
+              "content": "Subscribes to a feed of immutable, append-only updates for routes. The initial request to this feed endpoint returns a cursor, which can be used on the next request to fetch updated routes that have had state changes since that request.\n\nThe legacy version of this endpoint can be found at [samsara.com/api-legacy](https://www.samsara.com/api-legacy#operation/fetchAllRouteJobUpdates).\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Routes** under the Driver Workflow category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fleet",
+                "routes",
+                "audit-logs",
+                "feed"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Expands the specified value(s) in the response object. Expansion populates additional fields in an object, if supported. Unsupported fields are ignored. To expand multiple fields, input a comma-separated list.\n\nValid value: `route`  Valid values: `route`"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "288db00c-44e7-4fcb-9af9-0cf972cff3bf",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"changes\": {\n        \"after\": {\n          \"stops\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"before\": {\n          \"stops\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"route\": {\n        \"id\": \"342341\",\n        \"actualRouteEndTime\": \"2019-06-13T19:08:25Z\",\n        \"actualRouteStartTime\": \"2019-06-13T19:08:25Z\",\n        \"driver\": {\n          \"id\": \"45646\",\n          \"externalIds\": {\n            \"key_0\": \"string\"\n          },\n          \"name\": \"Driver Bob\"\n        },\n        \"externalIds\": {\n          \"key_0\": \"string\"\n        },\n        \"name\": \"Bid 123\",\n        \"notes\": \"These are my notes\",\n        \"recurringRouteLiveSharingLinks\": [\n          {\n            \"liveSharingUrl\": \"https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU\",\n            \"name\": \"Name\",\n            \"expiresAtTime\": \"2020-01-27T07:06:25Z\"\n          },\n          {\n            \"liveSharingUrl\": \"https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU\",\n            \"name\": \"Name\",\n            \"expiresAtTime\": \"2020-01-27T07:06:25Z\"\n          }\n        ],\n        \"scheduledRouteEndTime\": \"2019-06-13T19:08:25Z\",\n        \"scheduledRouteStartTime\": \"2019-06-13T19:08:25Z\",\n        \"settings\": {\n          \"routeCompletionCondition\": \"arriveLastStop\",\n          \"routeStartingCondition\": \"departFirstStop\"\n        },\n        \"stops\": [\n          {\n            \"id\": \"324231\",\n            \"name\": \"Stop #1\",\n            \"state\": \"scheduled\",\n            \"actualArrivalTime\": \"2006-01-02T15:04:05+07:00\",\n            \"actualDepartureTime\": \"2006-01-02T15:04:05+07:00\",\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"documents\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"enRouteTime\": \"2006-01-02T15:04:05+07:00\",\n            \"eta\": \"2006-01-02T15:04:05+07:00\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"liveSharingUrl\": \"https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token\",\n            \"locationLiveSharingLinks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"notes\": \"These are my notes\",\n            \"ontimeWindowAfterArrivalMs\": 300000,\n            \"ontimeWindowBeforeArrivalMs\": 300000,\n            \"scheduledArrivalTime\": \"2019-06-13T19:08:25Z\",\n            \"scheduledDepartureTime\": \"2019-06-13T19:08:25Z\",\n            \"singleUseLocation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"skippedTime\": \"2006-01-02T15:04:05+07:00\"\n          },\n          {\n            \"id\": \"324231\",\n            \"name\": \"Stop #1\",\n            \"state\": \"scheduled\",\n            \"actualArrivalTime\": \"2006-01-02T15:04:05+07:00\",\n            \"actualDepartureTime\": \"2006-01-02T15:04:05+07:00\",\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"documents\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"enRouteTime\": \"2006-01-02T15:04:05+07:00\",\n            \"eta\": \"2006-01-02T15:04:05+07:00\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"liveSharingUrl\": \"https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token\",\n            \"locationLiveSharingLinks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"notes\": \"These are my notes\",\n            \"ontimeWindowAfterArrivalMs\": 300000,\n            \"ontimeWindowBeforeArrivalMs\": 300000,\n            \"scheduledArrivalTime\": \"2019-06-13T19:08:25Z\",\n            \"scheduledDepartureTime\": \"2019-06-13T19:08:25Z\",\n            \"singleUseLocation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"skippedTime\": \"2006-01-02T15:04:05+07:00\"\n          }\n        ],\n        \"vehicle\": {\n          \"externalIds\": {\n            \"key_0\": \"string\"\n          },\n          \"id\": \"494123\",\n          \"name\": \"Fleet Truck #1\"\n        }\n      },\n      \"source\": \"automatic\",\n      \"time\": \"2020-01-27T07:06:25Z\",\n      \"type\": \"route tracking\",\n      \"operation\": \"stop skipped\"\n    },\n    {\n      \"changes\": {\n        \"after\": {\n          \"stops\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"before\": {\n          \"stops\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"route\": {\n        \"id\": \"342341\",\n        \"actualRouteEndTime\": \"2019-06-13T19:08:25Z\",\n        \"actualRouteStartTime\": \"2019-06-13T19:08:25Z\",\n        \"driver\": {\n          \"id\": \"45646\",\n          \"externalIds\": {\n            \"key_0\": \"string\"\n          },\n          \"name\": \"Driver Bob\"\n        },\n        \"externalIds\": {\n          \"key_0\": \"string\"\n        },\n        \"name\": \"Bid 123\",\n        \"notes\": \"These are my notes\",\n        \"recurringRouteLiveSharingLinks\": [\n          {\n            \"liveSharingUrl\": \"https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU\",\n            \"name\": \"Name\",\n            \"expiresAtTime\": \"2020-01-27T07:06:25Z\"\n          },\n          {\n            \"liveSharingUrl\": \"https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU\",\n            \"name\": \"Name\",\n            \"expiresAtTime\": \"2020-01-27T07:06:25Z\"\n          }\n        ],\n        \"scheduledRouteEndTime\": \"2019-06-13T19:08:25Z\",\n        \"scheduledRouteStartTime\": \"2019-06-13T19:08:25Z\",\n        \"settings\": {\n          \"routeCompletionCondition\": \"arriveLastStop\",\n          \"routeStartingCondition\": \"departFirstStop\"\n        },\n        \"stops\": [\n          {\n            \"id\": \"324231\",\n            \"name\": \"Stop #1\",\n            \"state\": \"scheduled\",\n            \"actualArrivalTime\": \"2006-01-02T15:04:05+07:00\",\n            \"actualDepartureTime\": \"2006-01-02T15:04:05+07:00\",\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"documents\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"enRouteTime\": \"2006-01-02T15:04:05+07:00\",\n            \"eta\": \"2006-01-02T15:04:05+07:00\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"liveSharingUrl\": \"https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token\",\n            \"locationLiveSharingLinks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"notes\": \"These are my notes\",\n            \"ontimeWindowAfterArrivalMs\": 300000,\n            \"ontimeWindowBeforeArrivalMs\": 300000,\n            \"scheduledArrivalTime\": \"2019-06-13T19:08:25Z\",\n            \"scheduledDepartureTime\": \"2019-06-13T19:08:25Z\",\n            \"singleUseLocation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"skippedTime\": \"2006-01-02T15:04:05+07:00\"\n          },\n          {\n            \"id\": \"324231\",\n            \"name\": \"Stop #1\",\n            \"state\": \"scheduled\",\n            \"actualArrivalTime\": \"2006-01-02T15:04:05+07:00\",\n            \"actualDepartureTime\": \"2006-01-02T15:04:05+07:00\",\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"documents\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"enRouteTime\": \"2006-01-02T15:04:05+07:00\",\n            \"eta\": \"2006-01-02T15:04:05+07:00\",\n            \"externalIds\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"liveSharingUrl\": \"https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token\",\n            \"locationLiveSharingLinks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"notes\": \"These are my notes\",\n            \"ontimeWindowAfterArrivalMs\": 300000,\n            \"ontimeWindowBeforeArrivalMs\": 300000,\n            \"scheduledArrivalTime\": \"2019-06-13T19:08:25Z\",\n            \"scheduledDepartureTime\": \"2019-06-13T19:08:25Z\",\n            \"singleUseLocation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"skippedTime\": \"2006-01-02T15:04:05+07:00\"\n          }\n        ],\n        \"vehicle\": {\n          \"externalIds\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"id\": \"494123\",\n          \"name\": \"Fleet Truck #1\"\n        }\n      },\n      \"source\": \"automatic\",\n      \"time\": \"2020-01-27T07:06:25Z\",\n      \"type\": \"route tracking\",\n      \"operation\": \"stop skipped\"\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f819c38-c2da-4fb8-ba0c-4a39f82cde7e",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d6e0794-c49f-4aa5-997b-3163f51bd666",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "459ae1f7-23a1-4472-91eb-8d3fb8befc64",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60a6fb36-6647-441b-ad3e-fd549bfaa336",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33923ccd-bc08-4060-8938-a7438257b271",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48ef3ca6-9a11-4810-bbbe-6014dd408458",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "189117a7-f76d-4969-8fde-d0cd263d43d6",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16110f8f-8019-4305-a233-234d358ae0c9",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63615390-9e86-4b55-a264-d435abbf15a7",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ec58c3b-7fed-4525-bbd6-290b648c7361",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "routes",
+                    "audit-logs",
+                    "feed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1e998f81-c7db-4c68-8d9e-46a2cd47eb97",
+          "name": "[beta] Update the ShippingDocs Field of an Existing Assignment.",
+          "request": {
+            "name": "[beta] Update the ShippingDocs Field of an Existing Assignment.",
+            "description": {
+              "content": "Update the shippingDocs field of an existing assignment.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write ELD Hours of Service (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "hos",
+                "daily-logs",
+                "log-meta-data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "hosDate",
+                  "value": "<string>",
+                  "description": "(Required) A start date in yyyy-mm-dd format. Required."
+                },
+                {
+                  "disabled": false,
+                  "key": "driverID",
+                  "value": "<string>",
+                  "description": "(Required) ID of the driver for whom the duty status is being set."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingDocs\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f16edcb5-3d5f-4a49-ab56-96c6f2e78432",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"adverseDrivingClaimed\": true,\n    \"bigDayClaimed\": false,\n    \"carrierFormattedAddress\": \"1990 Alameda Street, San Francisco, CA 94103\",\n    \"carrierName\": \"Carrier Name\",\n    \"carrierUsDotNumber\": 1234,\n    \"homeTerminalFormattedAddress\": \"1990 Alameda Street, San Francisco, CA 94103\",\n    \"homeTerminalName\": \"Home Terminal Name\",\n    \"isCertified\": true,\n    \"isUsShortHaulActive\": false,\n    \"trailerNames\": [\n      \"10293\",\n      \"Trailer ID 1\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10781796-0862-4994-9b27-5b8c6b513b5b",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "719e3e66-c530-463a-a768-9be40f607d21",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfc0436a-635b-4414-8616-6cba2f9cd51e",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "622254ac-8ebc-455c-bfcf-107ac5ef282e",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e20f2bc5-3909-45d7-ad92-e296383ea4dd",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f04e94c7-a8cf-4ae2-8537-403f83f7ae3f",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf37269d-cbe4-4ec3-be57-a7d0bc5ee500",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ce94213-f768-4075-9b7e-72d0bdb080fb",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bd4551d-9250-4f52-ae00-8c6dd3ca9939",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a06c3701-f631-43f5-b902-f98ad363079e",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "hos",
+                    "daily-logs",
+                    "log-meta-data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hosDate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverID",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingDocs\": \"ShippingID1, ShippingID2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a312ce18-4ccb-4b97-8698-b8e061f3c0ff",
+          "name": "Get HOS Signin and Signout",
+          "request": {
+            "name": "Get HOS Signin and Signout",
+            "description": {
+              "content": "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet the HOS (hours of service) signin and signout logs for the specified driver. The response includes 4 fields that are now deprecated.\n\n**Note:** If data is still being uploaded from the Samsara Driver App, it may not be completely reflected in the response from this endpoint. The best practice is to wait a couple of days before querying this endpoint to make sure that all data from the Samsara Driver App has been uploaded. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read ELD Hours of Service (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "fleet",
+                "hos_authentication_logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "driverId",
+                  "value": "<long>",
+                  "description": "(Required) Driver ID to query."
+                },
+                {
+                  "disabled": false,
+                  "key": "startMs",
+                  "value": "<long>",
+                  "description": "(Required) Beginning of the time range, specified in milliseconds UNIX time."
+                },
+                {
+                  "disabled": false,
+                  "key": "endMs",
+                  "value": "<long>",
+                  "description": "(Required) End of the time range, specified in milliseconds UNIX time."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "533e3010-b3d1-4ef7-aac3-2f0af1e6013e",
+              "name": "HOS authentication logs for the specified driver.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fleet",
+                    "hos_authentication_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverId",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "startMs",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "endMs",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"authenticationLogs\": [\n    {\n      \"actionType\": \"signin\",\n      \"address\": \"THIS FIELD MAY NOT BE POPULATED\",\n      \"addressName\": \"THIS FIELD MAY NOT BE POPULATED\",\n      \"city\": \"THIS FIELD MAY NOT BE POPULATED\",\n      \"happenedAtMs\": 1462881998034,\n      \"state\": \"THIS FIELD MAY NOT BE POPULATED\"\n    },\n    {\n      \"actionType\": \"signin\",\n      \"address\": \"THIS FIELD MAY NOT BE POPULATED\",\n      \"addressName\": \"THIS FIELD MAY NOT BE POPULATED\",\n      \"city\": \"THIS FIELD MAY NOT BE POPULATED\",\n      \"happenedAtMs\": 1462881998034,\n      \"state\": \"THIS FIELD MAY NOT BE POPULATED\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1389b65e-9329-4f0f-b674-79d5440b44a5",
+              "name": "Unexpected error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fleet",
+                    "hos_authentication_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "driverId",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "startMs",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "endMs",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8f1b0c8b-32fd-472c-8c21-fdcd38feeb5e",
+    "name": "Samsara Logs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

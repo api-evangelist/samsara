@@ -1,0 +1,973 @@
+{
+  "item": [
+    {
+      "id": "697d0dbd-affe-4be3-b429-b680cfde2349",
+      "name": "Intervals",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cc1b8d5c-6a4c-4410-8209-2258a06d8174",
+          "name": "[beta] Get Speeding Intervals",
+          "request": {
+            "name": "[beta] Get Speeding Intervals",
+            "description": {
+              "content": "This endpoint will return all speeding intervals associated with trips that have been collected for your organization based on the time parameters passed in. Only completed trips are included. Results are paginated.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Speeding Intervals** under the Speeding Intervals category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "speeding-intervals",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "assetIds",
+                  "value": "<string>,<string>",
+                  "description": "(Required) Comma-separated list of asset IDs. Include up to 50 asset IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": "(Required) RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": "RFC 3339 timestamp which is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter. If not provided then the endpoint behaves as an unending feed of changes."
+                },
+                {
+                  "disabled": false,
+                  "key": "queryBy",
+                  "value": "updatedAtTime",
+                  "description": "Decide which timestamp the `startTime` and `endTime` are compared to.  Valid values: `updatedAtTime`, `tripStartTime`"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeAsset",
+                  "value": "false",
+                  "description": "Indicates whether or not to return expanded asset data"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeDriverId",
+                  "value": "false",
+                  "description": "Indicates whether or not to return trip's driver id"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "severityLevels",
+                  "value": "<string>,<string>",
+                  "description": "Optional string of comma-separated severity levels to filter speeding intervals by. Valid values:  light, moderate, heavy, severe."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7224a33f-5771-472e-a1c3-99a19a94c8c8",
+              "name": "OK response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"asset\": {\n        \"id\": \"12345\",\n        \"name\": \"MyAsset-1234\",\n        \"type\": \"trailer\",\n        \"vin\": \"1GBJ6P1B2HV112765\"\n      },\n      \"createdAtTime\": \"2023-01-27T07:06:25Z\",\n      \"intervals\": [\n        {\n          \"endTime\": \"2023-01-27T07:06:25Z\",\n          \"isDismissed\": true,\n          \"location\": {\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"headingDegrees\": 120,\n            \"latitude\": 37.7749,\n            \"longitude\": 137.2719,\n            \"accuracyMeters\": 5.801\n          },\n          \"maxSpeedKilometersPerHour\": 65,\n          \"postedSpeedLimitKilometersPerHour\": 75,\n          \"severityLevel\": \"severe\",\n          \"startTime\": \"2023-01-27T07:06:25Z\"\n        },\n        {\n          \"endTime\": \"2023-01-27T07:06:25Z\",\n          \"isDismissed\": true,\n          \"location\": {\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"headingDegrees\": 120,\n            \"latitude\": 37.7749,\n            \"longitude\": 137.2719,\n            \"accuracyMeters\": 5.801\n          },\n          \"maxSpeedKilometersPerHour\": 65,\n          \"postedSpeedLimitKilometersPerHour\": 75,\n          \"severityLevel\": \"severe\",\n          \"startTime\": \"2023-01-27T07:06:25Z\"\n        }\n      ],\n      \"tripStartTime\": \"2023-01-27T07:06:25Z\",\n      \"updatedAtTime\": \"2023-01-27T10:04:20Z\",\n      \"driverId\": \"12345\"\n    },\n    {\n      \"asset\": {\n        \"id\": \"12345\",\n        \"name\": \"MyAsset-1234\",\n        \"type\": \"trailer\",\n        \"vin\": \"1GBJ6P1B2HV112765\"\n      },\n      \"createdAtTime\": \"2023-01-27T07:06:25Z\",\n      \"intervals\": [\n        {\n          \"endTime\": \"2023-01-27T07:06:25Z\",\n          \"isDismissed\": true,\n          \"location\": {\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"headingDegrees\": 120,\n            \"latitude\": 37.7749,\n            \"longitude\": 137.2719,\n            \"accuracyMeters\": 5.801\n          },\n          \"maxSpeedKilometersPerHour\": 65,\n          \"postedSpeedLimitKilometersPerHour\": 75,\n          \"severityLevel\": \"severe\",\n          \"startTime\": \"2023-01-27T07:06:25Z\"\n        },\n        {\n          \"endTime\": \"2023-01-27T07:06:25Z\",\n          \"isDismissed\": true,\n          \"location\": {\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"headingDegrees\": 120,\n            \"latitude\": 37.7749,\n            \"longitude\": 137.2719,\n            \"accuracyMeters\": 5.801\n          },\n          \"maxSpeedKilometersPerHour\": 65,\n          \"postedSpeedLimitKilometersPerHour\": 75,\n          \"severityLevel\": \"severe\",\n          \"startTime\": \"2023-01-27T07:06:25Z\"\n        }\n      ],\n      \"tripStartTime\": \"2023-01-27T07:06:25Z\",\n      \"updatedAtTime\": \"2023-01-27T10:04:20Z\",\n      \"driverId\": \"12345\"\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c69e641d-37fb-4384-8afd-06c7b8949c18",
+              "name": "Unauthorized response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid token.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eca66dab-b1a0-4f5a-8179-e452a3a4b2ed",
+              "name": "Not Found response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Object not found.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b91ea61b-8594-4c05-b857-8dfeebf4d893",
+              "name": "Method Not Allowed response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"DELETE not allowed on /endpoint.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efdb2ab8-cd94-49fd-8d53-dd036fb54b97",
+              "name": "Too Many Requests response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exceeded rate limit.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c80d2eaa-a3b4-4a2c-8cdb-718a43d49ddc",
+              "name": "Internal Server Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Failed to execute GraphQL query.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8764efd6-37c3-4145-a4ff-b17c0d5ae9ad",
+              "name": "Not Implemented response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Not implemented.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40f86eb0-9ee6-4df8-b47e-9a21691335fe",
+              "name": "Bad Gateway response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"rpc error: code = Unknown desc = connection refused\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "332ce494-a750-40c4-8dfe-6dc021cef85a",
+              "name": "Service Unavailable response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62d1e73e-d012-4f12-9aa0-3c8028b95925",
+              "name": "Gateway Timeout response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"context deadline exceeded\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5d230ce-5a34-4a12-ae58-312437adf7dd",
+              "name": "Bad Request response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "speeding-intervals",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assetIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queryBy",
+                      "value": "updatedAtTime"
+                    },
+                    {
+                      "key": "includeAsset",
+                      "value": "false"
+                    },
+                    {
+                      "key": "includeDriverId",
+                      "value": "false"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid value for parameter.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "93068a0b-0f00-4ffd-a5ed-b27ac77a4c14",
+    "name": "Samsara Intervals API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

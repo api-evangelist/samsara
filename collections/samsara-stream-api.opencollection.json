@@ -1,0 +1,330 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Stream API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stream",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Asset Location and Speed Data in an Organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/assets/location-and-speed/stream",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit for how many objects will be in the response. Default and max for this value is 512 objects."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": " A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to never if not provided; if not provided then pagination will not cease, and a valid pagination cursor will always be returned. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of asset IDs."
+              },
+              {
+                "name": "includeSpeed",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether or not to return the 'speed' object"
+              },
+              {
+                "name": "includeReverseGeo",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether or not to return the 'address' object"
+              },
+              {
+                "name": "includeGeofenceLookup",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether or not to return the 'geofence' object"
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              }
+            ]
+          },
+          "docs": "This endpoint will return asset locations and speed data that has been collected for your organization based on the time parameters passed in. Results are paginated. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. The endpoint will only return data up until the endTime that has been processed by the server at the time of the origina"
+        },
+        {
+          "info": {
+            "name": "Stream DVIR Defects.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/defects/stream",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit for how many objects will be in the response. Default and max for this value is 200 objects."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Required RFC 3339 timestamp to begin the feed or history by `updatedAtTime` at `startTime`."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "Optional RFC 3339 timestamp. If not provided then the endpoint behaves as an unending feed of changes."
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              },
+              {
+                "name": "isResolved",
+                "value": "",
+                "type": "query",
+                "description": "Boolean value for whether filter defects by resolved status."
+              }
+            ]
+          },
+          "docs": "Stream DVIR defects.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Defects** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback i"
+        },
+        {
+          "info": {
+            "name": "Stream DVIRs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/dvirs/stream",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit for how many objects will be in the response. Default and max for this value is 200 objects."
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Required RFC 3339 timestamp to begin the feed or history by `updatedAtTime` at `startTime`."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "Optional RFC 3339 timestamp. If not provided then the endpoint behaves as an unending feed of changes."
+              },
+              {
+                "name": "safetyStatus",
+                "value": "",
+                "type": "query",
+                "description": "Optional list of safety statuses. Valid values: [safe, unsafe, resolved]"
+              }
+            ]
+          },
+          "docs": "Returns a history/feed of changed DVIRs by updatedAtTime between startTime and endTime parameters. In case of missing `endTime` parameter it will return a never ending stream of data.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read DVIRs** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authe"
+        },
+        {
+          "info": {
+            "name": "[beta] Get Engine Immobilizer States",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/fleet/vehicles/immobilizer/stream",
+            "params": [
+              {
+                "name": "vehicleIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              }
+            ]
+          },
+          "docs": "Get the engine immobilizer states of the queried vehicles. If a vehicle has never had an engine immobilizer connected, there won't be any state returned for that vehicle.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Vehicle Immobilization** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/auth"
+        },
+        {
+          "info": {
+            "name": "[beta] Get a Stream of Filtered Issues.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/issues/stream",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": " A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list containing status values to filter issues on. Valid values: `open`, `inProgress`, `resolved`, `dismissed`"
+              },
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list containing up to 50 asset IDs to filter issues on. Issues with untracked assets can also be included by passing the value: 'untracked'."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of additional fields to include on requested objects. Valid values: `externalIds`"
+              }
+            ]
+          },
+          "docs": "Returns all issues data that has been created or modified for your organization based on the time parameters passed in. Results are paginated and are sorted by last modified date. If you include an endTime, the endpoint will return data up until that point (exclusive). If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. R"
+        },
+        {
+          "info": {
+            "name": "[beta] Get Trips",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/trips/stream",
+            "params": [
+              {
+                "name": "includeAsset",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not to return expanded asset data"
+              },
+              {
+                "name": "completionStatus",
+                "value": "",
+                "type": "query",
+                "description": "Filters trips based on a specific completion status  Valid values: `inProgress`, `completed`, `all`"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "RFC 3339 timestamp which is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter. If not provided then the endpoint behaves as an unending feed of changes."
+              },
+              {
+                "name": "queryBy",
+                "value": "",
+                "type": "query",
+                "description": "Decide which timestamp the `startTime` and `endTime` are compared to.  Valid values: `updatedAtTime`, `tripStartTime`"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of asset IDs. Include up to 50 asset IDs."
+              }
+            ]
+          },
+          "docs": "This endpoint will return trips that have been collected for your organization based on the time parameters passed in. Results are paginated. Reach out to your Samsara Representative to have this API enabled for your organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Trips** under the Trips category when creating or editing an API token. <a href=\""
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

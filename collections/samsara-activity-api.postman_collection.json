@@ -1,0 +1,258 @@
+{
+  "item": [
+    {
+      "id": "ebce42cc-321c-42ee-9348-f11dbab4402b",
+      "name": "Activity",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8a8a911f-388f-470b-9635-7b6ebb0432b7",
+          "name": "Get Driver Tachograph Activity",
+          "request": {
+            "name": "Get Driver Tachograph Activity",
+            "description": {
+              "content": "Returns all known tachograph activity for all specified drivers in the time range. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Tachograph (EU)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fleet",
+                "drivers",
+                "tachograph-activity",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string>",
+                  "description": "(Required) A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<string>",
+                  "description": "(Required) An end time in RFC 3339 format. It can't be more than 30 days past startTime. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "driverIds",
+                  "value": "<string>,<string>",
+                  "description": "A filter on the data based on this comma-separated list of driver IDs. Example: `driverIds=1234,5678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "parentTagIds",
+                  "value": "<string>,<string>",
+                  "description": "A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "tagIds",
+                  "value": "<string>,<string>",
+                  "description": "A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c30720c8-2cd2-45aa-b250-67788598a5b6",
+              "name": "List of all driver tachograph activities in a specified time range.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "drivers",
+                    "tachograph-activity",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"activity\": [\n        {\n          \"endTime\": \"2020-01-03T16:04:05Z07:00\",\n          \"isManualEntry\": false,\n          \"startTime\": \"2020-01-02T15:04:05Z07:00\",\n          \"state\": \"DRIVING\"\n        },\n        {\n          \"endTime\": \"2020-01-03T16:04:05Z07:00\",\n          \"isManualEntry\": false,\n          \"startTime\": \"2020-01-02T15:04:05Z07:00\",\n          \"state\": \"WORK\"\n        }\n      ],\n      \"driver\": {\n        \"id\": \"88668\",\n        \"name\": \"Susan Bob\"\n      }\n    },\n    {\n      \"activity\": [\n        {\n          \"endTime\": \"2020-01-03T16:04:05Z07:00\",\n          \"isManualEntry\": false,\n          \"startTime\": \"2020-01-02T15:04:05Z07:00\",\n          \"state\": \"AVAILABILITY\"\n        },\n        {\n          \"endTime\": \"2020-01-03T16:04:05Z07:00\",\n          \"isManualEntry\": false,\n          \"startTime\": \"2020-01-02T15:04:05Z07:00\",\n          \"state\": \"WORK\"\n        }\n      ],\n      \"driver\": {\n        \"id\": \"88668\",\n        \"name\": \"Susan Bob\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75530f83-ebe0-4879-95f0-b34051426658",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "drivers",
+                    "tachograph-activity",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "driverIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"An error has occurred.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "97eacf35-b8a9-494a-8230-c8e7d4a4c106",
+    "name": "Samsara Activity API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

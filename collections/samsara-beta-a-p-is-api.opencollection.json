@@ -1,0 +1,753 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Beta  A P Is API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Beta  A P Is",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[beta] List All Assets.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/assets",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "The operational context in which the asset interacts with the Samsara system. Examples: Vehicle (eg: truck, bus...), Trailer (eg: dry van, reefer, flatbed...), Powered Equipment (eg: dozer, crane...), Unpowered Equipment (eg: container, dumpster...), or Uncategorized.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "updatedAfterTime",
+                "value": "",
+                "type": "query",
+                "description": " A filter on data to have an updated at time after or equal to this specified time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              },
+              {
+                "name": "includeTags",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return tags on supported entities"
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of asset IDs and External IDs."
+              },
+              {
+                "name": "attributeValueIds",
+                "value": "",
+                "type": "query",
+                "description": "A filter on the data based on this comma-separated list of attribute value IDs. Only entities associated with ALL of the referenced values will be returned (i.e. the intersection of the sets of entities with each value). Example: `attributeValueIds=076efac2-83b5-47aa-ba36-18428436dcac,6707b3f0-23b9-4fe3-b7be-11be34aea544`"
+              }
+            ]
+          },
+          "docs": "List all assets. Up to 300 assets will be returned per page.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Assets** under the Assets category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requ"
+        },
+        {
+          "info": {
+            "name": "[beta] Create a New Asset.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.samsara.com/assets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new asset.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assets** under the Assets category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in ou"
+        },
+        {
+          "info": {
+            "name": "[beta] Update an Existing Asset.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/assets",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "A filter selecting a single asset by id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing asset.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assets** under the Assets category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback"
+        },
+        {
+          "info": {
+            "name": "[beta] Delete an Existing Asset.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.samsara.com/assets",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "A filter selecting a single asset by id."
+              }
+            ]
+          },
+          "docs": "Delete an existing asset.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assets** under the Assets category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback"
+        },
+        {
+          "info": {
+            "name": "[beta] List Asset Inputs Data in an Organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/assets/inputs/stream",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of asset IDs. Limited to 100 ID's for each request."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Input stat type to query for.  Valid values: `auxInput1`, `auxInput2`, `auxInput3`, `auxInput4`, `auxInput5`, `auxInput6`, `auxInput7`, `auxInput8`, `auxInput9`, `auxInput10`, `auxInput11`, `auxInput12`, `auxInput13`, `analogInput1Voltage`, `analogInput2Voltage`, `analogInput1Current`, `analogInput2Current`, `batteryVoltage`"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to never if not provided; if not provided then pagination will not cease, and a valid pagination cursor will always be returned. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              },
+              {
+                "name": "includeTags",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return tags on supported entities"
+              },
+              {
+                "name": "includeAttributes",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return attributes on supported entities"
+              }
+            ]
+          },
+          "docs": "This endpoint will return data collected from the inputs of your organization's assets based on the time parameters passed in. Results are paginated. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. The endpoint will only return data up until the endTime that has been processed by the server at the time of the original request. You w"
+        },
+        {
+          "info": {
+            "name": "[beta] Get a List of AEMP Equipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/beta/aemp/Fleet/:pageNumber",
+            "params": [
+              {
+                "name": "pageNumber",
+                "value": "",
+                "type": "path",
+                "description": "The number corresponding to a specific page of paginated results, defaulting to the first page if not provided. The default page size is 100 records."
+              }
+            ]
+          },
+          "docs": "Get a list of equipment following the AEMP ISO 15143-3 standard.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read AEMP** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature"
+        },
+        {
+          "info": {
+            "name": "[beta] Update an Equipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/beta/fleet/equipment/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique Samsara ID of the Equipment. This is automatically generated when the Equipment object is created. It cannot be changed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an equipment.  **Note** this implementation of patch uses [the JSON merge patch](https://tools.ietf.org/html/rfc7396) proposed standard.\n This means that any fields included in the patch request will _overwrite_ fields which exist on the target resource.\n For arrays, this means any array included in the request will _replace_ the array that exists at the specified path, it will not _add_ to the existing array\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"htt"
+        },
+        {
+          "info": {
+            "name": "[beta] Get Trailer Stats Feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/beta/fleet/trailers/stats/feed",
+            "params": [
+              {
+                "name": "types",
+                "value": "",
+                "type": "query",
+                "description": "The stat types you want this endpoint to return information on.\n\nYou may list **up to 3** types using comma-separated format. For example: `types=gps,reeferAmbientAirTemperatureMilliC,gpsOdometerMeters`.\n\n* `gps`: GPS data including lat/long, heading, speed, and a reverse geocode address.\n* `gpsOdometerMeters`: Odometer reading provided by GPS calculations. You must provide a manual odometer reading before this value is updated. Manual odometer readings can be provided via the PATCH /fleet/trailers/{id} endpoint or through the [cloud dashboard](https://kb.samsara.com/hc/en-us/articles/115005273667-Editing-Odometer-Reading). Odometer readings wthat are manually set will update as GPS trip data is gathered.\n* `reeferAmbientAirTemperatureMilliC`: The ambient air temperature reading of the reefer in millidegree Celsius.\n* `reeferObdEngineSeconds`: The cumulative number of seconds the reefer has run according to onboard diagnostics. Only supported on reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone1`: The supply or discharge air temperature zone 1 in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone2`: The supply or discharge air temperature zone 2 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone3`: The supply or discharge air temperature zone 3 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferFuelPercent`: The fuel level of the reefer unit in percentage points (e.g. `99`, `50`, etc). Only supported on reefer solutions.\n* `carrierReeferState`: The overall state of the reefer (`Off`, `On`). Only supported on multizone Carrier reefer solutions.\n* `reeferStateZone1`: The state of the reefer in zone 1. For single zone reefers, this applies tot he single zone. Only supported on multizone reefer solutions.\n* `reeferStateZone2`: The state of the reefer in zone 2. Only supported on multizone reefer solutions.\n* `reeferStateZone3`: The state of the reefer in zone 3. Only supported on multizone reefer solutions.\n* `reeferRunMode`: The operational mode of the reefer (`Start/Stop`, `Continuous`)\n* `reeferAlarms`: Any alarms that are present on the reefer. Only supported on reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone1`: The return air temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone2`: The return air temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone3`: The return air temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone1`: The set point temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone2`: The set point temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone3`: The set point temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone1`: The door status in zone 1 of the reefer. For single zone reefers, this applies to the single zone.\n* `reeferDoorStateZone2`: The door status in zone 2 of the reefer. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone3`: The door status in zone 3 of the reefer. Only supported on multizone reefer solutions."
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "trailerIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of trailer IDs and externalIds. Example: `trailerIds=1234,5678,samsara.vin:1HGBH41JXMN109186`"
+              },
+              {
+                "name": "decorations",
+                "value": "",
+                "type": "query",
+                "description": "Decorations add to the primary stats listed in the `types` parameter. For example, if you wish to know the trailer's location whenever the odometer updates, you may set `types=gpsOdometerMeters&decorations=gps`.\n\nYou may list **up to 2** types using comma-separated format. If multiple stats are listed in the types parameter, the decorations will be added to each type. For example: `types=reeferStateZone1,reeferAmbientAirTemperatureMilliC,gpsOdometerMeters&decorations=gps` will list GPS decorations for each reeferStateZone1 reading, each reeferAmbientAirTemperatureMilliC reding, and gpsOdometerMeters reading.\n\nNote that decorations may significantly increase the response payload size.\n\n* `gps`: GPS data including lat/long, heading, speed, and a reverse geocode address.\n* `gpsOdometerMeters`: Odometer reading provided by GPS calculations. You must provide a manual odometer reading before this value is updated. Manual odometer readings can be provided via the PATCH /fleet/trailers/{id} endpoint or through the [cloud dashboard](https://kb.samsara.com/hc/en-us/articles/115005273667-Editing-Odometer-Reading). Odometer readings wthat are manually set will update as GPS trip data is gathered.\n* `reeferAmbientAirTemperatureMilliC`: The ambient air temperature reading of the reefer in millidegree Celsius.\n* `reeferObdEngineSeconds`: The cumulative number of seconds the reefer has run according to onboard diagnostics. Only supported on reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone1`: The supply or discharge air temperature zone 1 in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone2`: The supply or discharge air temperature zone 2 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone3`: The supply or discharge air temperature zone 3 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferFuelPercent`: The fuel level of the reefer unit in percentage points (e.g. `99`, `50`, etc). Only supported on reefer solutions.\n* `carrierReeferState`: The overall state of the reefer (`Off`, `On`). Only supported on multizone Carrier reefer solutions.\n* `reeferStateZone1`: The state of the reefer in zone 1. For single zone reefers, this applies tot he single zone. Only supported on multizone reefer solutions.\n* `reeferStateZone2`: The state of the reefer in zone 2. Only supported on multizone reefer solutions.\n* `reeferStateZone3`: The state of the reefer in zone 3. Only supported on multizone reefer solutions.\n* `reeferRunMode`: The operational mode of the reefer (`Start/Stop`, `Continuous`)\n* `reeferAlarms`: Any alarms that are present on the reefer. Only supported on reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone1`: The return air temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone2`: The return air temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone3`: The return air temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone1`: The set point temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone2`: The set point temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone3`: The set point temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone1`: The door status in zone 1 of the reefer. For single zone reefers, this applies to the single zone.\n* `reeferDoorStateZone2`: The door status in zone 2 of the reefer. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone3`: The door status in zone 3 of the reefer. Only supported on multizone reefer solutions."
+              }
+            ]
+          },
+          "docs": "Follow a feed of trailer stats.\n\nThe first call to this endpoint will provide the most recent stats for each trailer and an `endCursor`.\n\nProviding the `endCursor` value to the `after` query parameter will fetch all updates since the previous API call.\n\nIf `hasNextPage` is false, no new data is immediately available. Please wait a minimum of 5 seconds before making a subsequent request.\n\n <b>Rate limit:</b> 25 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/doc"
+        },
+        {
+          "info": {
+            "name": "[beta] Get Trailer Stats History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/beta/fleet/trailers/stats/history",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": " A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "types",
+                "value": "",
+                "type": "query",
+                "description": "The stat types you want this endpoint to return information on.\n\nYou may list **up to 3** types using comma-separated format. For example: `types=gps,reeferAmbientAirTemperatureMilliC,gpsOdometerMeters`.\n\n* `gps`: GPS data including lat/long, heading, speed, and a reverse geocode address.\n* `gpsOdometerMeters`: Odometer reading provided by GPS calculations. You must provide a manual odometer reading before this value is updated. Manual odometer readings can be provided via the PATCH /fleet/trailers/{id} endpoint or through the [cloud dashboard](https://kb.samsara.com/hc/en-us/articles/115005273667-Editing-Odometer-Reading). Odometer readings wthat are manually set will update as GPS trip data is gathered.\n* `reeferAmbientAirTemperatureMilliC`: The ambient air temperature reading of the reefer in millidegree Celsius.\n* `reeferObdEngineSeconds`: The cumulative number of seconds the reefer has run according to onboard diagnostics. Only supported on reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone1`: The supply or discharge air temperature zone 1 in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone2`: The supply or discharge air temperature zone 2 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone3`: The supply or discharge air temperature zone 3 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferFuelPercent`: The fuel level of the reefer unit in percentage points (e.g. `99`, `50`, etc). Only supported on reefer solutions.\n* `carrierReeferState`: The overall state of the reefer (`Off`, `On`). Only supported on multizone Carrier reefer solutions.\n* `reeferStateZone1`: The state of the reefer in zone 1. For single zone reefers, this applies tot he single zone. Only supported on multizone reefer solutions.\n* `reeferStateZone2`: The state of the reefer in zone 2. Only supported on multizone reefer solutions.\n* `reeferStateZone3`: The state of the reefer in zone 3. Only supported on multizone reefer solutions.\n* `reeferRunMode`: The operational mode of the reefer (`Start/Stop`, `Continuous`)\n* `reeferAlarms`: Any alarms that are present on the reefer. Only supported on reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone1`: The return air temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone2`: The return air temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone3`: The return air temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone1`: The set point temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone2`: The set point temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone3`: The set point temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone1`: The door status in zone 1 of the reefer. For single zone reefers, this applies to the single zone.\n* `reeferDoorStateZone2`: The door status in zone 2 of the reefer. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone3`: The door status in zone 3 of the reefer. Only supported on multizone reefer solutions."
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "trailerIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of trailer IDs and externalIds. Example: `trailerIds=1234,5678,samsara.vin:1HGBH41JXMN109186`"
+              },
+              {
+                "name": "decorations",
+                "value": "",
+                "type": "query",
+                "description": "Decorations add to the primary stats listed in the `types` parameter. For example, if you wish to know the trailer's location whenever the odometer updates, you may set `types=gpsOdometerMeters&decorations=gps`.\n\nYou may list **up to 2** types using comma-separated format. If multiple stats are listed in the types parameter, the decorations will be added to each type. For example: `types=reeferStateZone1,reeferAmbientAirTemperatureMilliC,gpsOdometerMeters&decorations=gps` will list GPS decorations for each reeferStateZone1 reading, each reeferAmbientAirTemperatureMilliC reding, and gpsOdometerMeters reading.\n\nNote that decorations may significantly increase the response payload size.\n\n* `gps`: GPS data including lat/long, heading, speed, and a reverse geocode address.\n* `gpsOdometerMeters`: Odometer reading provided by GPS calculations. You must provide a manual odometer reading before this value is updated. Manual odometer readings can be provided via the PATCH /fleet/trailers/{id} endpoint or through the [cloud dashboard](https://kb.samsara.com/hc/en-us/articles/115005273667-Editing-Odometer-Reading). Odometer readings wthat are manually set will update as GPS trip data is gathered.\n* `reeferAmbientAirTemperatureMilliC`: The ambient air temperature reading of the reefer in millidegree Celsius.\n* `reeferObdEngineSeconds`: The cumulative number of seconds the reefer has run according to onboard diagnostics. Only supported on reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone1`: The supply or discharge air temperature zone 1 in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone2`: The supply or discharge air temperature zone 2 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSupplyAirTemperatureMilliCZone3`: The supply or discharge air temperature zone 3 in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferFuelPercent`: The fuel level of the reefer unit in percentage points (e.g. `99`, `50`, etc). Only supported on reefer solutions.\n* `carrierReeferState`: The overall state of the reefer (`Off`, `On`). Only supported on multizone Carrier reefer solutions.\n* `reeferStateZone1`: The state of the reefer in zone 1. For single zone reefers, this applies tot he single zone. Only supported on multizone reefer solutions.\n* `reeferStateZone2`: The state of the reefer in zone 2. Only supported on multizone reefer solutions.\n* `reeferStateZone3`: The state of the reefer in zone 3. Only supported on multizone reefer solutions.\n* `reeferRunMode`: The operational mode of the reefer (`Start/Stop`, `Continuous`)\n* `reeferAlarms`: Any alarms that are present on the reefer. Only supported on reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone1`: The return air temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone2`: The return air temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferReturnAirTemperatureMilliCZone3`: The return air temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone1`: The set point temperature in zone 1 of the reefer in millidegrees Celsius. For single zone reefers, this applies to the single zone. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone2`: The set point temperature in zone 2 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferSetPointTemperatureMilliCZone3`: The set point temperature in zone 3 of the reefer in millidegrees Celsius. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone1`: The door status in zone 1 of the reefer. For single zone reefers, this applies to the single zone.\n* `reeferDoorStateZone2`: The door status in zone 2 of the reefer. Only supported on multizone reefer solutions.\n* `reeferDoorStateZone3`: The door status in zone 3 of the reefer. Only supported on multizone reefer solutions."
+              }
+            ]
+          },
+          "docs": "Returns trailer stats during the given time range for all trailers. This can be optionally filtered by tags or specific trailer IDs.\n\n <b>Rate limit:</b> 10 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Trailer Statistics** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target="
+        },
+        {
+          "info": {
+            "name": "[beta] Fetches All Jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/beta/industrial/jobs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "A jobId or uuid in STRING format. JobId must be prefixed with `jobId:`(Examples: `\"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596\"`, `\"jobId:98765\"`)."
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": " A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "industrialAssetIds",
+                "value": "",
+                "type": "query",
+                "description": "IndustrialAssetId in STRING format. (Example: `\"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596\"`)."
+              },
+              {
+                "name": "fleetDeviceIds",
+                "value": "",
+                "type": "query",
+                "description": "FleetDeviceId in INTEGER format. (Example: `123456`)."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "A job status in STRING format. Job statuses can be one of three (ignores case): `\"active\", \"scheduled\", \"completed\"`  Valid values: `active`, `scheduled`, `completed`"
+              },
+              {
+                "name": "customerName",
+                "value": "",
+                "type": "query",
+                "description": "Customer name to filter by"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              }
+            ]
+          },
+          "docs": "Fetches jobs based on id/uuid or provided filters.\n\nTo use this endpoint, select **Read Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noti"
+        },
+        {
+          "info": {
+            "name": "[beta] Create a Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.samsara.com/beta/industrial/jobs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new job and returns it.\n\nTo use this endpoint, select **Write Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies"
+        },
+        {
+          "info": {
+            "name": "[beta] Patches a Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/beta/industrial/jobs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "A jobId or uuid in STRING format. JobId must be prefixed with `jobId:`(Examples: `\"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596\"`, `\"jobId:98765\"`)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patches an existing job and returns it.\n\nTo use this endpoint, select **Write Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccu"
+        },
+        {
+          "info": {
+            "name": "[beta] Deletes an Existing Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.samsara.com/beta/industrial/jobs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "A jobId or uuid in STRING format. JobId must be prefixed with `jobId:`(Examples: `\"8d218e6c-7a16-4f9f-90f7-cc1d93b9e596\"`, `\"jobId:98765\"`)."
+              }
+            ]
+          },
+          "docs": "Deletes an existing job.\n\nTo use this endpoint, select **Write Jobs** under the Equipment category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the A"
+        },
+        {
+          "info": {
+            "name": "[beta] Get Currently Active Driver-trailer Assignments for Driver.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/driver-trailer-assignments",
+            "params": [
+              {
+                "name": "driverIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of driver IDs and externalIds. Example: `driverIds=1234,5678,payroll:4841`"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              }
+            ]
+          },
+          "docs": "Get currently active driver-trailer assignments for driver.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API fea"
+        },
+        {
+          "info": {
+            "name": "[beta] Create a New Driver-trailer Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.samsara.com/driver-trailer-assignments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new driver-trailer assignment\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should"
+        },
+        {
+          "info": {
+            "name": "[beta] Update an Existing Driver-trailer Assignment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/driver-trailer-assignments",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Samsara ID for the assignment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing driver-trailer assignment.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests"
+        },
+        {
+          "info": {
+            "name": "[beta] Get a Stream of Filtered Form Submissions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/form-submissions/stream",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": " A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "formTemplateIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list containing up to 50 template IDs to filter data to."
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list containing up to 50 user IDs to filter data to."
+              },
+              {
+                "name": "driverIds",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list containing up to 50 user IDs to filter data to."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of strings indicating whether to return additional information. Valid values: `externalIds`, `fieldLabels`"
+              }
+            ]
+          },
+          "docs": "Returns all form submissions data that has been created or modified for your organization based on the time parameters passed in. Results are paginated and are sorted by last modified date. If you include an endTime, the endpoint will return data up until that point (exclusive). If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly av"
+        },
+        {
+          "info": {
+            "name": "[beta] Get a List of Specified Issues.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/issues",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list containing up to 100 issue IDs to filter on. Can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the issue."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of additional fields to include on requested objects. Valid values: `externalIds`"
+              }
+            ]
+          },
+          "docs": "Returns all issues data for the specified IDs. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Issues** under the Closed Beta category when creating or editing an API token. <a"
+        },
+        {
+          "info": {
+            "name": "[beta] Update a Single Issue.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.samsara.com/issues",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an instance of an issue. \n\n**Beta:** This endpoint is in beta and is likely to change before being broadly available. Reach out to your Samsara Representative to have Forms APIs enabled for your organization.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Issues** under the Closed Beta category when creating or editing an API token. <a href=\"http"
+        },
+        {
+          "info": {
+            "name": "[beta] Get Speeding Intervals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/speeding-intervals/stream",
+            "params": [
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of asset IDs. Include up to 50 asset IDs."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "RFC 3339 timestamp which is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter. If not provided then the endpoint behaves as an unending feed of changes."
+              },
+              {
+                "name": "queryBy",
+                "value": "",
+                "type": "query",
+                "description": "Decide which timestamp the `startTime` and `endTime` are compared to.  Valid values: `updatedAtTime`, `tripStartTime`"
+              },
+              {
+                "name": "includeAsset",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not to return expanded asset data"
+              },
+              {
+                "name": "includeDriverId",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not to return trip's driver id"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "severityLevels",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma-separated severity levels to filter speeding intervals by. Valid values:  light, moderate, heavy, severe."
+              }
+            ]
+          },
+          "docs": "This endpoint will return all speeding intervals associated with trips that have been collected for your organization based on the time parameters passed in. Only completed trips are included. Results are paginated.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Speeding Intervals** under the Speeding Intervals category when creating or editing an API token"
+        },
+        {
+          "info": {
+            "name": "[beta] Get a Stream of Filtered Training Assignments.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/training-assignments/stream",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": " A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "learnerIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma separated learner IDs. If learner ID is present, training assignments for the specified learner(s) will be returned. Max value for this value is 100 objects. Example: `learnerIds=driver-281474,driver-46282156`"
+              },
+              {
+                "name": "courseIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma separated course IDs. If course ID is present, training assignments for the specified course ID(s) will be returned. Max value for this value is 100 objects. Defaults to returning all courses. Example: `courseIds=a4db8702-79d5-4396-a717-e301d52ecc11,c6490f6a-d84e-49b5-b0ad-b6baae304075`"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma separated values. If status is present, training assignments for the specified status(s) will be returned. Valid values: \"notStarted\", \"inProgress\", \"completed\". Defaults to returning all courses."
+              }
+            ]
+          },
+          "docs": "Returns all training assignments data that has been created or modified for your organization based on the time parameters passed in. Results are paginated and are sorted by last modified date. If you include an endTime, the endpoint will return data up until that point (exclusive). If you don't include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. \n\n**Beta:** This endpoint is in beta and is likely to change before being broad"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Intervals API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Intervals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[beta] Get Speeding Intervals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/speeding-intervals/stream",
+            "params": [
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of asset IDs. Include up to 50 asset IDs."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "RFC 3339 timestamp which is compared against `updatedAtTime` or `tripStartTime` depending on the queryBy parameter. If not provided then the endpoint behaves as an unending feed of changes."
+              },
+              {
+                "name": "queryBy",
+                "value": "",
+                "type": "query",
+                "description": "Decide which timestamp the `startTime` and `endTime` are compared to.  Valid values: `updatedAtTime`, `tripStartTime`"
+              },
+              {
+                "name": "includeAsset",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not to return expanded asset data"
+              },
+              {
+                "name": "includeDriverId",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not to return trip's driver id"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "severityLevels",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma-separated severity levels to filter speeding intervals by. Valid values:  light, moderate, heavy, severe."
+              }
+            ]
+          },
+          "docs": "This endpoint will return all speeding intervals associated with trips that have been collected for your organization based on the time parameters passed in. Only completed trips are included. Results are paginated.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Speeding Intervals** under the Speeding Intervals category when creating or editing an API token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

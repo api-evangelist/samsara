@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Jurisdiction API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Jurisdiction",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get IFTA Jurisdiction Reports.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/fleet/reports/ifta/jurisdiction",
+            "params": [
+              {
+                "name": "year",
+                "value": "",
+                "type": "query",
+                "description": " The year of the requested IFTA report summary. Must be provided with a month or quarter param. Example: `year=2021`"
+              },
+              {
+                "name": "month",
+                "value": "",
+                "type": "query",
+                "description": " The month of the requested IFTA report summary. Can not be provided with the quarter param. Example: `month=January`  Valid values: `January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`"
+              },
+              {
+                "name": "quarter",
+                "value": "",
+                "type": "query",
+                "description": " The quarter of the requested IFTA report summary. Can not be provided with the month param. Q1: January, February, March. Q2: April, May, June. Q3: July, August, September. Q4: October, November, December. Example: `quarter=Q1`  Valid values: `Q1`, `Q2`, `Q3`, `Q4`"
+              },
+              {
+                "name": "jurisdictions",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of jurisdictions. Example: `jurisdictions=GA`"
+              },
+              {
+                "name": "fuelType",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of IFTA fuel types. Example: `fuelType=Diesel`  Valid values: `Unspecified`, `A55`, `Biodiesel`, `CompressedNaturalGas`, `Diesel`, `E85`, `Electricity`, `Ethanol`, `Gasohol`, `Gasoline`, `Hydrogen`, `LiquifiedNaturalGas`, `M85`, `Methanol`, `Propane`, `Other`"
+              },
+              {
+                "name": "vehicleIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`"
+              },
+              {
+                "name": "tagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+              },
+              {
+                "name": "parentTagIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+              }
+            ]
+          },
+          "docs": "Get all jurisdiction IFTA reports for the requested time duration. Data is returned in your organization's defined timezone.\n\n**Note:** The most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read IFTA (US)*"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

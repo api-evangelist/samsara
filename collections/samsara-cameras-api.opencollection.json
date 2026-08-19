@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Cameras API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cameras",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[preview] List Uploaded Media by Time Range.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/preview/cameras/media",
+            "params": [
+              {
+                "name": "vehicleIds",
+                "value": "",
+                "type": "query",
+                "description": " A filter on the data based on this comma-separated list of vehicle IDs and externalIds. Example: `vehicleIds=1234,5678,samsara.vin:1HGBH41JXMN109186`"
+              },
+              {
+                "name": "inputs",
+                "value": "",
+                "type": "query",
+                "description": "A list of desired camera inputs for which to return captured media. If empty, media for all available inputs will be returned."
+              },
+              {
+                "name": "mediaTypes",
+                "value": "",
+                "type": "query",
+                "description": "A list of desired media types for which to return captured media. If empty, media for all available media types will be returned."
+              },
+              {
+                "name": "triggerReasons",
+                "value": "",
+                "type": "query",
+                "description": "A list of desired trigger reasons for which to return captured media. If empty, media for all available trigger reasons will be returned."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "availableAfterTime",
+                "value": "",
+                "type": "query",
+                "description": "A timestamp in RFC 3339 format that can act as a cursor to track which media has previously been retrieved; only media whose availableAtTime comes after this parameter will be returned. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              }
+            ]
+          },
+          "docs": "This endpoint returns a list of all uploaded media (video and still images) matching query parameters. Additional media can be retrieved with the [Create a media retrieval request](https://developers.samsara.com/reference/postmediaretrieval) endpoint, and they will be included in the list after they are uploaded. Urls provided by this endpoint expire in 8 hours.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

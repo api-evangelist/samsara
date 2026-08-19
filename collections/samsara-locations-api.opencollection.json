@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Locations API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Locations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Asset Location and Speed Data in an Organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/assets/location-and-speed/stream",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit for how many objects will be in the response. Default and max for this value is 512 objects."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": " A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": " An end time in RFC 3339 format. Defaults to never if not provided; if not provided then pagination will not cease, and a valid pagination cursor will always be returned. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00)."
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of asset IDs."
+              },
+              {
+                "name": "includeSpeed",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether or not to return the 'speed' object"
+              },
+              {
+                "name": "includeReverseGeo",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether or not to return the 'address' object"
+              },
+              {
+                "name": "includeGeofenceLookup",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether or not to return the 'geofence' object"
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              }
+            ]
+          },
+          "docs": "This endpoint will return asset locations and speed data that has been collected for your organization based on the time parameters passed in. Results are paginated. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call. The endpoint will only return data up until the endTime that has been processed by the server at the time of the origina"
+        },
+        {
+          "info": {
+            "name": "List Historical Locations for a Given Asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/v1/fleet/assets/:asset_id/locations",
+            "params": [
+              {
+                "name": "asset_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the asset. Must contain only digits 0-9."
+              },
+              {
+                "name": "startMs",
+                "value": "",
+                "type": "query",
+                "description": "Timestamp in milliseconds representing the start of the period to fetch, inclusive. Used in combination with endMs."
+              },
+              {
+                "name": "endMs",
+                "value": "",
+                "type": "query",
+                "description": "Timestamp in milliseconds representing the end of the period to fetch, inclusive. Used in combination with startMs."
+              }
+            ]
+          },
+          "docs": "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nList historical locations for a given asset. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

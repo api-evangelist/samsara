@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Sessions API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Coaching Sessions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/coaching/sessions/stream",
+            "params": [
+              {
+                "name": "driverIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma separated driver IDs. If driver ID is present, sessions for the specified driver(s) will be returned."
+              },
+              {
+                "name": "coachIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma separated user IDs. If coach ID is present, sessions for the specified coach(s) will be returned for either assignedCoach or completedCoach. If both driverId(s) and coachId(s) are present, sessions with specified driver(s) and coach(es) will be returned."
+              },
+              {
+                "name": "sessionStatuses",
+                "value": "",
+                "type": "query",
+                "description": "Optional string of comma separated statuses. Valid values:  upcoming, completed, deleted."
+              },
+              {
+                "name": "includeCoachableEvents",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean to control whether behaviors will include coachableEvents in the response. Defaults to false."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Required RFC 3339 timestamp that indicates when to begin receiving data. Value is compared against `updatedAtTime`"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "Optional RFC 3339 timestamp. If not provided then the endpoint behaves as an unending feed of changes. If endTime is set the same as startTime, the most recent data point before that time will be returned per asset. Value is compared against `updatedAtTime`"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": " If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+              },
+              {
+                "name": "includeExternalIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional boolean indicating whether to return external IDs on supported entities"
+              }
+            ]
+          },
+          "docs": "This endpoint will return coaching sessions for your organization based on the time parameters passed in. Results are paginated by sessions. If you include an endTime, the endpoint will return data up until that point. If you dont include an endTime, you can continue to poll the API real-time with the pagination cursor that gets returned on every call.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here<"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

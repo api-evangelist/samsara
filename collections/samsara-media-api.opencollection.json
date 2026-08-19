@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Samsara Media API",
+    "version": "2024-11-18"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Media",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[beta] Get Details for a Media Retrieval Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.samsara.com/cameras/media/retrieval",
+            "params": [
+              {
+                "name": "retrievalId",
+                "value": "",
+                "type": "query",
+                "description": "Retrieval ID associated with this media capture request. Examples: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e"
+              }
+            ]
+          },
+          "docs": "This endpoint returns media information corresponding to a retrieval ID. Retrieval IDs are associated to prior [media retrieval requests](https://developers.samsara.com/reference/postmediaretrieval). Urls provided by this endpoint expire in 8 hours.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Media Retrieval** under the Safety & Cameras category when c"
+        },
+        {
+          "info": {
+            "name": "[beta] Create a Media Retrieval Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.samsara.com/cameras/media/retrieval",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates an asynchronous request to upload certain media from a device. Currently, only images can be requested for timestamps when there's high resolution footage stored on the device, even if low resolution footage exists on the device during that timestamp. Other types of media (e.g. videos, hyperlapse) are planned to be supported in the future. If a device is offline, the requested media will be uploaded once it comes back online.\n\n <b>Rate limit:</b> 100 requests/min (learn mor"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

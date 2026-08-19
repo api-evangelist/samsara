@@ -1,0 +1,241 @@
+{
+  "item": [
+    {
+      "id": "3fab9f0a-40ab-4c73-bfc4-ccab3f08cd77",
+      "name": "Vehicle  Locations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "afba0ec8-61fb-4c5b-910c-cce9e1f2da77",
+          "name": "Locations Snapshot",
+          "request": {
+            "name": "Locations Snapshot",
+            "description": {
+              "content": "***NOTE: The Vehicle Locations API is an older API that does not combine GPS data with onboard diagnostics. Try our new [Vehicle Stats API](ref:getvehiclestats) instead.***\n\nReturns the last known location of all vehicles at the given `time`. If no `time` is specified, the current time is used. This can be optionally filtered by tags or specific vehicle IDs.\n\nRelated guide: <a href=\"/docs/vehicle-locations-1\" target=\"_blank\">Vehicle Locations</a>. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Vehicle Statistics** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fleet",
+                "vehicles",
+                "locations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "time",
+                  "value": "<string>",
+                  "description": "A filter on the data that returns the last known data points with timestamps less than or equal to this value. Defaults to now if not provided. Must be a string in RFC 3339 format. Millisecond precision and timezones are supported. (Example: `2020-01-27T07:06:25Z`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "parentTagIds",
+                  "value": "<string>,<string>",
+                  "description": "A filter on the data based on this comma-separated list of parent tag IDs, for use by orgs with tag hierarchies. Specifying a parent tag will implicitly include all descendent tags of the parent tag. Example: `parentTagIds=345,678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "tagIds",
+                  "value": "<string>,<string>",
+                  "description": "A filter on the data based on this comma-separated list of tag IDs. Example: `tagIds=1234,5678`"
+                },
+                {
+                  "disabled": false,
+                  "key": "vehicleIds",
+                  "value": "<string>,<string>",
+                  "description": "A filter on the data based on this comma-separated list of vehicle IDs. Example: `vehicleIds=1234,5678`"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "676e0efc-e196-4869-b607-9adcd0aa6ccb",
+              "name": "List of the most recent locations for the specified vehicles.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "locations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"112\",\n      \"location\": {\n        \"latitude\": 122.142,\n        \"longitude\": -93.343,\n        \"time\": \"2020-01-27T07:06:25Z\",\n        \"heading\": 120,\n        \"reverseGeo\": {\n          \"formattedLocation\": \"16 N Fair Oaks Ave, Pasadena, CA 91103\"\n        },\n        \"speed\": 48.3\n      },\n      \"name\": \"Truck A7\"\n    },\n    {\n      \"id\": \"112\",\n      \"location\": {\n        \"latitude\": 122.142,\n        \"longitude\": -93.343,\n        \"time\": \"2020-01-27T07:06:25Z\",\n        \"heading\": 120,\n        \"reverseGeo\": {\n          \"formattedLocation\": \"16 N Fair Oaks Ave, Pasadena, CA 91103\"\n        },\n        \"speed\": 48.3\n      },\n      \"name\": \"Truck A7\"\n    }\n  ],\n  \"pagination\": {\n    \"endCursor\": \"MjkY\",\n    \"hasNextPage\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "518e914d-963f-4e98-b7e7-eb7d8fd04ad3",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fleet",
+                    "vehicles",
+                    "locations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parentTagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "tagIds",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "vehicleIds",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"An error has occurred.\",\n  \"requestId\": \"8916e1c1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.samsara.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b5035ba6-602e-4c41-b9c9-10480b31a052",
+    "name": "Samsara Vehicle  Locations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gain greater visibility by connecting your fleets, equipment, sites, and people.",
+      "type": "text/plain"
+    }
+  }
+}

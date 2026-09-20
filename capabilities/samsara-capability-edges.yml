@@ -1,0 +1,426 @@
+slug: samsara
+provider: Samsara
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 39
+edges:
+- tag: Hos
+  spec_file: samsara-hos-api-openapi.yml
+  capability_id: BC-2440.30
+  capability_id_l1: BC-2440
+  capability_name: Hours-of-Service and Fatigue Management
+  confidence: 0.95
+  evidence: GET /fleet/hos/violations  getHosViolations  Get All Driver HOS Violations; POST /v1/fleet/drivers/{driver_id}/hos/duty_status  Set
+    a Duty Status for a Specific Driver
+  reason: Hours-of-service clocks, daily logs, duty status and violations for drivers — plainly ELD hours-of-service
+    compliance management.
+- tag: Hours Of  Service
+  spec_file: samsara-hours-of-service-api-openapi.yml
+  capability_id: BC-2440.30
+  capability_id_l1: BC-2440
+  capability_name: Hours-of-Service and Fatigue Management
+  confidence: 0.95
+  evidence: GET /fleet/hos/clocks  getHosClocks  Get HOS Clocks; GET /fleet/hos/violations  Get All Driver
+    HOS Violations
+  reason: Explicit hours-of-service clocks, logs and violation records (HosShift, HosViolations schemas)
+    for drivers — hours-of-service compliance.
+- tag: Status
+  spec_file: samsara-status-api-openapi.yml
+  capability_id: BC-2440.30
+  capability_id_l1: BC-2440
+  capability_name: Hours-of-Service and Fatigue Management
+  confidence: 0.88
+  evidence: POST /v1/fleet/drivers/{driver_id}/hos/duty_status  setCurrentDutyStatus  Set a Duty Status
+    for a Specific Driver
+  reason: Sets a driver's hours-of-service duty status (ELD/HOS), which is hours-of-service compliance
+    recording for drivers.
+- tag: Maintenance
+  spec_file: samsara-maintenance-api-openapi.yml
+  capability_id: BC-2430.20
+  capability_id_l1: BC-2430
+  capability_name: Fleet Maintenance Management
+  confidence: 0.87
+  evidence: GET /fleet/dvirs/history  getDvirHistory  Get All DVIRs; V1getFleetMaintenanceList  Get Vehicles
+    With Engine Faults or Check Lights
+  reason: Driver vehicle inspection reports, defect histories and engine fault/diagnostic trouble codes
+    drive corrective and preventive maintenance of fleet vehicles.
+- tag: Drivers
+  spec_file: samsara-drivers-api-openapi.yml
+  capability_id: BC-2440
+  capability_id_l1: BC-2440
+  capability_name: Driver & Crew Operations Management
+  confidence: 0.85
+  evidence: GET /fleet/drivers "List All Drivers", POST /v1/fleet/drivers/{driver_id}/hos/duty_status
+    "Set a Duty Status for a Specific Driver", GET /fleet/drivers/tachograph-activity/history, GET /v1/fleet/drivers/{driverId}/safety/score
+    "Fetch Driver Safety Score"; schemas DriverEldRuleset, UsDriverRulesetOverride
+  reason: 'Clearly driver operations for a transport fleet: driver master records, ELD rulesets, HOS duty
+    status, tachograph files and safety scores. It spans qualification, hours-of-service and performance
+    sub-capabilities, so only the L1 is asserted.'
+- tag: Feed
+  spec_file: samsara-feed-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.85
+  evidence: GET /fleet/vehicles/locations/feed  getVehicleLocationsFeed  Locations Feed; GET /fleet/equipment/stats/feed  Follow
+    a Feed of Equipment Stats
+  reason: Operations stream real-time vehicle and equipment position and diagnostic stats (schemas such
+    as VehicleStatsEngineLoadPercentValue, VehicleLocationLongitude), which is continuous monitoring of
+    mobile asset position and condition — fleet telematics.
+- tag: Reefer
+  spec_file: samsara-reefer-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.85
+  evidence: GET /v1/fleet/assets/{asset_id}/reefer  V1getAssetReefer  List Stats for a Given Reefer; schemas
+    reeferStats_returnAirTemp, reeferStats_setPoint, reeferStats_alarms
+  reason: Continuous monitoring of refrigerated trailer asset condition (temperature set point, return
+    air temp, fuel, alarms) is fleet telematics and asset condition monitoring.
+- tag: Statistics
+  spec_file: samsara-statistics-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.85
+  evidence: GET /beta/fleet/trailers/stats  getTrailerStatsSnapshot; schemas TrailerStatGpsWithDecorationsTypeResponseBody,
+    TrailerStatReeferSetPointTemperatureMilliCZone1TypeResponseBody
+  reason: Returns snapshot, feed and history of trailer telematics stats — GPS position, reefer temperatures,
+    door state, fuel — i.e. continuous monitoring of mobile asset position and condition.
+- tag: Tachograph ( E U  Only)
+  spec_file: samsara-tachograph-e-u-only-api-openapi.yml
+  capability_id: BC-2440.30
+  capability_id_l1: BC-2440
+  capability_name: Hours-of-Service and Fatigue Management
+  confidence: 0.85
+  evidence: GET /fleet/drivers/tachograph-activity/history  getDriverTachographActivity; GET /fleet/drivers/tachograph-files/history  Get
+    Tachograph Driver Files
+  reason: EU tachograph driver activity and regulatory tachograph file retrieval is the European hours-of-service/driving-time
+    compliance record for drivers and vehicles.
+- tag: Vehicle  Locations
+  spec_file: samsara-vehicle-locations-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.85
+  evidence: GET /fleet/vehicles/locations  getVehicleLocations  Locations Snapshot  (VehicleLocationLatitude,
+    VehicleLocationSpeed, reverseGeo)
+  reason: Real-time GPS position and speed of fleet vehicles is continuous monitoring of mobile asset
+    position, which is Fleet Telematics and Monitoring.
+- tag: Vehicle  Stats
+  spec_file: samsara-vehicle-stats-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.85
+  evidence: GET /fleet/vehicles/stats  getVehicleStats  Stats Snapshot  (VehicleStatsFaultCodesOemTroubleCode,
+    VehicleStatsFuelPercentValue, VehicleStatsEngineLoadPercentValue)
+  reason: Engine load, fuel level, battery temperature and OEM fault codes are vehicle condition telemetry,
+    matching Fleet Telematics and Monitoring which explicitly covers asset position and condition monitoring.
+- tag: Dispatch
+  spec_file: samsara-dispatch-api-openapi.yml
+  capability_id: BC-2420.10
+  capability_id_l1: BC-2420
+  capability_name: Dispatch Management
+  confidence: 0.82
+  evidence: DELETE /v1/fleet/dispatch/routes/{route_id_or_external_id} — "Delete a Route" (V1deleteDispatchRouteById)
+  reason: The endpoint manages fleet dispatch routes, i.e. assignment of work/routes to vehicles and drivers.
+    Only one operation is exposed, so confidence is tempered, but the path and operationId are unambiguous
+    about dispatch routing.
+- tag: Sessions
+  spec_file: samsara-sessions-api-openapi.yml
+  capability_id: BC-2440.40
+  capability_id_l1: BC-2440
+  capability_name: Driver and Crew Performance Management
+  confidence: 0.82
+  evidence: GET /coaching/sessions/stream  getCoachingSessions  Get Coaching Sessions; schemas coachableEventResponseBody,
+    behaviorResponseBody, DriverWithExternalIdObjectResponseBody
+  reason: Operations retrieve driver coaching sessions tied to coachable driving behaviour events for
+    identified drivers — driver performance scoring and coaching, i.e. Driver and Crew Performance Management.
+- tag: Equipment
+  spec_file: samsara-equipment-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.8
+  evidence: GET /fleet/equipment/locations/feed "Follow Feed of Equipment Locations", GET /fleet/equipment/stats/history
+    "Get Historical Equipment Stats"; schemas EquipmentEngineState, EquipmentGpsOdometerMeters, EquipmentGatewayJ1939EngineSeconds
+  reason: The surface registers units of mobile equipment and streams their GPS position, engine state,
+    odometer and engine-hour telemetry — continuous monitoring of asset position and condition. Equipment
+    master listing also touches asset registry, but telematics monitoring dominates the operations.
+- tag: History
+  spec_file: samsara-history-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.8
+  evidence: GET /fleet/vehicles/locations/history  getVehicleLocationsHistory  Historical Locations; GET
+    /industrial/data-inputs/data-points/history
+  reason: Historical retrieval of vehicle/equipment location and diagnostic stats plus sensor and machine
+    histories — telemetry of asset position and condition. Some industrial-sensor operations sit slightly
+    outside fleet, hence not maximal confidence.
+- tag: Locations
+  spec_file: samsara-locations-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.8
+  evidence: GET /assets/location-and-speed/stream  getLocationAndSpeed  List Asset Location and Speed
+    Data in an Organization
+  reason: Continuous and historical asset position/speed telemetry is squarely fleet telematics and monitoring
+    of mobile assets.
+- tag: Routes
+  spec_file: samsara-routes-api-openapi.yml
+  capability_id: BC-2420.10
+  capability_id_l1: BC-2420
+  capability_name: Dispatch Management
+  confidence: 0.8
+  evidence: POST /fleet/routes createRoute Create a Route; DELETE /v1/fleet/dispatch/routes/{route_id_or_external_id}  V1deleteDispatchRouteById
+  reason: CRUD over fleet dispatch routes with stops and addresses is transport execution planning/dispatch.
+    The 'dispatch/routes' path grounds Dispatch Management, though route-plan definition could also read
+    as last-mile routing.
+- tag: Training
+  spec_file: samsara-training-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.8
+  evidence: 'PATCH /preview/training-assignments  patchTrainingAssignments  [preview] Update Training
+    Assignments.  schemas: TrainingLearnerObjectResponseBody, TrainingCourseObjectResponseBody'
+  reason: Learner and course objects with assignment lifecycle operations describe workforce training
+    administration, i.e. Learning & Development Management. No evidence it is scoped to a specific regulated
+    regime such as dangerous-goods training, so the generic HCM capability is the honest fit.
+- tag: Activity
+  spec_file: samsara-activity-api-openapi.yml
+  capability_id: BC-2440.30
+  capability_id_l1: BC-2440
+  capability_name: Hours-of-Service and Fatigue Management
+  confidence: 0.78
+  evidence: GET /fleet/drivers/tachograph-activity/history getDriverTachographActivity  Get Driver Tachograph
+    Activity; schemas TachographActivity, DriverTachographActivityData
+  reason: Tachograph activity history records driving/rest/work periods for drivers, the data substrate
+    of hours-of-service and fatigue compliance in EU road transport.
+- tag: Aemp
+  spec_file: samsara-aemp-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.78
+  evidence: GET /beta/aemp/Fleet/{pageNumber} getAempEquipmentList  [beta] Get a List of AEMP Equipment;
+    schemas LocationResponseBody, CumulativeOperatingHoursResponseBody, EngineStatusResponseBody, FuelRemainingResponseBody,
+    DEFRemainingResponseBody
+  reason: AEMP is the telematics data standard for mobile equipment; the response exposes location, engine
+    status, operating hours and fuel level — continuous monitoring of asset position and condition.
+- tag: Defects
+  spec_file: samsara-defects-api-openapi.yml
+  capability_id: BC-2430.20
+  capability_id_l1: BC-2430
+  capability_name: Fleet Maintenance Management
+  confidence: 0.78
+  evidence: GET /fleet/defects/history "Get All Defects" (operationId getDvirDefects), PATCH /fleet/defects/{id}
+    "Update a Defect"; schemas Defect_resolvedBy, DvirVehicleDefects-adjacent trailerTinyResponse/vehicleTinyResponse
+  reason: Defects here are vehicle/trailer inspection defects raised via DVIR and tracked to resolution
+    — corrective maintenance of mobile assets. Not a product-quality or software-defect surface, as the
+    vehicle/trailer references confirm.
+- tag: Logs
+  spec_file: samsara-logs-api-openapi.yml
+  capability_id: BC-2440.30
+  capability_id_l1: BC-2440
+  capability_name: Hours-of-Service and Fatigue Management
+  confidence: 0.78
+  evidence: GET /fleet/hos/daily-logs  getHosDailyLogs  Get All Driver HOS Daily Logs; GET /v1/fleet/hos_authentication_logs  V1getFleetHosAuthenticationLogs  Get
+    HOS Signin and Signout
+  reason: Dominant surface is driver hours-of-service (ELD) daily logs and duty-status records, which
+    is hours-of-service compliance for drivers. A route audit-log endpoint is also present, slightly diluting
+    the tag.
+- tag: Users
+  spec_file: samsara-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: 'POST /users  createUser  Create a User  (schemas: UserRole, UserRoles, UserRoleAssignment,
+    UserAuthType)'
+  reason: Platform user CRUD with role assignments and auth type is account and access administration,
+    i.e. Identity & Access Management, not a customer or workforce master record. This is cross-industry
+    IT plumbing-adjacent but IAM is the honest business capability.
+- tag: Safety
+  spec_file: samsara-safety-api-openapi.yml
+  capability_id: BC-2440.40
+  capability_id_l1: BC-2440
+  capability_name: Driver and Crew Performance Management
+  confidence: 0.75
+  evidence: GET /v1/fleet/drivers/{driverId}/safety/score  V1getDriverSafetyScore; SafetyEventBehaviorLabel;
+    V1getVehicleHarshEvent Fetch Harsh Events
+  reason: Driver safety scoring and harsh-driving behaviour events are driver performance scoring and
+    coaching inputs for a fleet. Vehicle-level safety scores also fit telematics/operator-behaviour monitoring,
+    hence some ambiguity.
+- tag: Trailers
+  spec_file: samsara-trailers-api-openapi.yml
+  capability_id: BC-2430.30
+  capability_id_l1: BC-2430
+  capability_name: Equipment Pool Management
+  confidence: 0.75
+  evidence: POST /fleet/trailers  createTrailer  Creates a New Trailer Asset
+  reason: 'Full CRUD over trailer assets plus their assignments is management of pooled trailer equipment
+    in a fleet, which is Fleet & Mobile Asset Management / Equipment Pool Management. Not a generic homograph:
+    schemas are TrailersUpdateTrailerRequestBody, TrailerGoaGatewayTinyResponse.'
+- tag: Vehicles
+  spec_file: samsara-vehicles-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.75
+  evidence: GET /fleet/vehicles/locations/history  getVehicleLocationsHistory  Historical Locations; GET
+    /fleet/vehicles/stats/feed  getVehicleStatsFeed  Stats Feed
+  reason: The tag combines vehicle master records with location feeds, stats feeds, tachograph files and
+    immobilizer states — predominantly continuous monitoring of fleet asset position and condition, so
+    Fleet Telematics and Monitoring within Fleet & Mobile Asset Management.
+- tag: Events
+  spec_file: samsara-events-api-openapi.yml
+  capability_id: BC-2440
+  capability_id_l1: BC-2440
+  capability_name: Driver & Crew Operations Management
+  confidence: 0.72
+  evidence: GET /beta/fleet/hos/drivers/eld-events "[beta] Get Driver HOS ELD Events"; GET /v1/fleet/vehicles/{vehicleId}/safety/harsh_event
+    "Fetch Harsh Events"; schemas HosDriversEldEventObjectResponseBody, V1VehicleHarshEventResponse
+  reason: 'Both operations return driver-centric records: ELD hours-of-service events and harsh-driving
+    safety events. That is driver hours compliance plus driver behaviour/safety, spanning two sub-capabilities,
+    so only the L1 is asserted. Note these are telematics ''events'', not shipment visibility events.'
+- tag: Inputs
+  spec_file: samsara-inputs-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.72
+  evidence: GET /assets/inputs/stream  getAssetsInputs  [beta] List Asset Inputs Data in an Organization.
+    ... assetsInputsAuxInputResponseBody
+  reason: Streaming auxiliary sensor input data from connected assets is continuous condition monitoring
+    of mobile assets — fleet telematics and monitoring.
+- tag: Assets
+  spec_file: samsara-assets-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.7
+  evidence: GET /v1/fleet/assets/locations V1getAllAssetCurrentLocations  List Current Location for All
+    Assets; GET /v1/fleet/assets/reefers V1getAssetsReefers  List Stats for All Reefers; GET /v1/fleet/assets/{asset_id}/locations  List
+    Historical Locations for a Given Asset
+  reason: Registry plus current/historical location and reefer condition stats for trailers and equipment
+    — mobile asset management with the bulk of the surface being position and condition monitoring; some
+    ambiguity between the register and telematics sub-capabilities.
+- tag: Custom
+  spec_file: samsara-custom-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.7
+  evidence: GET /preview/custom-reports/configs getCustomReportConfigs; POST /preview/custom-reports/runs
+    postCustomReportRun; GET /preview/custom-reports/runs/data getCustomReportRunData
+  reason: Definition, execution and retrieval of custom reports over operational data — a reporting/BI
+    delivery surface. Maps to Analytics & BI Management; it is a generic reporting facility rather than
+    any transport-specific capability.
+- tag: Dvirs
+  spec_file: samsara-dvirs-api-openapi.yml
+  capability_id: BC-2430.20
+  capability_id_l1: BC-2430
+  capability_name: Fleet Maintenance Management
+  confidence: 0.7
+  evidence: POST /fleet/dvirs "Create a Mechanic DVIR", PATCH /fleet/dvirs/{id} "Resolve a DVIR"; schemas
+    DvirVehicleDefects, DvirOdometerMeters, DvirAuthorSignature
+  reason: Driver/mechanic vehicle inspection reports with defect lists and resolution — inspection-driven
+    preventive and corrective maintenance of vehicles and trailers. A regulatory-compliance reading (fleet
+    certification) is also arguable, hence 0.70 rather than higher.
+- tag: Files
+  spec_file: samsara-files-api-openapi.yml
+  capability_id: BC-2440.30
+  capability_id_l1: BC-2440
+  capability_name: Hours-of-Service and Fatigue Management
+  confidence: 0.7
+  evidence: GET /fleet/drivers/tachograph-files/history  getDriverTachographFiles  Get Tachograph Driver
+    Files
+  reason: Tachograph driver and vehicle files are the statutory driving-time/rest records used for hours-of-service
+    compliance, so retrieval of these records supports HOS compliance management. Slight ambiguity as
+    vehicle-unit files also touch fleet compliance records.
+- tag: Fleets
+  spec_file: samsara-fleets-api-openapi.yml
+  capability_id: BC-2430
+  capability_id_l1: BC-2430
+  capability_name: Fleet & Mobile Asset Management
+  confidence: 0.7
+  evidence: PATCH /beta/fleet/equipment/{id}  patchEquipment  [beta] Update an Equipment; GET /beta/fleet/trailers/stats  Get
+    Trailer Stats; PATCH /beta/fleet/vehicles/{id}/immobilizer  Update Engine Immobilizer State of a Vehicle
+  reason: Mixed surface managing vehicles, trailers and equipment records plus their stats and immobiliser
+    state — clearly fleet/mobile-asset management, but spread across telematics, equipment records and
+    driver HOS so no single sub-capability is safe.
+- tag: Fuel
+  spec_file: samsara-fuel-api-openapi.yml
+  capability_id: BC-2430.60
+  capability_id_l1: BC-2430
+  capability_name: Fleet Utilisation and Performance Management
+  confidence: 0.7
+  evidence: GET /fleet/reports/drivers/fuel-energy  getFuelEnergyDriverReports  Get Fuel and Energy Efficiency
+    Driver Reports.
+  reason: 'Same surface: fuel/energy efficiency reports with cost objects (FuelEnergyCostResponseResponseBody)
+    for vehicles and drivers, i.e. measurement of asset efficiency and running cost.'
+- tag: Fuel And  Energy
+  spec_file: samsara-fuel-and-energy-api-openapi.yml
+  capability_id: BC-2430.60
+  capability_id_l1: BC-2430
+  capability_name: Fleet Utilisation and Performance Management
+  confidence: 0.7
+  evidence: GET /fleet/reports/vehicles/fuel-energy  getFuelEnergyVehicleReports  Get Fuel and Energy
+    Efficiency Vehicle Reports.
+  reason: Fuel and energy efficiency reporting per vehicle and driver, including FuelEnergyCostResponse,
+    measures asset operating efficiency and cost — fleet utilisation and performance measurement. Could
+    also read as driver performance, hence moderate confidence.
+- tag: Reports
+  spec_file: samsara-reports-api-openapi.yml
+  capability_id: BC-2430.60
+  capability_id_l1: BC-2430
+  capability_name: Fleet Utilisation and Performance Management
+  confidence: 0.7
+  evidence: Get Fuel and Energy Efficiency Vehicle Reports; Get Vehicle Idling Reports; Get IFTA Jurisdiction
+    Reports
+  reason: Vehicle fuel/energy efficiency and idling reporting is measurement of asset utilisation and
+    operating cost for fleet decisions. IFTA fuel-tax reporting is a secondary aspect; L2 fleet utilisation
+    & performance is the best fit for the majority of operations.
+- tag: Roles
+  spec_file: samsara-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /user-roles  listUserRoles  List All User Roles; schema UserRole
+  reason: Enumeration of user roles for access control within the platform maps to identity and access
+    management. Read-only single endpoint, so confidence moderate.
+- tag: Stream
+  spec_file: samsara-stream-api-openapi.yml
+  capability_id: BC-2430
+  capability_id_l1: BC-2430
+  capability_name: Fleet & Mobile Asset Management
+  confidence: 0.7
+  evidence: GET /assets/location-and-speed/stream  List Asset Location and Speed Data in an Organization;
+    GET /dvirs/stream  Stream DVIRs; GET /fleet/vehicles/immobilizer/stream  Get Engine Immobilizer States
+  reason: The streams expose mobile-asset telemetry (location/speed, trips, immobilizer state) plus vehicle
+    inspection defects — fleet and mobile asset management overall; no single L2 dominates, so L1 only.
+- tag: Trips
+  spec_file: samsara-trips-api-openapi.yml
+  capability_id: BC-2430.40
+  capability_id_l1: BC-2430
+  capability_name: Fleet Telematics and Monitoring
+  confidence: 0.7
+  evidence: GET /v1/fleet/trips  V1getFleetTrips  Get Vehicle Trips  (V1TripResponse_startCoordinates,
+    V1TripResponse_endAddress)
+  reason: Vehicle trip records with start/end coordinates and addresses are telematics-derived movement
+    history of fleet assets, mapping to Fleet Telematics and Monitoring. It is asset movement data rather
+    than shipment-level visibility, so shipment tracking capabilities were not used.

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Immobilizer API
@@ -13,7 +13,16 @@ tags:
 paths:
   /beta/fleet/vehicles/{id}/immobilizer:
     patch:
-      description: "Update the engine immobilizer state of a vehicle. This requires an engine immobilizer to be installed on the vehicle gateway.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Vehicle Immobilization** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Update the engine immobilizer state of a vehicle. This requires an engine immobilizer to be installed on the vehicle gateway.
+
+
+        Rate limit: 100 requests/min (learn more about rate limits here).
+
+
+        To use this endpoint, select **Write Vehicle Immobilization** under the Vehicles category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: updateEngineImmobilizerState
       parameters:
       - description: Vehicle ID
@@ -93,149 +102,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/EngineImmobilizerUpdateEngineImmobilizerStateBadRequestErrorResponseBody'
           description: Bad Request response.
-      summary: '[beta] Update Engine Immobilizer State of a Vehicle.'
+      summary: '[beta] Update Engine Immobilizer State of a Vehicle'
       tags:
       - Immobilizer
       x-codegen-request-body-name: UpdateEngineImmobilizerStateRequestBody
 components:
   schemas:
-    EngineImmobilizerUpdateEngineImmobilizerStateServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     EngineImmobilizerUpdateEngineImmobilizerStateTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
         message:
           description: Message of error
           example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateRequestBody:
-      description: A request body to update the engine immobilizer state.
-      properties:
-        relayStates:
-          description: A list of relay states. If a relay is omitted, its state won't be updated. If the list is empty, a 400 bad request status code will be returned. If there are multiple states for the same relay, a 400 bad request status code will be returned.
-          items:
-            $ref: '#/components/schemas/UpdateEngineImmobilizerRelayStateRequestBodyRequestBody'
-          type: array
-      required:
-      - relayStates
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerUpdateEngineImmobilizerStateNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -263,12 +141,143 @@ components:
       - id
       - isOpen
       type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateRequestBody:
+      description: A request body to update the engine immobilizer state.
+      properties:
+        relayStates:
+          description: A list of relay states. If a relay is omitted, its state won't be updated. If the list is empty, a 400 bad request status code will be returned. If there are multiple states for the same relay, a 400 bad request status code will be returned.
+          items:
+            $ref: '#/components/schemas/UpdateEngineImmobilizerRelayStateRequestBodyRequestBody'
+          type: array
+      required:
+      - relayStates
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     EngineImmobilizerUpdateEngineImmobilizerStateMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
         message:
           description: Message of error
           example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerUpdateEngineImmobilizerStateBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Started API
@@ -13,7 +13,16 @@ tags:
 paths:
   /v1/industrial/vision/runs/{camera_id}/{program_id}/{started_at_ms}:
     get:
-      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch runs by camera and program. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'This endpoint is still on our legacy API.
+
+
+        Fetch runs by camera and program.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Industrial** under the Industrial category when creating or editing an API token. Learn More.'
       operationId: V1getVisionRunsByCameraAndProgram
       parameters:
       - description: The camera_id should be valid for the given accessToken.
@@ -60,6 +69,46 @@ paths:
       - Started
 components:
   schemas:
+    V1VisionRunByCameraResponse_inspectionResults:
+      properties:
+        captureAtMs:
+          example: 1553811994730
+          format: float64
+          type: number
+        result:
+          example: PASS
+          type: string
+        stepResults:
+          $ref: '#/components/schemas/V1VisionStepResults'
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1VisionRunsByCameraAndProgramResponse:
+      properties:
+        deviceId:
+          example: 1234512345123
+          format: int64
+          type: integer
+        endedAtMs:
+          example: 0
+          format: int64
+          type: integer
+        programId:
+          example: 1
+          format: int64
+          type: integer
+        reportMetadata:
+          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
+        results:
+          items:
+            $ref: '#/components/schemas/V1VisionRunByCameraResponse_inspectionResults'
+          type: array
+        startedAtMs:
+          example: 1553808606097
+          format: int64
+          type: integer
+      type: object
     V1VisionStepResults:
       items:
         properties:
@@ -541,9 +590,6 @@ components:
             type: object
         type: object
       type: array
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     V1VisionRunByCameraResponse_runSummary:
       properties:
         itemsPerMinute:
@@ -562,43 +608,6 @@ components:
           example: 181
           format: int64
           type: integer
-      type: object
-    V1VisionRunsByCameraAndProgramResponse:
-      properties:
-        deviceId:
-          example: 1234512345123
-          format: int64
-          type: integer
-        endedAtMs:
-          example: 0
-          format: int64
-          type: integer
-        programId:
-          example: 1
-          format: int64
-          type: integer
-        reportMetadata:
-          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
-        results:
-          items:
-            $ref: '#/components/schemas/V1VisionRunByCameraResponse_inspectionResults'
-          type: array
-        startedAtMs:
-          example: 1553808606097
-          format: int64
-          type: integer
-      type: object
-    V1VisionRunByCameraResponse_inspectionResults:
-      properties:
-        captureAtMs:
-          example: 1553811994730
-          format: float64
-          type: number
-        result:
-          example: PASS
-          type: string
-        stepResults:
-          $ref: '#/components/schemas/V1VisionStepResults'
       type: object
   securitySchemes:
     AccessTokenHeader:

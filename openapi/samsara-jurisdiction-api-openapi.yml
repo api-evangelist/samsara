@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Jurisdiction API
@@ -13,7 +13,19 @@ tags:
 paths:
   /fleet/reports/ifta/jurisdiction:
     get:
-      description: "Get all jurisdiction IFTA reports for the requested time duration. Data is returned in your organization's defined timezone.\n\n**Note:** The most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read IFTA (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Get all jurisdiction IFTA reports for the requested time duration. Data is returned in your organization''s defined timezone.
+
+
+        **Note:** The most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours.
+
+
+        Rate limit: 5 requests/sec (learn more about rate limits here).
+
+
+        To use this endpoint, select **Read IFTA (US)** under the Compliance category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: getIftaJurisdictionReports
       parameters:
       - description: ' The year of the requested IFTA report summary. Must be provided with a month or quarter param. Example: `year=2021`'
@@ -161,104 +173,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/IFTAGetIftaJurisdictionReportsBadRequestErrorResponseBody'
           description: Bad Request response.
-      summary: Get IFTA Jurisdiction Reports.
+      summary: Get IFTA Jurisdiction Reports
       tags:
       - Jurisdiction
 components:
   schemas:
-    IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IftaJurisdictionSummaryObjectResponseBody:
-      description: A summary of this jurisdiction's IFTA data.
-      properties:
-        jurisdiction:
-          description: Jurisdiction code.
-          example: GA
-          type: string
-        taxPaidLiters:
-          description: Liters purchased for all qualified vehicles.
-          example: 25.5
-          format: double
-          type: number
-        taxableMeters:
-          description: Distance in meters traveled on public roads in an IFTA jurisdiction.
-          example: 2350
-          format: double
-          type: number
-        totalMeters:
-          description: Total meters driven in this jurisdiction, taxable and non-taxable.
-          example: 2350
-          format: double
-          type: number
-      required:
-      - jurisdiction
-      - taxableMeters
-      - totalMeters
-      type: object
-    IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -283,12 +208,64 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaJurisdictionReportDataObjectResponseBody'
+      required:
+      - data
+      type: object
+    IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -326,12 +303,92 @@ components:
       - unassignedFuelTypeVehicles
       - unassignedVehiclePurchases
       type: object
-    IFTAGetIftaJurisdictionReportsResponseBody:
+    IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
-        data:
-          $ref: '#/components/schemas/IftaJurisdictionReportDataObjectResponseBody'
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - data
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaJurisdictionSummaryObjectResponseBody:
+      description: A summary of this jurisdiction's IFTA data.
+      properties:
+        jurisdiction:
+          description: Jurisdiction code.
+          example: GA
+          type: string
+        taxPaidLiters:
+          description: Liters purchased for all qualified vehicles.
+          example: 25.5
+          format: double
+          type: number
+        taxableMeters:
+          description: Distance in meters traveled on public roads in an IFTA jurisdiction.
+          example: 2350
+          format: double
+          type: number
+        totalMeters:
+          description: Total meters driven in this jurisdiction, taxable and non-taxable.
+          example: 2350
+          format: double
+          type: number
+      required:
+      - jurisdiction
+      - taxableMeters
+      - totalMeters
+      type: object
+    IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     IftaJurisdictionReportDataObjectResponseBody:
       description: Dictionary containing summarized jurisdiction report data.
@@ -359,51 +416,6 @@ components:
       required:
       - jurisdictionReports
       - year
-      type: object
-    IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

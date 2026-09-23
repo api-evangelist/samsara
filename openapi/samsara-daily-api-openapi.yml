@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Daily API
@@ -13,7 +13,16 @@ tags:
 paths:
   /hos/daily-logs/log-meta-data:
     patch:
-      description: "Update the shippingDocs field of an existing assignment.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write ELD Hours of Service (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Update the shippingDocs field of an existing assignment.
+
+
+        Rate limit: 5 requests/sec (learn more about rate limits here).
+
+
+        To use this endpoint, select **Write ELD Hours of Service (US)** under the Compliance category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: updateShippingDocs
       parameters:
       - description: A start date in yyyy-mm-dd format. Required.
@@ -101,14 +110,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody'
           description: Bad Request response.
-      summary: '[beta] Update the ShippingDocs Field of an Existing Assignment.'
+      summary: '[beta] Update the ShippingDocs Field of an Existing Assignment'
       tags:
       - Daily
       x-codegen-request-body-name: UpdateShippingDocsRequestBody
 components:
   schemas:
-    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
@@ -122,12 +131,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -137,12 +146,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -152,35 +161,15 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    HosDailyLogsUpdateShippingDocsRequestBody:
+      description: Update the shippingDocs field.
       properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
+        shippingDocs:
+          description: ShippingDocs associated with the driver for the day.
+          example: ShippingID1, ShippingID2
           type: string
       required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+      - shippingDocs
       type: object
     PatchShippingDocsResponseBodyResponseBody:
       description: Response after successfully updating the LogMetaData object.
@@ -232,12 +221,12 @@ components:
             type: string
           type: array
       type: object
-    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -262,12 +251,42 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -284,21 +303,6 @@ components:
       required:
       - data
       type: object
-    HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
@@ -314,15 +318,20 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsRequestBody:
-      description: Update the shippingDocs field.
+    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
-        shippingDocs:
-          description: ShippingDocs associated with the driver for the day.
-          example: ShippingID1, ShippingID2
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - shippingDocs
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

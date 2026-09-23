@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
-  title: Samsara Organization  Info API
+  title: Samsara Organization Info API
   version: '2024-11-18'
 servers:
 - url: https://api.samsara.com/
@@ -13,7 +13,13 @@ tags:
 paths:
   /me:
     get:
-      description: "Get information about your organization. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Org Information** under the Setup & Administration category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'Get information about your organization.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Org Information** under the Setup & Administration category when creating or editing an API token. Learn More.'
       operationId: getOrganizationInfo
       responses:
         '200':
@@ -39,6 +45,25 @@ components:
         data:
           $ref: '#/components/schemas/OrganizationInfo'
       type: object
+    OrganizationInfo_carrierSettings:
+      description: Carrier for a given organization.
+      properties:
+        carrierName:
+          description: Carrier for a given organization.
+          example: Acme Inc.
+          maxLength: 255
+          type: string
+        dotNumber:
+          description: Carrier US DOT Number for the organization.
+          example: 98231
+          format: int64
+          type: integer
+        mainOfficeAddress:
+          description: Main office address for a given organization.
+          example: 1234 Pear St., Scranton, PA 62814
+          maxLength: 255
+          type: string
+      type: object
     OrganizationInfo:
       description: Information about your organization.
       properties:
@@ -63,25 +88,6 @@ components:
         requestId:
           description: The ID of the request.
           example: 8916e1c1
-          type: string
-      type: object
-    OrganizationInfo_carrierSettings:
-      description: Carrier for a given organization.
-      properties:
-        carrierName:
-          description: Carrier for a given organization.
-          example: Acme Inc.
-          maxLength: 255
-          type: string
-        dotNumber:
-          description: Carrier US DOT Number for the organization.
-          example: 98231
-          format: int64
-          type: integer
-        mainOfficeAddress:
-          description: Main office address for a given organization.
-          example: 1234 Pear St., Scranton, PA 62814
-          maxLength: 255
           type: string
       type: object
   securitySchemes:

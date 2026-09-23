@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Messages API
@@ -13,7 +13,19 @@ tags:
 paths:
   /v1/fleet/messages:
     get:
-      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nGet all messages. \n\n <b>Rate limit:</b> 75 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Messages** under the Driver Workflow category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'This endpoint is still on our legacy API.
+
+
+        Get all messages.
+
+
+        Rate limit: 75 requests/sec (learn more about rate limits here).
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Messages** under the Driver Workflow category when creating or editing an API token. Learn More.'
       operationId: V1getMessages
       parameters:
       - description: Time in unix milliseconds that represents the end of time range of messages to return. Used in combination with durationMs. Defaults to now.
@@ -41,11 +53,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/V1ErrorResponse'
           description: Unexpected error.
-      summary: Get All Messages.
+      summary: Get All Messages
       tags:
       - Messages
     post:
-      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nSend a message to a list of driver ids. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Messages** under the Driver Workflow category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'This endpoint is still on our legacy API.
+
+
+        Send a message to a list of driver ids.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Write Messages** under the Driver Workflow category when creating or editing an API token. Learn More.'
       operationId: V1createMessages
       requestBody:
         $ref: '#/components/requestBodies/inline_object_2'
@@ -87,12 +108,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/V1ErrorResponse'
           description: Unexpected error.
-      summary: Send a Message to a List of Driver Ids.
+      summary: Send a Message to a List of Driver Ids
       tags:
       - Messages
       x-codegen-request-body-name: createMessages
 components:
   schemas:
+    inline_object_2:
+      properties:
+        driverIds:
+          description: IDs of the drivers for whom the messages are sent to.
+          example:
+          - 111
+          - 222
+          - 333
+          items:
+            example: 555
+            format: int64
+            type: number
+          type: array
+        text:
+          description: The text sent in the message. Max 2500 characters allowed.
+          example: This is a message.
+          type: string
+      required:
+      - driverIds
+      - text
+      type: object
+    V1Messages:
+      items:
+        $ref: '#/components/schemas/V1Message'
+      type: array
     V1Message:
       properties:
         driverId:
@@ -108,13 +154,6 @@ components:
       - driverId
       - text
       type: object
-    V1Messages:
-      items:
-        $ref: '#/components/schemas/V1Message'
-      type: array
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     inline_response_200_5:
       description: A list of messages.
       properties:
@@ -141,27 +180,9 @@ components:
         data:
           $ref: '#/components/schemas/V1Messages'
       type: object
-    inline_object_2:
-      properties:
-        driverIds:
-          description: IDs of the drivers for whom the messages are sent to.
-          example:
-          - 111
-          - 222
-          - 333
-          items:
-            example: 555
-            format: int64
-            type: number
-          type: array
-        text:
-          description: The text sent in the message. Max 2500 characters allowed.
-          example: This is a message.
-          type: string
-      required:
-      - driverIds
-      - text
-      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
     V1MessageResponse:
       properties:
         driverId:

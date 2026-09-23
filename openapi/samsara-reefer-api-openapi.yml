@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Reefer API
@@ -13,7 +13,16 @@ tags:
 paths:
   /v1/fleet/assets/{asset_id}/reefer:
     get:
-      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch the reefer-specific stats of an asset. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'This endpoint is still on our legacy API.
+
+
+        Fetch the reefer-specific stats of an asset.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Trailers** under the Trailers category when creating or editing an API token. Learn More.'
       operationId: V1getAssetReefer
       parameters:
       - description: ID of the asset. Must contain only digits 0-9.
@@ -55,24 +64,41 @@ paths:
       - Reefer
 components:
   schemas:
-    V1AssetReeferResponse_reeferStats_alarms:
+    V1AssetReeferResponse_reeferStats_fuelPercentage:
       properties:
-        alarmCode:
-          description: ID of the alarm
-          example: 102
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
           format: int64
           type: integer
-        description:
-          description: Description of the alarm
-          example: Check Return Air Sensor
-          type: string
-        operatorAction:
-          description: Recommended operator action
-          example: Check and repair at end of trip
-          type: string
-        severity:
-          description: 'Severity of the alarm: 1: OK to run, 2: Check as specified, 3: Take immediate action'
-          example: 1
+        fuelPercentage:
+          description: Fuel percentage of the reefer.
+          example: 99
+          format: int64
+          type: integer
+      type: object
+    V1AssetReeferResponse_reeferStats_alarms_1:
+      properties:
+        alarms:
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms'
+          type: array
+        changedAtMs:
+          description: Timestamp when the alarms were reported, in Unix milliseconds since epoch
+          example: 1453449599999
+          format: int64
+          type: integer
+      type: object
+    V1AssetReeferResponse_reeferStats_engineHours:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        engineHours:
+          description: Engine hours of the reefer.
+          example: 1200
           format: int64
           type: integer
       type: object
@@ -88,7 +114,7 @@ components:
           example: Active (Continuous)
           type: string
       type: object
-    V1AssetReeferResponse_reeferStats_returnAirTemp:
+    V1AssetReeferResponse_reeferStats_setPoint:
       properties:
         changedAtMs:
           description: Timestamp in Unix milliseconds since epoch.
@@ -96,7 +122,7 @@ components:
           format: int64
           type: integer
         tempInMilliC:
-          description: Return air temperature in millidegree Celsius.
+          description: Set point temperature in millidegree Celsius.
           example: 31110
           format: int64
           type: integer
@@ -104,19 +130,6 @@ components:
     V1ErrorResponse:
       description: Error message describing why the request failed.
       type: string
-    V1AssetReeferResponse_reeferStats_engineHours:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        engineHours:
-          description: Engine hours of the reefer.
-          example: 1200
-          format: int64
-          type: integer
-      type: object
     V1AssetReeferResponse:
       description: Reefer-specific asset details
       properties:
@@ -135,7 +148,7 @@ components:
         reeferStats:
           $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats'
       type: object
-    V1AssetReeferResponse_reeferStats_setPoint:
+    V1AssetReeferResponse_reeferStats_returnAirTemp:
       properties:
         changedAtMs:
           description: Timestamp in Unix milliseconds since epoch.
@@ -143,33 +156,8 @@ components:
           format: int64
           type: integer
         tempInMilliC:
-          description: Set point temperature in millidegree Celsius.
+          description: Return air temperature in millidegree Celsius.
           example: 31110
-          format: int64
-          type: integer
-      type: object
-    V1AssetReeferResponse_reeferStats_alarms_1:
-      properties:
-        alarms:
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms'
-          type: array
-        changedAtMs:
-          description: Timestamp when the alarms were reported, in Unix milliseconds since epoch
-          example: 1453449599999
-          format: int64
-          type: integer
-      type: object
-    V1AssetReeferResponse_reeferStats_fuelPercentage:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        fuelPercentage:
-          description: Fuel percentage of the reefer.
-          example: 99
           format: int64
           type: integer
       type: object
@@ -205,6 +193,27 @@ components:
           items:
             $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_setPoint'
           type: array
+      type: object
+    V1AssetReeferResponse_reeferStats_alarms:
+      properties:
+        alarmCode:
+          description: ID of the alarm
+          example: 102
+          format: int64
+          type: integer
+        description:
+          description: Description of the alarm
+          example: Check Return Air Sensor
+          type: string
+        operatorAction:
+          description: Recommended operator action
+          example: Check and repair at end of trip
+          type: string
+        severity:
+          description: 'Severity of the alarm: 1: OK to run, 2: Check as specified, 3: Take immediate action'
+          example: 1
+          format: int64
+          type: integer
       type: object
   securitySchemes:
     AccessTokenHeader:

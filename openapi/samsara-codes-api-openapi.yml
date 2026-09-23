@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Codes API
@@ -13,7 +13,16 @@ tags:
 paths:
   /drivers/qr-codes:
     delete:
-      description: "Revoke requested driver's currently active QR code.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Drivers** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Revoke requested driver''s currently active QR code.
+
+
+        Rate limit: 100 requests/min (learn more about rate limits here).
+
+
+        To use this endpoint, select **Write Drivers** under the Drivers category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: deleteDriverQrCode
       requestBody:
         content:
@@ -90,7 +99,16 @@ paths:
       - Codes
       x-codegen-request-body-name: DeleteDriverQrCodeRequestBody
     get:
-      description: "Get details for requested driver(s) QR code, used for driver trip assignment.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Drivers** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Get details for requested driver(s) QR code, used for driver trip assignment.
+
+
+        Rate limit: 5 requests/sec (learn more about rate limits here).
+
+
+        To use this endpoint, select **Read Drivers** under the Drivers category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: getDriversQrCodes
       parameters:
       - description: String of comma separated driver IDs. List of driver - QR codes for specified driver(s) will be returned.
@@ -174,7 +192,16 @@ paths:
       tags:
       - Codes
     post:
-      description: "Assign a new QR code for the requested driver. Return error if an active QR code already exists.\n\n <b>Rate limit:</b> 100 requests/min (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Write Drivers** under the Drivers category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Assign a new QR code for the requested driver. Return error if an active QR code already exists.
+
+
+        Rate limit: 100 requests/min (learn more about rate limits here).
+
+
+        To use this endpoint, select **Write Drivers** under the Drivers category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: createDriverQrCode
       requestBody:
         content:
@@ -255,23 +282,8 @@ paths:
       x-codegen-request-body-name: CreateDriverQrCodeRequestBody
 components:
   schemas:
-    DriverQrCodesDeleteDriverQrCodeUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesGetDriversQrCodesGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    DriverQrCodesCreateDriverQrCodeServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
@@ -285,42 +297,12 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesDeleteDriverQrCodeGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    DriverQrCodesCreateDriverQrCodeTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesGetDriversQrCodesMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesGetDriversQrCodesNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -345,22 +327,7 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesDeleteDriverQrCodeServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesGetDriversQrCodesUnauthorizedErrorResponseBody:
+    DriverQrCodesCreateDriverQrCodeUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
@@ -375,12 +342,12 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesCreateDriverQrCodeNotFoundErrorResponseBody:
-      description: Resource not found
+    DriverQrCodesGetDriversQrCodesServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -390,12 +357,30 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesDeleteDriverQrCodeNotFoundErrorResponseBody:
-      description: Resource not found
+    DriverQrCodesCreateDriverQrCodeResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/QrCodeResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    DriverQrCodesCreateDriverQrCodeRequestBody:
+      description: Driver to assign a new QR code to.
+      properties:
+        driverId:
+          description: Unique ID of the driver.
+          example: 494123
+          format: int64
+          type: integer
+      required:
+      - driverId
+      type: object
+    DriverQrCodesGetDriversQrCodesNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -420,29 +405,12 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesGetDriversQrCodesResponseBody:
-      properties:
-        data:
-          description: List of driver QR codes.
-          items:
-            $ref: '#/components/schemas/QrCodeResponseObjectResponseBody'
-          type: array
-      required:
-      - data
-      type: object
-    DriverQrCodesCreateDriverQrCodeResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/QrCodeResponseObjectResponseBody'
-      required:
-      - data
-      type: object
-    DriverQrCodesGetDriversQrCodesBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    DriverQrCodesGetDriversQrCodesNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -452,16 +420,65 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesDeleteDriverQrCodeRequestBody:
-      description: Driver to revoke active QR code from.
+    DriverQrCodesDeleteDriverQrCodeTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
-        driverId:
-          description: Unique ID of the driver.
-          example: 494123
-          format: int64
-          type: integer
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - driverId
+      - message
+      - requestId
+      type: object
+    DriverQrCodesDeleteDriverQrCodeGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesCreateDriverQrCodeNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesDeleteDriverQrCodeServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     DriverQrCodesGetDriversQrCodesInternalServerErrorResponseBody:
       description: An internal server error occurred
@@ -478,23 +495,12 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesCreateDriverQrCodeRequestBody:
-      description: Driver to assign a new QR code to.
-      properties:
-        driverId:
-          description: Unique ID of the driver.
-          example: 494123
-          format: int64
-          type: integer
-      required:
-      - driverId
-      type: object
-    DriverQrCodesCreateDriverQrCodeGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    DriverQrCodesCreateDriverQrCodeBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -504,8 +510,38 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesCreateDriverQrCodeServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    DriverQrCodesDeleteDriverQrCodeBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesCreateDriverQrCodeInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesGetDriversQrCodesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
@@ -534,7 +570,118 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesCreateDriverQrCodeTooManyRequestsErrorResponseBody:
+    DriverQrCodesGetDriversQrCodesBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesGetDriversQrCodesResponseBody:
+      properties:
+        data:
+          description: List of driver QR codes.
+          items:
+            $ref: '#/components/schemas/QrCodeResponseObjectResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    DriverQrCodesGetDriversQrCodesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesDeleteDriverQrCodeRequestBody:
+      description: Driver to revoke active QR code from.
+      properties:
+        driverId:
+          description: Unique ID of the driver.
+          example: 494123
+          format: int64
+          type: integer
+      required:
+      - driverId
+      type: object
+    DriverQrCodesCreateDriverQrCodeNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesDeleteDriverQrCodeBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesCreateDriverQrCodeGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesDeleteDriverQrCodeNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesGetDriversQrCodesTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
         message:
@@ -564,147 +711,12 @@ components:
       required:
       - driverId
       type: object
-    DriverQrCodesDeleteDriverQrCodeBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesGetDriversQrCodesNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesDeleteDriverQrCodeBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesCreateDriverQrCodeUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesCreateDriverQrCodeBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesCreateDriverQrCodeNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesDeleteDriverQrCodeTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesCreateDriverQrCodeInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     DriverQrCodesCreateDriverQrCodeBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
           description: Message of error
           example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverQrCodesDeleteDriverQrCodeNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -729,12 +741,12 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesGetDriversQrCodesTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    DriverQrCodesDeleteDriverQrCodeNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -744,12 +756,27 @@ components:
       - message
       - requestId
       type: object
-    DriverQrCodesGetDriversQrCodesServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    DriverQrCodesDeleteDriverQrCodeUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverQrCodesGetDriversQrCodesUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

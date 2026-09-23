@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Audit API
@@ -13,7 +13,27 @@ tags:
 paths:
   /fleet/safety-events/audit-logs/feed:
     get:
-      description: "Get continuous safety events. The safety activity event feed offers a change-log for safety events. Use this endpoint to subscribe to safety event changes. See documentation below for all supported change-log types.\n\n| ActivityType      | Description |\n| ----------- | ----------- |\n| CreateSafetyEventActivityType | a new safety event is processed by Samsara      |\n| BehaviorLabelActivityType     | a label is added or removed from a safety event |\n| CoachingStateActivityType     | a safety event coaching state is updated        |\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read Safety Events & Scores** under the Safety & Cameras category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Get continuous safety events. The safety activity event feed offers a change-log for safety events. Use this endpoint to subscribe to safety event changes. See documentation below for all supported change-log types.
+
+
+        | ActivityType | Description |
+
+        | ----------- | ----------- |
+
+        | CreateSafetyEventActivityType | a new safety event is processed by Samsara |
+
+        | BehaviorLabelActivityType | a label is added or removed from a safety event |
+
+        | CoachingStateActivityType | a safety event coaching state is updated |
+
+
+        Rate limit: 5 requests/sec (learn more about rate limits here).
+
+
+        To use this endpoint, select **Read Safety Events & Scores** under the Safety & Cameras category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: getSafetyActivityEventFeed
       parameters:
       - description: ' If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.'
@@ -98,49 +118,6 @@ paths:
       - Audit
 components:
   schemas:
-    SafetyEventsGetSafetyActivityEventFeedResponseBody:
-      properties:
-        data:
-          description: Paginated safety event activity feed limited to 10 events.
-          items:
-            $ref: '#/components/schemas/SafetyEventActivityFeedItemResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
       description: Resource not found
       properties:
@@ -155,6 +132,19 @@ components:
       required:
       - message
       - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedResponseBody:
+      properties:
+        data:
+          description: Paginated safety event activity feed limited to 10 events.
+          items:
+            $ref: '#/components/schemas/SafetyEventActivityFeedItemResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
       type: object
     SafetyEventActivityFeedItemResponseBody:
       description: Safety event activity feed item.
@@ -182,72 +172,6 @@ components:
       - safetyEvent
       - time
       - type
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventObjectResponseBody:
-      description: The safety event that was updated.
-      properties:
-        behaviorLabels:
-          description: Behavior labels for a safety event.
-          items:
-            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
-          type: array
-        driver:
-          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
-        id:
-          description: The unique Samsara ID of the safety event.
-          example: 212014918174029-1550954461759
-          type: string
-        time:
-          description: The time the safety event occurred in RFC 3339 milliseconds format.
-          example: '2019-06-13T19:08:25.455Z'
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
     SafetyEventBehaviorLabelsResponseBody:
       description: Behavior label for a safety event.
@@ -294,12 +218,12 @@ components:
           example: Acceleration
           type: string
       type: object
-    SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -317,21 +241,6 @@ components:
           example: 0987
           type: string
       type: object
-    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
@@ -346,14 +255,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    SafetyEventVehicleObjectResponseBody:
-      description: A minified vehicle object.
-      properties:
-        id:
-          description: ID of the vehicle.
-          example: '1234'
-          type: string
       type: object
     SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody:
       description: Unauthorized
@@ -384,6 +285,125 @@ components:
       required:
       - endCursor
       - hasNextPage
+      type: object
+    SafetyEventVehicleObjectResponseBody:
+      description: A minified vehicle object.
+      properties:
+        id:
+          description: ID of the vehicle.
+          example: '1234'
+          type: string
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventObjectResponseBody:
+      description: The safety event that was updated.
+      properties:
+        behaviorLabels:
+          description: Behavior labels for a safety event.
+          items:
+            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
+          type: array
+        driver:
+          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
+        id:
+          description: The unique Samsara ID of the safety event.
+          example: 212014918174029-1550954461759
+          type: string
+        time:
+          description: The time the safety event occurred in RFC 3339 milliseconds format.
+          example: '2019-06-13T19:08:25.455Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

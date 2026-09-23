@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
-  title: Samsara Vehicle  Locations API
+  title: Samsara Vehicle Locations API
   version: '2024-11-18'
 servers:
 - url: https://api.samsara.com/
@@ -13,7 +13,19 @@ tags:
 paths:
   /fleet/vehicles/locations:
     get:
-      description: "***NOTE: The Vehicle Locations API is an older API that does not combine GPS data with onboard diagnostics. Try our new [Vehicle Stats API](ref:getvehiclestats) instead.***\n\nReturns the last known location of all vehicles at the given `time`. If no `time` is specified, the current time is used. This can be optionally filtered by tags or specific vehicle IDs.\n\nRelated guide: <a href=\"/docs/vehicle-locations-1\" target=\"_blank\">Vehicle Locations</a>. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Vehicle Statistics** under the Vehicles category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: '***NOTE: The Vehicle Locations API is an older API that does not combine GPS data with onboard diagnostics. Try our new Vehicle Stats API instead.***
+
+
+        Returns the last known location of all vehicles at the given `time`. If no `time` is specified, the current time is used. This can be optionally filtered by tags or specific vehicle IDs.
+
+
+        Related guide: Vehicle Locations.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Vehicle Statistics** under the Vehicles category when creating or editing an API token. Learn More.'
       operationId: getVehicleLocations
       parameters:
       - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
@@ -75,11 +87,6 @@ components:
       description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
       example: '112'
       type: string
-    VehicleLocationHeading:
-      description: Heading of the vehicle in degrees.
-      example: 120
-      format: double
-      type: number
     VehicleLocation:
       description: Vehicle location event.
       properties:
@@ -100,77 +107,10 @@ components:
       - longitude
       - time
       type: object
-    reverseGeo:
-      description: Reverse geocoded information.
-      properties:
-        formattedLocation:
-          description: Formatted address of the reverse geocoding data.
-          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
-          type: string
-      type: object
-    VehicleLocationsResponse:
-      description: Most recent vehicle locations and pagination info.
-      properties:
-        data:
-          description: List of the most recent locations for the specified vehicles.
-          items:
-            $ref: '#/components/schemas/VehicleLocationsResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    VehicleName:
-      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
-      example: Truck A7
-      type: string
     time:
       description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
       example: '2020-01-27T07:06:25Z'
       type: string
-    VehicleLocationSpeed:
-      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
-      example: 48.3
-      format: double
-      type: number
-    VehicleLocationLatitude:
-      description: GPS latitude represented in degrees
-      example: 122.142
-      format: double
-      type: number
-    VehicleLocationsResponse_data:
-      description: A vehicle and its most recent location.
-      properties:
-        id:
-          $ref: '#/components/schemas/VehicleId'
-        location:
-          $ref: '#/components/schemas/VehicleLocation'
-        name:
-          $ref: '#/components/schemas/VehicleName'
-      required:
-      - id
-      - location
-      - name
-      type: object
-    VehicleLocationLongitude:
-      description: GPS longitude represented in degrees
-      example: -93.343
-      format: double
-      type: number
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
     paginationResponse:
       description: Pagination parameters.
       properties:
@@ -186,6 +126,78 @@ components:
       required:
       - endCursor
       - hasNextPage
+      type: object
+    VehicleLocationHeading:
+      description: Heading of the vehicle in degrees.
+      example: 120
+      format: double
+      type: number
+    VehicleLocationLongitude:
+      description: GPS longitude represented in degrees
+      example: -93.343
+      format: double
+      type: number
+    VehicleLocationsResponse:
+      description: Most recent vehicle locations and pagination info.
+      properties:
+        data:
+          description: List of the most recent locations for the specified vehicles.
+          items:
+            $ref: '#/components/schemas/VehicleLocationsResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    VehicleLocationSpeed:
+      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
+      example: 48.3
+      format: double
+      type: number
+    VehicleLocationLatitude:
+      description: GPS latitude represented in degrees
+      example: 122.142
+      format: double
+      type: number
+    reverseGeo:
+      description: Reverse geocoded information.
+      properties:
+        formattedLocation:
+          description: Formatted address of the reverse geocoding data.
+          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
+          type: string
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    VehicleName:
+      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+      example: Truck A7
+      type: string
+    VehicleLocationsResponse_data:
+      description: A vehicle and its most recent location.
+      properties:
+        id:
+          $ref: '#/components/schemas/VehicleId'
+        location:
+          $ref: '#/components/schemas/VehicleLocation'
+        name:
+          $ref: '#/components/schemas/VehicleName'
+      required:
+      - id
+      - location
+      - name
       type: object
   securitySchemes:
     AccessTokenHeader:

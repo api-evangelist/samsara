@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
-  title: Samsara Trailer  Assignments API
+  title: Samsara Trailer Assignments API
   version: '2024-11-18'
 servers:
 - url: https://api.samsara.com/
@@ -13,7 +13,19 @@ tags:
 paths:
   /v1/fleet/trailers/assignments:
     get:
-      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch trailer assignment data for all trailers in your organization. \n\n <b>Rate limit:</b> 100 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'This endpoint is still on our legacy API.
+
+
+        Fetch trailer assignment data for all trailers in your organization.
+
+
+        Rate limit: 100 requests/sec (learn more about rate limits here).
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Assignments** under the Assignments category when creating or editing an API token. Learn More.'
       operationId: V1getAllTrailerAssignments
       parameters:
       - description: Timestamp in Unix epoch miliseconds representing the start of the period to fetch. Omitting both startMs and endMs only returns current assignments.
@@ -62,6 +74,22 @@ paths:
       - Trailer  Assignments
 components:
   schemas:
+    V1TrailerAssignmentsResponse_allOf:
+      properties:
+        trailerAssignments:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
+          type: array
+      type: object
+    inline_response_200_7:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+        trailers:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          type: array
+      type: object
     V1TrailerAssignmentResponse:
       properties:
         driverId:
@@ -102,20 +130,13 @@ components:
       - hasPrevPage
       - startCursor
       type: object
-    V1TrailerAssignmentsResponse_allOf:
-      properties:
-        trailerAssignments:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
-          type: array
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     V1TrailerAssignmentsResponse:
       allOf:
       - $ref: '#/components/schemas/V1TrailerBase'
       - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
     V1TrailerBase:
       properties:
         id:
@@ -131,15 +152,6 @@ components:
       required:
       - id
       - name
-      type: object
-    inline_response_200_7:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-        trailers:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
-          type: array
       type: object
   securitySchemes:
     AccessTokenHeader:

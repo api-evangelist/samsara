@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Activity API
@@ -13,7 +13,13 @@ tags:
 paths:
   /fleet/drivers/tachograph-activity/history:
     get:
-      description: "Returns all known tachograph activity for all specified drivers in the time range. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Tachograph (EU)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'Returns all known tachograph activity for all specified drivers in the time range.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Tachograph (EU)** under the Compliance category when creating or editing an API token. Learn More.'
       operationId: getDriverTachographActivity
       parameters:
       - description: If specified, this should be the endCursor value from the previous page of results. When present, this request will return the next page of results that occur immediately after the previous page of results.
@@ -78,54 +84,11 @@ paths:
       - Activity
 components:
   schemas:
-    DriverTachographActivityResponse:
-      description: List of all driver tachograph activities in a specified time range.
-      properties:
-        data:
-          $ref: '#/components/schemas/DriverTachographActivityData'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    driverTinyResponse:
-      description: A minified driver object.
-      properties:
-        id:
-          description: ID of the driver.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Susan Bob
-          type: string
-      type: object
     TachographActivityList:
       description: List of all driver tachograph activities in a specified time range.
       items:
         $ref: '#/components/schemas/TachographActivity'
       type: array
-    TachographActivityListWrapper:
-      properties:
-        activity:
-          $ref: '#/components/schemas/TachographActivityList'
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
-      type: object
-    DriverTachographActivityData:
-      items:
-        $ref: '#/components/schemas/TachographActivityListWrapper'
-      type: array
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
     paginationResponse:
       description: Pagination parameters.
       properties:
@@ -142,6 +105,10 @@ components:
       - endCursor
       - hasNextPage
       type: object
+    DriverTachographActivityData:
+      items:
+        $ref: '#/components/schemas/TachographActivityListWrapper'
+      type: array
     TachographActivity:
       description: Tachograph activity
       properties:
@@ -166,6 +133,45 @@ components:
           - DRIVING
           - UNKNOWN
           type: string
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    TachographActivityListWrapper:
+      properties:
+        activity:
+          $ref: '#/components/schemas/TachographActivityList'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+      type: object
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    DriverTachographActivityResponse:
+      description: List of all driver tachograph activities in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverTachographActivityData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
   securitySchemes:
     AccessTokenHeader:

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Efficiency API
@@ -13,7 +13,16 @@ tags:
 paths:
   /beta/fleet/drivers/efficiency:
     get:
-      description: "Get all driver and associated vehicle efficiency data. \n\n <b>Rate limit:</b> 50 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>). \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'Get all driver and associated vehicle efficiency data.
+
+
+        Rate limit: 50 requests/sec (learn more about rate limits here).
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Fuel & Energy** under the Fuel & Energy category when creating or editing an API token. Learn More.'
       operationId: getDriverEfficiency
       parameters:
       - description: If value is `deactivated`, only drivers that are deactivated will appear in the response. This parameter will default to `active` if not provided (fetching only active drivers).
@@ -92,88 +101,6 @@ paths:
       - Efficiency
 components:
   schemas:
-    CoastingDurationMs:
-      description: Time spent without engaging the accelerator or brake in milliseconds.
-      type: number
-    DriveTimeDurationMs:
-      description: Time driven in milliseconds.
-      type: number
-    vehicleTinyResponse:
-      description: A minified vehicle object.
-      properties:
-        ExternalIds:
-          additionalProperties:
-            type: string
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          type: object
-        id:
-          description: ID of the vehicle.
-          example: '123456789'
-          type: string
-        name:
-          description: Name of the vehicle.
-          example: 'Midwest Truck #4'
-          type: string
-      type: object
-    TotalBrakeEventCount:
-      description: Total number of brake events.
-      type: number
-    FuelConsumedMl:
-      description: Fuel consumption in milliliters.
-      type: number
-    DriverEfficienciesResponse:
-      description: Summary of drivers' efficiencies over a time range.
-      properties:
-        data:
-          $ref: '#/components/schemas/DriverEfficienciesResponse_data'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    GreenBandDrivingDurationMs:
-      description: Time in efficient RPM (800 to 17000) in milliseconds.
-      type: number
-    AnticipationBrakeEventCount:
-      description: Quick braking events (less than one second after accelerating).
-      type: number
-    CruiseControlDurationMs:
-      description: Time spent in cruise control in milliseconds.
-      type: number
-    HighTorqueMs:
-      description: Time the vehicle engine torque is greater than 90% in milliseconds.
-      type: number
-    DriverEfficienciesResponse_data:
-      properties:
-        driverSummaries:
-          description: A list of driver and associated vehicle efficiency data.
-          items:
-            $ref: '#/components/schemas/DriverEfficiency'
-          type: array
-        summaryEndTime:
-          description: 'End time of the window for which this efficiency report was computed. Will be a UTC timestamp in RFC 3339 format. For example: `2020-03-16T16:00:00Z`'
-          example: '2020-03-16T16:00:00Z'
-          format: date-time
-          type: string
-        summaryStartTime:
-          description: 'Start time of the window for which this efficiency report was computed. Will be a UTC timestamp in RFC 3339 format. For example: `2020-03-15T16:00:00Z`'
-          example: '2020-03-15T16:00:00Z'
-          format: date-time
-          type: string
-      type: object
     ExtendedDriverTinyResponse:
       description: A minified driver object.
       properties:
@@ -197,6 +124,75 @@ components:
           example: susanbob
           type: string
       type: object
+    OverSpeedMs:
+      description: Driving time spent over the efficient speed threshold in milliseconds.
+      type: number
+    GreenBandDrivingDurationMs:
+      description: Time in efficient RPM (800 to 17000) in milliseconds.
+      type: number
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    CruiseControlDurationMs:
+      description: Time spent in cruise control in milliseconds.
+      type: number
+    DriverEfficienciesResponse:
+      description: Summary of drivers' efficiencies over a time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverEfficienciesResponse_data'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    DriverEfficienciesResponse_data:
+      properties:
+        driverSummaries:
+          description: A list of driver and associated vehicle efficiency data.
+          items:
+            $ref: '#/components/schemas/DriverEfficiency'
+          type: array
+        summaryEndTime:
+          description: 'End time of the window for which this efficiency report was computed. Will be a UTC timestamp in RFC 3339 format. For example: `2020-03-16T16:00:00Z`'
+          example: '2020-03-16T16:00:00Z'
+          format: date-time
+          type: string
+        summaryStartTime:
+          description: 'Start time of the window for which this efficiency report was computed. Will be a UTC timestamp in RFC 3339 format. For example: `2020-03-15T16:00:00Z`'
+          example: '2020-03-15T16:00:00Z'
+          format: date-time
+          type: string
+      type: object
+    AnticipationBrakeEventCount:
+      description: Quick braking events (less than one second after accelerating).
+      type: number
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    DriveTimeDurationMs:
+      description: Time driven in milliseconds.
+      type: number
     DriverEfficiency:
       description: Summary of a driver's efficiency.
       properties:
@@ -232,30 +228,46 @@ components:
             $ref: '#/components/schemas/VehicleSummary'
           type: array
       type: object
-    paginationResponse:
-      description: Pagination parameters.
+    TotalBrakeEventCount:
+      description: Total number of brake events.
+      type: number
+    IdleTimeDurationMs:
+      description: Time spent idling in milliseconds.
+      type: number
+    FuelConsumedMl:
+      description: Fuel consumption in milliliters.
+      type: number
+    CoastingDurationMs:
+      description: Time spent without engaging the accelerator or brake in milliseconds.
+      type: number
+    vehicleTinyResponse:
+      description: A minified vehicle object.
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
+        ExternalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        id:
+          description: ID of the vehicle.
+          example: '123456789'
           type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
+        name:
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
+          type: string
       type: object
-    DistanceDrivenMeters:
-      description: Distance driven in meters.
-      type: number
-    OverSpeedMs:
-      description: Driving time spent over the efficient speed threshold in milliseconds.
-      type: number
     PowerTakeOffDurationMs:
       description: Time spent with power take off enabled while idling in milliseconds.
+      type: number
+    HighTorqueMs:
+      description: Time the vehicle engine torque is greater than 90% in milliseconds.
+      type: number
+    DistanceDrivenMeters:
+      description: Distance driven in meters.
       type: number
     VehicleSummary:
       properties:
@@ -286,9 +298,6 @@ components:
         vehicle:
           $ref: '#/components/schemas/vehicleTinyResponse'
       type: object
-    IdleTimeDurationMs:
-      description: Time spent idling in milliseconds.
-      type: number
   securitySchemes:
     AccessTokenHeader:
       type: http

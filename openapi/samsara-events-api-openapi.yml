@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Events API
@@ -13,7 +13,16 @@ tags:
 paths:
   /beta/fleet/hos/drivers/eld-events:
     get:
-      description: "Get all HOS ELD events in a time range, grouped by driver. Attributes will be populated depending on which ELD Event Type is being returned.\n\n <b>Rate limit:</b> 5 requests/sec (learn more about rate limits <a href=\"https://developers.samsara.com/docs/rate-limits\" target=\"_blank\">here</a>).\n\nTo use this endpoint, select **Read ELD Compliance Settings (US)** under the Compliance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>\n \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team."
+      description: 'Get all HOS ELD events in a time range, grouped by driver. Attributes will be populated depending on which ELD Event Type is being returned.
+
+
+        Rate limit: 5 requests/sec (learn more about rate limits here).
+
+
+        To use this endpoint, select **Read ELD Compliance Settings (US)** under the Compliance category when creating or editing an API token. Learn More.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.'
       operationId: getHosEldEvents
       parameters:
       - description: ' A start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
@@ -141,7 +150,16 @@ paths:
       - Events
   /v1/fleet/vehicles/{vehicleId}/safety/harsh_event:
     get:
-      description: "<n class=\"warning\">\n<nh>\n<i class=\"fa fa-exclamation-circle\"></i>\nThis endpoint is still on our legacy API.\n</nh>\n</n>\n\nFetch harsh event details for a vehicle. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Safety Events & Scores** under the Safety & Cameras category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'This endpoint is still on our legacy API.
+
+
+        Fetch harsh event details for a vehicle.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Safety Events & Scores** under the Safety & Cameras category when creating or editing an API token. Learn More.'
       operationId: V1getVehicleHarshEvent
       parameters:
       - description: ID of the vehicle. Must contain only digits 0-9.
@@ -176,36 +194,6 @@ paths:
       - Events
 components:
   schemas:
-    HosEldEventsGetHosEldEventsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosEldEventsGetHosEldEventsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     HosEldEventRemarkObjectResponseBody:
       properties:
         comment:
@@ -225,15 +213,12 @@ components:
       - locationDescription
       - time
       type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    HosEldEventsGetHosEldEventsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    HosEldEventsGetHosEldEventsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -243,20 +228,70 @@ components:
       - message
       - requestId
       type: object
-    V1VehicleHarshEventResponse_location:
+    HosEldEventsGetHosEldEventsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
-        address:
-          description: Address of location where the harsh event occurred
-          example: 350 Rhode Island St, San Francisco, CA
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
-        latitude:
-          description: Latitude of location where the harsh event occurred
-          example: 33.07614328
-          type: number
-        longitude:
-          description: Longitude of location where the harsh event occurred
-          example: -96.14907287
-          type: number
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    HosDriversEldEventObjectResponseBody:
+      properties:
+        driverActivationStatus:
+          description: 'A value indicating whether the driver is active or deactivated.  Valid values: `active`, `deactivated`'
+          enum:
+          - active
+          - deactivated
+          example: active
+          type: string
+        eldEvents:
+          description: List of ELD event objects.
+          items:
+            $ref: '#/components/schemas/HosEldEventObjectResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver.
+          example: '494123'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Joe Driver
+          type: string
+      required:
+      - driverActivationStatus
+      - eldEvents
+      - id
+      - name
       type: object
     HosEldEventObjectResponseBody:
       description: An event that refers to a discrete instance in time with various data elements. Depending on the type of event, not every field will be populated. For more information, see the ELD Mandate [section 3.1.2](https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&ty=HTML&h=L&mc=true&=PART&n=pt49.5.395#ap49.5.395_138.a).
@@ -338,20 +373,17 @@ components:
       - eldEventType
       - time
       type: object
-    HosEldEventsGetHosEldEventsNotFoundErrorResponseBody:
-      description: Resource not found
+    HosEldEventsGetHosEldEventsResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        data:
+          description: List of drivers and their ELD event objects data.
+          items:
+            $ref: '#/components/schemas/HosDriversEldEventObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
       required:
-      - message
-      - requestId
+      - data
       type: object
     GoaPaginationResponseResponseBody:
       description: Pagination parameters.
@@ -367,6 +399,24 @@ components:
       required:
       - endCursor
       - hasNextPage
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    HosEldEventsGetHosEldEventsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     HosEldEventLocationObjectResponseBody:
       properties:
@@ -408,22 +458,95 @@ components:
       - message
       - requestId
       type: object
-    GoaVehicleTinyResponseResponseBody:
-      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+    HosEldEventsGetHosEldEventsUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
+        message:
+          description: Message of error
+          example: Invalid token.
           type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventsGetHosEldEventsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventsGetHosEldEventsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventsGetHosEldEventsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosEldEventsGetHosEldEventsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1VehicleHarshEventResponse_location:
+      properties:
+        address:
+          description: Address of location where the harsh event occurred
+          example: 350 Rhode Island St, San Francisco, CA
+          type: string
+        latitude:
+          description: Latitude of location where the harsh event occurred
+          example: 33.07614328
+          type: number
+        longitude:
+          description: Longitude of location where the harsh event occurred
+          example: -96.14907287
+          type: number
       type: object
     V1VehicleHarshEventResponse:
       description: Harsh event details for a vehicle
@@ -458,117 +581,12 @@ components:
       - harshEventType
       - incidentReportUrl
       type: object
-    HosEldEventsGetHosEldEventsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    HosEldEventsGetHosEldEventsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosEldEventsGetHosEldEventsResponseBody:
-      properties:
-        data:
-          description: List of drivers and their ELD event objects data.
-          items:
-            $ref: '#/components/schemas/HosDriversEldEventObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      type: object
-    HosDriversEldEventObjectResponseBody:
-      properties:
-        driverActivationStatus:
-          description: 'A value indicating whether the driver is active or deactivated.  Valid values: `active`, `deactivated`'
-          enum:
-          - active
-          - deactivated
-          example: active
-          type: string
-        eldEvents:
-          description: List of ELD event objects.
-          items:
-            $ref: '#/components/schemas/HosEldEventObjectResponseBody'
-          type: array
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the driver.
-          example: '494123'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Joe Driver
-          type: string
-      required:
-      - driverActivationStatus
-      - eldEvents
-      - id
-      - name
-      type: object
-    HosEldEventsGetHosEldEventsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosEldEventsGetHosEldEventsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosEldEventsGetHosEldEventsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosEldEventsGetHosEldEventsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

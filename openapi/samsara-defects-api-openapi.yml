@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   description: Gain greater visibility by connecting your fleets, equipment, sites, and people.
   title: Samsara Defects API
@@ -13,7 +13,13 @@ tags:
 paths:
   /fleet/defects/history:
     get:
-      description: "Returns a list of DVIR defects in an organization, filtered by creation time. The maximum time period you can query for is 30 days. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Read Defects** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'Returns a list of DVIR defects in an organization, filtered by creation time. The maximum time period you can query for is 30 days.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Read Defects** under the Maintenance category when creating or editing an API token. Learn More.'
       operationId: getDvirDefects
       parameters:
       - description: The limit for how many objects will be in the response. Default and max for this value is 512 objects.
@@ -64,7 +70,13 @@ paths:
       - Defects
   /fleet/defects/{id}:
     patch:
-      description: "Updates a given defect. Can be used to resolve a defect by marking its `isResolved` field to `true`. \n\n **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our <a href=\"https://forms.gle/zkD4NCH7HjKb7mm69\" target=\"_blank\">API feedback form</a>. If you encountered an issue or noticed inaccuracies in the API documentation, please <a href=\"https://www.samsara.com/help\" target=\"_blank\">submit a case</a> to our support team.\n\nTo use this endpoint, select **Write Defects** under the Maintenance category when creating or editing an API token. <a href=\"https://developers.samsara.com/docs/authentication#scopes-for-api-tokens\" target=\"_blank\">Learn More.</a>"
+      description: 'Updates a given defect. Can be used to resolve a defect by marking its `isResolved` field to `true`.
+
+
+        **Submit Feedback**: Likes, dislikes, and API feature requests should be filed as feedback in our API feedback form. If you encountered an issue or noticed inaccuracies in the API documentation, please submit a case to our support team.
+
+
+        To use this endpoint, select **Write Defects** under the Maintenance category when creating or editing an API token. Learn More.'
       operationId: updateDvirDefect
       parameters:
       - description: ID of the defect.
@@ -99,17 +111,38 @@ paths:
       x-codegen-request-body-name: defect
 components:
   schemas:
-    trailerTinyResponse:
-      description: A minified trailer object.
+    ResolvedBy:
+      description: Information about the user who is resolving a defect.
       properties:
         id:
-          description: ID of the trailer.
-          example: '123456789'
+          description: The Id of user who is resolving the defect.
+          example: '11'
           type: string
-        name:
-          description: Name of the trailer.
-          example: 'Midwest Trailer #5'
+        type:
+          description: The type of user who is resolving the defect. Must be "mechanic".
+          enum:
+          - mechanic
+          example: mechanic
           type: string
+      required:
+      - id
+      - type
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
       type: object
     DefectsResponse:
       description: A list of defects.
@@ -120,12 +153,6 @@ components:
           type: array
         pagination:
           $ref: '#/components/schemas/paginationResponse'
-      type: object
-    DefectResponse:
-      description: A single defect.
-      properties:
-        data:
-          $ref: '#/components/schemas/Defect'
       type: object
     vehicleTinyResponse:
       description: A minified vehicle object.
@@ -147,22 +174,11 @@ components:
           example: 'Midwest Truck #4'
           type: string
       type: object
-    DefectPatch:
-      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
+    DefectResponse:
+      description: A single defect.
       properties:
-        isResolved:
-          description: Resolves the defect. Must be `true`.
-          type: boolean
-        mechanicNotes:
-          description: The mechanics notes on the defect.
-          example: Extremely large oddly shaped hole in passenger side window.
-          type: string
-        resolvedAtTime:
-          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        resolvedBy:
-          $ref: '#/components/schemas/ResolvedBy'
+        data:
+          $ref: '#/components/schemas/Defect'
       type: object
     Defect:
       properties:
@@ -216,22 +232,46 @@ components:
       - id
       - isResolved
       type: object
-    ResolvedBy:
-      description: Information about the user who is resolving a defect.
+    DefectPatch:
+      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
+      properties:
+        isResolved:
+          description: Resolves the defect. Must be `true`.
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        resolvedAtTime:
+          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/ResolvedBy'
+      type: object
+    trailerTinyResponse:
+      description: A minified trailer object.
       properties:
         id:
-          description: The Id of user who is resolving the defect.
-          example: '11'
+          description: ID of the trailer.
+          example: '123456789'
           type: string
-        type:
-          description: The type of user who is resolving the defect. Must be "mechanic".
-          enum:
-          - mechanic
-          example: mechanic
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
           type: string
-      required:
-      - id
-      - type
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
       type: object
     Defect_resolvedBy:
       description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
@@ -250,34 +290,6 @@ components:
           - driver
           - mechanic
           type: string
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
       type: object
   securitySchemes:
     AccessTokenHeader:

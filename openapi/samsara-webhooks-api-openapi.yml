@@ -480,82 +480,6 @@ paths:
       x-codegen-request-body-name: PatchWebhookRequestBody
 components:
   schemas:
-    WebhookResponseResponseBody:
-      description: The response for POST/GET/PATCH a webhook
-      properties:
-        customHeaders:
-          description: The list of custom headers that users can include with their request
-          items:
-            $ref: '#/components/schemas/CustomHeadersObjectResponseBody'
-          maxItems: 5
-          type: array
-        eventTypes:
-          description: The list of event types associated with a particular webhook.
-          example:
-          - AddressCreated
-          - AddressCreated
-          - AddressCreated
-          - AddressCreated
-          items:
-            description: 'This is the name of the event type.  Valid values: `AddressCreated`, `AddressDeleted`, `AddressUpdated`, `AlertIncident`, `AlertObjectEvent`, `DocumentSubmitted`, `DriverCreated`, `DriverUpdated`, `DvirSubmitted`, `EngineFaultOff`, `EngineFaultOn`, `FormSubmitted`, `GatewayUnplugged`, `GeofenceEntry`, `GeofenceExit`, `IssueCreated`, `PredictiveMaintenanceAlert`, `RouteStopArrival`, `RouteStopDeparture`, `RouteStopResequence`, `SevereSpeedingEnded`, `SevereSpeedingStarted`, `VehicleCreated`, `VehicleUpdated`'
-            enum:
-            - AddressCreated
-            - AddressDeleted
-            - AddressUpdated
-            - AlertIncident
-            - AlertObjectEvent
-            - DocumentSubmitted
-            - DriverCreated
-            - DriverUpdated
-            - DvirSubmitted
-            - EngineFaultOff
-            - EngineFaultOn
-            - FormSubmitted
-            - GatewayUnplugged
-            - GeofenceEntry
-            - GeofenceExit
-            - IssueCreated
-            - PredictiveMaintenanceAlert
-            - RouteStopArrival
-            - RouteStopDeparture
-            - RouteStopResequence
-            - SevereSpeedingEnded
-            - SevereSpeedingStarted
-            - VehicleCreated
-            - VehicleUpdated
-            example: AddressCreated
-            type: string
-          type: array
-        id:
-          description: The ID of the webhook. This will appear in both Samsaras cloud dashboard and the API. This is the id of the webhook. This is system generated.
-          example: '23918'
-          type: string
-        name:
-          description: The name of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: Webhook-123
-          type: string
-        secretKey:
-          description: The secret key of the webhook. This will appear in both Samsaras cloud dashboard and the API.
-          example: 11121-31231-1231212
-          type: string
-        url:
-          description: The url of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: https://www.webhook-123.com/webhook/listener
-          type: string
-        version:
-          description: 'The version of the webhook.  Valid values: `2018-01-01`, `2021-06-09`'
-          enum:
-          - '2018-01-01'
-          - '2021-06-09'
-          example: '2018-01-01'
-          type: string
-      required:
-      - id
-      - name
-      - secretKey
-      - url
-      - version
-      type: object
     WebhooksGetWebhookResponseBody:
       properties:
         customHeaders:
@@ -629,499 +553,12 @@ components:
       - url
       - version
       type: object
-    WebhooksGetWebhookBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksGetWebhookUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksGetWebhookMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksListWebhooksTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksDeleteWebhookNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPostWebhooksMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPostWebhooksBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPostWebhooksInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksDeleteWebhookBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksDeleteWebhookUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPostWebhooksRequestBody:
-      description: This is the body of the webhook POST request.
-      properties:
-        customHeaders:
-          description: The list of custom headers that users can include with their request
-          items:
-            $ref: '#/components/schemas/CustomHeadersObjectRequestBody'
-          maxItems: 5
-          type: array
-        eventTypes:
-          description: '[beta] The list of event types associated with a particular event type'
-          example:
-          - DriverCreated
-          - DriverCreated
-          - DriverCreated
-          - DriverCreated
-          items:
-            description: 'event type name  Valid values: `AddressCreated`, `AddressDeleted`, `AddressUpdated`, `AlertIncident`, `AlertObjectEvent`, `DocumentSubmitted`, `DriverCreated`, `DriverUpdated`, `DvirSubmitted`, `EngineFaultOff`, `EngineFaultOn`, `FormSubmitted`, `GatewayUnplugged`, `GeofenceEntry`, `GeofenceExit`, `IssueCreated`, `PredictiveMaintenanceAlert`, `RouteStopArrival`, `RouteStopDeparture`, `RouteStopResequence`, `SevereSpeedingEnded`, `SevereSpeedingStarted`, `VehicleCreated`, `VehicleUpdated`'
-            enum:
-            - AddressCreated
-            - AddressDeleted
-            - AddressUpdated
-            - AlertIncident
-            - AlertObjectEvent
-            - DocumentSubmitted
-            - DriverCreated
-            - DriverUpdated
-            - DvirSubmitted
-            - EngineFaultOff
-            - EngineFaultOn
-            - FormSubmitted
-            - GatewayUnplugged
-            - GeofenceEntry
-            - GeofenceExit
-            - IssueCreated
-            - PredictiveMaintenanceAlert
-            - RouteStopArrival
-            - RouteStopDeparture
-            - RouteStopResequence
-            - SevereSpeedingEnded
-            - SevereSpeedingStarted
-            - VehicleCreated
-            - VehicleUpdated
-            example: DriverCreated
-            type: string
-          type: array
-        name:
-          description: The  name of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: Webhook-123
-          maxLength: 255
-          type: string
-        url:
-          description: The url of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: https://www.Webhook-123.com/webhook/listener
-          maxLength: 2047
-          type: string
-        version:
-          description: 'The version of the webhook.  Valid values: `2018-01-01`, `2021-06-09`, `2022-09-13`, `2024-02-27`'
-          enum:
-          - '2018-01-01'
-          - '2021-06-09'
-          - '2022-09-13'
-          - '2024-02-27'
-          example: '2018-01-01'
-          type: string
-      required:
-      - name
-      - url
-      type: object
-    CustomHeadersObjectRequestBody:
-      description: This is the object that stores the key and the value of the custom headers.
-      properties:
-        key:
-          description: The alphanumeric key of the custom header.
-          example: format
-          maxLength: 100
-          type: string
-        value:
-          description: The value of the custom header. The default maximum length of the value is 100 characters.
-          example: xcmol-532
-          type: string
-      required:
-      - key
-      - value
-      type: object
-    WebhooksListWebhooksInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksGetWebhookNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPostWebhooksGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksListWebhooksResponseBody:
-      properties:
-        data:
-          description: This is a list of Webhooks.
-          items:
-            $ref: '#/components/schemas/WebhookResponseResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    WebhooksPostWebhooksNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookRequestBody:
-      description: This is the body of the webhook PATCH request.
-      properties:
-        customHeaders:
-          description: The list of custom headers that users can include with their request
-          items:
-            $ref: '#/components/schemas/CustomHeadersObjectRequestBody'
-          maxItems: 5
-          type: array
-        name:
-          description: The  name of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: Webhook-123
-          maxLength: 255
-          type: string
-        url:
-          description: The url of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: https://www.webhook-123.com/webhook/listener
-          maxLength: 2047
-          type: string
-        version:
-          description: 'The version of the webhook.  Valid values: `2018-01-01`, `2021-06-09`, `2022-09-13`, `2024-02-27`'
-          enum:
-          - '2018-01-01'
-          - '2021-06-09'
-          - '2022-09-13'
-          - '2024-02-27'
-          example: '2018-01-01'
-          type: string
-      type: object
-    WebhooksDeleteWebhookTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksListWebhooksServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksListWebhooksBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookBadGatewayErrorResponseBody:
+    WebhooksGetWebhookBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
           description: Message of error
           example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksGetWebhookInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksGetWebhookNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1146,12 +583,12 @@ components:
       - message
       - requestId
       type: object
-    WebhooksPostWebhooksNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    WebhooksGetWebhookMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1160,6 +597,37 @@ components:
       required:
       - message
       - requestId
+      type: object
+    WebhooksDeleteWebhookUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomHeadersObjectResponseBody:
+      description: This is the object that stores the key and the value of the custom headers.
+      properties:
+        key:
+          description: The alphanumeric key of the custom header.
+          example: format
+          maxLength: 100
+          type: string
+        value:
+          description: The value of the custom header. The default maximum length of the value is 100 characters.
+          example: xcmol-532
+          type: string
+      required:
+      - key
+      - value
       type: object
     WebhooksGetWebhookTooManyRequestsErrorResponseBody:
       description: Too many requests
@@ -1176,12 +644,12 @@ components:
       - message
       - requestId
       type: object
-    WebhooksPostWebhooksBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    WebhooksListWebhooksTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1191,12 +659,12 @@ components:
       - message
       - requestId
       type: object
-    WebhooksPostWebhooksUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    WebhooksGetWebhookGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1206,42 +674,12 @@ components:
       - message
       - requestId
       type: object
-    WebhooksListWebhooksMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    WebhooksGetWebhookBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    WebhooksPatchWebhookMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1266,57 +704,27 @@ components:
       - message
       - requestId
       type: object
-    WebhooksPatchWebhookInternalServerErrorResponseBody:
+    WebhooksDeleteWebhookBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksDeleteWebhookInternalServerErrorResponseBody:
       description: An internal server error occurred
       properties:
         message:
           description: Message of error
           example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksListWebhooksBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksListWebhooksGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksDeleteWebhookServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1400,7 +808,22 @@ components:
       - url
       - version
       type: object
-    WebhooksDeleteWebhookNotFoundErrorResponseBody:
+    WebhooksPostWebhooksNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPostWebhooksNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
@@ -1415,7 +838,67 @@ components:
       - message
       - requestId
       type: object
-    WebhooksGetWebhookBadGatewayErrorResponseBody:
+    WebhooksListWebhooksGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksDeleteWebhookMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
@@ -1430,27 +913,12 @@ components:
       - message
       - requestId
       type: object
-    WebhooksListWebhooksNotFoundErrorResponseBody:
+    WebhooksPatchWebhookNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
           description: Message of error
           example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    WebhooksPatchWebhookUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1533,12 +1001,12 @@ components:
       - url
       - version
       type: object
-    WebhooksDeleteWebhookBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    WebhooksDeleteWebhookTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1547,6 +1015,142 @@ components:
       required:
       - message
       - requestId
+      type: object
+    WebhooksPatchWebhookUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksDeleteWebhookNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksListWebhooksServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksDeleteWebhookNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhookResponseResponseBody:
+      description: The response for POST/GET/PATCH a webhook
+      properties:
+        customHeaders:
+          description: The list of custom headers that users can include with their request
+          items:
+            $ref: '#/components/schemas/CustomHeadersObjectResponseBody'
+          maxItems: 5
+          type: array
+        eventTypes:
+          description: The list of event types associated with a particular webhook.
+          example:
+          - AddressCreated
+          - AddressCreated
+          - AddressCreated
+          - AddressCreated
+          items:
+            description: 'This is the name of the event type.  Valid values: `AddressCreated`, `AddressDeleted`, `AddressUpdated`, `AlertIncident`, `AlertObjectEvent`, `DocumentSubmitted`, `DriverCreated`, `DriverUpdated`, `DvirSubmitted`, `EngineFaultOff`, `EngineFaultOn`, `FormSubmitted`, `GatewayUnplugged`, `GeofenceEntry`, `GeofenceExit`, `IssueCreated`, `PredictiveMaintenanceAlert`, `RouteStopArrival`, `RouteStopDeparture`, `RouteStopResequence`, `SevereSpeedingEnded`, `SevereSpeedingStarted`, `VehicleCreated`, `VehicleUpdated`'
+            enum:
+            - AddressCreated
+            - AddressDeleted
+            - AddressUpdated
+            - AlertIncident
+            - AlertObjectEvent
+            - DocumentSubmitted
+            - DriverCreated
+            - DriverUpdated
+            - DvirSubmitted
+            - EngineFaultOff
+            - EngineFaultOn
+            - FormSubmitted
+            - GatewayUnplugged
+            - GeofenceEntry
+            - GeofenceExit
+            - IssueCreated
+            - PredictiveMaintenanceAlert
+            - RouteStopArrival
+            - RouteStopDeparture
+            - RouteStopResequence
+            - SevereSpeedingEnded
+            - SevereSpeedingStarted
+            - VehicleCreated
+            - VehicleUpdated
+            example: AddressCreated
+            type: string
+          type: array
+        id:
+          description: The ID of the webhook. This will appear in both Samsaras cloud dashboard and the API. This is the id of the webhook. This is system generated.
+          example: '23918'
+          type: string
+        name:
+          description: The name of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Webhook-123
+          type: string
+        secretKey:
+          description: The secret key of the webhook. This will appear in both Samsaras cloud dashboard and the API.
+          example: 11121-31231-1231212
+          type: string
+        url:
+          description: The url of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: https://www.webhook-123.com/webhook/listener
+          type: string
+        version:
+          description: 'The version of the webhook.  Valid values: `2018-01-01`, `2021-06-09`'
+          enum:
+          - '2018-01-01'
+          - '2021-06-09'
+          example: '2018-01-01'
+          type: string
+      required:
+      - id
+      - name
+      - secretKey
+      - url
+      - version
       type: object
     WebhooksPostWebhooksTooManyRequestsErrorResponseBody:
       description: Too many requests
@@ -1563,7 +1167,52 @@ components:
       - message
       - requestId
       type: object
-    WebhooksListWebhooksUnauthorizedErrorResponseBody:
+    WebhooksListWebhooksBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    WebhooksGetWebhookUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
@@ -1578,21 +1227,104 @@ components:
       - message
       - requestId
       type: object
-    CustomHeadersObjectResponseBody:
-      description: This is the object that stores the key and the value of the custom headers.
+    WebhooksPostWebhooksRequestBody:
+      description: This is the body of the webhook POST request.
       properties:
-        key:
-          description: The alphanumeric key of the custom header.
-          example: format
-          maxLength: 100
+        customHeaders:
+          description: The list of custom headers that users can include with their request
+          items:
+            $ref: '#/components/schemas/CustomHeadersObjectRequestBody'
+          maxItems: 5
+          type: array
+        eventTypes:
+          description: '[beta] The list of event types associated with a particular event type'
+          example:
+          - DriverCreated
+          - DriverCreated
+          - DriverCreated
+          - DriverCreated
+          items:
+            description: 'event type name  Valid values: `AddressCreated`, `AddressDeleted`, `AddressUpdated`, `AlertIncident`, `AlertObjectEvent`, `DocumentSubmitted`, `DriverCreated`, `DriverUpdated`, `DvirSubmitted`, `EngineFaultOff`, `EngineFaultOn`, `FormSubmitted`, `GatewayUnplugged`, `GeofenceEntry`, `GeofenceExit`, `IssueCreated`, `PredictiveMaintenanceAlert`, `RouteStopArrival`, `RouteStopDeparture`, `RouteStopResequence`, `SevereSpeedingEnded`, `SevereSpeedingStarted`, `VehicleCreated`, `VehicleUpdated`'
+            enum:
+            - AddressCreated
+            - AddressDeleted
+            - AddressUpdated
+            - AlertIncident
+            - AlertObjectEvent
+            - DocumentSubmitted
+            - DriverCreated
+            - DriverUpdated
+            - DvirSubmitted
+            - EngineFaultOff
+            - EngineFaultOn
+            - FormSubmitted
+            - GatewayUnplugged
+            - GeofenceEntry
+            - GeofenceExit
+            - IssueCreated
+            - PredictiveMaintenanceAlert
+            - RouteStopArrival
+            - RouteStopDeparture
+            - RouteStopResequence
+            - SevereSpeedingEnded
+            - SevereSpeedingStarted
+            - VehicleCreated
+            - VehicleUpdated
+            example: DriverCreated
+            type: string
+          type: array
+        name:
+          description: The  name of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Webhook-123
+          maxLength: 255
           type: string
-        value:
-          description: The value of the custom header. The default maximum length of the value is 100 characters.
-          example: xcmol-532
+        url:
+          description: The url of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: https://www.Webhook-123.com/webhook/listener
+          maxLength: 2047
+          type: string
+        version:
+          description: 'The version of the webhook.  Valid values: `2018-01-01`, `2021-06-09`, `2022-09-13`, `2024-02-27`'
+          enum:
+          - '2018-01-01'
+          - '2021-06-09'
+          - '2022-09-13'
+          - '2024-02-27'
+          example: '2018-01-01'
           type: string
       required:
-      - key
-      - value
+      - name
+      - url
+      type: object
+    WebhooksListWebhooksMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksDeleteWebhookBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     WebhooksGetWebhookServiceUnavailableErrorResponseBody:
       description: Service unavailable
@@ -1600,6 +1332,153 @@ components:
         message:
           description: Message of error
           example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksListWebhooksResponseBody:
+      properties:
+        data:
+          description: This is a list of Webhooks.
+          items:
+            $ref: '#/components/schemas/WebhookResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    WebhooksDeleteWebhookServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookRequestBody:
+      description: This is the body of the webhook PATCH request.
+      properties:
+        customHeaders:
+          description: The list of custom headers that users can include with their request
+          items:
+            $ref: '#/components/schemas/CustomHeadersObjectRequestBody'
+          maxItems: 5
+          type: array
+        name:
+          description: The  name of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Webhook-123
+          maxLength: 255
+          type: string
+        url:
+          description: The url of the webhook. This will appear in both Samsaras cloud dashboard and the API. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: https://www.webhook-123.com/webhook/listener
+          maxLength: 2047
+          type: string
+        version:
+          description: 'The version of the webhook.  Valid values: `2018-01-01`, `2021-06-09`, `2022-09-13`, `2024-02-27`'
+          enum:
+          - '2018-01-01'
+          - '2021-06-09'
+          - '2022-09-13'
+          - '2024-02-27'
+          example: '2018-01-01'
+          type: string
+      type: object
+    WebhooksListWebhooksBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPostWebhooksGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPostWebhooksUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPostWebhooksBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1624,7 +1503,22 @@ components:
       - message
       - requestId
       type: object
-    WebhooksDeleteWebhookInternalServerErrorResponseBody:
+    WebhooksListWebhooksUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksGetWebhookInternalServerErrorResponseBody:
       description: An internal server error occurred
       properties:
         message:
@@ -1639,12 +1533,12 @@ components:
       - message
       - requestId
       type: object
-    WebhooksDeleteWebhookMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    WebhooksListWebhooksInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1654,7 +1548,23 @@ components:
       - message
       - requestId
       type: object
-    WebhooksPatchWebhookNotFoundErrorResponseBody:
+    CustomHeadersObjectRequestBody:
+      description: This is the object that stores the key and the value of the custom headers.
+      properties:
+        key:
+          description: The alphanumeric key of the custom header.
+          example: format
+          maxLength: 100
+          type: string
+        value:
+          description: The value of the custom header. The default maximum length of the value is 100 characters.
+          example: xcmol-532
+          type: string
+      required:
+      - key
+      - value
+      type: object
+    WebhooksListWebhooksNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
@@ -1669,12 +1579,102 @@ components:
       - message
       - requestId
       type: object
-    WebhooksGetWebhookGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    WebhooksPatchWebhookNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPatchWebhookMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksGetWebhookNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPostWebhooksMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksGetWebhookNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPostWebhooksInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    WebhooksPostWebhooksBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

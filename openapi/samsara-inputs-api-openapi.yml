@@ -163,52 +163,12 @@ paths:
       - Inputs
 components:
   schemas:
-    AssetsInputsGetAssetsInputsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    AssetsInputsGetAssetsInputsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    assetsInputsAuxInputResponseBody:
-      description: Auxiliary input metadata
-      properties:
-        name:
-          description: Name of the auxiliary input
-          example: PTO
-          type: string
-      required:
-      - name
-      type: object
-    AssetsInputsGetAssetsInputsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -237,27 +197,27 @@ components:
       - id
       - name
       type: object
-    AssetsInputsGetAssetsInputsBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
       properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
       required:
-      - message
-      - requestId
+      - endCursor
+      - hasNextPage
       type: object
-    AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -296,21 +256,6 @@ components:
       - units
       - value
       type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
     AssetsInputsGetAssetsInputsResponseBody:
       properties:
         data:
@@ -323,6 +268,91 @@ components:
       required:
       - data
       - pagination
+      type: object
+    AssetsInputsGetAssetsInputsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    assetsInputsAuxInputResponseBody:
+      description: Auxiliary input metadata
+      properties:
+        name:
+          description: Name of the auxiliary input
+          example: PTO
+          type: string
+      required:
+      - name
+      type: object
+    AssetsInputsGetAssetsInputsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     AssetsInputsAssetResponseResponseBody:
       description: Asset that the input data is from.
@@ -349,12 +379,12 @@ components:
       required:
       - id
       type: object
-    AssetsInputsGetAssetsInputsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    AssetsInputsGetAssetsInputsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -364,12 +394,27 @@ components:
       - message
       - requestId
       type: object
-    AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -409,51 +454,6 @@ components:
             example: Tempora dolorum placeat.
             type: string
           type: array
-      type: object
-    AssetsInputsGetAssetsInputsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

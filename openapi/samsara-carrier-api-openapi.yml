@@ -133,15 +133,11 @@ paths:
       - Carrier
 components:
   schemas:
-    CarrierProposedAssignmentAcceptedTime:
-      description: 'Time when the driver accepted this assignment in the mobile app. Will be omitted if the driver hasn''t accepted this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-      example: '2020-01-27T07:06:25Z'
-      type: string
-    CarrierProposedAssignmentVehicle:
-      allOf:
-      - description: Vehicle that this assignment will propose to the driver.
-        type: object
-      - $ref: '#/components/schemas/vehicleTinyResponse'
+    CarrierProposedAssignmentTrailers:
+      description: Trailers that this assignment will propose to the driver.
+      items:
+        $ref: '#/components/schemas/CarrierProposedAssignmentTrailer'
+      type: array
     standardErrorResponse:
       description: Error response
       properties:
@@ -154,40 +150,6 @@ components:
           example: 8916e1c1
           type: string
       type: object
-    CarrierProposedAssignmentActiveTime:
-      description: 'Time after which this assignment will be active and visible to the driver on the mobile app. Not setting it makes it active now. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
-      type: string
-    CarrierProposedAssignment:
-      description: A carrier proposed assignment object
-      properties:
-        acceptedTime:
-          $ref: '#/components/schemas/CarrierProposedAssignmentAcceptedTime'
-        activeTime:
-          $ref: '#/components/schemas/CarrierProposedAssignmentActiveTime'
-        driver:
-          $ref: '#/components/schemas/CarrierProposedAssignmentDriver'
-        firstSeenTime:
-          $ref: '#/components/schemas/CarrierProposedAssignmentFirstSeenTime'
-        id:
-          $ref: '#/components/schemas/CarrierProposedAssignmentId'
-        rejectedTime:
-          $ref: '#/components/schemas/CarrierProposedAssignmentRejectedTime'
-        shippingDocs:
-          $ref: '#/components/schemas/CarrierProposedAssignmentShippingDocs'
-        trailers:
-          $ref: '#/components/schemas/CarrierProposedAssignmentTrailers'
-        vehicle:
-          $ref: '#/components/schemas/CarrierProposedAssignmentVehicle'
-      required:
-      - activeTime
-      - id
-      type: object
-    CarrierProposedAssignmentShippingDocs:
-      description: Shipping Documents that this assignment will propose to the driver.
-      example: Delivery 123, chips and soda
-      maxLength: 40
-      type: string
     paginationResponse:
       description: Pagination parameters.
       properties:
@@ -204,10 +166,74 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    CarrierProposedAssignmentId:
-      description: Samsara ID for the assignment.
-      example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d
+    CarrierProposedAssignmentFirstSeenTime:
+      description: 'Time when the driver first saw this assignment in the mobile app. Will be omitted if the driver hasn''t seen this assignment yet. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
       type: string
+    CarrierProposedAssignmentResponse:
+      description: A carrier-proposed assignment response object.
+      properties:
+        data:
+          $ref: '#/components/schemas/CarrierProposedAssignment'
+      required:
+      - data
+      type: object
+    ListCarrierProposedAssignmentResponse:
+      description: A list of carrier-proposed assignments and pagination information.
+      properties:
+        data:
+          description: A list of carrier-proposed assignments
+          items:
+            $ref: '#/components/schemas/CarrierProposedAssignment'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    CarrierProposedAssignmentRejectedTime:
+      description: 'Time when the driver rejected this assignment in the mobile app. Will be omitted if the driver hasn''t rejected this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    CarrierProposedAssignmentAcceptedTime:
+      description: 'Time when the driver accepted this assignment in the mobile app. Will be omitted if the driver hasn''t accepted this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    trailerTinyResponse:
+      description: A minified trailer object.
+      properties:
+        id:
+          description: ID of the trailer.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
+          type: string
+      type: object
+    CarrierProposedAssignmentTrailer:
+      allOf:
+      - description: Trailer that this assignment will propose to the driver.
+        type: object
+      - $ref: '#/components/schemas/trailerTinyResponse'
+      - $ref: '#/components/schemas/CarrierProposedAssignmentDriver_allOf'
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
     carrierProposedAssignmentDriverAllOf2ExternalIds:
       additionalProperties:
         type: string
@@ -217,17 +243,14 @@ components:
         payrollId: ABFS18600
       type: object
       x-go-gen-location: models
-    CarrierProposedAssignmentResponse:
-      description: A carrier-proposed assignment response object.
-      properties:
-        data:
-          $ref: '#/components/schemas/CarrierProposedAssignment'
-      required:
-      - data
-      type: object
-    CarrierProposedAssignmentRejectedTime:
-      description: 'Time when the driver rejected this assignment in the mobile app. Will be omitted if the driver hasn''t rejected this assignment. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-      example: '2020-01-27T07:06:25Z'
+    CarrierProposedAssignmentVehicle:
+      allOf:
+      - description: Vehicle that this assignment will propose to the driver.
+        type: object
+      - $ref: '#/components/schemas/vehicleTinyResponse'
+    CarrierProposedAssignmentId:
+      description: Samsara ID for the assignment.
+      example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d
       type: string
     vehicleTinyResponse:
       description: A minified vehicle object.
@@ -248,6 +271,16 @@ components:
           description: Name of the vehicle.
           example: 'Midwest Truck #4'
           type: string
+      type: object
+    CarrierProposedAssignmentShippingDocs:
+      description: Shipping Documents that this assignment will propose to the driver.
+      example: Delivery 123, chips and soda
+      maxLength: 40
+      type: string
+    CarrierProposedAssignmentDriver_allOf:
+      properties:
+        externalIds:
+          $ref: '#/components/schemas/carrierProposedAssignmentDriverAllOf2ExternalIds'
       type: object
     CreateCarrierProposedAssignmentRequest:
       description: New assignment for a driver.
@@ -289,8 +322,33 @@ components:
       - driverId
       - vehicleId
       type: object
-    CarrierProposedAssignmentFirstSeenTime:
-      description: 'Time when the driver first saw this assignment in the mobile app. Will be omitted if the driver hasn''t seen this assignment yet. RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+    CarrierProposedAssignment:
+      description: A carrier proposed assignment object
+      properties:
+        acceptedTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentAcceptedTime'
+        activeTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentActiveTime'
+        driver:
+          $ref: '#/components/schemas/CarrierProposedAssignmentDriver'
+        firstSeenTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentFirstSeenTime'
+        id:
+          $ref: '#/components/schemas/CarrierProposedAssignmentId'
+        rejectedTime:
+          $ref: '#/components/schemas/CarrierProposedAssignmentRejectedTime'
+        shippingDocs:
+          $ref: '#/components/schemas/CarrierProposedAssignmentShippingDocs'
+        trailers:
+          $ref: '#/components/schemas/CarrierProposedAssignmentTrailers'
+        vehicle:
+          $ref: '#/components/schemas/CarrierProposedAssignmentVehicle'
+      required:
+      - activeTime
+      - id
+      type: object
+    CarrierProposedAssignmentActiveTime:
+      description: 'Time after which this assignment will be active and visible to the driver on the mobile app. Not setting it makes it active now. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
       example: '2020-01-27T07:06:25Z'
       type: string
     CarrierProposedAssignmentDriver:
@@ -299,64 +357,6 @@ components:
         type: object
       - $ref: '#/components/schemas/driverTinyResponse'
       - $ref: '#/components/schemas/CarrierProposedAssignmentDriver_allOf'
-    CarrierProposedAssignmentDriver_allOf:
-      properties:
-        externalIds:
-          $ref: '#/components/schemas/carrierProposedAssignmentDriverAllOf2ExternalIds'
-      type: object
-    CarrierProposedAssignmentTrailer:
-      allOf:
-      - description: Trailer that this assignment will propose to the driver.
-        type: object
-      - $ref: '#/components/schemas/trailerTinyResponse'
-      - $ref: '#/components/schemas/CarrierProposedAssignmentDriver_allOf'
-    trailerTinyResponse:
-      description: A minified trailer object.
-      properties:
-        id:
-          description: ID of the trailer.
-          example: '123456789'
-          type: string
-        name:
-          description: Name of the trailer.
-          example: 'Midwest Trailer #5'
-          type: string
-      type: object
-    CarrierProposedAssignmentTrailers:
-      description: Trailers that this assignment will propose to the driver.
-      items:
-        $ref: '#/components/schemas/CarrierProposedAssignmentTrailer'
-      type: array
-    ListCarrierProposedAssignmentResponse:
-      description: A list of carrier-proposed assignments and pagination information.
-      properties:
-        data:
-          description: A list of carrier-proposed assignments
-          items:
-            $ref: '#/components/schemas/CarrierProposedAssignment'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    driverTinyResponse:
-      description: A minified driver object.
-      properties:
-        id:
-          description: ID of the driver.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Susan Bob
-          type: string
-      type: object
-    standardDeleteResponse:
-      description: A successful DELETE response is a 204 with no content.
-      example: <empty content>
-      type: string
   securitySchemes:
     AccessTokenHeader:
       type: http

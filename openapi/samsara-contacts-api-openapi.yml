@@ -191,25 +191,9 @@ paths:
       x-codegen-request-body-name: contact
 components:
   schemas:
-    ContactFirstName:
-      description: First name of the contact.
-      example: Jane
-      maxLength: 255
-      type: string
-    ListContactsResponse:
-      description: A list of contacts.
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Contact'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    ContactEmail:
-      description: Email address of the contact.
-      example: jane.jones@yahoo.com
-      maxLength: 255
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
       type: string
     paginationResponse:
       description: Pagination parameters.
@@ -226,6 +210,39 @@ components:
       required:
       - endCursor
       - hasNextPage
+      type: object
+    ContactFirstName:
+      description: First name of the contact.
+      example: Jane
+      maxLength: 255
+      type: string
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    ContactResponse:
+      description: A single contact.
+      properties:
+        data:
+          $ref: '#/components/schemas/Contact'
+      type: object
+    ListContactsResponse:
+      description: A list of contacts.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Contact'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
     Contact:
       description: Information about a notification contact for alerts.
@@ -247,34 +264,15 @@ components:
       - lastName
       - phone
       type: object
-    ContactPhone:
-      description: Phone number of the contact.
-      example: 111-222-3344
-      maxLength: 255
-      type: string
-    ContactResponse:
-      description: A single contact.
-      properties:
-        data:
-          $ref: '#/components/schemas/Contact'
-      type: object
     ContactLastName:
       description: Last name of the contact.
       example: Jones
       maxLength: 255
       type: string
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
+    ContactId:
+      description: ID of the contact.
+      example: '22408'
+      type: string
     CreateContactRequest:
       description: Information for adding a notification contact for alerts.
       properties:
@@ -299,6 +297,16 @@ components:
           maxLength: 255
           type: string
       type: object
+    ContactPhone:
+      description: Phone number of the contact.
+      example: 111-222-3344
+      maxLength: 255
+      type: string
+    ContactEmail:
+      description: Email address of the contact.
+      example: jane.jones@yahoo.com
+      maxLength: 255
+      type: string
     UpdateContactRequest:
       description: Information for adding a notification contact for alerts.
       properties:
@@ -323,14 +331,6 @@ components:
           maxLength: 255
           type: string
       type: object
-    standardDeleteResponse:
-      description: A successful DELETE response is a 204 with no content.
-      example: <empty content>
-      type: string
-    ContactId:
-      description: ID of the contact.
-      example: '22408'
-      type: string
   securitySchemes:
     AccessTokenHeader:
       type: http

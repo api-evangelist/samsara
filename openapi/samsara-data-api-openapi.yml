@@ -408,12 +408,201 @@ paths:
       - Data
 components:
   schemas:
-    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    J1939D1StatusDataPoint_value:
+      description: A single J1939D1 status
+      properties:
+        amberLampStatus:
+          format: int32
+          type: number
+        fmi:
+          format: int32
+          type: number
+        milStatus:
+          format: int32
+          type: number
+        occuranceCount:
+          format: int32
+          type: number
+        protectLampStatus:
+          format: int32
+          type: number
+        redLampStatus:
+          format: int32
+          type: number
+        spn:
+          format: int32
+          type: number
+        txId:
+          format: int32
+          type: number
+      type: object
+    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FftSpectraDataPoint_fftSpectra:
+      description: FFT spectrum data
+      properties:
+        frequencies:
+          description: Frequencies
+          items:
+            format: double
+            type: number
+          type: array
+        x:
+          description: X-axis data
+          items:
+            format: double
+            type: number
+          type: array
+        y:
+          description: Y-axis data
+          items:
+            format: double
+            type: number
+          type: array
+        z:
+          description: Z-axis data
+          items:
+            format: double
+            type: number
+          type: array
+      type: object
+    DataInputResponse_allOf:
+      properties:
+        fftSpectraPoints:
+          description: List of FFT spectra data points from the data input.
+          items:
+            $ref: '#/components/schemas/FftSpectraDataPoint'
+          type: array
+        j1939D1StatusPoints:
+          description: List of active J1939D1 statuses.
+          items:
+            $ref: '#/components/schemas/J1939D1StatusDataPoint'
+          type: array
+        locationPoints:
+          description: List of location data points from the data input.
+          items:
+            $ref: '#/components/schemas/LocationDataPoint'
+          type: array
+        numberPoints:
+          description: List of numeric data points from the data input.
+          items:
+            $ref: '#/components/schemas/NumberDataPoint'
+          type: array
+        stringPoints:
+          description: List of string data points from the data input.
+          items:
+            $ref: '#/components/schemas/StringDataPoint'
+          type: array
+      type: object
+    HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DataInputsTinyResponse:
+      properties:
+        data:
+          description: An array of data input objects. Each object contains the data input's name, ID, and other metadata.
+          items:
+            $ref: '#/components/schemas/DataInputTinyResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    StringDataPoint:
+      description: A single string data point of a data input.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: String value of the data point.
+          example: 'On'
+          format: string
+          type: string
+      type: object
+    NumberDataPoint:
+      description: A single numeric data point of a data input.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Numeric value of the data point.
+          example: 1992.0506
+          format: double
+          type: number
+      type: object
+    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -454,22 +643,12 @@ components:
         place:
           $ref: '#/components/schemas/LocationDataPoint_gpsLocation_place'
       type: object
-    DataInputListResponse:
-      properties:
-        data:
-          description: An array of data input data points. Each object in the array represents a data input and will contain its associated data points.
-          items:
-            $ref: '#/components/schemas/DataInputResponse'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
-      description: Resource not found
+    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -479,27 +658,13 @@ components:
       - message
       - requestId
       type: object
-    DataInputSnapshotResponse:
+    LocationDataPoint:
+      description: A single location data point of a data input.
       properties:
-        data:
-          description: An array of data inputs' latest data points. Each object in the array represents a data input and its most recent data point.
-          items:
-            $ref: '#/components/schemas/DataInputSnapshot'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
+        gpsLocation:
+          $ref: '#/components/schemas/LocationDataPoint_gpsLocation'
+        time:
+          $ref: '#/components/schemas/time'
       type: object
     DataInputTinyResponse:
       description: A minified data input object
@@ -529,12 +694,12 @@ components:
           format: string
           type: string
       type: object
-    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -544,40 +709,12 @@ components:
       - message
       - requestId
       type: object
-    FftSpectraDataPoint_fftSpectra:
-      description: FFT spectrum data
-      properties:
-        frequencies:
-          description: Frequencies
-          items:
-            format: double
-            type: number
-          type: array
-        x:
-          description: X-axis data
-          items:
-            format: double
-            type: number
-          type: array
-        y:
-          description: Y-axis data
-          items:
-            format: double
-            type: number
-          type: array
-        z:
-          description: Z-axis data
-          items:
-            format: double
-            type: number
-          type: array
-      type: object
-    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -587,151 +724,28 @@ components:
       - message
       - requestId
       type: object
-    FftSpectraDataPoint:
-      description: FFT spectrum data point of a data input.
-      properties:
-        fftSpectra:
-          $ref: '#/components/schemas/FftSpectraDataPoint_fftSpectra'
-        time:
-          $ref: '#/components/schemas/time'
-      type: object
-    LocationDataPoint_gpsLocation_place:
-      description: Address of the location
-      properties:
-        city:
-          description: City
-          example: San Francisco
-          format: string
-          type: string
-        houseNumber:
-          description: House number
-          example: '350'
-          format: string
-          type: string
-        neighborhood:
-          description: Neighborhood
-          example: Castro
-          format: string
-          type: string
-        poi:
-          description: POI
-          example: '400'
-          format: string
-          type: string
-        postcode:
-          description: Postcode
-          example: '94103'
-          format: string
-          type: string
-        state:
-          description: State
-          example: CA
-          format: string
-          type: string
-        street:
-          description: Street
-          example: Rhode Island
-          format: string
-          type: string
-      type: object
-    DataInputResponse_allOf:
-      properties:
-        fftSpectraPoints:
-          description: List of FFT spectra data points from the data input.
-          items:
-            $ref: '#/components/schemas/FftSpectraDataPoint'
-          type: array
-        j1939D1StatusPoints:
-          description: List of active J1939D1 statuses.
-          items:
-            $ref: '#/components/schemas/J1939D1StatusDataPoint'
-          type: array
-        locationPoints:
-          description: List of location data points from the data input.
-          items:
-            $ref: '#/components/schemas/LocationDataPoint'
-          type: array
-        numberPoints:
-          description: List of numeric data points from the data input.
-          items:
-            $ref: '#/components/schemas/NumberDataPoint'
-          type: array
-        stringPoints:
-          description: List of string data points from the data input.
-          items:
-            $ref: '#/components/schemas/StringDataPoint'
-          type: array
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    NumberDataPoint:
-      description: A single numeric data point of a data input.
+    J1939D1StatusDataPoint:
+      description: Active J1939D1 statuses of a device.
       properties:
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: Numeric value of the data point.
-          example: 1992.0506
-          format: double
-          type: number
+          description: List of active statuses.
+          items:
+            $ref: '#/components/schemas/J1939D1StatusDataPoint_value'
+          type: array
       type: object
-    J1939D1StatusDataPoint_value:
-      description: A single J1939D1 status
+    HosDailyLogsUpdateShippingDocsResponseBody:
       properties:
-        amberLampStatus:
-          format: int32
-          type: number
-        fmi:
-          format: int32
-          type: number
-        milStatus:
-          format: int32
-          type: number
-        occuranceCount:
-          format: int32
-          type: number
-        protectLampStatus:
-          format: int32
-          type: number
-        redLampStatus:
-          format: int32
-          type: number
-        spn:
-          format: int32
-          type: number
-        txId:
-          format: int32
-          type: number
-      type: object
-    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        data:
+          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
       required:
-      - message
-      - requestId
+      - data
       type: object
+    DataInputResponse:
+      allOf:
+      - $ref: '#/components/schemas/DataInputTinyResponse'
+      - $ref: '#/components/schemas/DataInputResponse_allOf'
     PatchShippingDocsResponseBodyResponseBody:
       description: Response after successfully updating the LogMetaData object.
       properties:
@@ -782,22 +796,94 @@ components:
             type: string
           type: array
       type: object
-    DataInputsTinyResponse:
+    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsRequestBody:
+      description: Update the shippingDocs field.
+      properties:
+        shippingDocs:
+          description: ShippingDocs associated with the driver for the day.
+          example: ShippingID1, ShippingID2
+          type: string
+      required:
+      - shippingDocs
+      type: object
+    LocationDataPoint_gpsLocation_place:
+      description: Address of the location
+      properties:
+        city:
+          description: City
+          example: San Francisco
+          format: string
+          type: string
+        houseNumber:
+          description: House number
+          example: '350'
+          format: string
+          type: string
+        neighborhood:
+          description: Neighborhood
+          example: Castro
+          format: string
+          type: string
+        poi:
+          description: POI
+          example: '400'
+          format: string
+          type: string
+        postcode:
+          description: Postcode
+          example: '94103'
+          format: string
+          type: string
+        state:
+          description: State
+          example: CA
+          format: string
+          type: string
+        street:
+          description: Street
+          example: Rhode Island
+          format: string
+          type: string
+      type: object
+    DataInputSnapshotResponse:
       properties:
         data:
-          description: An array of data input objects. Each object contains the data input's name, ID, and other metadata.
+          description: An array of data inputs' latest data points. Each object in the array represents a data input and its most recent data point.
           items:
-            $ref: '#/components/schemas/DataInputTinyResponse'
+            $ref: '#/components/schemas/DataInputSnapshot'
           type: array
         pagination:
           $ref: '#/components/schemas/paginationResponse'
       type: object
-    HosDailyLogsUpdateShippingDocsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    FftSpectraDataPoint:
+      description: FFT spectrum data point of a data input.
+      properties:
+        fftSpectra:
+          $ref: '#/components/schemas/FftSpectraDataPoint_fftSpectra'
+        time:
+          $ref: '#/components/schemas/time'
+      type: object
+    HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -807,21 +893,10 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
     HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
@@ -841,55 +916,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/DataInputTinyResponse'
       - $ref: '#/components/schemas/DataInputSnapshot_allOf'
-    StringDataPoint:
-      description: A single string data point of a data input.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: String value of the data point.
-          example: 'On'
-          format: string
-          type: string
-      type: object
-    LocationDataPoint:
-      description: A single location data point of a data input.
-      properties:
-        gpsLocation:
-          $ref: '#/components/schemas/LocationDataPoint_gpsLocation'
-        time:
-          $ref: '#/components/schemas/time'
-      type: object
-    HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    time:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
-      type: string
-    J1939D1StatusDataPoint:
-      description: Active J1939D1 statuses of a device.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: List of active statuses.
-          items:
-            $ref: '#/components/schemas/J1939D1StatusDataPoint_value'
-          type: array
-      type: object
     DataInputSnapshot_allOf:
       properties:
         fftSpectraPoint:
@@ -903,41 +929,15 @@ components:
         stringPoint:
           $ref: '#/components/schemas/StringDataPoint'
       type: object
-    HosDailyLogsUpdateShippingDocsRequestBody:
-      description: Update the shippingDocs field.
-      properties:
-        shippingDocs:
-          description: ShippingDocs associated with the driver for the day.
-          example: ShippingID1, ShippingID2
-          type: string
-      required:
-      - shippingDocs
-      type: object
-    DataInputResponse:
-      allOf:
-      - $ref: '#/components/schemas/DataInputTinyResponse'
-      - $ref: '#/components/schemas/DataInputResponse_allOf'
-    HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsResponseBody:
+    DataInputListResponse:
       properties:
         data:
-          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
-      required:
-      - data
+          description: An array of data input data points. Each object in the array represents a data input and will contain its associated data points.
+          items:
+            $ref: '#/components/schemas/DataInputResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
   securitySchemes:
     AccessTokenHeader:

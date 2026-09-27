@@ -111,22 +111,17 @@ paths:
       x-codegen-request-body-name: defect
 components:
   schemas:
-    ResolvedBy:
-      description: Information about the user who is resolving a defect.
+    standardErrorResponse:
+      description: Error response
       properties:
-        id:
-          description: The Id of user who is resolving the defect.
-          example: '11'
+        message:
+          description: The message of the error.
+          example: An error has occurred.
           type: string
-        type:
-          description: The type of user who is resolving the defect. Must be "mechanic".
-          enum:
-          - mechanic
-          example: mechanic
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
           type: string
-      required:
-      - id
-      - type
       type: object
     paginationResponse:
       description: Pagination parameters.
@@ -144,6 +139,46 @@ components:
       - endCursor
       - hasNextPage
       type: object
+    ResolvedBy:
+      description: Information about the user who is resolving a defect.
+      properties:
+        id:
+          description: The Id of user who is resolving the defect.
+          example: '11'
+          type: string
+        type:
+          description: The type of user who is resolving the defect. Must be "mechanic".
+          enum:
+          - mechanic
+          example: mechanic
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    DefectResponse:
+      description: A single defect.
+      properties:
+        data:
+          $ref: '#/components/schemas/Defect'
+      type: object
+    DefectPatch:
+      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
+      properties:
+        isResolved:
+          description: Resolves the defect. Must be `true`.
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        resolvedAtTime:
+          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/ResolvedBy'
+      type: object
     DefectsResponse:
       description: A list of defects.
       properties:
@@ -154,31 +189,23 @@ components:
         pagination:
           $ref: '#/components/schemas/paginationResponse'
       type: object
-    vehicleTinyResponse:
-      description: A minified vehicle object.
+    Defect_resolvedBy:
+      description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
       properties:
-        ExternalIds:
-          additionalProperties:
-            type: string
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          type: object
         id:
-          description: ID of the vehicle.
-          example: '123456789'
+          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
+          example: '11'
           type: string
         name:
-          description: Name of the vehicle.
-          example: 'Midwest Truck #4'
+          description: Name of the person who resolved this defect.
+          example: Christopher 'The Handyman' Zhen
           type: string
-      type: object
-    DefectResponse:
-      description: A single defect.
-      properties:
-        data:
-          $ref: '#/components/schemas/Defect'
+        type:
+          description: Indicates whether this defect was resolved by a `driver` or a `mechanic`.
+          enum:
+          - driver
+          - mechanic
+          type: string
       type: object
     Defect:
       properties:
@@ -232,23 +259,6 @@ components:
       - id
       - isResolved
       type: object
-    DefectPatch:
-      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
-      properties:
-        isResolved:
-          description: Resolves the defect. Must be `true`.
-          type: boolean
-        mechanicNotes:
-          description: The mechanics notes on the defect.
-          example: Extremely large oddly shaped hole in passenger side window.
-          type: string
-        resolvedAtTime:
-          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        resolvedBy:
-          $ref: '#/components/schemas/ResolvedBy'
-      type: object
     trailerTinyResponse:
       description: A minified trailer object.
       properties:
@@ -261,34 +271,24 @@ components:
           example: 'Midwest Trailer #5'
           type: string
       type: object
-    standardErrorResponse:
-      description: Error response
+    vehicleTinyResponse:
+      description: A minified vehicle object.
       properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    Defect_resolvedBy:
-      description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
-      properties:
+        ExternalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
         id:
-          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
-          example: '11'
+          description: ID of the vehicle.
+          example: '123456789'
           type: string
         name:
-          description: Name of the person who resolved this defect.
-          example: Christopher 'The Handyman' Zhen
-          type: string
-        type:
-          description: Indicates whether this defect was resolved by a `driver` or a `mechanic`.
-          enum:
-          - driver
-          - mechanic
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
           type: string
       type: object
   securitySchemes:

@@ -119,12 +119,55 @@ paths:
       - Types
 components:
   schemas:
-    DvirDefectTypeGetDefectTypesInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    DvirDefectTypeGetDefectTypesNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirDefectTypeGetDefectTypesResponseBody:
+      properties:
+        data:
+          description: List of defect types.
+          items:
+            $ref: '#/components/schemas/DefectTypesResponseDataResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    DvirDefectTypeGetDefectTypesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirDefectTypeGetDefectTypesBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -149,64 +192,6 @@ components:
       - message
       - requestId
       type: object
-    DvirDefectTypeGetDefectTypesUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirDefectTypeGetDefectTypesResponseBody:
-      properties:
-        data:
-          description: List of defect types.
-          items:
-            $ref: '#/components/schemas/DefectTypesResponseDataResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    DvirDefectTypeGetDefectTypesBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirDefectTypeGetDefectTypesMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     DvirDefectTypeGetDefectTypesTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
@@ -222,12 +207,12 @@ components:
       - message
       - requestId
       type: object
-    DvirDefectTypeGetDefectTypesNotFoundErrorResponseBody:
-      description: Resource not found
+    DvirDefectTypeGetDefectTypesInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -267,12 +252,42 @@ components:
       - message
       - requestId
       type: object
-    DvirDefectTypeGetDefectTypesNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    DvirDefectTypeGetDefectTypesNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirDefectTypeGetDefectTypesUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirDefectTypeGetDefectTypesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -314,21 +329,6 @@ components:
       - id
       - label
       - sectionType
-      type: object
-    DvirDefectTypeGetDefectTypesGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

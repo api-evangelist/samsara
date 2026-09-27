@@ -598,34 +598,6 @@ paths:
       - Trailers
 components:
   schemas:
-    GoaTagTinyResponseResponseBody:
-      description: A minified tag object
-      properties:
-        id:
-          description: ID of the tag
-          example: '3914'
-          type: string
-        name:
-          description: Name of the tag.
-          example: East Coast
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    inline_response_200_7:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-        trailers:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
-          type: array
-      type: object
     TrailersDeleteTrailerMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
@@ -641,219 +613,7 @@ components:
       - message
       - requestId
       type: object
-    TrailersDeleteTrailerUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersDeleteTrailerInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersDeleteTrailerBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    V1Pagination:
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
-          example: MTU5MTEzNjA2OTU0MzQ3
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results after this response.
-          type: boolean
-        hasPrevPage:
-          description: True if there are more pages of results before this response.
-          type: boolean
-        startCursor:
-          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
-          example: MTU5MTEzNjA2OTU0MzQ3
-          type: string
-      required:
-      - endCursor
-      - hasNextPage
-      - hasPrevPage
-      - startCursor
-      type: object
-    TrailersUpdateTrailerNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersListTrailersGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersListTrailersNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersListTrailersNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersGetTrailerBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerWithAttributesResponseObjectResponseBody:
-      properties:
-        attributes:
-          description: List of attributes associated with the entity
-          items:
-            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
-          type: array
-        enabledForMobile:
-          description: Indicates if the trailer is visible on the Samsara mobile apps.
-          example: true
-          type: boolean
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: The unique Samsara ID of the Trailer. This is automatically generated when the Trailer object is created. It cannot be changed.
-          example: '494123'
-          type: string
-        installedGateway:
-          $ref: '#/components/schemas/TrailerGoaGatewayTinyResponseResponseBody'
-        licensePlate:
-          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
-          example: 7TYP290
-          maxLength: 12
-          type: string
-        name:
-          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: Trailer-123
-          type: string
-        notes:
-          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
-          example: These are my trailer notes
-          maxLength: 255
-          type: string
-        tags:
-          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Trailer.
-          items:
-            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
-          type: array
-        trailerSerialNumber:
-          description: The serial number of the trailer.
-          example: 8V8WD530FLN016251
-          type: string
-      required:
-      - id
-      type: object
-    TrailersCreateTrailerNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    V1TrailerAssignmentsResponse_allOf:
-      properties:
-        trailerAssignments:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
-          type: array
-      type: object
-    TrailersGetTrailerTooManyRequestsErrorResponseBody:
+    TrailersUpdateTrailerTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
         message:
@@ -868,12 +628,12 @@ components:
       - message
       - requestId
       type: object
-    TrailersUpdateTrailerBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    TrailersCreateTrailerMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -883,7 +643,22 @@ components:
       - message
       - requestId
       type: object
-    TrailersDeleteTrailerBadGatewayErrorResponseBody:
+    TrailersGetTrailerNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
@@ -902,148 +677,14 @@ components:
       allOf:
       - $ref: '#/components/schemas/V1TrailerBase'
       - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
-    TrailersUpdateTrailerServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersUpdateTrailerBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersCreateTrailerUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaAttributeTinyResponseBody:
-      description: Attribute properties.
-      properties:
-        id:
-          description: Id of the attribute
-          example: '494123'
-          type: string
-        name:
-          description: Name of the attribute
-          example: Compliance/ELD
-          type: string
-        numberValues:
-          description: List of number values associated with the attribute
-          example:
-          - 867
-          - 5309
-          items:
-            example: 0.7405685598633346
-            format: double
-            type: number
-          type: array
-        stringValues:
-          description: List of string values associated with the attribute.
-          example:
-          - HQ
-          - Leased
-          items:
-            example: Tempora dolorum placeat.
-            type: string
-          type: array
-      type: object
-    TrailersGetTrailerNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersCreateTrailerServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersListTrailersBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersCreateTrailerResponseBody:
+    TrailersGetTrailerResponseBody:
       properties:
         data:
           $ref: '#/components/schemas/TrailerWithAttributesResponseObjectResponseBody'
       required:
       - data
       type: object
-    TrailersListTrailersResponseBody:
-      properties:
-        data:
-          description: List of trailer objects.
-          items:
-            $ref: '#/components/schemas/TrailerResponseObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TrailersUpdateTrailerInternalServerErrorResponseBody:
+    TrailersDeleteTrailerInternalServerErrorResponseBody:
       description: An internal server error occurred
       properties:
         message:
@@ -1058,90 +699,12 @@ components:
       - message
       - requestId
       type: object
-    TrailersCreateTrailerRequestBody:
-      properties:
-        attributes:
-          description: A list of attributes to assign to the trailer.
-          items:
-            $ref: '#/components/schemas/GoaAttributeTinyRequestBody'
-          type: array
-        enabledForMobile:
-          description: Indicates if the trailer is visible on the Samsara mobile apps.
-          example: true
-          type: boolean
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        licensePlate:
-          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
-          example: 7TYP290
-          maxLength: 12
-          type: string
-        name:
-          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: Trailer-123
-          type: string
-        notes:
-          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
-          example: These are my trailer notes
-          maxLength: 255
-          type: string
-        tagIds:
-          description: An array of IDs of tags to associate with this trailer. If your access to the API is scoped by one or more tags, this field is required to pass in.
-          example:
-          - Delectus alias molestiae.
-          - Nam ut.
-          - Eum ut qui aut voluptas soluta.
-          - Quia corrupti.
-          items:
-            example: Nihil nemo et delectus ab est a.
-            type: string
-          type: array
-        trailerSerialNumber:
-          description: The serial number of the trailer.
-          example: 8V8WD530FLN016251
-          type: string
-      required:
-      - name
-      type: object
-    TrailersUpdateTrailerMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    TrailersGetTrailerInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersListTrailersServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersGetTrailerBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1182,7 +745,72 @@ components:
             type: string
           type: array
       type: object
-    TrailersDeleteTrailerNotImplementedErrorResponseBody:
+    TrailersUpdateTrailerRequestBody:
+      properties:
+        attributes:
+          description: A list of attributes to assign to the trailer.
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyRequestBody'
+          type: array
+        enabledForMobile:
+          description: Indicates if the trailer is visible on the Samsara mobile apps.
+          example: true
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        licensePlate:
+          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          example: 7TYP290
+          maxLength: 12
+          type: string
+        name:
+          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        notes:
+          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
+          example: These are my trailer notes
+          maxLength: 255
+          type: string
+        odometerMeters:
+          description: When you provide a manual odometer override, Samsara will begin updating a trailer's odometer using GPS distance traveled since this override was set. Only applies to trailers installed with Samsara gateways.
+          example: 1234
+          format: int64
+          type: integer
+        tagIds:
+          description: An array of IDs of tags to associate with this trailer. If your access to the API is scoped by one or more tags, this field is required to pass in.
+          example:
+          - Qui ad et et non.
+          - Et numquam ut.
+          - Qui eligendi vel ab ut.
+          items:
+            example: Ratione consequatur delectus dolorum ut.
+            type: string
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
+          type: string
+      type: object
+    TrailersUpdateTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
@@ -1197,12 +825,12 @@ components:
       - message
       - requestId
       type: object
-    TrailersGetTrailerInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    TrailersDeleteTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1212,12 +840,12 @@ components:
       - message
       - requestId
       type: object
-    TrailersListTrailersMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    TrailersCreateTrailerNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1227,37 +855,26 @@ components:
       - message
       - requestId
       type: object
-    TrailersDeleteTrailerServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    GoaTagTinyResponseResponseBody:
+      description: A minified tag object
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+        id:
+          description: ID of the tag
+          example: '3914'
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
           type: string
       required:
-      - message
-      - requestId
+      - id
+      - name
       type: object
-    TrailersUpdateTrailerTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersCreateTrailerBadRequestErrorResponseBody:
+    TrailersListTrailersBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
         message:
@@ -1272,12 +889,12 @@ components:
       - message
       - requestId
       type: object
-    TrailersUpdateTrailerUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    TrailersCreateTrailerInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1346,54 +963,6 @@ components:
       - model
       - serial
       type: object
-    TrailersGetTrailerNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    TrailersGetTrailerServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
     V1TrailerBase:
       properties:
         id:
@@ -1410,12 +979,12 @@ components:
       - id
       - name
       type: object
-    TrailersCreateTrailerMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    TrailersUpdateTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1425,59 +994,7 @@ components:
       - message
       - requestId
       type: object
-    TrailersListTrailersBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersGetTrailerResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/TrailerWithAttributesResponseObjectResponseBody'
-      required:
-      - data
-      type: object
-    TrailersCreateTrailerGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersListTrailersTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersCreateTrailerNotImplementedErrorResponseBody:
+    TrailersDeleteTrailerNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
@@ -1492,37 +1009,7 @@ components:
       - message
       - requestId
       type: object
-    TrailersListTrailersInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersCreateTrailerTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersDeleteTrailerGatewayTimeoutErrorResponseBody:
+    TrailersUpdateTrailerGatewayTimeoutErrorResponseBody:
       description: Gateway timeout
       properties:
         message:
@@ -1537,12 +1024,12 @@ components:
       - message
       - requestId
       type: object
-    TrailersListTrailersUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    TrailersDeleteTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1551,71 +1038,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    TrailersUpdateTrailerNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersUpdateTrailerRequestBody:
-      properties:
-        attributes:
-          description: A list of attributes to assign to the trailer.
-          items:
-            $ref: '#/components/schemas/GoaAttributeTinyRequestBody'
-          type: array
-        enabledForMobile:
-          description: Indicates if the trailer is visible on the Samsara mobile apps.
-          example: true
-          type: boolean
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        licensePlate:
-          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
-          example: 7TYP290
-          maxLength: 12
-          type: string
-        name:
-          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
-          example: Trailer-123
-          type: string
-        notes:
-          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
-          example: These are my trailer notes
-          maxLength: 255
-          type: string
-        odometerMeters:
-          description: When you provide a manual odometer override, Samsara will begin updating a trailer's odometer using GPS distance traveled since this override was set. Only applies to trailers installed with Samsara gateways.
-          example: 1234
-          format: int64
-          type: integer
-        tagIds:
-          description: An array of IDs of tags to associate with this trailer. If your access to the API is scoped by one or more tags, this field is required to pass in.
-          example:
-          - Qui ad et et non.
-          - Et numquam ut.
-          - Qui eligendi vel ab ut.
-          items:
-            example: Ratione consequatur delectus dolorum ut.
-            type: string
-          type: array
-        trailerSerialNumber:
-          description: The serial number of the trailer.
-          example: 8V8WD530FLN016251
-          type: string
       type: object
     TrailerResponseObjectResponseBody:
       properties:
@@ -1660,25 +1082,22 @@ components:
       required:
       - id
       type: object
-    V1TrailerAssignmentResponse:
+    TrailersDeleteTrailerTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
-        driverId:
-          description: The ID of the driver associated with this trailer.
-          example: 2047
-          format: int64
-          type: integer
-        endMs:
-          description: The time at which the driver ended the assignment. If the assignment is current, this value will be omitted.
-          example: 1462881998034
-          format: int64
-          type: integer
-        startMs:
-          description: The time at which the driver started the assignment
-          example: 1462878398034
-          format: int64
-          type: integer
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
-    TrailersGetTrailerUnauthorizedErrorResponseBody:
+    TrailersListTrailersUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
@@ -1693,12 +1112,124 @@ components:
       - message
       - requestId
       type: object
-    TrailersDeleteTrailerTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    TrailersGetTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1Pagination:
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results after this response.
+          type: boolean
+        hasPrevPage:
+          description: True if there are more pages of results before this response.
+          type: boolean
+        startCursor:
+          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+      required:
+      - endCursor
+      - hasNextPage
+      - hasPrevPage
+      - startCursor
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TrailersGetTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1723,37 +1254,55 @@ components:
       - message
       - requestId
       type: object
-    TrailersDeleteTrailerNotFoundErrorResponseBody:
-      description: Resource not found
+    TrailersCreateTrailerRequestBody:
       properties:
-        message:
-          description: Message of error
-          example: Object not found.
+        attributes:
+          description: A list of attributes to assign to the trailer.
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyRequestBody'
+          type: array
+        enabledForMobile:
+          description: Indicates if the trailer is visible on the Samsara mobile apps.
+          example: true
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        licensePlate:
+          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          example: 7TYP290
+          maxLength: 12
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
+        name:
+          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        notes:
+          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
+          example: These are my trailer notes
+          maxLength: 255
+          type: string
+        tagIds:
+          description: An array of IDs of tags to associate with this trailer. If your access to the API is scoped by one or more tags, this field is required to pass in.
+          example:
+          - Delectus alias molestiae.
+          - Nam ut.
+          - Eum ut qui aut voluptas soluta.
+          - Quia corrupti.
+          items:
+            example: Nihil nemo et delectus ab est a.
+            type: string
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
           type: string
       required:
-      - message
-      - requestId
+      - name
       type: object
-    TrailersUpdateTrailerGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailersCreateTrailerBadGatewayErrorResponseBody:
+    TrailersUpdateTrailerBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
@@ -1768,12 +1317,121 @@ components:
       - message
       - requestId
       type: object
-    TrailersCreateTrailerInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    TrailersDeleteTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    TrailersGetTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaAttributeTinyResponseBody:
+      description: Attribute properties.
+      properties:
+        id:
+          description: Id of the attribute
+          example: '494123'
+          type: string
+        name:
+          description: Name of the attribute
+          example: Compliance/ELD
+          type: string
+        numberValues:
+          description: List of number values associated with the attribute
+          example:
+          - 867
+          - 5309
+          items:
+            example: 0.7405685598633346
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: List of string values associated with the attribute.
+          example:
+          - HQ
+          - Leased
+          items:
+            example: Tempora dolorum placeat.
+            type: string
+          type: array
+      type: object
+    TrailersCreateTrailerGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1790,8 +1448,350 @@ components:
       required:
       - data
       type: object
-    TrailersGetTrailerGatewayTimeoutErrorResponseBody:
+    TrailersListTrailersServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    inline_response_200_7:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+        trailers:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          type: array
+      type: object
+    V1TrailerAssignmentsResponse_allOf:
+      properties:
+        trailerAssignments:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
+          type: array
+      type: object
+    TrailersListTrailersNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersResponseBody:
+      properties:
+        data:
+          description: List of trailer objects.
+          items:
+            $ref: '#/components/schemas/TrailerResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrailersListTrailersInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersGetTrailerTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersGatewayTimeoutErrorResponseBody:
       description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersDeleteTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1TrailerAssignmentResponse:
+      properties:
+        driverId:
+          description: The ID of the driver associated with this trailer.
+          example: 2047
+          format: int64
+          type: integer
+        endMs:
+          description: The time at which the driver ended the assignment. If the assignment is current, this value will be omitted.
+          example: 1462881998034
+          format: int64
+          type: integer
+        startMs:
+          description: The time at which the driver started the assignment
+          example: 1462878398034
+          format: int64
+          type: integer
+      type: object
+    TrailerWithAttributesResponseObjectResponseBody:
+      properties:
+        attributes:
+          description: List of attributes associated with the entity
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
+          type: array
+        enabledForMobile:
+          description: Indicates if the trailer is visible on the Samsara mobile apps.
+          example: true
+          type: boolean
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unique Samsara ID of the Trailer. This is automatically generated when the Trailer object is created. It cannot be changed.
+          example: '494123'
+          type: string
+        installedGateway:
+          $ref: '#/components/schemas/TrailerGoaGatewayTinyResponseResponseBody'
+        licensePlate:
+          description: 'The license plate of the Trailer. **By default**: empty. Can be set or updated through the Samsara Dashboard or the API at any time.'
+          example: 7TYP290
+          maxLength: 12
+          type: string
+        name:
+          description: The human-readable name of the Trailer. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. By default, this name is the serial number of the Samsara Asset Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+          example: Trailer-123
+          type: string
+        notes:
+          description: These are generic notes about the Trailer. Empty by default. Can be set or updated through the Samsara Dashboard or the API at any time.
+          example: These are my trailer notes
+          maxLength: 255
+          type: string
+        tags:
+          description: The list of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Trailer.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+        trailerSerialNumber:
+          description: The serial number of the trailer.
+          example: 8V8WD530FLN016251
+          type: string
+      required:
+      - id
+      type: object
+    TrailersUpdateTrailerNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersCreateTrailerResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/TrailerWithAttributesResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    TrailersCreateTrailerBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersListTrailersTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailersUpdateTrailerServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error

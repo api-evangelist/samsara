@@ -341,58 +341,26 @@ paths:
       - Safety
 components:
   schemas:
-    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventActivityFeedItemResponseBody:
-      description: Safety event activity feed item.
-      properties:
-        id:
-          description: The ID of the activity event feed line item.
-          example: 1622151765-212014918174029-1550954461759
-          type: string
-        safetyEvent:
-          $ref: '#/components/schemas/SafetyEventObjectResponseBody'
-        time:
-          description: The time the activity occurred in the corresponding safety event in RFC 3339 milliseconds format.
-          example: '2019-10-12T07:20:50.52Z'
-          type: string
-        type:
-          description: 'The type of activity that occurred in the safety event. We currently only support CoachingStateActivityType, BehaviorLabelActivityType, and CreateSafetyEventActivityType, but we may add support for more activity types in the future.  Valid values: `BehaviorLabelActivityType`, `CoachingStateActivityType`, `CreateSafetyEventActivityType`'
-          enum:
-          - BehaviorLabelActivityType
-          - CoachingStateActivityType
-          - CreateSafetyEventActivityType
-          example: CreateSafetyEventActivityType
-          type: string
-      required:
-      - id
-      - safetyEvent
-      - time
-      - type
-      type: object
-    SafetyEventBehaviorLabelSource:
-      description: 'The source of the label associated with the safety event. Valid values: `automated`, `userGenerated`.'
-      enum:
-      - automated
-      - userGenerated
+    SafetyEventTime:
+      description: The time the safety event occurred in RFC 3339 milliseconds format.
+      example: '2019-06-13T19:08:25.455Z'
       type: string
-    SafetyEventId:
-      description: The unique Samsara ID of the safety event.
-      example: 212014918174029-1550954461759
-      type: string
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
     standardErrorResponse:
       description: Error response
       properties:
@@ -405,16 +373,35 @@ components:
           example: 8916e1c1
           type: string
       type: object
-    SafetyEventDownloadTrackedInwardVideoUrl:
-      description: URL to download the tracked inward video.
-      example: https://s3.console.aws.amazon.com/s3/buckets/samsara-dashcam-videos/21575/212014918400828/1553060687222/huKA7IhpBV-camera-video-segment-1244214895.mp4
-      type: string
-    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventVehicleObjectResponseBody:
+      description: A minified vehicle object.
+      properties:
+        id:
+          description: ID of the vehicle.
+          example: '1234'
+          type: string
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -437,39 +424,61 @@ components:
       - data
       - pagination
       type: object
-    SafetyEventTime:
-      description: The time the safety event occurred in RFC 3339 milliseconds format.
-      example: '2019-06-13T19:08:25.455Z'
-      type: string
-    SafetyEventBehaviorLabel:
-      description: The label and source of the label associated with the safety event.
+    V1SafetyReportHarshEvent:
+      description: List of harsh events
       properties:
-        label:
-          $ref: '#/components/schemas/SafetyEventBehaviorLabelType'
-        name:
-          $ref: '#/components/schemas/SafetyEventBehaviorLabelName'
-        source:
-          $ref: '#/components/schemas/SafetyEventBehaviorLabelSource'
-      required:
-      - label
-      - source
+        harshEventType:
+          description: Sensor generated harsh event type.
+          example: Harsh Braking
+          type: string
+        timestampMs:
+          description: Timestamp that the harsh event occurred in Unix milliseconds since epoch
+          example: 1535590776000
+          type: integer
+        vehicleId:
+          description: Vehicle associated with the harsh event
+          example: 212014918086169
+          type: integer
       type: object
-    location:
-      description: Location object
+    SafetyEvent:
+      description: A safety event.
       properties:
-        latitude:
-          description: GPS latitude represented in degrees
-          example: 122.142
-          format: double
-          type: number
-        longitude:
-          description: GPS longitude represented in degrees
-          example: -93.343
-          format: double
-          type: number
-      required:
-      - latitude
-      - longitude
+        behaviorLabels:
+          $ref: '#/components/schemas/SafetyEventBehaviorLabels'
+        coachingState:
+          $ref: '#/components/schemas/SafetyEventCoachingState'
+        downloadForwardVideoUrl:
+          $ref: '#/components/schemas/SafetyEventDownloadForwardVideoUrl'
+        downloadInwardVideoUrl:
+          $ref: '#/components/schemas/SafetyEventDownloadInwardVideoUrl'
+        downloadTrackedInwardVideoUrl:
+          $ref: '#/components/schemas/SafetyEventDownloadTrackedInwardVideoUrl'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+        id:
+          $ref: '#/components/schemas/SafetyEventId'
+        location:
+          $ref: '#/components/schemas/location'
+        maxAccelerationGForce:
+          $ref: '#/components/schemas/SafetyEventMaxAccelerationGForce'
+        time:
+          $ref: '#/components/schemas/SafetyEventTime'
+        vehicle:
+          $ref: '#/components/schemas/vehicleTinyResponse'
+      type: object
+    SafetyEventId:
+      description: The unique Samsara ID of the safety event.
+      example: 212014918174029-1550954461759
+      type: string
+    SafetyEventsListResponse:
+      description: List of safety events.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SafetyEvent'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
     SafetyEventBehaviorLabelType:
       description: 'The label associated with the safety event. This list often changes, so it is recommended that clients gracefully handle any types not enumerated in this list. Valid values: `genericTailgating`, `genericDistraction`, `defensiveDriving`, `rollingStop`, `nearCollison`, `speeding`, `obstructedCamera`, `didNotYield`, `noSeatbelt`, `mobileUsage`, `drowsy`, `laneDeparture`, `followingDistanceSevere`, `followingDistanceModerate`, `lateResponse`, `acceleration`, `braking`, `harshTurn`, `crash`, `rolloverProtection`, `yawControl`, `ranRedLight`, `forwardCollisionWarning`, `eatingDrinking`, `smoking`, `followingDistance`, `edgeDistractedDriving`.'
@@ -502,22 +511,11 @@ components:
       - followingDistance
       - edgeDistractedDriving
       type: string
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
+    SafetyEventBehaviorLabels:
+      description: The most up-to-date behavior labels associated with the safety event. These labels can be updated by the Safety Report Admin.
+      items:
+        $ref: '#/components/schemas/SafetyEventBehaviorLabel'
+      type: array
     SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
@@ -532,6 +530,31 @@ components:
       required:
       - message
       - requestId
+      type: object
+    SafetyEventBehaviorLabelName:
+      description: The name of the label associated with the safety event.
+      example: Tailgating
+      type: string
+    SafetyEventObjectResponseBody:
+      description: The safety event that was updated.
+      properties:
+        behaviorLabels:
+          description: Behavior labels for a safety event.
+          items:
+            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
+          type: array
+        driver:
+          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
+        id:
+          description: The unique Samsara ID of the safety event.
+          example: 212014918174029-1550954461759
+          type: string
+        time:
+          description: The time the safety event occurred in RFC 3339 milliseconds format.
+          example: '2019-06-13T19:08:25.455Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
       type: object
     SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody:
       description: Unauthorized
@@ -548,143 +571,6 @@ components:
       - message
       - requestId
       type: object
-    SafetyEventDownloadInwardVideoUrl:
-      description: URL to download the inward video.
-      example: https://s3.console.aws.amazon.com/s3/buckets/samsara-dashcam-videos/21575/212014918400828/1553060687222/huKA7IhpBV-camera-video-segment-1244214895.mp4
-      type: string
-    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventBehaviorLabelsResponseBody:
-      description: Behavior label for a safety event.
-      properties:
-        name:
-          description: Name of the behavior label.
-          example: Acceleration
-          type: string
-        type:
-          description: 'Type of the BehaviorLabel.  Valid values: `Acceleration`, `Braking`, `Crash`, `DefensiveDriving`, `DidNotYield`, `Drinking`, `Drowsy`, `Eating`, `EatingDrinking`, `EdgeDistractedDriving`, `EdgeRailroadCrossingViolation`, `FollowingDistance`, `FollowingDistanceModerate`, `FollowingDistanceSevere`, `ForwardCollisionWarning`, `GenericDistraction`, `GenericTailgating`, `HarshTurn`, `Invalid`, `LaneDeparture`, `LateResponse`, `MobileUsage`, `NearCollison`, `NoSeatbelt`, `ObstructedCamera`, `PolicyViolationMask`, `RanRedLight`, `RollingStop`, `RolloverProtection`, `Smoking`, `Speeding`, `YawControl`'
-          enum:
-          - Acceleration
-          - Braking
-          - Crash
-          - DefensiveDriving
-          - DidNotYield
-          - Drinking
-          - Drowsy
-          - Eating
-          - EatingDrinking
-          - EdgeDistractedDriving
-          - EdgeRailroadCrossingViolation
-          - FollowingDistance
-          - FollowingDistanceModerate
-          - FollowingDistanceSevere
-          - ForwardCollisionWarning
-          - GenericDistraction
-          - GenericTailgating
-          - HarshTurn
-          - Invalid
-          - LaneDeparture
-          - LateResponse
-          - MobileUsage
-          - NearCollison
-          - NoSeatbelt
-          - ObstructedCamera
-          - PolicyViolationMask
-          - RanRedLight
-          - RollingStop
-          - RolloverProtection
-          - Smoking
-          - Speeding
-          - YawControl
-          example: Acceleration
-          type: string
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventBehaviorLabels:
-      description: The most up-to-date behavior labels associated with the safety event. These labels can be updated by the Safety Report Admin.
-      items:
-        $ref: '#/components/schemas/SafetyEventBehaviorLabel'
-      type: array
-    vehicleTinyResponse:
-      description: A minified vehicle object.
-      properties:
-        ExternalIds:
-          additionalProperties:
-            type: string
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          type: object
-        id:
-          description: ID of the vehicle.
-          example: '123456789'
-          type: string
-        name:
-          description: Name of the vehicle.
-          example: 'Midwest Truck #4'
-          type: string
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     V1VehicleSafetyScoreResponse:
       description: Safety score details for a vehicle
       properties:
@@ -737,152 +623,35 @@ components:
           example: 4321
           type: integer
       type: object
-    SafetyEventDownloadForwardVideoUrl:
-      description: URL to download the forward video.
+    SafetyEventBehaviorLabel:
+      description: The label and source of the label associated with the safety event.
+      properties:
+        label:
+          $ref: '#/components/schemas/SafetyEventBehaviorLabelType'
+        name:
+          $ref: '#/components/schemas/SafetyEventBehaviorLabelName'
+        source:
+          $ref: '#/components/schemas/SafetyEventBehaviorLabelSource'
+      required:
+      - label
+      - source
+      type: object
+    SafetyEventDownloadTrackedInwardVideoUrl:
+      description: URL to download the tracked inward video.
       example: https://s3.console.aws.amazon.com/s3/buckets/samsara-dashcam-videos/21575/212014918400828/1553060687222/huKA7IhpBV-camera-video-segment-1244214895.mp4
       type: string
-    SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEvent:
-      description: A safety event.
-      properties:
-        behaviorLabels:
-          $ref: '#/components/schemas/SafetyEventBehaviorLabels'
-        coachingState:
-          $ref: '#/components/schemas/SafetyEventCoachingState'
-        downloadForwardVideoUrl:
-          $ref: '#/components/schemas/SafetyEventDownloadForwardVideoUrl'
-        downloadInwardVideoUrl:
-          $ref: '#/components/schemas/SafetyEventDownloadInwardVideoUrl'
-        downloadTrackedInwardVideoUrl:
-          $ref: '#/components/schemas/SafetyEventDownloadTrackedInwardVideoUrl'
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
-        id:
-          $ref: '#/components/schemas/SafetyEventId'
-        location:
-          $ref: '#/components/schemas/location'
-        maxAccelerationGForce:
-          $ref: '#/components/schemas/SafetyEventMaxAccelerationGForce'
-        time:
-          $ref: '#/components/schemas/SafetyEventTime'
-        vehicle:
-          $ref: '#/components/schemas/vehicleTinyResponse'
-      type: object
-    SafetyEventObjectResponseBody:
-      description: The safety event that was updated.
-      properties:
-        behaviorLabels:
-          description: Behavior labels for a safety event.
-          items:
-            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
-          type: array
-        driver:
-          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
-        id:
-          description: The unique Samsara ID of the safety event.
-          example: 212014918174029-1550954461759
-          type: string
-        time:
-          description: The time the safety event occurred in RFC 3339 milliseconds format.
-          example: '2019-06-13T19:08:25.455Z'
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
-      type: object
-    SafetyEventCoachingState:
-      description: 'The current coaching status of the event.  Valid values: `needsReview`, `coached`, `dismissed`, `reviewed`, `archived`, `manualReview`, `needsCoaching`, `autoDismissed`, `needsRecognition`, `recognized`, `invalid`.'
-      enum:
-      - needsReview
-      - coached
-      - dismissed
-      - reviewed
-      - archived
-      - manualReview
-      - needsCoaching
-      - autoDismissed
-      - needsRecognition
-      - recognized
-      - invalid
-      type: string
-    SafetyEventsListResponse:
-      description: List of safety events.
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SafetyEvent'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    SafetyEventBehaviorLabelName:
-      description: The name of the label associated with the safety event.
-      example: Tailgating
-      type: string
-    V1SafetyReportHarshEvent:
-      description: List of harsh events
-      properties:
-        harshEventType:
-          description: Sensor generated harsh event type.
-          example: Harsh Braking
-          type: string
-        timestampMs:
-          description: Timestamp that the harsh event occurred in Unix milliseconds since epoch
-          example: 1535590776000
-          type: integer
-        vehicleId:
-          description: Vehicle associated with the harsh event
-          example: 212014918086169
-          type: integer
-      type: object
-    SafetyEventDriverObjectResponseBody:
+    driverTinyResponse:
       description: A minified driver object.
       properties:
         id:
           description: ID of the driver.
-          example: 0987
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
           type: string
       type: object
-    SafetyEventVehicleObjectResponseBody:
-      description: A minified vehicle object.
-      properties:
-        id:
-          description: ID of the vehicle.
-          example: '1234'
-          type: string
-      type: object
-    V1VehicleHarshEventResponse_location:
-      properties:
-        address:
-          description: Address of location where the harsh event occurred
-          example: 350 Rhode Island St, San Francisco, CA
-          type: string
-        latitude:
-          description: Latitude of location where the harsh event occurred
-          example: 33.07614328
-          type: number
-        longitude:
-          description: Longitude of location where the harsh event occurred
-          example: -96.14907287
-          type: number
-      type: object
-    SafetyEventMaxAccelerationGForce:
-      description: The maximum acceleration value as a multiplier on the force of gravity (g).
-      example: 0.123
-      type: number
     V1VehicleHarshEventResponse:
       description: Harsh event details for a vehicle
       properties:
@@ -915,6 +684,25 @@ components:
       required:
       - harshEventType
       - incidentReportUrl
+      type: object
+    SafetyEventMaxAccelerationGForce:
+      description: The maximum acceleration value as a multiplier on the force of gravity (g).
+      example: 0.123
+      type: number
+    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     V1DriverSafetyScoreResponse:
       description: Safety score details for a driver
@@ -968,12 +756,27 @@ components:
           example: 19708293
           type: integer
       type: object
-    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -982,6 +785,48 @@ components:
       required:
       - message
       - requestId
+      type: object
+    SafetyEventCoachingState:
+      description: 'The current coaching status of the event.  Valid values: `needsReview`, `coached`, `dismissed`, `reviewed`, `archived`, `manualReview`, `needsCoaching`, `autoDismissed`, `needsRecognition`, `recognized`, `invalid`.'
+      enum:
+      - needsReview
+      - coached
+      - dismissed
+      - reviewed
+      - archived
+      - manualReview
+      - needsCoaching
+      - autoDismissed
+      - needsRecognition
+      - recognized
+      - invalid
+      type: string
+    SafetyEventActivityFeedItemResponseBody:
+      description: Safety event activity feed item.
+      properties:
+        id:
+          description: The ID of the activity event feed line item.
+          example: 1622151765-212014918174029-1550954461759
+          type: string
+        safetyEvent:
+          $ref: '#/components/schemas/SafetyEventObjectResponseBody'
+        time:
+          description: The time the activity occurred in the corresponding safety event in RFC 3339 milliseconds format.
+          example: '2019-10-12T07:20:50.52Z'
+          type: string
+        type:
+          description: 'The type of activity that occurred in the safety event. We currently only support CoachingStateActivityType, BehaviorLabelActivityType, and CreateSafetyEventActivityType, but we may add support for more activity types in the future.  Valid values: `BehaviorLabelActivityType`, `CoachingStateActivityType`, `CreateSafetyEventActivityType`'
+          enum:
+          - BehaviorLabelActivityType
+          - CoachingStateActivityType
+          - CreateSafetyEventActivityType
+          example: CreateSafetyEventActivityType
+          type: string
+      required:
+      - id
+      - safetyEvent
+      - time
+      - type
       type: object
     SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
       description: Method not allowed
@@ -998,17 +843,172 @@ components:
       - message
       - requestId
       type: object
-    driverTinyResponse:
+    location:
+      description: Location object
+      properties:
+        latitude:
+          description: GPS latitude represented in degrees
+          example: 122.142
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees
+          example: -93.343
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    vehicleTinyResponse:
+      description: A minified vehicle object.
+      properties:
+        ExternalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        id:
+          description: ID of the vehicle.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
+          type: string
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventDownloadForwardVideoUrl:
+      description: URL to download the forward video.
+      example: https://s3.console.aws.amazon.com/s3/buckets/samsara-dashcam-videos/21575/212014918400828/1553060687222/huKA7IhpBV-camera-video-segment-1244214895.mp4
+      type: string
+    SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventBehaviorLabelSource:
+      description: 'The source of the label associated with the safety event. Valid values: `automated`, `userGenerated`.'
+      enum:
+      - automated
+      - userGenerated
+      type: string
+    SafetyEventDownloadInwardVideoUrl:
+      description: URL to download the inward video.
+      example: https://s3.console.aws.amazon.com/s3/buckets/samsara-dashcam-videos/21575/212014918400828/1553060687222/huKA7IhpBV-camera-video-segment-1244214895.mp4
+      type: string
+    V1VehicleHarshEventResponse_location:
+      properties:
+        address:
+          description: Address of location where the harsh event occurred
+          example: 350 Rhode Island St, San Francisco, CA
+          type: string
+        latitude:
+          description: Latitude of location where the harsh event occurred
+          example: 33.07614328
+          type: number
+        longitude:
+          description: Longitude of location where the harsh event occurred
+          example: -96.14907287
+          type: number
+      type: object
+    SafetyEventDriverObjectResponseBody:
       description: A minified driver object.
       properties:
         id:
           description: ID of the driver.
-          example: '88668'
+          example: 0987
           type: string
+      type: object
+    SafetyEventBehaviorLabelsResponseBody:
+      description: Behavior label for a safety event.
+      properties:
         name:
-          description: Name of the driver.
-          example: Susan Bob
+          description: Name of the behavior label.
+          example: Acceleration
           type: string
+        type:
+          description: 'Type of the BehaviorLabel.  Valid values: `Acceleration`, `Braking`, `Crash`, `DefensiveDriving`, `DidNotYield`, `Drinking`, `Drowsy`, `Eating`, `EatingDrinking`, `EdgeDistractedDriving`, `EdgeRailroadCrossingViolation`, `FollowingDistance`, `FollowingDistanceModerate`, `FollowingDistanceSevere`, `ForwardCollisionWarning`, `GenericDistraction`, `GenericTailgating`, `HarshTurn`, `Invalid`, `LaneDeparture`, `LateResponse`, `MobileUsage`, `NearCollison`, `NoSeatbelt`, `ObstructedCamera`, `PolicyViolationMask`, `RanRedLight`, `RollingStop`, `RolloverProtection`, `Smoking`, `Speeding`, `YawControl`'
+          enum:
+          - Acceleration
+          - Braking
+          - Crash
+          - DefensiveDriving
+          - DidNotYield
+          - Drinking
+          - Drowsy
+          - Eating
+          - EatingDrinking
+          - EdgeDistractedDriving
+          - EdgeRailroadCrossingViolation
+          - FollowingDistance
+          - FollowingDistanceModerate
+          - FollowingDistanceSevere
+          - ForwardCollisionWarning
+          - GenericDistraction
+          - GenericTailgating
+          - HarshTurn
+          - Invalid
+          - LaneDeparture
+          - LateResponse
+          - MobileUsage
+          - NearCollison
+          - NoSeatbelt
+          - ObstructedCamera
+          - PolicyViolationMask
+          - RanRedLight
+          - RollingStop
+          - RolloverProtection
+          - Smoking
+          - Speeding
+          - YawControl
+          example: Acceleration
+          type: string
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

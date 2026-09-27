@@ -62,6 +62,32 @@ paths:
       x-codegen-request-body-name: V1sensorParam
 components:
   schemas:
+    V1TemperatureResponse:
+      description: Contains the current temperatures of a sensor.
+      properties:
+        groupId:
+          description: Deprecated.
+          example: 101
+          format: int64
+          type: integer
+        sensors:
+          items:
+            $ref: '#/components/schemas/V1TemperatureResponse_sensors'
+          type: array
+      type: object
+    inline_object_8:
+      properties:
+        sensors:
+          description: List of sensor IDs to query.
+          example:
+          - 122
+          items:
+            format: int64
+            type: integer
+          type: array
+      required:
+      - sensors
+      type: object
     V1TemperatureResponse_sensors:
       properties:
         ambientTemperature:
@@ -98,35 +124,9 @@ components:
           example: 124
           type: integer
       type: object
-    V1TemperatureResponse:
-      description: Contains the current temperatures of a sensor.
-      properties:
-        groupId:
-          description: Deprecated.
-          example: 101
-          format: int64
-          type: integer
-        sensors:
-          items:
-            $ref: '#/components/schemas/V1TemperatureResponse_sensors'
-          type: array
-      type: object
     V1ErrorResponse:
       description: Error message describing why the request failed.
       type: string
-    inline_object_8:
-      properties:
-        sensors:
-          description: List of sensor IDs to query.
-          example:
-          - 122
-          items:
-            format: int64
-            type: integer
-          type: array
-      required:
-      - sensors
-      type: object
   requestBodies:
     inline_object_8:
       content:

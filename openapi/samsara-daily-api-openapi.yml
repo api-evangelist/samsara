@@ -116,12 +116,12 @@ paths:
       x-codegen-request-body-name: UpdateShippingDocsRequestBody
 components:
   schemas:
-    HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -131,20 +131,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    HosDailyLogsUpdateShippingDocsResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        data:
+          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
       required:
-      - message
-      - requestId
+      - data
       type: object
     HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
       description: An internal server error occurred
@@ -160,16 +152,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsRequestBody:
-      description: Update the shippingDocs field.
-      properties:
-        shippingDocs:
-          description: ShippingDocs associated with the driver for the day.
-          example: ShippingID1, ShippingID2
-          type: string
-      required:
-      - shippingDocs
       type: object
     PatchShippingDocsResponseBodyResponseBody:
       description: Response after successfully updating the LogMetaData object.
@@ -221,12 +203,12 @@ components:
             type: string
           type: array
       type: object
-    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
-      description: Resource not found
+    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -235,6 +217,31 @@ components:
       required:
       - message
       - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsRequestBody:
+      description: Update the shippingDocs field.
+      properties:
+        shippingDocs:
+          description: ShippingDocs associated with the driver for the day.
+          example: ShippingID1, ShippingID2
+          type: string
+      required:
+      - shippingDocs
       type: object
     HosDailyLogsUpdateShippingDocsUnauthorizedErrorResponseBody:
       description: Unauthorized
@@ -266,8 +273,23 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
@@ -280,28 +302,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
-      required:
-      - data
       type: object
     HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
       description: Method not allowed
@@ -318,12 +318,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

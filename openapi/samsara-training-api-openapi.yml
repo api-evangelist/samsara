@@ -221,114 +221,17 @@ paths:
       - Training
 components:
   schemas:
-    TrainingAssignmentsPatchTrainingAssignmentsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    TrainingAssignmentsPatchTrainingAssignmentsResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        data:
+          description: List of updated training assignments.
+          items:
+            $ref: '#/components/schemas/TrainingAssignmentResponseObjectResponseBody'
+          type: array
       required:
-      - message
-      - requestId
+      - data
       type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingAssignmentsPatchTrainingAssignmentsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingCourseObjectResponseBody:
-      description: Course that is associated with the training assignments.
-      properties:
-        id:
-          description: ID of the course.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          format: uuid
-          type: string
-        revisionId:
-          description: ID of the course's specific version.
-          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          format: uuid
-          type: string
-      required:
-      - id
-      - revisionId
-      type: object
-    TrainingAssignmentsPatchTrainingAssignmentsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsInternalServerErrorResponseBody:
+    TrainingAssignmentsPatchTrainingAssignmentsInternalServerErrorResponseBody:
       description: An internal server error occurred
       properties:
         message:
@@ -343,12 +246,12 @@ components:
       - message
       - requestId
       type: object
-    TrainingAssignmentsPatchTrainingAssignmentsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    TrainingAssignmentsDeleteTrainingAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -388,22 +291,12 @@ components:
       - message
       - requestId
       type: object
-    TrainingAssignmentsPatchTrainingAssignmentsResponseBody:
-      properties:
-        data:
-          description: List of updated training assignments.
-          items:
-            $ref: '#/components/schemas/TrainingAssignmentResponseObjectResponseBody'
-          type: array
-      required:
-      - data
-      type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    TrainingAssignmentsDeleteTrainingAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -413,12 +306,89 @@ components:
       - message
       - requestId
       type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    TrainingAssignmentsDeleteTrainingAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingCourseObjectResponseBody:
+      description: Course that is associated with the training assignments.
+      properties:
+        id:
+          description: ID of the course.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        revisionId:
+          description: ID of the course's specific version.
+          example: 1214a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+      required:
+      - id
+      - revisionId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -514,12 +484,57 @@ components:
       - updatedAtTime
       - updatedById
       type: object
-    TrainingAssignmentsPatchTrainingAssignmentsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    TrainingAssignmentsPatchTrainingAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsDeleteTrainingAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -544,57 +559,12 @@ components:
       - message
       - requestId
       type: object
-    TrainingAssignmentsPatchTrainingAssignmentsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    TrainingAssignmentsDeleteTrainingAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingAssignmentsPatchTrainingAssignmentsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingAssignmentsPatchTrainingAssignmentsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -621,12 +591,27 @@ components:
       - id
       - type
       type: object
-    TrainingAssignmentsDeleteTrainingAssignmentsBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    TrainingAssignmentsDeleteTrainingAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -642,6 +627,21 @@ components:
         message:
           description: Message of error
           example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrainingAssignmentsPatchTrainingAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

@@ -169,69 +169,56 @@ paths:
       - Maintenance
 components:
   schemas:
-    V1VehicleMaintenance_j1939_checkEngineLight:
-      description: J1939 check engine lights.
+    DvirSignature:
+      description: DVIR Signure.
       properties:
-        emissionsIsOn:
-          type: boolean
-        protectIsOn:
-          type: boolean
-        stopIsOn:
-          type: boolean
-        warningIsOn:
-          type: boolean
-      type: object
-    Defect:
-      properties:
-        comment:
-          description: Comment on the defect.
-          example: Air Compressor not working
-          type: string
-        createdAtTime:
-          description: 'Time when the defect was created. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+        signatoryUser:
+          allOf:
+          - description: The user who signed the DVIR.
+            type: object
+          - $ref: '#/components/schemas/userTinyResponse'
+          type: object
+        signedAtTime:
+          description: 'The time when the DVIR was signed. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
           example: '2020-01-27T07:06:25Z'
           type: string
-        defectType:
-          description: The type of DVIR defect.
-          example: Air Compressor
+        type:
+          default: driver
+          description: 'Whether the DVIR was submitted by a `driver` or `mechanic`. Valid values: `driver`, `mechanic`.'
+          enum:
+          - driver
+          - mechanic
+          example: driver
           type: string
-        id:
-          description: ID of the defect.
-          example: '18'
+      type: object
+    V1VehicleMaintenance_passenger_diagnosticTroubleCodes:
+      properties:
+        dtcDescription:
           type: string
-        isResolved:
-          description: Signifies if this defect is resolved.
+        dtcId:
+          type: integer
+        dtcShortCode:
+          type: string
+      required:
+      - dtcDescription
+      - dtcId
+      - dtcShortCode
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
           example: true
           type: boolean
-        mechanicNotes:
-          description: The mechanics notes on the defect.
-          example: Extremely large oddly shaped hole in passenger side window.
-          type: string
-        mechanicNotesUpdatedAtTime:
-          description: 'Time when mechanic notes were last updated. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        resolvedAtTime:
-          description: 'Time when this defect was resolved. Will not be returned if the defect is unresolved. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        resolvedBy:
-          $ref: '#/components/schemas/Defect_resolvedBy'
-        trailer:
-          allOf:
-          - description: The trailer this defect was submitted for.
-            type: object
-          - $ref: '#/components/schemas/trailerTinyResponse'
-          type: object
-        vehicle:
-          allOf:
-          - description: The vehicle this defect was submitted for.
-            type: object
-          - $ref: '#/components/schemas/vehicleTinyResponse'
-          type: object
       required:
-      - id
-      - isResolved
+      - endCursor
+      - hasNextPage
       type: object
     standardErrorResponse:
       description: Error response
@@ -245,10 +232,40 @@ components:
           example: 8916e1c1
           type: string
       type: object
-    DvirOdometerMeters:
-      description: The odometer reading in meters.
-      example: 14010293
-      type: integer
+    DvirTrailerDefects:
+      description: Defects registered for the trailer which was part of the DVIR.
+      items:
+        $ref: '#/components/schemas/dvirTrailerDefectsItems'
+      type: array
+    DvirsListResponse:
+      description: A list of DVIRs and pagination information.
+      properties:
+        data:
+          description: A list of DVIRs.
+          items:
+            $ref: '#/components/schemas/Dvir'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    V1VehicleMaintenance:
+      description: Contains any J1939/Passenger engine light warnings and engine faults.
+      properties:
+        id:
+          description: ID of the vehicle.
+          example: 112
+          format: int64
+          type: integer
+        j1939:
+          $ref: '#/components/schemas/V1VehicleMaintenance_j1939'
+        passenger:
+          $ref: '#/components/schemas/V1VehicleMaintenance_passenger'
+      required:
+      - id
+      type: object
     dvirTrailerDefectsItems:
       properties:
         comment:
@@ -330,32 +347,62 @@ components:
       - isResolved
       type: object
       x-go-gen-location: models
-    V1VehicleMaintenance_passenger_checkEngineLight:
-      description: Passenger vehicle check engine light.
+    DvirOdometerMeters:
+      description: The odometer reading in meters.
+      example: 14010293
+      type: integer
+    userTinyResponse:
+      description: A minified user object.
       properties:
-        isOn:
+        id:
+          description: ID of the user.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the user.
+          example: Susan Bob
+          type: string
+      type: object
+    DvirMechanicNotes:
+      description: The mechanics notes on the DVIR.
+      example: Replaced headlight on passenger side.
+      type: string
+    V1VehicleMaintenance_j1939_checkEngineLight:
+      description: J1939 check engine lights.
+      properties:
+        emissionsIsOn:
+          type: boolean
+        protectIsOn:
+          type: boolean
+        stopIsOn:
+          type: boolean
+        warningIsOn:
           type: boolean
       type: object
-    DvirTrailer:
-      allOf:
-      - description: The trailer the DVIR was submitted for. Only included for trailer only DVIRs.
-        type: object
-      - $ref: '#/components/schemas/trailerTinyResponse'
-    paginationResponse:
-      description: Pagination parameters.
+    inline_response_200_4:
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
+        vehicles:
+          items:
+            $ref: '#/components/schemas/V1VehicleMaintenance'
+          type: array
+      type: object
+    Defect_resolvedBy:
+      description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
+      properties:
+        id:
+          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
+          example: '11'
           type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
+        name:
+          description: Name of the person who resolved this defect.
+          example: Christopher 'The Handyman' Zhen
+          type: string
+        type:
+          description: Indicates whether this defect was resolved by a `driver` or a `mechanic`.
+          enum:
+          - driver
+          - mechanic
+          type: string
       type: object
     V1VehicleMaintenance_j1939_diagnosticTroubleCodes:
       properties:
@@ -379,20 +426,23 @@ components:
       - spnId
       - txId
       type: object
-    DvirsListResponse:
-      description: A list of DVIRs and pagination information.
+    trailerTinyResponse:
+      description: A minified trailer object.
       properties:
-        data:
-          description: A list of DVIRs.
-          items:
-            $ref: '#/components/schemas/Dvir'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
+        id:
+          description: ID of the trailer.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
+          type: string
       type: object
+    DvirThirdSignature:
+      allOf:
+      - description: An author signature object which has a signatory mini object with the signed time. Third Signature.
+        type: object
+      - $ref: '#/components/schemas/DvirSignature'
     V1VehicleMaintenance_passenger:
       description: Passenger vehicle data. Null if no data is available.
       properties:
@@ -404,16 +454,6 @@ components:
             $ref: '#/components/schemas/V1VehicleMaintenance_passenger_diagnosticTroubleCodes'
           type: array
       type: object
-    DvirAuthorSignature:
-      allOf:
-      - description: An author signature object which has a signatory mini object with the signed time. Author Signature.
-        type: object
-      - $ref: '#/components/schemas/DvirSignature'
-    DvirThirdSignature:
-      allOf:
-      - description: An author signature object which has a signatory mini object with the signed time. Third Signature.
-        type: object
-      - $ref: '#/components/schemas/DvirSignature'
     V1VehicleMaintenance_j1939:
       description: J1939 based data. Null if no data is available.
       properties:
@@ -425,25 +465,6 @@ components:
             $ref: '#/components/schemas/V1VehicleMaintenance_j1939_diagnosticTroubleCodes'
           type: array
       type: object
-    inline_response_200_4:
-      properties:
-        vehicles:
-          items:
-            $ref: '#/components/schemas/V1VehicleMaintenance'
-          type: array
-      type: object
-    userTinyResponse:
-      description: A minified user object.
-      properties:
-        id:
-          description: ID of the user.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the user.
-          example: Susan Bob
-          type: string
-      type: object
     DefectsResponse:
       description: A list of defects.
       properties:
@@ -454,6 +475,16 @@ components:
         pagination:
           $ref: '#/components/schemas/paginationResponse'
       type: object
+    DvirVehicle:
+      allOf:
+      - description: The vehicle the DVIR was submitted for. Only included for tractor or tractor+trailer DVIRs.
+        type: object
+      - $ref: '#/components/schemas/vehicleTinyResponse'
+    DvirVehicleDefects:
+      description: Defects registered for the vehicle which was part of the DVIR.
+      items:
+        $ref: '#/components/schemas/dvirTrailerDefectsItems'
+      type: array
     vehicleTinyResponse:
       description: A minified vehicle object.
       properties:
@@ -474,24 +505,91 @@ components:
           example: 'Midwest Truck #4'
           type: string
       type: object
-    V1VehicleMaintenance:
-      description: Contains any J1939/Passenger engine light warnings and engine faults.
-      properties:
-        id:
-          description: ID of the vehicle.
-          example: 112
-          format: int64
-          type: integer
-        j1939:
-          $ref: '#/components/schemas/V1VehicleMaintenance_j1939'
-        passenger:
-          $ref: '#/components/schemas/V1VehicleMaintenance_passenger'
-      required:
-      - id
-      type: object
     V1ErrorResponse:
       description: Error message describing why the request failed.
       type: string
+    DvirLicensePlate:
+      description: The license plate of this vehicle.
+      example: XHK1234
+      maxLength: 12
+      type: string
+    DvirSecondSignature:
+      allOf:
+      - description: An author signature object which has a signatory mini object with the signed time. Second Signature.
+        type: object
+      - $ref: '#/components/schemas/DvirSignature'
+    V1VehicleMaintenance_passenger_checkEngineLight:
+      description: Passenger vehicle check engine light.
+      properties:
+        isOn:
+          type: boolean
+      type: object
+    DvirTrailer:
+      allOf:
+      - description: The trailer the DVIR was submitted for. Only included for trailer only DVIRs.
+        type: object
+      - $ref: '#/components/schemas/trailerTinyResponse'
+    DvirLocation:
+      description: Optional string if your jurisdiction requires a location of the DVIR.
+      example: 350 Rhode Island St Ste. 400S, San Francisco, CA 94103
+      type: string
+    DvirAuthorSignature:
+      allOf:
+      - description: An author signature object which has a signatory mini object with the signed time. Author Signature.
+        type: object
+      - $ref: '#/components/schemas/DvirSignature'
+    Defect:
+      properties:
+        comment:
+          description: Comment on the defect.
+          example: Air Compressor not working
+          type: string
+        createdAtTime:
+          description: 'Time when the defect was created. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        defectType:
+          description: The type of DVIR defect.
+          example: Air Compressor
+          type: string
+        id:
+          description: ID of the defect.
+          example: '18'
+          type: string
+        isResolved:
+          description: Signifies if this defect is resolved.
+          example: true
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        mechanicNotesUpdatedAtTime:
+          description: 'Time when mechanic notes were last updated. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedAtTime:
+          description: 'Time when this defect was resolved. Will not be returned if the defect is unresolved. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/Defect_resolvedBy'
+        trailer:
+          allOf:
+          - description: The trailer this defect was submitted for.
+            type: object
+          - $ref: '#/components/schemas/trailerTinyResponse'
+          type: object
+        vehicle:
+          allOf:
+          - description: The vehicle this defect was submitted for.
+            type: object
+          - $ref: '#/components/schemas/vehicleTinyResponse'
+          type: object
+      required:
+      - id
+      - isResolved
+      type: object
     Dvir:
       description: Information about a DVIR.
       properties:
@@ -555,104 +653,6 @@ components:
       required:
       - id
       type: object
-    V1VehicleMaintenance_passenger_diagnosticTroubleCodes:
-      properties:
-        dtcDescription:
-          type: string
-        dtcId:
-          type: integer
-        dtcShortCode:
-          type: string
-      required:
-      - dtcDescription
-      - dtcId
-      - dtcShortCode
-      type: object
-    Defect_resolvedBy:
-      description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
-      properties:
-        id:
-          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
-          example: '11'
-          type: string
-        name:
-          description: Name of the person who resolved this defect.
-          example: Christopher 'The Handyman' Zhen
-          type: string
-        type:
-          description: Indicates whether this defect was resolved by a `driver` or a `mechanic`.
-          enum:
-          - driver
-          - mechanic
-          type: string
-      type: object
-    DvirSignature:
-      description: DVIR Signure.
-      properties:
-        signatoryUser:
-          allOf:
-          - description: The user who signed the DVIR.
-            type: object
-          - $ref: '#/components/schemas/userTinyResponse'
-          type: object
-        signedAtTime:
-          description: 'The time when the DVIR was signed. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        type:
-          default: driver
-          description: 'Whether the DVIR was submitted by a `driver` or `mechanic`. Valid values: `driver`, `mechanic`.'
-          enum:
-          - driver
-          - mechanic
-          example: driver
-          type: string
-      type: object
-    DvirLicensePlate:
-      description: The license plate of this vehicle.
-      example: XHK1234
-      maxLength: 12
-      type: string
-    DvirMechanicNotes:
-      description: The mechanics notes on the DVIR.
-      example: Replaced headlight on passenger side.
-      type: string
-    DvirTrailerDefects:
-      description: Defects registered for the trailer which was part of the DVIR.
-      items:
-        $ref: '#/components/schemas/dvirTrailerDefectsItems'
-      type: array
-    DvirVehicleDefects:
-      description: Defects registered for the vehicle which was part of the DVIR.
-      items:
-        $ref: '#/components/schemas/dvirTrailerDefectsItems'
-      type: array
-    DvirSecondSignature:
-      allOf:
-      - description: An author signature object which has a signatory mini object with the signed time. Second Signature.
-        type: object
-      - $ref: '#/components/schemas/DvirSignature'
-    DvirVehicle:
-      allOf:
-      - description: The vehicle the DVIR was submitted for. Only included for tractor or tractor+trailer DVIRs.
-        type: object
-      - $ref: '#/components/schemas/vehicleTinyResponse'
-    trailerTinyResponse:
-      description: A minified trailer object.
-      properties:
-        id:
-          description: ID of the trailer.
-          example: '123456789'
-          type: string
-        name:
-          description: Name of the trailer.
-          example: 'Midwest Trailer #5'
-          type: string
-      type: object
-    DvirLocation:
-      description: Optional string if your jurisdiction requires a location of the DVIR.
-      example: 350 Rhode Island St Ste. 400S, San Francisco, CA 94103
-      type: string
   securitySchemes:
     AccessTokenHeader:
       type: http

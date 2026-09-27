@@ -545,17 +545,361 @@ paths:
       - Documents
 components:
   schemas:
-    DocumentPdfGenerationRequest:
-      description: Identifies a document for PDF generation.
+    multipleChoiceValueObjectResponseBody:
       properties:
-        documentId:
-          description: ID of the document.
-          example: 6c8c0c01-206a-41a4-9d21-15b9978d04cb
+        selected:
+          description: Boolean representing if the choice has been selected.
+          example: false
+          type: boolean
+        value:
+          description: Description of the choice.
+          example: 'Yes'
+          type: string
+      type: object
+    fieldObjectValueRequestBody:
+      description: The value of the document field. The shape of value depends on the type.
+      properties:
+        barcodeValue:
+          description: The value of a barcode scanning field. Only present for barcode scanning fields.
+          items:
+            $ref: '#/components/schemas/barcodeValueObjectRequestBody'
+          type: array
+        dateTimeValue:
+          $ref: '#/components/schemas/dateTimeValueObjectRequestBody'
+        multipleChoiceValue:
+          description: The value of a multiple choice field. Only present for multiple choice fields.
+          items:
+            $ref: '#/components/schemas/multipleChoiceValueObjectRequestBody'
+          type: array
+        numberValue:
+          description: The value of a number field. Only present for number fields.
+          example: 123.456
+          format: double
+          type: number
+        photoValue:
+          description: The value of a photo field. Only present for photo fields.
+          items:
+            $ref: '#/components/schemas/photoValueObjectRequestBody'
+          type: array
+        scannedDocumentValue:
+          description: The value of a scanned document field. Only present for scanned document fields.
+          items:
+            $ref: '#/components/schemas/scannedDocumentValueObjectRequestBody'
+          type: array
+        signatureValue:
+          $ref: '#/components/schemas/signatureValueObjectRequestBody'
+        stringValue:
+          description: The value of a string field. Only present for string fields.
+          example: Red Truck
+          type: string
+      type: object
+    DocumentsPostDocumentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/documentResponseObjectResponseBody'
+      type: object
+    signatureFieldTypeMetaDataObjectResponseBody:
+      description: The signature field metadata.
+      properties:
+        legalText:
+          description: The signature field legal text.
+          example: Verified by signee.
+          type: string
+      type: object
+    DocumentTypesGetDocumentTypesBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - documentId
+      - message
+      - requestId
       type: object
-    DocumentsGetDocumentsServiceUnavailableErrorResponseBody:
+    DocumentsGetDocumentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    conditionalFieldSectionObjectResponseBody:
+      properties:
+        conditionalFieldFirstIndex:
+          description: The index of the first conditional field associated with the triggeringFieldValue in the fieldTypes list.
+          example: 1442355805701948200
+          format: int64
+          type: integer
+        conditionalFieldLastIndex:
+          description: The index of the last conditional field associated with the triggeringFieldValue in the fieldTypes list.
+          example: 8587732987390647000
+          format: int64
+          type: integer
+        triggeringFieldIndex:
+          description: The index of the multiple choice field in the fieldTypes list that triggers one or more conditional fields.
+          example: 7703795094721638000
+          format: int64
+          type: integer
+        triggeringFieldValue:
+          description: The multiple choice option value that triggers the conditional fields.
+          example: Optiona 1
+          type: string
+      type: object
+    multipleChoiceValueObjectRequestBody:
+      properties:
+        selected:
+          description: Boolean representing if the choice has been selected.
+          example: false
+          type: boolean
+        value:
+          description: Description of the choice.
+          example: 'Yes'
+          type: string
+      type: object
+    DocumentsDeleteDocumentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentTypesGetDocumentTypesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    DocumentsDeleteDocumentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    dateTimeValueObjectRequestBody:
+      description: The value of a date time field. Only present for date time fields.
+      properties:
+        dateTime:
+          description: Date time value inin RFC 3339 format.
+          example: '1996-02-22T20:14:42Z'
+          format: date-time
+          type: string
+      type: object
+    multipleChoiceFieldTypeMetaDataObjectResponseBody:
+      properties:
+        label:
+          description: The option choice label.
+          example: Fuel Receipt
+          type: string
+      type: object
+    signatureValueObjectResponseBody:
+      description: The value of a signature field. Only present for signature fields.
+      properties:
+        id:
+          description: Id of the signature field.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        name:
+          description: Name of the signee for a signature field.
+          example: John Smith
+          type: string
+        signedAtTime:
+          description: Time the signature was captured in RFC 3339 format.
+          example: '2015-01-26T12:08:59Z'
+          format: date-time
+          type: string
+        url:
+          description: Url of a signature field's PNG signature image.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
+      type: object
+    fieldObjectResponseBody:
+      properties:
+        label:
+          description: The name of the field.
+          example: Load weight
+          type: string
+        type:
+          description: 'The type of field.  Valid values: `photo`, `string`, `number`, `multipleChoice`, `signature`, `dateTime`, `scannedDocument`, `barcode`'
+          enum:
+          - photo
+          - string
+          - number
+          - multipleChoice
+          - signature
+          - dateTime
+          - scannedDocument
+          - barcode
+          example: photo
+          type: string
+        value:
+          $ref: '#/components/schemas/fieldObjectValueResponseBody'
+      required:
+      - label
+      - type
+      - value
+      type: object
+    DocumentsDeleteDocumentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    photoValueObjectRequestBody:
+      properties:
+        id:
+          description: Id of the photo.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        url:
+          description: Url of the photo.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
+      type: object
+    signatureValueObjectRequestBody:
+      description: The value of a signature field. Only present for signature fields.
+      properties:
+        id:
+          description: Id of the signature field.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        name:
+          description: Name of the signee for a signature field.
+          example: John Smith
+          type: string
+        signedAtTime:
+          description: Time the signature was captured in RFC 3339 format.
+          example: '2010-07-18T06:13:42Z'
+          format: date-time
+          type: string
+        url:
+          description: Url of a signature field's PNG signature image.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
+      type: object
+    DocumentsDeleteDocumentServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
         message:
@@ -570,12 +914,50 @@ components:
       - message
       - requestId
       type: object
-    DocumentsGetDocumentsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    DocumentsGetDocumentNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    scannedDocumentValueObjectResponseBody:
+      properties:
+        id:
+          description: Id of the scanned document.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        url:
+          description: Url of the scanned document.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
+      type: object
+    GoaDocumentTypeTinyResponseResponseBody:
+      description: A minified document type object
+      properties:
+        id:
+          description: ID of the document type.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        name:
+          description: Name of the document type.
+          example: Fleet Truck List
+          type: string
+      type: object
+    DocumentsGetDocumentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -630,109 +1012,6 @@ components:
       - data
       - pagination
       type: object
-    DocumentTypesGetDocumentTypesGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    photoValueObjectRequestBody:
-      properties:
-        id:
-          description: Id of the photo.
-          example: f5271458-21f9-4a9f-a290-780c6d8840ff
-          type: string
-        url:
-          description: Url of the photo.
-          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
-          type: string
-      type: object
-    DocumentsDeleteDocumentInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsGetDocumentTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaVehicleTinyResponseResponseBody:
-      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
-          type: string
-      type: object
-    DocumentsDeleteDocumentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentTypesGetDocumentTypesMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     DocumentsGetDocumentBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
@@ -748,12 +1027,12 @@ components:
       - message
       - requestId
       type: object
-    DocumentsGetDocumentsBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    DocumentsGetDocumentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -763,37 +1042,7 @@ components:
       - message
       - requestId
       type: object
-    DocumentsGetDocumentsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsGetDocumentMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsDeleteDocumentNotFoundErrorResponseBody:
+    DocumentsGetDocumentsNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
@@ -808,12 +1057,12 @@ components:
       - message
       - requestId
       type: object
-    DocumentsDeleteDocumentMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    DocumentsGetDocumentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -823,12 +1072,12 @@ components:
       - message
       - requestId
       type: object
-    DocumentsPostDocumentBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    DocumentsPostDocumentBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -838,17 +1087,12 @@ components:
       - message
       - requestId
       type: object
-    DocumentsPostDocumentResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/documentResponseObjectResponseBody'
-      type: object
-    DocumentsGetDocumentsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    DocumentsPostDocumentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -858,108 +1102,12 @@ components:
       - message
       - requestId
       type: object
-    DocumentTypesGetDocumentTypesInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    DocumentsPostDocumentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentTypesGetDocumentTypesNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsGetDocumentUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    scannedDocumentValueObjectRequestBody:
-      properties:
-        id:
-          description: Id of the scanned document.
-          example: f5271458-21f9-4a9f-a290-780c6d8840ff
-          type: string
-        url:
-          description: Url of the scanned document.
-          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
-          type: string
-      type: object
-    DocumentsPostDocumentUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    fieldObjectPostRequestBody:
-      properties:
-        label:
-          description: The name of the field.
-          example: Load weight
-          type: string
-        type:
-          description: 'The type of field.  Valid values: `photo`, `string`, `number`, `multipleChoice`, `signature`, `dateTime`, `scannedDocument`, `barcode`'
-          enum:
-          - photo
-          - string
-          - number
-          - multipleChoice
-          - signature
-          - dateTime
-          - scannedDocument
-          - barcode
-          example: photo
-          type: string
-        value:
-          $ref: '#/components/schemas/fieldObjectValueRequestBody'
-      required:
-      - label
-      - type
-      type: object
-    DocumentsDeleteDocumentUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -975,12 +1123,12 @@ components:
         data:
           $ref: '#/components/schemas/DocumentPdfQueryResponse_data'
       type: object
-    DocumentsDeleteDocumentBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    DocumentsPostDocumentInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -989,6 +1137,56 @@ components:
       required:
       - message
       - requestId
+      type: object
+    DocumentPdfGenerationResponse:
+      description: Identifies a PDF generation job.
+      properties:
+        data:
+          $ref: '#/components/schemas/DocumentPdfGenerationResponse_data'
+      type: object
+    DocumentTypesGetDocumentTypesBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/documentResponseObjectResponseBody'
+      type: object
+    DocumentsGetDocumentsResponseBody:
+      properties:
+        data:
+          description: Multiple documents.
+          items:
+            $ref: '#/components/schemas/documentResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    photoValueObjectResponseBody:
+      properties:
+        id:
+          description: Id of the photo.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        url:
+          description: Url of the photo.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
       type: object
     fieldObjectValueResponseBody:
       description: The value of the document field. The shape of value depends on the type.
@@ -1027,24 +1225,12 @@ components:
           example: Red Truck
           type: string
       type: object
-    GoaDocumentTypeTinyResponseResponseBody:
-      description: A minified document type object
-      properties:
-        id:
-          description: ID of the document type.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          type: string
-        name:
-          description: Name of the document type.
-          example: Fleet Truck List
-          type: string
-      type: object
-    DocumentsGetDocumentsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    DocumentsGetDocumentInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1053,6 +1239,30 @@ components:
       required:
       - message
       - requestId
+      type: object
+    DocumentTypesGetDocumentTypesTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    dateTimeValueObjectResponseBody:
+      description: The value of a date time field. Only present for date time fields.
+      properties:
+        dateTime:
+          description: Date time value inin RFC 3339 format.
+          example: '1975-05-13T14:12:59Z'
+          format: date-time
+          type: string
       type: object
     DocumentsPostDocumentNotFoundErrorResponseBody:
       description: Resource not found
@@ -1069,71 +1279,77 @@ components:
       - message
       - requestId
       type: object
-    signatureValueObjectRequestBody:
-      description: The value of a signature field. Only present for signature fields.
+    fieldTypesObjectResponseBody:
       properties:
+        fieldType:
+          description: 'The type of value this field can have.  Valid values: `photo`, `string`, `number`, `multipleChoice`, `signature`, `dateTime`, `scannedDocument`, `barcode`'
+          enum:
+          - photo
+          - string
+          - number
+          - multipleChoice
+          - signature
+          - dateTime
+          - scannedDocument
+          - barcode
+          example: photo
+          type: string
+        label:
+          description: The name of the field type.
+          example: Receipts
+          type: string
+        multipleChoiceFieldTypeMetaData:
+          description: A list of the multiple choice field option labels.
+          items:
+            $ref: '#/components/schemas/multipleChoiceFieldTypeMetaDataObjectResponseBody'
+          type: array
+        numberFieldTypeMetaData:
+          $ref: '#/components/schemas/numberFieldTypeMetaDataObjectResponseBody'
+        requiredField:
+          description: The indicator that states if the field is required.
+          example: true
+          type: boolean
+        signatureFieldTypeMetaData:
+          $ref: '#/components/schemas/signatureFieldTypeMetaDataObjectResponseBody'
+      required:
+      - fieldType
+      - label
+      - requiredField
+      type: object
+    getDocumentTypeResponseObjectResponseBody:
+      properties:
+        conditionalFieldSections:
+          description: List of the document type conditional field sections.
+          items:
+            $ref: '#/components/schemas/conditionalFieldSectionObjectResponseBody'
+          type: array
+        fieldTypes:
+          description: The fields associated with this document type.
+          items:
+            $ref: '#/components/schemas/fieldTypesObjectResponseBody'
+          type: array
         id:
-          description: Id of the signature field.
+          description: Universally unique identifier for the document type. This value can be passed in as the documentTypeId when creating a document.
           example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
           type: string
         name:
-          description: Name of the signee for a signature field.
-          example: John Smith
+          description: Name of the document type.
+          example: Bill's Fuel Receipts
           type: string
-        signedAtTime:
-          description: Time the signature was captured in RFC 3339 format.
-          example: '2010-07-18T06:13:42Z'
-          format: date-time
-          type: string
-        url:
-          description: Url of a signature field's PNG signature image.
-          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
-          type: string
+        orgId:
+          description: ID for the organization this document type belongs to.
+          example: 3771310580452555000
+          format: int64
+          type: integer
       type: object
-    DocumentsPostDocumentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    numberFieldTypeMetaDataObjectResponseBody:
+      description: The number field metadata.
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    DocumentsGetDocumentNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+        numberOfDecimalPlaces:
+          description: The number of decimal places allowed for the field.
+          example: 3167430815212634600
+          format: int64
+          type: integer
       type: object
     DocumentsGetDocumentsGatewayTimeoutErrorResponseBody:
       description: Gateway timeout
@@ -1150,140 +1366,12 @@ components:
       - message
       - requestId
       type: object
-    DocumentsPostDocumentBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    DocumentsDeleteDocumentUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    numberFieldTypeMetaDataObjectResponseBody:
-      description: The number field metadata.
-      properties:
-        numberOfDecimalPlaces:
-          description: The number of decimal places allowed for the field.
-          example: 3167430815212634600
-          format: int64
-          type: integer
-      type: object
-    DocumentsGetDocumentsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    scannedDocumentValueObjectResponseBody:
-      properties:
-        id:
-          description: Id of the scanned document.
-          example: f5271458-21f9-4a9f-a290-780c6d8840ff
-          type: string
-        url:
-          description: Url of the scanned document.
-          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
-          type: string
-      type: object
-    DocumentsGetDocumentsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    multipleChoiceValueObjectRequestBody:
-      properties:
-        selected:
-          description: Boolean representing if the choice has been selected.
-          example: false
-          type: boolean
-        value:
-          description: Description of the choice.
-          example: 'Yes'
-          type: string
-      type: object
-    DocumentsGetDocumentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsDeleteDocumentTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    dateTimeValueObjectRequestBody:
-      description: The value of a date time field. Only present for date time fields.
-      properties:
-        dateTime:
-          description: Date time value inin RFC 3339 format.
-          example: '1996-02-22T20:14:42Z'
-          format: date-time
-          type: string
-      type: object
-    DocumentsGetDocumentsResponseBody:
-      properties:
-        data:
-          description: Multiple documents.
-          items:
-            $ref: '#/components/schemas/documentResponseObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    DocumentsPostDocumentTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1304,138 +1392,7 @@ components:
           example: 0853883003114
           type: string
       type: object
-    GoaRouteStopTinyResponseResponseBody:
-      description: A minified route stop object
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: Id of the route stop
-          example: '494123'
-          type: string
-        name:
-          description: Name of the route stop
-          example: 'Company Warehouse #1'
-          type: string
-      type: object
-    dateTimeValueObjectResponseBody:
-      description: The value of a date time field. Only present for date time fields.
-      properties:
-        dateTime:
-          description: Date time value inin RFC 3339 format.
-          example: '1975-05-13T14:12:59Z'
-          format: date-time
-          type: string
-      type: object
-    signatureValueObjectResponseBody:
-      description: The value of a signature field. Only present for signature fields.
-      properties:
-        id:
-          description: Id of the signature field.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          type: string
-        name:
-          description: Name of the signee for a signature field.
-          example: John Smith
-          type: string
-        signedAtTime:
-          description: Time the signature was captured in RFC 3339 format.
-          example: '2015-01-26T12:08:59Z'
-          format: date-time
-          type: string
-        url:
-          description: Url of a signature field's PNG signature image.
-          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
-          type: string
-      type: object
-    GoaDriverTinyResponseResponseBody:
-      description: A minified driver object. This object is only returned if the route is assigned to the driver.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the driver
-          example: '45646'
-          type: string
-        name:
-          description: Name of the driver
-          example: Driver Bob
-          type: string
-      required:
-      - id
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    DocumentTypesGetDocumentTypesTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsGetDocumentsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    signatureFieldTypeMetaDataObjectResponseBody:
-      description: The signature field metadata.
-      properties:
-        legalText:
-          description: The signature field legal text.
-          example: Verified by signee.
-          type: string
-      type: object
-    DocumentsPostDocumentInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsDeleteDocumentBadRequestErrorResponseBody:
+    DocumentsPostDocumentBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
         message:
@@ -1449,236 +1406,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    DocumentsPostDocumentMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentTypesGetDocumentTypesBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    fieldObjectResponseBody:
-      properties:
-        label:
-          description: The name of the field.
-          example: Load weight
-          type: string
-        type:
-          description: 'The type of field.  Valid values: `photo`, `string`, `number`, `multipleChoice`, `signature`, `dateTime`, `scannedDocument`, `barcode`'
-          enum:
-          - photo
-          - string
-          - number
-          - multipleChoice
-          - signature
-          - dateTime
-          - scannedDocument
-          - barcode
-          example: photo
-          type: string
-        value:
-          $ref: '#/components/schemas/fieldObjectValueResponseBody'
-      required:
-      - label
-      - type
-      - value
-      type: object
-    DocumentTypesGetDocumentTypesBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsDeleteDocumentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsPostDocumentRequestBody:
-      properties:
-        documentTypeId:
-          description: ID for the document type.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          type: string
-        driverId:
-          description: ID of the driver. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
-          example: '45646'
-          type: string
-        fields:
-          description: The fields associated with this document.
-          items:
-            $ref: '#/components/schemas/fieldObjectPostRequestBody'
-          type: array
-        name:
-          description: Name of the document.
-          example: Dropoff Slip 123
-          type: string
-        notes:
-          description: Notes on the document.
-          example: Missing a crate
-          maxLength: 2000
-          type: string
-        routeStopId:
-          description: ID of the route stop. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the route stop.
-          example: '45646'
-          type: string
-        state:
-          default: required
-          description: 'The condition of the document created for the driver. Can be either `required` or `submitted`, if no value is specified, `state` defaults to `required`. `required` documents are pre-populated documents for the Driver to fill out in the Driver App.  Valid values: `submitted`, `required`'
-          enum:
-          - submitted
-          - required
-          example: submitted
-          type: string
-        vehicleId:
-          description: ID of the vehicle. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
-          example: '45646'
-          type: string
-      required:
-      - documentTypeId
-      - driverId
-      type: object
-    DocumentTypesGetDocumentTypesNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    fieldObjectValueRequestBody:
-      description: The value of the document field. The shape of value depends on the type.
-      properties:
-        barcodeValue:
-          description: The value of a barcode scanning field. Only present for barcode scanning fields.
-          items:
-            $ref: '#/components/schemas/barcodeValueObjectRequestBody'
-          type: array
-        dateTimeValue:
-          $ref: '#/components/schemas/dateTimeValueObjectRequestBody'
-        multipleChoiceValue:
-          description: The value of a multiple choice field. Only present for multiple choice fields.
-          items:
-            $ref: '#/components/schemas/multipleChoiceValueObjectRequestBody'
-          type: array
-        numberValue:
-          description: The value of a number field. Only present for number fields.
-          example: 123.456
-          format: double
-          type: number
-        photoValue:
-          description: The value of a photo field. Only present for photo fields.
-          items:
-            $ref: '#/components/schemas/photoValueObjectRequestBody'
-          type: array
-        scannedDocumentValue:
-          description: The value of a scanned document field. Only present for scanned document fields.
-          items:
-            $ref: '#/components/schemas/scannedDocumentValueObjectRequestBody'
-          type: array
-        signatureValue:
-          $ref: '#/components/schemas/signatureValueObjectRequestBody'
-        stringValue:
-          description: The value of a string field. Only present for string fields.
-          example: Red Truck
-          type: string
-      type: object
-    DocumentsPostDocumentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsDeleteDocumentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    multipleChoiceFieldTypeMetaDataObjectResponseBody:
-      properties:
-        label:
-          description: The option choice label.
-          example: Fuel Receipt
-          type: string
-      type: object
-    photoValueObjectResponseBody:
-      properties:
-        id:
-          description: Id of the photo.
-          example: f5271458-21f9-4a9f-a290-780c6d8840ff
-          type: string
-        url:
-          description: Url of the photo.
-          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
-          type: string
       type: object
     DocumentPdfQueryResponse_data:
       properties:
@@ -1711,80 +1438,6 @@ components:
           example: '2020-01-02T15:04:05+07:00'
           type: string
       type: object
-    conditionalFieldSectionObjectResponseBody:
-      properties:
-        conditionalFieldFirstIndex:
-          description: The index of the first conditional field associated with the triggeringFieldValue in the fieldTypes list.
-          example: 1442355805701948200
-          format: int64
-          type: integer
-        conditionalFieldLastIndex:
-          description: The index of the last conditional field associated with the triggeringFieldValue in the fieldTypes list.
-          example: 8587732987390647000
-          format: int64
-          type: integer
-        triggeringFieldIndex:
-          description: The index of the multiple choice field in the fieldTypes list that triggers one or more conditional fields.
-          example: 7703795094721638000
-          format: int64
-          type: integer
-        triggeringFieldValue:
-          description: The multiple choice option value that triggers the conditional fields.
-          example: Optiona 1
-          type: string
-      type: object
-    multipleChoiceValueObjectResponseBody:
-      properties:
-        selected:
-          description: Boolean representing if the choice has been selected.
-          example: false
-          type: boolean
-        value:
-          description: Description of the choice.
-          example: 'Yes'
-          type: string
-      type: object
-    DocumentPdfGenerationResponse_data:
-      properties:
-        documentId:
-          description: ID of the document.
-          example: 6c8c0c01-206a-41a4-9d21-15b9978d04cb
-          type: string
-        id:
-          description: ID of the PDF file generated or being generated for the document.
-          example: 5c8c0c01-206a-41a4-9d21-15b9978d04cb
-          type: string
-      type: object
-    DocumentsGetDocumentBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DocumentsPostDocumentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     DocumentTypesGetDocumentTypesServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
@@ -1800,7 +1453,22 @@ components:
       - message
       - requestId
       type: object
-    DocumentTypesGetDocumentTypesUnauthorizedErrorResponseBody:
+    DocumentTypesGetDocumentTypesInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
@@ -1815,38 +1483,29 @@ components:
       - message
       - requestId
       type: object
-    getDocumentTypeResponseObjectResponseBody:
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
       properties:
-        conditionalFieldSections:
-          description: List of the document type conditional field sections.
-          items:
-            $ref: '#/components/schemas/conditionalFieldSectionObjectResponseBody'
-          type: array
-        fieldTypes:
-          description: The fields associated with this document type.
-          items:
-            $ref: '#/components/schemas/fieldTypesObjectResponseBody'
-          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
         id:
-          description: Universally unique identifier for the document type. This value can be passed in as the documentTypeId when creating a document.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          description: ID of the vehicle
+          example: '494123'
           type: string
         name:
-          description: Name of the document type.
-          example: Bill's Fuel Receipts
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
           type: string
-        orgId:
-          description: ID for the organization this document type belongs to.
-          example: 3771310580452555000
-          format: int64
-          type: integer
       type: object
-    DocumentsGetDocumentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    DocumentsGetDocumentTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1856,11 +1515,16 @@ components:
       - message
       - requestId
       type: object
-    DocumentPdfGenerationResponse:
-      description: Identifies a PDF generation job.
+    scannedDocumentValueObjectRequestBody:
       properties:
-        data:
-          $ref: '#/components/schemas/DocumentPdfGenerationResponse_data'
+        id:
+          description: Id of the scanned document.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+        url:
+          description: Url of the scanned document.
+          example: https://samsara-driver-media-upload.s3.us-west-2.amazonaws.com/123456
+          type: string
       type: object
     documentResponseObjectResponseBody:
       description: A single document.
@@ -1923,18 +1587,91 @@ components:
       - id
       - state
       type: object
-    barcodeValueObjectRequestBody:
+    fieldObjectPostRequestBody:
       properties:
-        barcodeType:
-          description: The barcode type that was scanned.
-          example: org.gs1.EAN-13
+        label:
+          description: The name of the field.
+          example: Load weight
           type: string
-        barcodeValue:
-          description: The captured barcode value.
-          example: 0853883003114
+        type:
+          description: 'The type of field.  Valid values: `photo`, `string`, `number`, `multipleChoice`, `signature`, `dateTime`, `scannedDocument`, `barcode`'
+          enum:
+          - photo
+          - string
+          - number
+          - multipleChoice
+          - signature
+          - dateTime
+          - scannedDocument
+          - barcode
+          example: photo
           type: string
+        value:
+          $ref: '#/components/schemas/fieldObjectValueRequestBody'
+      required:
+      - label
+      - type
       type: object
-    DocumentsGetDocumentServiceUnavailableErrorResponseBody:
+    DocumentsPostDocumentRequestBody:
+      properties:
+        documentTypeId:
+          description: ID for the document type.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        driverId:
+          description: ID of the driver. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
+          example: '45646'
+          type: string
+        fields:
+          description: The fields associated with this document.
+          items:
+            $ref: '#/components/schemas/fieldObjectPostRequestBody'
+          type: array
+        name:
+          description: Name of the document.
+          example: Dropoff Slip 123
+          type: string
+        notes:
+          description: Notes on the document.
+          example: Missing a crate
+          maxLength: 2000
+          type: string
+        routeStopId:
+          description: ID of the route stop. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the route stop.
+          example: '45646'
+          type: string
+        state:
+          default: required
+          description: 'The condition of the document created for the driver. Can be either `required` or `submitted`, if no value is specified, `state` defaults to `required`. `required` documents are pre-populated documents for the Driver to fill out in the Driver App.  Valid values: `submitted`, `required`'
+          enum:
+          - submitted
+          - required
+          example: submitted
+          type: string
+        vehicleId:
+          description: ID of the vehicle. Can be either unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
+          example: '45646'
+          type: string
+      required:
+      - documentTypeId
+      - driverId
+      type: object
+    DocumentsDeleteDocumentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentsServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
         message:
@@ -1949,17 +1686,23 @@ components:
       - message
       - requestId
       type: object
-    DocumentsGetDocumentResponseBody:
+    DocumentPdfGenerationResponse_data:
       properties:
-        data:
-          $ref: '#/components/schemas/documentResponseObjectResponseBody'
+        documentId:
+          description: ID of the document.
+          example: 6c8c0c01-206a-41a4-9d21-15b9978d04cb
+          type: string
+        id:
+          description: ID of the PDF file generated or being generated for the document.
+          example: 5c8c0c01-206a-41a4-9d21-15b9978d04cb
+          type: string
       type: object
-    DocumentsGetDocumentInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    DocumentsDeleteDocumentBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1968,6 +1711,17 @@ components:
       required:
       - message
       - requestId
+      type: object
+    barcodeValueObjectRequestBody:
+      properties:
+        barcodeType:
+          description: The barcode type that was scanned.
+          example: org.gs1.EAN-13
+          type: string
+        barcodeValue:
+          description: The captured barcode value.
+          example: 0853883003114
+          type: string
       type: object
     GoaRouteTinyResponseResponseBody:
       description: A minified representation of a single route.
@@ -1989,42 +1743,288 @@ components:
       required:
       - id
       type: object
-    fieldTypesObjectResponseBody:
+    DocumentTypesGetDocumentTypesUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
-        fieldType:
-          description: 'The type of value this field can have.  Valid values: `photo`, `string`, `number`, `multipleChoice`, `signature`, `dateTime`, `scannedDocument`, `barcode`'
-          enum:
-          - photo
-          - string
-          - number
-          - multipleChoice
-          - signature
-          - dateTime
-          - scannedDocument
-          - barcode
-          example: photo
+        message:
+          description: Message of error
+          example: Invalid token.
           type: string
-        label:
-          description: The name of the field type.
-          example: Receipts
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
-        multipleChoiceFieldTypeMetaData:
-          description: A list of the multiple choice field option labels.
-          items:
-            $ref: '#/components/schemas/multipleChoiceFieldTypeMetaDataObjectResponseBody'
-          type: array
-        numberFieldTypeMetaData:
-          $ref: '#/components/schemas/numberFieldTypeMetaDataObjectResponseBody'
-        requiredField:
-          description: The indicator that states if the field is required.
-          example: true
-          type: boolean
-        signatureFieldTypeMetaData:
-          $ref: '#/components/schemas/signatureFieldTypeMetaDataObjectResponseBody'
       required:
-      - fieldType
-      - label
-      - requiredField
+      - message
+      - requestId
+      type: object
+    DocumentsPostDocumentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    DocumentsDeleteDocumentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentTypesGetDocumentTypesNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentTypesGetDocumentTypesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsPostDocumentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsPostDocumentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsDeleteDocumentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentPdfGenerationRequest:
+      description: Identifies a document for PDF generation.
+      properties:
+        documentId:
+          description: ID of the document.
+          example: 6c8c0c01-206a-41a4-9d21-15b9978d04cb
+          type: string
+      required:
+      - documentId
+      type: object
+    GoaRouteStopTinyResponseResponseBody:
+      description: A minified route stop object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Id of the route stop
+          example: '494123'
+          type: string
+        name:
+          description: Name of the route stop
+          example: 'Company Warehouse #1'
+          type: string
+      type: object
+    DocumentsPostDocumentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentsGetDocumentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaDriverTinyResponseResponseBody:
+      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+      required:
+      - id
+      type: object
+    DocumentsDeleteDocumentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DocumentTypesGetDocumentTypesNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

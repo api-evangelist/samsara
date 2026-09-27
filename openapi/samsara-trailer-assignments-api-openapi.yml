@@ -74,40 +74,6 @@ paths:
       - Trailer  Assignments
 components:
   schemas:
-    V1TrailerAssignmentsResponse_allOf:
-      properties:
-        trailerAssignments:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
-          type: array
-      type: object
-    inline_response_200_7:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-        trailers:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
-          type: array
-      type: object
-    V1TrailerAssignmentResponse:
-      properties:
-        driverId:
-          description: The ID of the driver associated with this trailer.
-          example: 2047
-          format: int64
-          type: integer
-        endMs:
-          description: The time at which the driver ended the assignment. If the assignment is current, this value will be omitted.
-          example: 1462881998034
-          format: int64
-          type: integer
-        startMs:
-          description: The time at which the driver started the assignment
-          example: 1462878398034
-          format: int64
-          type: integer
-      type: object
     V1Pagination:
       properties:
         endCursor:
@@ -130,13 +96,35 @@ components:
       - hasPrevPage
       - startCursor
       type: object
+    V1TrailerAssignmentsResponse_allOf:
+      properties:
+        trailerAssignments:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
+          type: array
+      type: object
+    V1TrailerAssignmentResponse:
+      properties:
+        driverId:
+          description: The ID of the driver associated with this trailer.
+          example: 2047
+          format: int64
+          type: integer
+        endMs:
+          description: The time at which the driver ended the assignment. If the assignment is current, this value will be omitted.
+          example: 1462881998034
+          format: int64
+          type: integer
+        startMs:
+          description: The time at which the driver started the assignment
+          example: 1462878398034
+          format: int64
+          type: integer
+      type: object
     V1TrailerAssignmentsResponse:
       allOf:
       - $ref: '#/components/schemas/V1TrailerBase'
       - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     V1TrailerBase:
       properties:
         id:
@@ -152,6 +140,18 @@ components:
       required:
       - id
       - name
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    inline_response_200_7:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+        trailers:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          type: array
       type: object
   securitySchemes:
     AccessTokenHeader:

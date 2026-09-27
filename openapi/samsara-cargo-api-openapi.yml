@@ -82,6 +82,19 @@ components:
       required:
       - sensors
       type: object
+    V1CargoResponse:
+      description: Contains the current cargo status of a sensor.
+      properties:
+        groupId:
+          description: Deprecated.
+          example: 101
+          format: int64
+          type: integer
+        sensors:
+          items:
+            $ref: '#/components/schemas/V1CargoResponse_sensors'
+          type: array
+      type: object
     V1ErrorResponse:
       description: Error message describing why the request failed.
       type: string
@@ -116,19 +129,6 @@ components:
           description: ID of the vehicle associated with the sensor for the data point. If no vehicle is connected, this parameter will not be reported.
           example: 124
           type: integer
-      type: object
-    V1CargoResponse:
-      description: Contains the current cargo status of a sensor.
-      properties:
-        groupId:
-          description: Deprecated.
-          example: 101
-          format: int64
-          type: integer
-        sensors:
-          items:
-            $ref: '#/components/schemas/V1CargoResponse_sensors'
-          type: array
       type: object
   securitySchemes:
     AccessTokenHeader:

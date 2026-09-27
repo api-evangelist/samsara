@@ -288,6 +288,58 @@ paths:
       - Gateways
 components:
   schemas:
+    GatewaysDeleteGatewayBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysPostGatewayResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/GatewayResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    GatewaysPostGatewayNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysGetGatewaysNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     GatewaysDeleteGatewayNotFoundErrorResponseBody:
       description: Resource not found
       properties:
@@ -303,12 +355,12 @@ components:
       - message
       - requestId
       type: object
-    GatewaysGetGatewaysUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    GatewaysPostGatewayGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -318,25 +370,12 @@ components:
       - message
       - requestId
       type: object
-    GatewaysGetGatewaysResponseBody:
-      properties:
-        data:
-          description: Activated gateways
-          items:
-            $ref: '#/components/schemas/GatewayResponseObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    GatewaysGetGatewaysTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    GatewaysDeleteGatewayBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -346,15 +385,35 @@ components:
       - message
       - requestId
       type: object
-    GatewaysPostGatewayRequestBody:
+    GatewaysGetGatewaysServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
-        serial:
-          description: Gateway serial number
-          example: GFRV-43N-VGX
-          pattern: ^[a-zA-Z0-9]{4}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}|DC_([a-zA-Z0-9]){10}|SC_([a-zA-Z0-9]){10}$
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - serial
+      - message
+      - requestId
+      type: object
+    GatewaysGetGatewaysNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     GatewaysPostGatewayBadGatewayErrorResponseBody:
       description: Bad Gateway
@@ -371,7 +430,7 @@ components:
       - message
       - requestId
       type: object
-    GatewaysPostGatewayMethodNotAllowedErrorResponseBody:
+    GatewaysGetGatewaysMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
         message:
@@ -386,22 +445,33 @@ components:
       - message
       - requestId
       type: object
-    GatewaysPostGatewayUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    DataUsageResponseObjectResponseBody:
+      description: An object containing information about the gateway data usage in mb for the last 30 days.
       properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+        cellularDataUsageBytes:
+          description: Celluar data usage in bytes.
+          example: 6506614854048094000
+          format: int64
+          type: integer
+        hotspotUsageBytes:
+          description: Wifi hotspot data usage in bytes.
+          example: 6601334700399258000
+          format: int64
+          type: integer
       type: object
-    GatewaysPostGatewayServiceUnavailableErrorResponseBody:
+    AccessoryResponseObjectResponseBody:
+      description: An object containing information about an accessory connected to the VG.
+      properties:
+        model:
+          description: Product model name of the device
+          example: EM11
+          type: string
+        serial:
+          description: The serial number of the accessory device.
+          example: ABCD-123-EFG
+          type: string
+      type: object
+    GatewaysDeleteGatewayServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
         message:
@@ -431,24 +501,12 @@ components:
       - message
       - requestId
       type: object
-    AccessoryResponseObjectResponseBody:
-      description: An object containing information about an accessory connected to the VG.
-      properties:
-        model:
-          description: Product model name of the device
-          example: EM11
-          type: string
-        serial:
-          description: The serial number of the accessory device.
-          example: ABCD-123-EFG
-          type: string
-      type: object
-    GatewaysDeleteGatewayBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    GatewaysPostGatewayTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -458,95 +516,7 @@ components:
       - message
       - requestId
       type: object
-    GatewaysDeleteGatewayUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysPostGatewayGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysPostGatewayBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewayAssetResponseObjectResponseBody:
-      description: An object containing information about the asset the gateway is installed on
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: The unique Samsara ID of the asset where the gateway is installed. This is automatically generated when the asset is created and cannot be changed. Use this ID on PATCH vehicle, equipment, or trailer endpoints to update the asset
-          example: '8393848111'
-          type: string
-      type: object
-    GatewaysPostGatewayNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysDeleteGatewayGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysDeleteGatewayMethodNotAllowedErrorResponseBody:
+    GatewaysPostGatewayMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
         message:
@@ -561,27 +531,51 @@ components:
       - message
       - requestId
       type: object
-    GatewaysPostGatewayInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    ConnectionStatusResponseObjectResponseBody:
+      description: An objecting containing information about the connectivity status of the gateway
       properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
+        healthStatus:
+          description: 'The most recent health status of the gateway.  Valid values: `Status Not Set`, `Connected`, `Not Installed`, `Power Source Off - Active Vehicle`, `Power Source Off - Inactive Vehicle`, `Weak Cellular Signal`, `Requires Investigation`, `Requires Charge`, `Unsupported Product`, `Low Battery. Replace Device.`, `Low Vehicle Battery`, `Unplugged`, `Low Charging State`, `Vehicle Off`, `Weak GPS Signal`, `Low Gateway Battery`, `Low Gateway Battery (AG24)`, `Low Gateway Battery (AG45)`, `Low Gateway Battery (AG26)`, `Low Gateway Battery (AG46)`, `Low Gateway Battery (AG46-P)`, `Temporarily Offline`, `Prolonged Offline`, `Recently Offline`, `Replacement Required`, `Status Unknown`'
+          enum:
+          - Status Not Set
+          - Connected
+          - Not Installed
+          - Power Source Off - Active Vehicle
+          - Power Source Off - Inactive Vehicle
+          - Weak Cellular Signal
+          - Requires Investigation
+          - Requires Charge
+          - Unsupported Product
+          - Low Battery. Replace Device.
+          - Low Vehicle Battery
+          - Unplugged
+          - Low Charging State
+          - Vehicle Off
+          - Weak GPS Signal
+          - Low Gateway Battery
+          - Low Gateway Battery (AG24)
+          - Low Gateway Battery (AG45)
+          - Low Gateway Battery (AG26)
+          - Low Gateway Battery (AG46)
+          - Low Gateway Battery (AG46-P)
+          - Temporarily Offline
+          - Prolonged Offline
+          - Recently Offline
+          - Replacement Required
+          - Status Unknown
+          example: Not Installed
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
+        lastConnected:
+          description: 'The last time the gateway was connected in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
           type: string
-      required:
-      - message
-      - requestId
       type: object
-    GatewaysGetGatewaysNotFoundErrorResponseBody:
-      description: Resource not found
+    GatewaysDeleteGatewayGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -606,12 +600,12 @@ components:
       - message
       - requestId
       type: object
-    GatewaysGetGatewaysBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    GatewaysDeleteGatewayTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -620,20 +614,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    DataUsageResponseObjectResponseBody:
-      description: An object containing information about the gateway data usage in mb for the last 30 days.
-      properties:
-        cellularDataUsageBytes:
-          description: Celluar data usage in bytes.
-          example: 6506614854048094000
-          format: int64
-          type: integer
-        hotspotUsageBytes:
-          description: Wifi hotspot data usage in bytes.
-          example: 6601334700399258000
-          format: int64
-          type: integer
       type: object
     GoaPaginationResponseResponseBody:
       description: Pagination parameters.
@@ -650,12 +630,65 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    GatewaysPostGatewayResponseBody:
+    GatewaysDeleteGatewayUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
-        data:
-          $ref: '#/components/schemas/GatewayResponseObjectResponseBody'
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - data
+      - message
+      - requestId
+      type: object
+    GatewaysDeleteGatewayMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysPostGatewayBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysGetGatewaysInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     GatewayResponseObjectResponseBody:
       properties:
@@ -726,156 +759,93 @@ components:
       - model
       - serial
       type: object
-    GatewaysPostGatewayTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysGetGatewaysGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysGetGatewaysInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    ConnectionStatusResponseObjectResponseBody:
-      description: An objecting containing information about the connectivity status of the gateway
-      properties:
-        healthStatus:
-          description: 'The most recent health status of the gateway.  Valid values: `Status Not Set`, `Connected`, `Not Installed`, `Power Source Off - Active Vehicle`, `Power Source Off - Inactive Vehicle`, `Weak Cellular Signal`, `Requires Investigation`, `Requires Charge`, `Unsupported Product`, `Low Battery. Replace Device.`, `Low Vehicle Battery`, `Unplugged`, `Low Charging State`, `Vehicle Off`, `Weak GPS Signal`, `Low Gateway Battery`, `Low Gateway Battery (AG24)`, `Low Gateway Battery (AG45)`, `Low Gateway Battery (AG26)`, `Low Gateway Battery (AG46)`, `Low Gateway Battery (AG46-P)`, `Temporarily Offline`, `Prolonged Offline`, `Recently Offline`, `Replacement Required`, `Status Unknown`'
-          enum:
-          - Status Not Set
-          - Connected
-          - Not Installed
-          - Power Source Off - Active Vehicle
-          - Power Source Off - Inactive Vehicle
-          - Weak Cellular Signal
-          - Requires Investigation
-          - Requires Charge
-          - Unsupported Product
-          - Low Battery. Replace Device.
-          - Low Vehicle Battery
-          - Unplugged
-          - Low Charging State
-          - Vehicle Off
-          - Weak GPS Signal
-          - Low Gateway Battery
-          - Low Gateway Battery (AG24)
-          - Low Gateway Battery (AG45)
-          - Low Gateway Battery (AG26)
-          - Low Gateway Battery (AG46)
-          - Low Gateway Battery (AG46-P)
-          - Temporarily Offline
-          - Prolonged Offline
-          - Recently Offline
-          - Replacement Required
-          - Status Unknown
-          example: Not Installed
-          type: string
-        lastConnected:
-          description: 'The last time the gateway was connected in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-      type: object
-    GatewaysDeleteGatewayServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysGetGatewaysNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysGetGatewaysServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GatewaysDeleteGatewayTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     GatewaysGetGatewaysBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
         message:
           description: Message of error
           example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysPostGatewayServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysGetGatewaysBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysPostGatewayRequestBody:
+      properties:
+        serial:
+          description: Gateway serial number
+          example: GFRV-43N-VGX
+          pattern: ^[a-zA-Z0-9]{4}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{3}|DC_([a-zA-Z0-9]){10}|SC_([a-zA-Z0-9]){10}$
+          type: string
+      required:
+      - serial
+      type: object
+    GatewaysGetGatewaysResponseBody:
+      properties:
+        data:
+          description: Activated gateways
+          items:
+            $ref: '#/components/schemas/GatewayResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    GatewayAssetResponseObjectResponseBody:
+      description: An object containing information about the asset the gateway is installed on
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: The unique Samsara ID of the asset where the gateway is installed. This is automatically generated when the asset is created and cannot be changed. Use this ID on PATCH vehicle, equipment, or trailer endpoints to update the asset
+          example: '8393848111'
+          type: string
+      type: object
+    GatewaysPostGatewayInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -900,12 +870,12 @@ components:
       - message
       - requestId
       type: object
-    GatewaysDeleteGatewayBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    GatewaysGetGatewaysGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -915,12 +885,42 @@ components:
       - message
       - requestId
       type: object
-    GatewaysGetGatewaysMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    GatewaysGetGatewaysUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysPostGatewayUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GatewaysGetGatewaysTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

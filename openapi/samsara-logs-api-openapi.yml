@@ -421,186 +421,72 @@ paths:
       - Logs
 components:
   schemas:
-    RoutesGetRoutesFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    DriverRulesetObjectResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    baseRouteResponseObjectResponseBody:
-      properties:
-        actualRouteEndTime:
-          description: Actual end time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        actualRouteStartTime:
-          description: Actual start time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        driver:
-          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the route
-          example: '342341'
-          type: string
-        name:
-          description: Route name
-          example: Bid 123
-          type: string
-        notes:
-          description: Notes for the route
-          example: These are my notes
-          type: string
-        recurringRouteLiveSharingLinks:
-          description: List of shareable, non-expired 'By recurring Route' Live Sharing Links.
-          items:
-            $ref: '#/components/schemas/LiveSharingLinkResponseObjectResponseBody'
-          type: array
-        scheduledRouteEndTime:
-          description: Scheduled end time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        scheduledRouteStartTime:
-          description: Scheduled start time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        settings:
-          $ref: '#/components/schemas/RouteSettingsResponseBody'
-        stops:
-          description: List of stops along the route
-          items:
-            $ref: '#/components/schemas/RoutesStopResponseObjectResponseBody'
-          minItems: 2
-          type: array
-        vehicle:
-          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
-      required:
-      - id
-      type: object
-    RoutesGetRoutesFeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RouteFeedObjectResponseBody:
-      description: Route feed object.
-      properties:
-        changes:
-          $ref: '#/components/schemas/RouteChangesResponseBody'
-        operation:
-          description: 'The operation that was performed as part of this route update.  Valid values: `stop scheduled`, `stop en route`, `stop skipped`, `stop arrived`, `stop departed`, `stop ETA updated`, `stop arrival time updated`, `stop completion time updated`, `stop order changed`, `stop arrival prevented`'
+        break:
+          description: 'The rest break required setting of the ELD ruleset applied to this driver.  Valid values: `Property (off-duty/sleeper)`, `Explosives/HazMat (on-duty)`'
           enum:
-          - stop scheduled
-          - stop en route
-          - stop skipped
-          - stop arrived
-          - stop departed
-          - stop ETA updated
-          - stop arrival time updated
-          - stop completion time updated
-          - stop order changed
-          - stop arrival prevented
-          example: stop skipped
+          - Property (off-duty/sleeper)
+          - Explosives/HazMat (on-duty)
+          example: Explosives/HazMat (on-duty)
           type: string
-        route:
-          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
-        source:
-          description: 'The source of this route update. Updates that are triggered by time or by the route being completed are ''automatic''.  Valid values: `automatic`, `driver`, `admin`'
+        cycle:
+          description: 'The cycle of the ELD ruleset applied to this driver.  Valid values: `USA 60 hour / 7 day`, `USA 70 hour / 8 day`, `AK 80 hour / 8 day`, `AK 70 hour / 7 day`, `CA 80 hour / 8 day`, `CA 112 hour / 8 day`, `FL 80 hour / 8 day`, `FL 70 hour / 7 day`, `NE 80 hour / 8 day`, `NE 70 hour / 7 day`, `NC 80 hour / 8 day`, `NC 70 hour / 7 day`, `OK 70 hour / 8 day`, `OK 60 hour / 7 day`, `OR 80 hour / 8 day`, `OR 70 hour / 7 day`, `SC 80 hour / 8 day`, `SC 70 hour / 7 day`, `TX 70 hour / 7 day`, `WI 80 hour / 8 day`, `WI 70 hour / 7 day`, `Canada South Cycle 1 (70 hour / 7 day)`, `Canada South Cycle 2 (120 hour / 14 day)`, `Canada North Cycle 1 (80 hour / 7 day)`, `Canada North Cycle 2 (120 hour / 14 day)`'
           enum:
-          - automatic
-          - driver
-          - admin
-          example: automatic
+          - USA 60 hour / 7 day
+          - USA 70 hour / 8 day
+          - AK 80 hour / 8 day
+          - AK 70 hour / 7 day
+          - CA 80 hour / 8 day
+          - CA 112 hour / 8 day
+          - FL 80 hour / 8 day
+          - FL 70 hour / 7 day
+          - NE 80 hour / 8 day
+          - NE 70 hour / 7 day
+          - NC 80 hour / 8 day
+          - NC 70 hour / 7 day
+          - OK 70 hour / 8 day
+          - OK 60 hour / 7 day
+          - OR 80 hour / 8 day
+          - OR 70 hour / 7 day
+          - SC 80 hour / 8 day
+          - SC 70 hour / 7 day
+          - TX 70 hour / 7 day
+          - WI 80 hour / 8 day
+          - WI 70 hour / 7 day
+          - Canada South Cycle 1 (70 hour / 7 day)
+          - Canada South Cycle 2 (120 hour / 14 day)
+          - Canada North Cycle 1 (80 hour / 7 day)
+          - Canada North Cycle 2 (120 hour / 14 day)
+          example: USA 60 hour / 7 day
           type: string
-        time:
-          description: The timestamp of the route in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          format: date-time
+        jurisdiction:
+          description: The jurisdiction of the ELD ruleset applied to this driver. These are specified by either `CS` or `CN` for Canada South and Canada North, respectively, or the ISO 3166-2 postal code for the supported state or territory.
+          example: AR
           type: string
-        type:
-          description: 'The type of route update. The route tracking updates occur as a route is completed and stops transition from one state to another. Currently only Route Tracking updates are supported, but this will change in the future when additional types are added.  Valid values: `route tracking`'
+        restart:
+          description: 'The restart of the ELD ruleset applied to this driver.  Valid values: `34-hour Restart`, `24-hour Restart`, `36-hour Restart`, `72-hour Restart`'
           enum:
-          - route tracking
-          example: route tracking
+          - 34-hour Restart
+          - 24-hour Restart
+          - 36-hour Restart
+          - 72-hour Restart
+          example: 34-hour Restart
           type: string
-      required:
-      - changes
-      - route
-      - source
-      - time
-      - type
-      type: object
-    MinimalRouteAuditLogsResponseBody:
-      description: A single route. Only the fields that have changed are present in the response. All other fields, including the route id, will not be present in the response. For now, only routeStops are included since only Route Tracking updates are supported.
-      properties:
-        stops:
-          description: The route stops in the route. Only stops that have been updated will be included in the response.
-          items:
-            $ref: '#/components/schemas/MinimalRouteStopAuditLogsResponseBody'
-          type: array
-      type: object
-    V1HosAuthenticationLogsResponse_authenticationLogs:
-      properties:
-        actionType:
-          description: The log type - one of 'signin' or 'signout'
-          example: signin
-          type: string
-        address:
-          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
-          example: THIS FIELD MAY NOT BE POPULATED
-          type: string
-        addressName:
-          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
-          example: THIS FIELD MAY NOT BE POPULATED
-          type: string
-        city:
-          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
-          example: THIS FIELD MAY NOT BE POPULATED
-          type: string
-        happenedAtMs:
-          description: The time at which the event was recorded in UNIX milliseconds.
-          example: 1462881998034
-          format: int64
-          type: integer
-        state:
-          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
-          example: THIS FIELD MAY NOT BE POPULATED
+        shift:
+          description: 'The shift of the ELD ruleset applied to this driver.  Valid values: `US Interstate Property`, `US Interstate Passenger`'
+          enum:
+          - US Interstate Property
+          - US Interstate Passenger
+          example: US Interstate Property
           type: string
       type: object
-    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    HosDailyLogsGetHosDailyLogsUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -610,27 +496,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
-      description: Resource not found
+    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -654,12 +525,12 @@ components:
       required:
       - id
       type: object
-    HosDailyLogsGetHosDailyLogsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    RoutesGetRoutesFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -669,166 +540,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsGetHosDailyLogsResponseBody:
-      properties:
-        data:
-          description: List of drivers and their HOS daily logs data.
-          items:
-            $ref: '#/components/schemas/HosDailyLogsObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    DutyStatusDurationObjectResponseBody:
-      description: The currently applied duty status durations on the driver's log.
-      properties:
-        activeDurationMs:
-          description: Duration the driver was active for in the log period in milliseconds.
-          example: 38825000
-          format: int64
-          type: integer
-        driveDurationMs:
-          description: Duration the driver was driving for in the log period in milliseconds.
-          example: 31970000
-          format: int64
-          type: integer
-        offDutyDurationMs:
-          description: Duration the driver was off duty for in the log period in milliseconds.
-          example: 20555000
-          format: int64
-          type: integer
-        onDutyDurationMs:
-          description: Duration the driver was on duty for in the log period in milliseconds.
-          example: 5423000
-          format: int64
-          type: integer
-        personalConveyanceDurationMs:
-          description: Duration the driver was driving for personal conveyance for in the log period in milliseconds.
-          example: 4358000
-          format: int64
-          type: integer
-        sleeperBerthDurationMs:
-          description: Duration the driver was in their sleeper berth for in the log period in milliseconds.
-          example: 27020000
-          format: int64
-          type: integer
-        waitingTimeDurationMs:
-          description: Duration the driver was waiting for in the log period in milliseconds.
-          example: 1560000
-          format: int64
-          type: integer
-        yardMoveDurationMs:
-          description: Duration the driver was driving for yard moves for in the log period in milliseconds.
-          example: 1432000
-          format: int64
-          type: integer
-      type: object
-    PendingDutyStatusDurationsObjectResponseBody:
-      description: What the duty status durations on the drivers log would be if all pending carrier edits are accepted by the driver.
-      properties:
-        activeDurationMs:
-          description: Duration the driver was active for in the log period in milliseconds.
-          example: 38825000
-          format: int64
-          type: integer
-        driveDurationMs:
-          description: Duration the driver was driving for in the log period in milliseconds.
-          example: 31970000
-          format: int64
-          type: integer
-        offDutyDurationMs:
-          description: Duration the driver was off duty for in the log period in milliseconds.
-          example: 20555000
-          format: int64
-          type: integer
-        onDutyDurationMs:
-          description: Duration the driver was on duty for in the log period in milliseconds.
-          example: 5423000
-          format: int64
-          type: integer
-        personalConveyanceDurationMs:
-          description: Duration the driver was driving for personal conveyance for in the log period in milliseconds.
-          example: 4358000
-          format: int64
-          type: integer
-        sleeperBerthDurationMs:
-          description: Duration the driver was in their sleeper berth for in the log period in milliseconds.
-          example: 27020000
-          format: int64
-          type: integer
-        waitingTimeDurationMs:
-          description: Duration the driver was waiting for in the log period in milliseconds.
-          example: 1560000
-          format: int64
-          type: integer
-        yardMoveDurationMs:
-          description: Duration the driver was driving for yard moves for in the log period in milliseconds.
-          example: 1432000
-          format: int64
-          type: integer
-      type: object
-    GoaDriverTinyResponseResponseBody:
-      description: A minified driver object. This object is only returned if the route is assigned to the driver.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the driver
-          example: '45646'
-          type: string
-        name:
-          description: Name of the driver
-          example: Driver Bob
-          type: string
-      required:
-      - id
-      type: object
-    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    HosDailyLogsGetHosDailyLogsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DistanceTraveledObjectResponseBody:
-      description: The distance traveled information of the log.
-      properties:
-        driveDistanceMeters:
-          description: Distance driven in meters, rounded to two decimal places.
-          example: 796625
-          format: int64
-          type: integer
-        personalConveyanceDistanceMeters:
-          description: Distance driven for personal conveyance, rounded to two decimal places.
-          example: 27358
-          format: int64
-          type: integer
-        yardMoveDistanceMeters:
-          description: Distance driven for yard moves, rounded to two decimal places.
-          example: 1287
-          format: int64
-          type: integer
-      type: object
-    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -937,27 +654,12 @@ components:
       - name
       - state
       type: object
-    RoutesGetRoutesFeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    HosDailyLogsUpdateShippingDocsUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -982,12 +684,105 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsGetHosDailyLogsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    HosDailyLogsGetHosDailyLogsInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RouteFeedObjectResponseBody:
+      description: Route feed object.
+      properties:
+        changes:
+          $ref: '#/components/schemas/RouteChangesResponseBody'
+        operation:
+          description: 'The operation that was performed as part of this route update.  Valid values: `stop scheduled`, `stop en route`, `stop skipped`, `stop arrived`, `stop departed`, `stop ETA updated`, `stop arrival time updated`, `stop completion time updated`, `stop order changed`, `stop arrival prevented`'
+          enum:
+          - stop scheduled
+          - stop en route
+          - stop skipped
+          - stop arrived
+          - stop departed
+          - stop ETA updated
+          - stop arrival time updated
+          - stop completion time updated
+          - stop order changed
+          - stop arrival prevented
+          example: stop skipped
+          type: string
+        route:
+          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
+        source:
+          description: 'The source of this route update. Updates that are triggered by time or by the route being completed are ''automatic''.  Valid values: `automatic`, `driver`, `admin`'
+          enum:
+          - automatic
+          - driver
+          - admin
+          example: automatic
+          type: string
+        time:
+          description: The timestamp of the route in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          format: date-time
+          type: string
+        type:
+          description: 'The type of route update. The route tracking updates occur as a route is completed and stops transition from one state to another. Currently only Route Tracking updates are supported, but this will change in the future when additional types are added.  Valid values: `route tracking`'
+          enum:
+          - route tracking
+          example: route tracking
+          type: string
+      required:
+      - changes
+      - route
+      - source
+      - time
+      - type
+      type: object
+    RoutesGetRoutesFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1046,197 +841,6 @@ components:
             example: Nemo qui nulla dolor consectetur.
             type: string
           type: array
-      type: object
-    HosDailyLogsObjectResponseBody:
-      properties:
-        distanceTraveled:
-          $ref: '#/components/schemas/DistanceTraveledObjectResponseBody'
-        driver:
-          $ref: '#/components/schemas/DriverWithTimezoneEldSettingsObjectResponseBody'
-        dutyStatusDurations:
-          $ref: '#/components/schemas/DutyStatusDurationObjectResponseBody'
-        endTime:
-          description: The end time of the daily log in RFC 3339 format. This will be calculated using timezone of the driver.
-          example: '2019-06-20T19:08:25Z'
-          type: string
-        logMetaData:
-          $ref: '#/components/schemas/LogMetaDataObjectResponseBody'
-        pendingDutyStatusDurations:
-          $ref: '#/components/schemas/PendingDutyStatusDurationsObjectResponseBody'
-        startTime:
-          description: The start time of the daily log in RFC 3339 format. This will be calculated using timezone of the driver.
-          example: '2019-06-13T19:08:25Z'
-          type: string
-      required:
-      - driver
-      - endTime
-      - startTime
-      type: object
-    HosDailyLogsGetHosDailyLogsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RouteSettingsResponseBody:
-      description: An optional dictionary, only necessary to override the defaults for route start and end conditions.
-      properties:
-        routeCompletionCondition:
-          default: arriveLastStop
-          description: "Defaults to 'arriveLastStop' which ends the route upon arriving at the final stop. The condition 'departLastStop' \nends the route upon departing the last stop. If 'arriveLastStop' is set, then the departure time of the final stop should not be set.  Valid values: `arriveLastStop`, `departLastStop`"
-          enum:
-          - arriveLastStop
-          - departLastStop
-          example: arriveLastStop
-          type: string
-        routeStartingCondition:
-          default: departFirstStop
-          description: "Defaults to 'departFirstStop' which starts the route upon departing the first stop in the route.\n The condition 'arriveFirstStop' starts the route upon arriving at the first stop in the route. If 'departFirstStop' is set,\nthe arrival time of the first stop should not be set.  Valid values: `departFirstStop`, `arriveFirstStop`"
-          enum:
-          - departFirstStop
-          - arriveFirstStop
-          example: departFirstStop
-          type: string
-      type: object
-    DriverWithTimezoneEldSettingsObjectResponseBody:
-      description: The driver the log applies to.
-      properties:
-        eldSettings:
-          $ref: '#/components/schemas/EldSettingsObjectResponseBody'
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the driver
-          example: '45646'
-          type: string
-        name:
-          description: Name of the driver
-          example: Driver Bob
-          type: string
-        timezone:
-          default: America/Los_Angeles
-          description: Home terminal timezone, in order to indicate what time zone should be used to calculate the ELD logs. Driver timezones use [IANA timezone database](https://www.iana.org/time-zones) keys (e.g. `America/Los_Angeles`, `America/New_York`, `Europe/London`, etc.). You can find a mapping of common timezone formats to IANA timezone keys [here](https://unicode.org/cldr/charts/latest/supplemental/zone_tzid.html).
-          example: America/Los_Angeles
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    VehicleResponseResponseBody:
-      description: A vehicle object
-      properties:
-        assetType:
-          description: 'The type of the asset.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
-          enum:
-          - uncategorized
-          - trailer
-          - equipment
-          - unpowered
-          - vehicle
-          example: vehicle
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        licensePlate:
-          description: The license plate of the vehicle.
-          example: 6SAM123
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
-          type: string
-        vehicleVin:
-          description: The VIN of the vehicle.
-          example: 1GBJ6P1B2HV112765
-          type: string
-      type: object
-    HosDailyLogsUpdateShippingDocsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaVehicleTinyResponseResponseBody:
-      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
-          type: string
-      type: object
-    V1HosAuthenticationLogsResponse:
-      properties:
-        authenticationLogs:
-          items:
-            $ref: '#/components/schemas/V1HosAuthenticationLogsResponse_authenticationLogs'
-          type: array
-      type: object
-    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
     MinimalRouteStopAuditLogsResponseBody:
       description: A single route stop for a route.
@@ -1303,42 +907,12 @@ components:
       required:
       - id
       type: object
-    RoutesGetRoutesFeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    RoutesGetRoutesFeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsGetHosDailyLogsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1363,6 +937,171 @@ components:
       - message
       - requestId
       type: object
+    RoutesGetRoutesFeedResponseBody:
+      properties:
+        data:
+          description: Route feed response.
+          items:
+            $ref: '#/components/schemas/RouteFeedObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsGetHosDailyLogsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RouteSettingsResponseBody:
+      description: An optional dictionary, only necessary to override the defaults for route start and end conditions.
+      properties:
+        routeCompletionCondition:
+          default: arriveLastStop
+          description: "Defaults to 'arriveLastStop' which ends the route upon arriving at the final stop. The condition 'departLastStop' \nends the route upon departing the last stop. If 'arriveLastStop' is set, then the departure time of the final stop should not be set.  Valid values: `arriveLastStop`, `departLastStop`"
+          enum:
+          - arriveLastStop
+          - departLastStop
+          example: arriveLastStop
+          type: string
+        routeStartingCondition:
+          default: departFirstStop
+          description: "Defaults to 'departFirstStop' which starts the route upon departing the first stop in the route.\n The condition 'arriveFirstStop' starts the route upon arriving at the first stop in the route. If 'departFirstStop' is set,\nthe arrival time of the first stop should not be set.  Valid values: `departFirstStop`, `arriveFirstStop`"
+          enum:
+          - departFirstStop
+          - arriveFirstStop
+          example: departFirstStop
+          type: string
+      type: object
+    RoutesGetRoutesFeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1HosAuthenticationLogsResponse_authenticationLogs:
+      properties:
+        actionType:
+          description: The log type - one of 'signin' or 'signout'
+          example: signin
+          type: string
+        address:
+          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
+          example: THIS FIELD MAY NOT BE POPULATED
+          type: string
+        addressName:
+          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
+          example: THIS FIELD MAY NOT BE POPULATED
+          type: string
+        city:
+          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
+          example: THIS FIELD MAY NOT BE POPULATED
+          type: string
+        happenedAtMs:
+          description: The time at which the event was recorded in UNIX milliseconds.
+          example: 1462881998034
+          format: int64
+          type: integer
+        state:
+          description: 'DEPRECATED: THIS FIELD MAY NOT BE POPULATED'
+          example: THIS FIELD MAY NOT BE POPULATED
+          type: string
+      type: object
+    PendingDutyStatusDurationsObjectResponseBody:
+      description: What the duty status durations on the drivers log would be if all pending carrier edits are accepted by the driver.
+      properties:
+        activeDurationMs:
+          description: Duration the driver was active for in the log period in milliseconds.
+          example: 38825000
+          format: int64
+          type: integer
+        driveDurationMs:
+          description: Duration the driver was driving for in the log period in milliseconds.
+          example: 31970000
+          format: int64
+          type: integer
+        offDutyDurationMs:
+          description: Duration the driver was off duty for in the log period in milliseconds.
+          example: 20555000
+          format: int64
+          type: integer
+        onDutyDurationMs:
+          description: Duration the driver was on duty for in the log period in milliseconds.
+          example: 5423000
+          format: int64
+          type: integer
+        personalConveyanceDurationMs:
+          description: Duration the driver was driving for personal conveyance for in the log period in milliseconds.
+          example: 4358000
+          format: int64
+          type: integer
+        sleeperBerthDurationMs:
+          description: Duration the driver was in their sleeper berth for in the log period in milliseconds.
+          example: 27020000
+          format: int64
+          type: integer
+        waitingTimeDurationMs:
+          description: Duration the driver was waiting for in the log period in milliseconds.
+          example: 1560000
+          format: int64
+          type: integer
+        yardMoveDurationMs:
+          description: Duration the driver was driving for yard moves for in the log period in milliseconds.
+          example: 1432000
+          format: int64
+          type: integer
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
     RoutesSingleUseAddressObjectResponseBody:
       description: This field is used to indicate stops along the route for which an address has not been persisted. This field is mutually exclusive with addressId.
       properties:
@@ -1385,12 +1124,21 @@ components:
       - latitude
       - longitude
       type: object
-    RoutesGetRoutesFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    EldSettingsObjectResponseBody:
+      description: The driver's ELD settings.
+      properties:
+        rulesets:
+          description: The driver's ELD rulesets and overrides.
+          items:
+            $ref: '#/components/schemas/DriverRulesetObjectResponseBody'
+          type: array
+      type: object
+    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1400,12 +1148,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsGetHosDailyLogsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    RoutesGetRoutesFeedNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1415,7 +1163,310 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsGetHosDailyLogsBadGatewayErrorResponseBody:
+    RoutesGetRoutesFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RouteChangesResponseBody:
+      description: A diff of the changes for a route update.
+      properties:
+        after:
+          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
+        before:
+          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
+      required:
+      - after
+      - before
+      type: object
+    HosDailyLogsGetHosDailyLogsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    baseRouteResponseObjectResponseBody:
+      properties:
+        actualRouteEndTime:
+          description: Actual end time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        actualRouteStartTime:
+          description: Actual start time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the route
+          example: '342341'
+          type: string
+        name:
+          description: Route name
+          example: Bid 123
+          type: string
+        notes:
+          description: Notes for the route
+          example: These are my notes
+          type: string
+        recurringRouteLiveSharingLinks:
+          description: List of shareable, non-expired 'By recurring Route' Live Sharing Links.
+          items:
+            $ref: '#/components/schemas/LiveSharingLinkResponseObjectResponseBody'
+          type: array
+        scheduledRouteEndTime:
+          description: Scheduled end time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        scheduledRouteStartTime:
+          description: Scheduled start time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        settings:
+          $ref: '#/components/schemas/RouteSettingsResponseBody'
+        stops:
+          description: List of stops along the route
+          items:
+            $ref: '#/components/schemas/RoutesStopResponseObjectResponseBody'
+          minItems: 2
+          type: array
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - id
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LiveSharingLinkResponseObjectResponseBody:
+      description: Live Sharing Link response object.
+      properties:
+        expiresAtTime:
+          description: Date that this link expires, in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        liveSharingUrl:
+          description: The shareable URL of the vehicle's location.
+          example: https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU
+          type: string
+        name:
+          description: Name of the Live Sharing Link.
+          example: Name
+          type: string
+      required:
+      - liveSharingUrl
+      - name
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaDriverTinyResponseResponseBody:
+      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+      required:
+      - id
+      type: object
+    DutyStatusDurationObjectResponseBody:
+      description: The currently applied duty status durations on the driver's log.
+      properties:
+        activeDurationMs:
+          description: Duration the driver was active for in the log period in milliseconds.
+          example: 38825000
+          format: int64
+          type: integer
+        driveDurationMs:
+          description: Duration the driver was driving for in the log period in milliseconds.
+          example: 31970000
+          format: int64
+          type: integer
+        offDutyDurationMs:
+          description: Duration the driver was off duty for in the log period in milliseconds.
+          example: 20555000
+          format: int64
+          type: integer
+        onDutyDurationMs:
+          description: Duration the driver was on duty for in the log period in milliseconds.
+          example: 5423000
+          format: int64
+          type: integer
+        personalConveyanceDurationMs:
+          description: Duration the driver was driving for personal conveyance for in the log period in milliseconds.
+          example: 4358000
+          format: int64
+          type: integer
+        sleeperBerthDurationMs:
+          description: Duration the driver was in their sleeper berth for in the log period in milliseconds.
+          example: 27020000
+          format: int64
+          type: integer
+        waitingTimeDurationMs:
+          description: Duration the driver was waiting for in the log period in milliseconds.
+          example: 1560000
+          format: int64
+          type: integer
+        yardMoveDurationMs:
+          description: Duration the driver was driving for yard moves for in the log period in milliseconds.
+          example: 1432000
+          format: int64
+          type: integer
+      type: object
+    HosDailyLogsObjectResponseBody:
+      properties:
+        distanceTraveled:
+          $ref: '#/components/schemas/DistanceTraveledObjectResponseBody'
+        driver:
+          $ref: '#/components/schemas/DriverWithTimezoneEldSettingsObjectResponseBody'
+        dutyStatusDurations:
+          $ref: '#/components/schemas/DutyStatusDurationObjectResponseBody'
+        endTime:
+          description: The end time of the daily log in RFC 3339 format. This will be calculated using timezone of the driver.
+          example: '2019-06-20T19:08:25Z'
+          type: string
+        logMetaData:
+          $ref: '#/components/schemas/LogMetaDataObjectResponseBody'
+        pendingDutyStatusDurations:
+          $ref: '#/components/schemas/PendingDutyStatusDurationsObjectResponseBody'
+        startTime:
+          description: The start time of the daily log in RFC 3339 format. This will be calculated using timezone of the driver.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - driver
+      - endTime
+      - startTime
+      type: object
+    HosDailyLogsGetHosDailyLogsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MinimalRouteAuditLogsResponseBody:
+      description: A single route. Only the fields that have changed are present in the response. All other fields, including the route id, will not be present in the response. For now, only routeStops are included since only Route Tracking updates are supported.
+      properties:
+        stops:
+          description: The route stops in the route. Only stops that have been updated will be included in the response.
+          items:
+            $ref: '#/components/schemas/MinimalRouteStopAuditLogsResponseBody'
+          type: array
+      type: object
+    HosDailyLogsUpdateShippingDocsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    RoutesGetRoutesFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
@@ -1430,12 +1481,35 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsGetHosDailyLogsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    HosDailyLogsUpdateShippingDocsRequestBody:
+      description: Update the shippingDocs field.
+      properties:
+        shippingDocs:
+          description: ShippingDocs associated with the driver for the day.
+          example: ShippingID1, ShippingID2
+          type: string
+      required:
+      - shippingDocs
+      type: object
+    HosDailyLogsGetHosDailyLogsResponseBody:
+      properties:
+        data:
+          description: List of drivers and their HOS daily logs data.
+          items:
+            $ref: '#/components/schemas/HosDailyLogsObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    HosDailyLogsGetHosDailyLogsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1444,6 +1518,13 @@ components:
       required:
       - message
       - requestId
+      type: object
+    V1HosAuthenticationLogsResponse:
+      properties:
+        authenticationLogs:
+          items:
+            $ref: '#/components/schemas/V1HosAuthenticationLogsResponse_authenticationLogs'
+          type: array
       type: object
     HosDailyLogsGetHosDailyLogsNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
@@ -1459,61 +1540,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    RoutesGetRoutesFeedResponseBody:
-      properties:
-        data:
-          description: Route feed response.
-          items:
-            $ref: '#/components/schemas/RouteFeedObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    RoutesGetRoutesFeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EldSettingsObjectResponseBody:
-      description: The driver's ELD settings.
-      properties:
-        rulesets:
-          description: The driver's ELD rulesets and overrides.
-          items:
-            $ref: '#/components/schemas/DriverRulesetObjectResponseBody'
-          type: array
       type: object
     LogMetaDataObjectResponseBody:
       description: The metadata of the log.
@@ -1578,112 +1604,59 @@ components:
             $ref: '#/components/schemas/VehicleResponseResponseBody'
           type: array
       type: object
-    HosDailyLogsGetHosDailyLogsBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    VehicleResponseResponseBody:
+      description: A vehicle object
       properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsRequestBody:
-      description: Update the shippingDocs field.
-      properties:
-        shippingDocs:
-          description: ShippingDocs associated with the driver for the day.
-          example: ShippingID1, ShippingID2
-          type: string
-      required:
-      - shippingDocs
-      type: object
-    RoutesGetRoutesFeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverRulesetObjectResponseBody:
-      properties:
-        break:
-          description: 'The rest break required setting of the ELD ruleset applied to this driver.  Valid values: `Property (off-duty/sleeper)`, `Explosives/HazMat (on-duty)`'
+        assetType:
+          description: 'The type of the asset.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
           enum:
-          - Property (off-duty/sleeper)
-          - Explosives/HazMat (on-duty)
-          example: Explosives/HazMat (on-duty)
+          - uncategorized
+          - trailer
+          - equipment
+          - unpowered
+          - vehicle
+          example: vehicle
           type: string
-        cycle:
-          description: 'The cycle of the ELD ruleset applied to this driver.  Valid values: `USA 60 hour / 7 day`, `USA 70 hour / 8 day`, `AK 80 hour / 8 day`, `AK 70 hour / 7 day`, `CA 80 hour / 8 day`, `CA 112 hour / 8 day`, `FL 80 hour / 8 day`, `FL 70 hour / 7 day`, `NE 80 hour / 8 day`, `NE 70 hour / 7 day`, `NC 80 hour / 8 day`, `NC 70 hour / 7 day`, `OK 70 hour / 8 day`, `OK 60 hour / 7 day`, `OR 80 hour / 8 day`, `OR 70 hour / 7 day`, `SC 80 hour / 8 day`, `SC 70 hour / 7 day`, `TX 70 hour / 7 day`, `WI 80 hour / 8 day`, `WI 70 hour / 7 day`, `Canada South Cycle 1 (70 hour / 7 day)`, `Canada South Cycle 2 (120 hour / 14 day)`, `Canada North Cycle 1 (80 hour / 7 day)`, `Canada North Cycle 2 (120 hour / 14 day)`'
-          enum:
-          - USA 60 hour / 7 day
-          - USA 70 hour / 8 day
-          - AK 80 hour / 8 day
-          - AK 70 hour / 7 day
-          - CA 80 hour / 8 day
-          - CA 112 hour / 8 day
-          - FL 80 hour / 8 day
-          - FL 70 hour / 7 day
-          - NE 80 hour / 8 day
-          - NE 70 hour / 7 day
-          - NC 80 hour / 8 day
-          - NC 70 hour / 7 day
-          - OK 70 hour / 8 day
-          - OK 60 hour / 7 day
-          - OR 80 hour / 8 day
-          - OR 70 hour / 7 day
-          - SC 80 hour / 8 day
-          - SC 70 hour / 7 day
-          - TX 70 hour / 7 day
-          - WI 80 hour / 8 day
-          - WI 70 hour / 7 day
-          - Canada South Cycle 1 (70 hour / 7 day)
-          - Canada South Cycle 2 (120 hour / 14 day)
-          - Canada North Cycle 1 (80 hour / 7 day)
-          - Canada North Cycle 2 (120 hour / 14 day)
-          example: USA 60 hour / 7 day
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
           type: string
-        jurisdiction:
-          description: The jurisdiction of the ELD ruleset applied to this driver. These are specified by either `CS` or `CN` for Canada South and Canada North, respectively, or the ISO 3166-2 postal code for the supported state or territory.
-          example: AR
+        licensePlate:
+          description: The license plate of the vehicle.
+          example: 6SAM123
           type: string
-        restart:
-          description: 'The restart of the ELD ruleset applied to this driver.  Valid values: `34-hour Restart`, `24-hour Restart`, `36-hour Restart`, `72-hour Restart`'
-          enum:
-          - 34-hour Restart
-          - 24-hour Restart
-          - 36-hour Restart
-          - 72-hour Restart
-          example: 34-hour Restart
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
           type: string
-        shift:
-          description: 'The shift of the ELD ruleset applied to this driver.  Valid values: `US Interstate Property`, `US Interstate Passenger`'
-          enum:
-          - US Interstate Property
-          - US Interstate Passenger
-          example: US Interstate Property
+        vehicleVin:
+          description: The VIN of the vehicle.
+          example: 1GBJ6P1B2HV112765
           type: string
       type: object
-    HosDailyLogsUpdateShippingDocsResponseBody:
+    DistanceTraveledObjectResponseBody:
+      description: The distance traveled information of the log.
       properties:
-        data:
-          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
-      required:
-      - data
+        driveDistanceMeters:
+          description: Distance driven in meters, rounded to two decimal places.
+          example: 796625
+          format: int64
+          type: integer
+        personalConveyanceDistanceMeters:
+          description: Distance driven for personal conveyance, rounded to two decimal places.
+          example: 27358
+          format: int64
+          type: integer
+        yardMoveDistanceMeters:
+          description: Distance driven for yard moves, rounded to two decimal places.
+          example: 1287
+          format: int64
+          type: integer
       type: object
     GoaAddressTinyResponseResponseBody:
       description: A minified Address object
@@ -1705,40 +1678,6 @@ components:
       - id
       - name
       type: object
-    LiveSharingLinkResponseObjectResponseBody:
-      description: Live Sharing Link response object.
-      properties:
-        expiresAtTime:
-          description: Date that this link expires, in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        liveSharingUrl:
-          description: The shareable URL of the vehicle's location.
-          example: https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU
-          type: string
-        name:
-          description: Name of the Live Sharing Link.
-          example: Name
-          type: string
-      required:
-      - liveSharingUrl
-      - name
-      type: object
-    RoutesGetRoutesFeedNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
@@ -1754,16 +1693,77 @@ components:
       - message
       - requestId
       type: object
-    RouteChangesResponseBody:
-      description: A diff of the changes for a route update.
+    HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
-        after:
-          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
-        before:
-          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - after
-      - before
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsGetHosDailyLogsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverWithTimezoneEldSettingsObjectResponseBody:
+      description: The driver the log applies to.
+      properties:
+        eldSettings:
+          $ref: '#/components/schemas/EldSettingsObjectResponseBody'
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+        timezone:
+          default: America/Los_Angeles
+          description: Home terminal timezone, in order to indicate what time zone should be used to calculate the ELD logs. Driver timezones use [IANA timezone database](https://www.iana.org/time-zones) keys (e.g. `America/Los_Angeles`, `America/New_York`, `Europe/London`, etc.). You can find a mapping of common timezone formats to IANA timezone keys [here](https://unicode.org/cldr/charts/latest/supplemental/zone_tzid.html).
+          example: America/Los_Angeles
+          type: string
+      required:
+      - id
+      - name
       type: object
   securitySchemes:
     AccessTokenHeader:

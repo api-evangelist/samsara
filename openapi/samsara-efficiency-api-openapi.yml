@@ -101,35 +101,6 @@ paths:
       - Efficiency
 components:
   schemas:
-    ExtendedDriverTinyResponse:
-      description: A minified driver object.
-      properties:
-        externalIds:
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          properties: {}
-          type: object
-        id:
-          description: ID of the driver.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Susan Bob
-          type: string
-        username:
-          description: Username of the driver.
-          example: susanbob
-          type: string
-      type: object
-    OverSpeedMs:
-      description: Driving time spent over the efficient speed threshold in milliseconds.
-      type: number
-    GreenBandDrivingDurationMs:
-      description: Time in efficient RPM (800 to 17000) in milliseconds.
-      type: number
     standardErrorResponse:
       description: Error response
       properties:
@@ -142,16 +113,21 @@ components:
           example: 8916e1c1
           type: string
       type: object
-    CruiseControlDurationMs:
-      description: Time spent in cruise control in milliseconds.
-      type: number
-    DriverEfficienciesResponse:
-      description: Summary of drivers' efficiencies over a time range.
+    paginationResponse:
+      description: Pagination parameters.
       properties:
-        data:
-          $ref: '#/components/schemas/DriverEfficienciesResponse_data'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
       type: object
     DriverEfficienciesResponse_data:
       properties:
@@ -171,27 +147,20 @@ components:
           format: date-time
           type: string
       type: object
+    CoastingDurationMs:
+      description: Time spent without engaging the accelerator or brake in milliseconds.
+      type: number
+    HighTorqueMs:
+      description: Time the vehicle engine torque is greater than 90% in milliseconds.
+      type: number
+    TotalBrakeEventCount:
+      description: Total number of brake events.
+      type: number
+    GreenBandDrivingDurationMs:
+      description: Time in efficient RPM (800 to 17000) in milliseconds.
+      type: number
     AnticipationBrakeEventCount:
       description: Quick braking events (less than one second after accelerating).
-      type: number
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    DriveTimeDurationMs:
-      description: Time driven in milliseconds.
       type: number
     DriverEfficiency:
       description: Summary of a driver's efficiency.
@@ -228,17 +197,20 @@ components:
             $ref: '#/components/schemas/VehicleSummary'
           type: array
       type: object
-    TotalBrakeEventCount:
-      description: Total number of brake events.
+    DistanceDrivenMeters:
+      description: Distance driven in meters.
       type: number
-    IdleTimeDurationMs:
-      description: Time spent idling in milliseconds.
+    CruiseControlDurationMs:
+      description: Time spent in cruise control in milliseconds.
+      type: number
+    PowerTakeOffDurationMs:
+      description: Time spent with power take off enabled while idling in milliseconds.
+      type: number
+    DriveTimeDurationMs:
+      description: Time driven in milliseconds.
       type: number
     FuelConsumedMl:
       description: Fuel consumption in milliliters.
-      type: number
-    CoastingDurationMs:
-      description: Time spent without engaging the accelerator or brake in milliseconds.
       type: number
     vehicleTinyResponse:
       description: A minified vehicle object.
@@ -260,15 +232,6 @@ components:
           example: 'Midwest Truck #4'
           type: string
       type: object
-    PowerTakeOffDurationMs:
-      description: Time spent with power take off enabled while idling in milliseconds.
-      type: number
-    HighTorqueMs:
-      description: Time the vehicle engine torque is greater than 90% in milliseconds.
-      type: number
-    DistanceDrivenMeters:
-      description: Distance driven in meters.
-      type: number
     VehicleSummary:
       properties:
         anticipationBrakeEventCount:
@@ -297,6 +260,43 @@ components:
           $ref: '#/components/schemas/TotalBrakeEventCount'
         vehicle:
           $ref: '#/components/schemas/vehicleTinyResponse'
+      type: object
+    OverSpeedMs:
+      description: Driving time spent over the efficient speed threshold in milliseconds.
+      type: number
+    ExtendedDriverTinyResponse:
+      description: A minified driver object.
+      properties:
+        externalIds:
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          properties: {}
+          type: object
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+        username:
+          description: Username of the driver.
+          example: susanbob
+          type: string
+      type: object
+    IdleTimeDurationMs:
+      description: Time spent idling in milliseconds.
+      type: number
+    DriverEfficienciesResponse:
+      description: Summary of drivers' efficiencies over a time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverEfficienciesResponse_data'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
   securitySchemes:
     AccessTokenHeader:

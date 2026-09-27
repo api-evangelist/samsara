@@ -84,11 +84,25 @@ paths:
       - Activity
 components:
   schemas:
-    TachographActivityList:
-      description: List of all driver tachograph activities in a specified time range.
-      items:
-        $ref: '#/components/schemas/TachographActivity'
-      type: array
+    TachographActivityListWrapper:
+      properties:
+        activity:
+          $ref: '#/components/schemas/TachographActivityList'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
     paginationResponse:
       description: Pagination parameters.
       properties:
@@ -104,6 +118,26 @@ components:
       required:
       - endCursor
       - hasNextPage
+      type: object
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    DriverTachographActivityResponse:
+      description: List of all driver tachograph activities in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverTachographActivityData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
     DriverTachographActivityData:
       items:
@@ -134,45 +168,11 @@ components:
           - UNKNOWN
           type: string
       type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    TachographActivityListWrapper:
-      properties:
-        activity:
-          $ref: '#/components/schemas/TachographActivityList'
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
-      type: object
-    driverTinyResponse:
-      description: A minified driver object.
-      properties:
-        id:
-          description: ID of the driver.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Susan Bob
-          type: string
-      type: object
-    DriverTachographActivityResponse:
+    TachographActivityList:
       description: List of all driver tachograph activities in a specified time range.
-      properties:
-        data:
-          $ref: '#/components/schemas/DriverTachographActivityData'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
+      items:
+        $ref: '#/components/schemas/TachographActivity'
+      type: array
   securitySchemes:
     AccessTokenHeader:
       type: http

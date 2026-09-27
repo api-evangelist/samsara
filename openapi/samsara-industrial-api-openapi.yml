@@ -440,12 +440,494 @@ paths:
       - Industrial
 components:
   schemas:
+    JobsGetJobsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    fleetDeviceObjectResponseBody:
+      description: fleetDeviceObject
+      properties:
+        id:
+          description: Id of the device
+          example: 123456
+          format: int64
+          type: integer
+        name:
+          description: Name of the device
+          example: My Device
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    JobsPatchJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostJobObjectjobLocationRequestObjectRequestBody:
+      description: A location object for the job
+      properties:
+        address:
+          description: Address of a location
+          example: 1990 Alameda st, San Francisco, Ca 94103
+          type: string
+        latitude:
+          description: Latitude of a location
+          example: 37.456345
+          format: double
+          type: number
+        longitude:
+          description: Longitude of a location
+          example: 34.5633749
+          format: double
+          type: number
+        name:
+          description: Name of the location
+          example: 'Worksite #1'
+          type: string
+      required:
+      - address
+      - latitude
+      - longitude
+      - name
+      type: object
+    JobsPatchJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostJobObjectRequestBody:
+      description: Job object to be created
+      properties:
+        address:
+          $ref: '#/components/schemas/PostJobObjectjobLocationRequestObjectRequestBody'
+        customerName:
+          description: Customer name for job
+          example: Samsara
+          type: string
+        endDate:
+          description: End date of job in RFC 3339 format. Must be greater than or equal to the start date
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        fleetDeviceIds:
+          description: Fleet devices to be added to this job (cannot have both industrial assets and fleet devices in the same job)
+          example:
+          - 1234567
+          - 654321
+          items:
+            example: 2041379700111686100
+            format: int64
+            type: integer
+          type: array
+        id:
+          description: Job Id
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+        industrialAssetIds:
+          description: IndustrialAssets to be added to this job (cannot have both industrial assets and fleet devices in the same job)
+          example:
+          - 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          - ba84a7e2-9c8d-481f-a248-7cce6b22be9d
+          items:
+            example: Beatae atque explicabo voluptatibus vitae.
+            type: string
+          type: array
+        name:
+          description: Job name
+          example: My Job Name
+          type: string
+        notes:
+          description: Notes for the upcoming job
+          example: These are my notes
+          maxLength: 2000
+          type: string
+        ontimeWindowAfterArrivalMs:
+          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        ontimeWindowBeforeArrivalMs:
+          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        startDate:
+          description: Start date of job in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - endDate
+      - id
+      - name
+      - startDate
+      type: object
+    JobsCreateJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/JobResponseObjectResponseBody'
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      required:
+      - data
+      type: object
+    JobsDeleteJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsGetJobsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     JobsCreateJobUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
           description: Message of error
           example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobResponseBody:
+      properties:
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      type: object
+    V1Machine:
+      description: Contains information about a machine.
+      properties:
+        id:
+          description: ID of the machine.
+          example: 123
+          format: int64
+          type: integer
+        name:
+          description: Name of the machine.
+          example: Freezer ABC
+          type: string
+        notes:
+          description: Notes about the machine
+          example: This is in the left hallway behind the conveyor belt
+          type: string
+      required:
+      - id
+      type: object
+    JobsDeleteJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PatchJobObjectjobLocationRequestObjectRequestBody:
+      description: A location object for the job
+      properties:
+        address:
+          description: Address of a location
+          example: 1990 Alameda st, San Francisco, Ca 94103
+          type: string
+        latitude:
+          description: Latitude of a location
+          example: 37.456345
+          format: double
+          type: number
+        longitude:
+          description: Longitude of a location
+          example: 34.5633749
+          format: double
+          type: number
+        name:
+          description: Name of the location
+          example: 'Worksite #1'
+          type: string
+      required:
+      - address
+      - latitude
+      - longitude
+      - name
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    JobsDeleteJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -517,12 +999,19 @@ components:
           example: '2019-06-13T19:08:25Z'
           type: string
       type: object
-    JobsCreateJobMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    inline_response_200_8:
+      properties:
+        machines:
+          items:
+            $ref: '#/components/schemas/V1Machine'
+          type: array
+      type: object
+    JobsCreateJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -532,32 +1021,141 @@ components:
       - message
       - requestId
       type: object
-    PostJobObjectjobLocationRequestObjectRequestBody:
-      description: A location object for the job
+    JobsCreateJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
-        address:
-          description: Address of a location
-          example: 1990 Alameda st, San Francisco, Ca 94103
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
-        latitude:
-          description: Latitude of a location
-          example: 37.456345
-          format: double
-          type: number
-        longitude:
-          description: Longitude of a location
-          example: 34.5633749
-          format: double
-          type: number
-        name:
-          description: Name of the location
-          example: 'Worksite #1'
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - address
-      - latitude
-      - longitude
-      - name
+      - message
+      - requestId
+      type: object
+    JobsGetJobsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobRequestBody:
+      description: Job object with fields to update. If a field is not provided, it will not be updated
+      properties:
+        job:
+          $ref: '#/components/schemas/PatchJobObjectRequestBody'
+        keepHistory:
+          default: true
+          description: Defaults to true if user does not want to overwrite entire history for an active job (irrelevant for scheduled/completed jobs)
+          example: true
+          type: boolean
+      required:
+      - job
+      type: object
+    JobsGetJobsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsCreateJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsDeleteJobNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    JobsPatchJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     JobsCreateJobTooManyRequestsErrorResponseBody:
       description: Too many requests
@@ -574,12 +1172,12 @@ components:
       - message
       - requestId
       type: object
-    JobsGetJobsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    JobsCreateJobNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -589,12 +1187,12 @@ components:
       - message
       - requestId
       type: object
-    JobsDeleteJobGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    JobsGetJobsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -604,12 +1202,48 @@ components:
       - message
       - requestId
       type: object
-    JobsGetJobsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    JobsGetJobsResponseBody:
+      properties:
+        data:
+          description: List of Job Objects
+          items:
+            $ref: '#/components/schemas/JobResponseObjectResponseBody'
+          type: array
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      required:
+      - data
+      - pagination
+      type: object
+    JobsPatchJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -634,37 +1268,7 @@ components:
       - message
       - requestId
       type: object
-    JobsDeleteJobInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobMethodNotAllowedErrorResponseBody:
+    JobsCreateJobMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
         message:
@@ -762,6 +1366,66 @@ components:
       - status
       - uuid
       type: object
+    JobsDeleteJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    JobsPatchJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/JobResponseObjectResponseBody'
+        id:
+          description: The job id of the failed request
+          example: '1553'
+          type: string
+        uuid:
+          description: The uuid of the failed request
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+      required:
+      - data
+      type: object
+    industrialAssetObjectResponseBody:
+      description: industrialAssetObject
+      properties:
+        id:
+          description: Id of the device
+          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
+          type: string
+        name:
+          description: Name of the industrial asset
+          example: My asset
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    JobsDeleteJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     jobLocationResponseObjectResponseBody:
       description: jobLocation object
       properties:
@@ -789,260 +1453,13 @@ components:
       - longitude
       - name
       type: object
-    JobsPatchJobBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsPatchJobServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsGetJobsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsCreateJobBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsPatchJobMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsCreateJobNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsCreateJobGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsCreateJobNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    PostJobObjectRequestBody:
+    JobsCreateJobRequestBody:
       description: Job object to be created
       properties:
-        address:
-          $ref: '#/components/schemas/PostJobObjectjobLocationRequestObjectRequestBody'
-        customerName:
-          description: Customer name for job
-          example: Samsara
-          type: string
-        endDate:
-          description: End date of job in RFC 3339 format. Must be greater than or equal to the start date
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        fleetDeviceIds:
-          description: Fleet devices to be added to this job (cannot have both industrial assets and fleet devices in the same job)
-          example:
-          - 1234567
-          - 654321
-          items:
-            example: 2041379700111686100
-            format: int64
-            type: integer
-          type: array
-        id:
-          description: Job Id
-          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
-          type: string
-        industrialAssetIds:
-          description: IndustrialAssets to be added to this job (cannot have both industrial assets and fleet devices in the same job)
-          example:
-          - 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
-          - ba84a7e2-9c8d-481f-a248-7cce6b22be9d
-          items:
-            example: Beatae atque explicabo voluptatibus vitae.
-            type: string
-          type: array
-        name:
-          description: Job name
-          example: My Job Name
-          type: string
-        notes:
-          description: Notes for the upcoming job
-          example: These are my notes
-          maxLength: 2000
-          type: string
-        ontimeWindowAfterArrivalMs:
-          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
-          example: 300000
-          maximum: 259200000
-          minimum: 0
-          type: integer
-        ontimeWindowBeforeArrivalMs:
-          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
-          example: 300000
-          maximum: 259200000
-          minimum: 0
-          type: integer
-        startDate:
-          description: Start date of job in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          type: string
+        job:
+          $ref: '#/components/schemas/PostJobObjectRequestBody'
       required:
-      - endDate
-      - id
-      - name
-      - startDate
-      type: object
-    industrialAssetObjectResponseBody:
-      description: industrialAssetObject
-      properties:
-        id:
-          description: Id of the device
-          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
-          type: string
-        name:
-          description: Name of the industrial asset
-          example: My asset
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    fleetDeviceObjectResponseBody:
-      description: fleetDeviceObject
-      properties:
-        id:
-          description: Id of the device
-          example: 123456
-          format: int64
-          type: integer
-        name:
-          description: Name of the device
-          example: My Device
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    inline_response_200_8:
-      properties:
-        machines:
-          items:
-            $ref: '#/components/schemas/V1Machine'
-          type: array
-      type: object
-    JobsPatchJobUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+      - job
       type: object
     JobsGetJobsUnauthorizedErrorResponseBody:
       description: Unauthorized
@@ -1050,278 +1467,6 @@ components:
         message:
           description: Message of error
           example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    JobsCreateJobInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsPatchJobResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/JobResponseObjectResponseBody'
-        id:
-          description: The job id of the failed request
-          example: '1553'
-          type: string
-        uuid:
-          description: The uuid of the failed request
-          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
-          type: string
-      required:
-      - data
-      type: object
-    JobsPatchJobGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsPatchJobBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobResponseBody:
-      properties:
-        id:
-          description: The job id of the failed request
-          example: '1553'
-          type: string
-        uuid:
-          description: The uuid of the failed request
-          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
-          type: string
-      type: object
-    JobsGetJobsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    PatchJobObjectjobLocationRequestObjectRequestBody:
-      description: A location object for the job
-      properties:
-        address:
-          description: Address of a location
-          example: 1990 Alameda st, San Francisco, Ca 94103
-          type: string
-        latitude:
-          description: Latitude of a location
-          example: 37.456345
-          format: double
-          type: number
-        longitude:
-          description: Longitude of a location
-          example: 34.5633749
-          format: double
-          type: number
-        name:
-          description: Name of the location
-          example: 'Worksite #1'
-          type: string
-      required:
-      - address
-      - latitude
-      - longitude
-      - name
-      type: object
-    JobsCreateJobServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsPatchJobInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsPatchJobNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsGetJobsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsGetJobsResponseBody:
-      properties:
-        data:
-          description: List of Job Objects
-          items:
-            $ref: '#/components/schemas/JobResponseObjectResponseBody'
-          type: array
-        id:
-          description: The job id of the failed request
-          example: '1553'
-          type: string
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-        uuid:
-          description: The uuid of the failed request
-          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
-          type: string
-      required:
-      - data
-      - pagination
-      type: object
-    JobsPatchJobTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1345,151 +1490,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    JobsGetJobsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsDeleteJobNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsCreateJobBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsGetJobsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsGetJobsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsPatchJobRequestBody:
-      description: Job object with fields to update. If a field is not provided, it will not be updated
-      properties:
-        job:
-          $ref: '#/components/schemas/PatchJobObjectRequestBody'
-        keepHistory:
-          default: true
-          description: Defaults to true if user does not want to overwrite entire history for an active job (irrelevant for scheduled/completed jobs)
-          example: true
-          type: boolean
-      required:
-      - job
-      type: object
-    JobsCreateJobRequestBody:
-      description: Job object to be created
-      properties:
-        job:
-          $ref: '#/components/schemas/PostJobObjectRequestBody'
-      required:
-      - job
-      type: object
-    JobsGetJobsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    JobsCreateJobResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/JobResponseObjectResponseBody'
-        id:
-          description: The job id of the failed request
-          example: '1553'
-          type: string
-        uuid:
-          description: The uuid of the failed request
-          example: 8d218e6c-7a16-4f9f-90f7-cc1d93b9e596
-          type: string
-      required:
-      - data
-      type: object
-    V1Machine:
-      description: Contains information about a machine.
-      properties:
-        id:
-          description: ID of the machine.
-          example: 123
-          format: int64
-          type: integer
-        name:
-          description: Name of the machine.
-          example: Freezer ABC
-          type: string
-        notes:
-          description: Notes about the machine
-          example: This is in the left hallway behind the conveyor belt
-          type: string
-      required:
-      - id
       type: object
   securitySchemes:
     AccessTokenHeader:

@@ -728,12 +728,42 @@ paths:
       - Reports
 components:
   schemas:
-    IdlingReportsGetVehicleIdlingReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -758,34 +788,170 @@ components:
       - message
       - requestId
       type: object
-    IftaVehicleReportDataObjectResponseBody:
-      description: Dictionary containing summarized vehicle report data.
+    IFTAGetIftaJurisdictionReportsResponseBody:
       properties:
-        month:
-          description: The specified month duration for this IFTA report.
-          example: January
-          type: string
-        quarter:
-          description: The specified quarter duration for this IFTA report.
-          example: Q4
-          type: string
-        troubleshooting:
-          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
-        vehicleReports:
-          description: List of summarized vehicle reports.
-          items:
-            $ref: '#/components/schemas/IftaVehicleReportObjectResponseBody'
-          type: array
-        year:
-          description: The specified year for this IFTA report.
-          example: 2021
-          format: int64
-          type: integer
+        data:
+          $ref: '#/components/schemas/IftaJurisdictionReportDataObjectResponseBody'
       required:
-      - vehicleReports
-      - year
+      - data
       type: object
-    FuelEnergyGetFuelEnergyDriverReportsUnauthorizedErrorResponseBody:
+    FuelEnergyGetFuelEnergyVehicleReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyDriverReportDataObjectResponseBody:
+      description: Dictionary containing summarized driver report data.
+      properties:
+        driverReports:
+          description: List of summarized driver reports.
+          items:
+            $ref: '#/components/schemas/FuelEnergyDriverReportObjectResponseBody'
+          type: array
+      required:
+      - driverReports
+      type: object
+    IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaVehicleReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
@@ -799,6 +965,64 @@ components:
       required:
       - message
       - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyCostResponseResponseBody:
+      description: Estimated cost of fuel and energy over the given time range.
+      properties:
+        amount:
+          description: Amount of the currency.
+          example: 94.01
+          format: double
+          type: number
+        currencyCode:
+          description: Type of the currency.
+          example: USD
+          type: string
+      required:
+      - amount
+      - currencyCode
+      type: object
+    FuelEnergyVehicleObjectResponseBody:
+      description: A minified vehicle object.
+      properties:
+        energyType:
+          description: 'Type of energy used by the vehicle  Valid values: `fuel`, `hybrid`, `electric`'
+          enum:
+          - fuel
+          - hybrid
+          - electric
+          example: fuel
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      required:
+      - energyType
       type: object
     IdlingReportEventAddressResponseBody:
       description: Address where the idling event took place.
@@ -822,81 +1046,6 @@ components:
       - latitude
       - longitude
       type: object
-    IFTAGetIftaJurisdictionReportsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     IdlingReportsGetVehicleIdlingReportsTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
@@ -912,166 +1061,7 @@ components:
       - message
       - requestId
       type: object
-    FuelEnergyGetFuelEnergyVehicleReportsResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/FuelEnergyVehicleReportDataObjectResponseBody'
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    IFTAGetIftaVehicleReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaDriverTinyResponseResponseBody:
-      description: A minified driver object. This object is only returned if the route is assigned to the driver.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the driver
-          example: '45646'
-          type: string
-        name:
-          description: Name of the driver
-          example: Driver Bob
-          type: string
-      required:
-      - id
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IftaJurisdictionSummaryObjectResponseBody:
-      description: A summary of this jurisdiction's IFTA data.
-      properties:
-        jurisdiction:
-          description: Jurisdiction code.
-          example: GA
-          type: string
-        taxPaidLiters:
-          description: Liters purchased for all qualified vehicles.
-          example: 25.5
-          format: double
-          type: number
-        taxableMeters:
-          description: Distance in meters traveled on public roads in an IFTA jurisdiction.
-          example: 2350
-          format: double
-          type: number
-        totalMeters:
-          description: Total meters driven in this jurisdiction, taxable and non-taxable.
-          example: 2350
-          format: double
-          type: number
-      required:
-      - jurisdiction
-      - taxableMeters
-      - totalMeters
-      type: object
-    IftaJurisdictionReportDataObjectResponseBody:
-      description: Dictionary containing summarized jurisdiction report data.
-      properties:
-        jurisdictionReports:
-          description: List of summarized jurisdiction reports.
-          items:
-            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
-          type: array
-        month:
-          description: The specified month duration for this IFTA report.
-          example: January
-          type: string
-        quarter:
-          description: The specified quarter duration for this IFTA report.
-          example: Q4
-          type: string
-        troubleshooting:
-          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
-        year:
-          description: The specified year for this IFTA report.
-          example: 2021
-          format: int64
-          type: integer
-      required:
-      - jurisdictionReports
-      - year
-      type: object
-    FuelEnergyCostResponseResponseBody:
-      description: Estimated cost of fuel and energy over the given time range.
-      properties:
-        amount:
-          description: Amount of the currency.
-          example: 94.01
-          format: double
-          type: number
-        currencyCode:
-          description: Type of the currency.
-          example: USD
-          type: string
-      required:
-      - amount
-      - currencyCode
-      type: object
-    IFTAGetIftaVehicleReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsMethodNotAllowedErrorResponseBody:
+    IdlingReportsGetVehicleIdlingReportsMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
         message:
@@ -1101,12 +1091,12 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    IFTAGetIftaVehicleReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1116,42 +1106,35 @@ components:
       - message
       - requestId
       type: object
-    FuelEnergyGetFuelEnergyDriverReportsResponseBody:
+    IdlingReportsGetVehicleIdlingReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
-        data:
-          $ref: '#/components/schemas/FuelEnergyDriverReportDataObjectResponseBody'
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - data
-      - pagination
+      - message
+      - requestId
       type: object
-    FuelEnergyVehicleObjectResponseBody:
-      description: A minified vehicle object.
+    FuelEnergyGetFuelEnergyVehicleReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
-        energyType:
-          description: 'Type of energy used by the vehicle  Valid values: `fuel`, `hybrid`, `electric`'
-          enum:
-          - fuel
-          - hybrid
-          - electric
-          example: fuel
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
           type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - energyType
+      - message
+      - requestId
       type: object
     IftaReportTroubleshootingObjectResponseBody:
       description: IFTA report troubleshooting information.
@@ -1180,427 +1163,6 @@ components:
       - unassignedFuelTypePurchases
       - unassignedFuelTypeVehicles
       - unassignedVehiclePurchases
-      type: object
-    IFTAGetIftaJurisdictionReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaVehicleTinyResponseResponseBody:
-      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
-          type: string
-      type: object
-    IFTAGetIftaVehicleReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/IftaJurisdictionReportDataObjectResponseBody'
-      required:
-      - data
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyDriverReportDataObjectResponseBody:
-      description: Dictionary containing summarized driver report data.
-      properties:
-        driverReports:
-          description: List of summarized driver reports.
-          items:
-            $ref: '#/components/schemas/FuelEnergyDriverReportObjectResponseBody'
-          type: array
-      required:
-      - driverReports
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaJurisdictionReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyVehicleReportDataObjectResponseBody:
-      description: Dictionary containing summarized vehicle report data.
-      properties:
-        vehicleReports:
-          description: List of summarized vehicle reports.
-          items:
-            $ref: '#/components/schemas/FuelEnergyVehicleReportObjectResponseBody'
-          type: array
-      required:
-      - vehicleReports
       type: object
     FuelEnergyVehicleReportObjectResponseBody:
       description: A summary of this vehicle's fuel and energy data.
@@ -1650,22 +1212,7 @@ components:
       - estFuelEnergyCost
       - vehicle
       type: object
-    FuelEnergyGetFuelEnergyVehicleReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsBadRequestErrorResponseBody:
+    IFTAGetIftaJurisdictionReportsBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
         message:
@@ -1679,6 +1226,285 @@ components:
       required:
       - message
       - requestId
+      type: object
+    IFTAGetIftaVehicleReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaJurisdictionReportDataObjectResponseBody:
+      description: Dictionary containing summarized jurisdiction report data.
+      properties:
+        jurisdictionReports:
+          description: List of summarized jurisdiction reports.
+          items:
+            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
+          type: array
+        month:
+          description: The specified month duration for this IFTA report.
+          example: January
+          type: string
+        quarter:
+          description: The specified quarter duration for this IFTA report.
+          example: Q4
+          type: string
+        troubleshooting:
+          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
+        year:
+          description: The specified year for this IFTA report.
+          example: 2021
+          format: int64
+          type: integer
+      required:
+      - jurisdictionReports
+      - year
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    IFTAGetIftaVehicleReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyVehicleReportDataObjectResponseBody:
+      description: Dictionary containing summarized vehicle report data.
+      properties:
+        vehicleReports:
+          description: List of summarized vehicle reports.
+          items:
+            $ref: '#/components/schemas/FuelEnergyVehicleReportObjectResponseBody'
+          type: array
+      required:
+      - vehicleReports
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaVehicleReportObjectResponseBody:
+      description: A summary of this vehicle's IFTA data.
+      properties:
+        jurisdictions:
+          description: List of jurisdiction summaries.
+          items:
+            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
+          type: array
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - jurisdictions
+      - vehicle
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
       type: object
     IdlingReportsGetVehicleIdlingReportsResponseBody:
       properties:
@@ -1703,6 +1529,133 @@ components:
       - requestEndTime
       - requestStartTime
       type: object
+    FuelEnergyGetFuelEnergyDriverReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FuelEnergyDriverReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    GoaDriverTinyResponseResponseBody:
+      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+      required:
+      - id
+      type: object
+    IFTAGetIftaJurisdictionReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportEventResponseBody:
+      description: A summary of the idling event.
+      properties:
+        address:
+          $ref: '#/components/schemas/IdlingReportEventAddressResponseBody'
+        durationMs:
+          description: The duration of this idling event in milliseconds.
+          example: 860000
+          format: int64
+          type: integer
+        endTime:
+          description: The end time of this idling event in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        fuelConsumptionMl:
+          description: The amount of fuel consumed in milliliters during this idling event.
+          example: 2500
+          format: double
+          type: number
+        isPtoActive:
+          description: Whether or not power take-off was active during this idling event.
+          example: false
+          type: boolean
+        startTime:
+          description: The start time of this idling event in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - address
+      - durationMs
+      - endTime
+      - fuelConsumptionMl
+      - isPtoActive
+      - startTime
+      - vehicle
+      type: object
+    IdlingReportsGetVehicleIdlingReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     FuelEnergyGetFuelEnergyVehicleReportsNotFoundErrorResponseBody:
       description: Resource not found
       properties:
@@ -1718,12 +1671,109 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaVehicleReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    IFTAGetIftaJurisdictionReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FuelEnergyVehicleReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IftaVehicleReportDataObjectResponseBody:
+      description: Dictionary containing summarized vehicle report data.
+      properties:
+        month:
+          description: The specified month duration for this IFTA report.
+          example: January
+          type: string
+        quarter:
+          description: The specified quarter duration for this IFTA report.
+          example: Q4
+          type: string
+        troubleshooting:
+          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
+        vehicleReports:
+          description: List of summarized vehicle reports.
+          items:
+            $ref: '#/components/schemas/IftaVehicleReportObjectResponseBody'
+          type: array
+        year:
+          description: The specified year for this IFTA report.
+          example: 2021
+          format: int64
+          type: integer
+      required:
+      - vehicleReports
+      - year
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1735,6 +1785,36 @@ components:
       type: object
     FuelEnergyGetFuelEnergyVehicleReportsServiceUnavailableErrorResponseBody:
       description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaJurisdictionReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
@@ -1763,12 +1843,12 @@ components:
       - message
       - requestId
       type: object
-    FuelEnergyGetFuelEnergyDriverReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    IFTAGetIftaVehicleReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1826,112 +1906,32 @@ components:
       - efficiencyMpge
       - estFuelEnergyCost
       type: object
-    FuelEnergyGetFuelEnergyDriverReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    IftaJurisdictionSummaryObjectResponseBody:
+      description: A summary of this jurisdiction's IFTA data.
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+        jurisdiction:
+          description: Jurisdiction code.
+          example: GA
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/IftaVehicleReportDataObjectResponseBody'
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    IdlingReportsGetVehicleIdlingReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IftaVehicleReportObjectResponseBody:
-      description: A summary of this vehicle's IFTA data.
-      properties:
-        jurisdictions:
-          description: List of jurisdiction summaries.
-          items:
-            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
-          type: array
-        vehicle:
-          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
-      required:
-      - jurisdictions
-      - vehicle
-      type: object
-    IdlingReportEventResponseBody:
-      description: A summary of the idling event.
-      properties:
-        address:
-          $ref: '#/components/schemas/IdlingReportEventAddressResponseBody'
-        durationMs:
-          description: The duration of this idling event in milliseconds.
-          example: 860000
-          format: int64
-          type: integer
-        endTime:
-          description: The end time of this idling event in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        fuelConsumptionMl:
-          description: The amount of fuel consumed in milliliters during this idling event.
-          example: 2500
+        taxPaidLiters:
+          description: Liters purchased for all qualified vehicles.
+          example: 25.5
           format: double
           type: number
-        isPtoActive:
-          description: Whether or not power take-off was active during this idling event.
-          example: false
-          type: boolean
-        startTime:
-          description: The start time of this idling event in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+        taxableMeters:
+          description: Distance in meters traveled on public roads in an IFTA jurisdiction.
+          example: 2350
+          format: double
+          type: number
+        totalMeters:
+          description: Total meters driven in this jurisdiction, taxable and non-taxable.
+          example: 2350
+          format: double
+          type: number
       required:
-      - address
-      - durationMs
-      - endTime
-      - fuelConsumptionMl
-      - isPtoActive
-      - startTime
-      - vehicle
+      - jurisdiction
+      - taxableMeters
+      - totalMeters
       type: object
   securitySchemes:
     AccessTokenHeader:

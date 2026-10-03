@@ -158,50 +158,83 @@ paths:
       x-codegen-request-body-name: dvir
 components:
   schemas:
-    DvirSignature:
-      description: DVIR Signure.
+    Dvir:
+      description: Information about a DVIR.
       properties:
-        signatoryUser:
-          allOf:
-          - description: The user who signed the DVIR.
-            type: object
-          - $ref: '#/components/schemas/userTinyResponse'
-          type: object
-        signedAtTime:
-          description: 'The time when the DVIR was signed. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+        authorSignature:
+          $ref: '#/components/schemas/DvirAuthorSignature'
+        endTime:
+          description: 'Time when driver signed and completed this DVIR. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
           example: '2020-01-27T07:06:25Z'
           type: string
-        type:
-          default: driver
-          description: 'Whether the DVIR was submitted by a `driver` or `mechanic`. Valid values: `driver`, `mechanic`.'
+        id:
+          description: Unique Samsara ID for the DVIR.
+          example: '7107471'
+          type: string
+        licensePlate:
+          $ref: '#/components/schemas/DvirLicensePlate'
+        location:
+          $ref: '#/components/schemas/DvirLocation'
+        mechanicNotes:
+          $ref: '#/components/schemas/DvirMechanicNotes'
+        odometerMeters:
+          $ref: '#/components/schemas/DvirOdometerMeters'
+        safetyStatus:
+          default: unsafe
+          description: 'The condition of vehicle on which DVIR was done. Valid values: `safe`, `unsafe`, `resolved`.'
           enum:
-          - driver
+          - safe
+          - unsafe
+          - resolved
+          example: unsafe
+          type: string
+        secondSignature:
+          $ref: '#/components/schemas/DvirSecondSignature'
+        startTime:
+          description: 'Time when driver began filling out this DVIR. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        thirdSignature:
+          $ref: '#/components/schemas/DvirThirdSignature'
+        trailer:
+          $ref: '#/components/schemas/DvirTrailer'
+        trailerDefects:
+          $ref: '#/components/schemas/DvirTrailerDefects'
+        trailerName:
+          description: The name of the trailer the DVIR was submitted for.  Only included for tractor+trailer DVIRs.
+          example: 'Midwest Trailer #5'
+          type: string
+        type:
+          default: unspecified
+          description: 'Inspection type of the DVIR. Valid values: `preTrip`, `postTrip`, `mechanic`, `unspecified`.'
+          enum:
+          - preTrip
+          - postTrip
           - mechanic
-          example: driver
+          - unspecified
+          example: preTrip
           type: string
-      type: object
-    DvirResponse:
-      description: The DVIR response.
-      properties:
-        data:
-          $ref: '#/components/schemas/Dvir'
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
+        vehicle:
+          $ref: '#/components/schemas/DvirVehicle'
+        vehicleDefects:
+          $ref: '#/components/schemas/DvirVehicleDefects'
       required:
-      - endCursor
-      - hasNextPage
+      - id
       type: object
+    DvirThirdSignature:
+      allOf:
+      - description: An author signature object which has a signatory mini object with the signed time. Third Signature.
+        type: object
+      - $ref: '#/components/schemas/DvirSignature'
+    DvirSecondSignature:
+      allOf:
+      - description: An author signature object which has a signatory mini object with the signed time. Second Signature.
+        type: object
+      - $ref: '#/components/schemas/DvirSignature'
+    DvirLocation:
+      description: Optional string if your jurisdiction requires a location of the DVIR.
+      example: 350 Rhode Island St Ste. 400S, San Francisco, CA 94103
+      type: string
     standardErrorResponse:
       description: Error response
       properties:
@@ -214,80 +247,35 @@ components:
           example: 8916e1c1
           type: string
       type: object
-    CreateDvirRequest:
-      description: DVIR creation body
+    DvirLicensePlate:
+      description: The license plate of this vehicle.
+      example: XHK1234
+      maxLength: 12
+      type: string
+    vehicleTinyResponse:
+      description: A minified vehicle object.
       properties:
-        authorId:
-          description: Samsara user ID of the mechanic creating the DVIR.
-          example: '11'
-          type: string
-        licensePlate:
-          description: The license plate of this vehicle.
-          example: XHK1234
-          maxLength: 12
-          type: string
-        location:
-          description: Optional string if your jurisdiction requires a location of the DVIR.
-          example: 350 Rhode Island St Ste. 400S, San Francisco, CA 94103
-          type: string
-        mechanicNotes:
-          description: The mechanics notes on the DVIR.
-          example: Replaced headlight on passenger side.
-          type: string
-        odometerMeters:
-          description: The odometer reading in meters.
-          example: 14010293
-          type: integer
-        resolvedDefectIds:
-          description: Array of ids for defects being resolved with this DVIR.
-          items:
+        ExternalIds:
+          additionalProperties:
             type: string
-          type: array
-        safetyStatus:
-          description: Whether or not this vehicle or trailer is safe to drive.
-          enum:
-          - safe
-          - unsafe
-          example: safe
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        id:
+          description: ID of the vehicle.
+          example: '123456789'
           type: string
-        trailerId:
-          description: Id of trailer being inspected. Either vehicleId or trailerId must be provided.
-          example: '11'
+        name:
+          description: Name of the vehicle.
+          example: 'Midwest Truck #4'
           type: string
-        type:
-          description: Only type 'mechanic' is currently accepted.
-          enum:
-          - mechanic
-          example: mechanic
-          type: string
-        vehicleId:
-          description: Id of vehicle being inspected. Either vehicleId or trailerId must be provided.
-          example: '10'
-          type: string
-      required:
-      - authorId
-      - safetyStatus
-      - type
       type: object
-    DvirTrailerDefects:
-      description: Defects registered for the trailer which was part of the DVIR.
-      items:
-        $ref: '#/components/schemas/dvirTrailerDefectsItems'
-      type: array
-    DvirsListResponse:
-      description: A list of DVIRs and pagination information.
-      properties:
-        data:
-          description: A list of DVIRs.
-          items:
-            $ref: '#/components/schemas/Dvir'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
+    DvirMechanicNotes:
+      description: The mechanics notes on the DVIR.
+      example: Replaced headlight on passenger side.
+      type: string
     dvirTrailerDefectsItems:
       properties:
         comment:
@@ -369,26 +357,20 @@ components:
       - isResolved
       type: object
       x-go-gen-location: models
-    DvirOdometerMeters:
-      description: The odometer reading in meters.
-      example: 14010293
-      type: integer
-    userTinyResponse:
-      description: A minified user object.
+    DvirsListResponse:
+      description: A list of DVIRs and pagination information.
       properties:
-        id:
-          description: ID of the user.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the user.
-          example: Susan Bob
-          type: string
+        data:
+          description: A list of DVIRs.
+          items:
+            $ref: '#/components/schemas/Dvir'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
       type: object
-    DvirMechanicNotes:
-      description: The mechanics notes on the DVIR.
-      example: Replaced headlight on passenger side.
-      type: string
     Defect_resolvedBy:
       description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
       properties:
@@ -407,6 +389,59 @@ components:
           - mechanic
           type: string
       type: object
+    DvirOdometerMeters:
+      description: The odometer reading in meters.
+      example: 14010293
+      type: integer
+    DvirSignature:
+      description: DVIR Signure.
+      properties:
+        signatoryUser:
+          allOf:
+          - description: The user who signed the DVIR.
+            type: object
+          - $ref: '#/components/schemas/userTinyResponse'
+          type: object
+        signedAtTime:
+          description: 'The time when the DVIR was signed. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        type:
+          default: driver
+          description: 'Whether the DVIR was submitted by a `driver` or `mechanic`. Valid values: `driver`, `mechanic`.'
+          enum:
+          - driver
+          - mechanic
+          example: driver
+          type: string
+      type: object
+    DvirAuthorSignature:
+      allOf:
+      - description: An author signature object which has a signatory mini object with the signed time. Author Signature.
+        type: object
+      - $ref: '#/components/schemas/DvirSignature'
+    userTinyResponse:
+      description: A minified user object.
+      properties:
+        id:
+          description: ID of the user.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the user.
+          example: Susan Bob
+          type: string
+      type: object
+    DvirTrailerDefects:
+      description: Defects registered for the trailer which was part of the DVIR.
+      items:
+        $ref: '#/components/schemas/dvirTrailerDefectsItems'
+      type: array
+    DvirTrailer:
+      allOf:
+      - description: The trailer the DVIR was submitted for. Only included for trailer only DVIRs.
+        type: object
+      - $ref: '#/components/schemas/trailerTinyResponse'
     trailerTinyResponse:
       description: A minified trailer object.
       properties:
@@ -419,11 +454,11 @@ components:
           example: 'Midwest Trailer #5'
           type: string
       type: object
-    DvirThirdSignature:
+    DvirVehicle:
       allOf:
-      - description: An author signature object which has a signatory mini object with the signed time. Third Signature.
+      - description: The vehicle the DVIR was submitted for. Only included for tractor or tractor+trailer DVIRs.
         type: object
-      - $ref: '#/components/schemas/DvirSignature'
+      - $ref: '#/components/schemas/vehicleTinyResponse'
     UpdateDvirRequest:
       description: Information about resolving a DVIR.
       properties:
@@ -446,123 +481,88 @@ components:
       - authorId
       - isResolved
       type: object
-    DvirVehicle:
-      allOf:
-      - description: The vehicle the DVIR was submitted for. Only included for tractor or tractor+trailer DVIRs.
-        type: object
-      - $ref: '#/components/schemas/vehicleTinyResponse'
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    CreateDvirRequest:
+      description: DVIR creation body
+      properties:
+        authorId:
+          description: Samsara user ID of the mechanic creating the DVIR.
+          example: '11'
+          type: string
+        licensePlate:
+          description: The license plate of this vehicle.
+          example: XHK1234
+          maxLength: 12
+          type: string
+        location:
+          description: Optional string if your jurisdiction requires a location of the DVIR.
+          example: 350 Rhode Island St Ste. 400S, San Francisco, CA 94103
+          type: string
+        mechanicNotes:
+          description: The mechanics notes on the DVIR.
+          example: Replaced headlight on passenger side.
+          type: string
+        odometerMeters:
+          description: The odometer reading in meters.
+          example: 14010293
+          type: integer
+        resolvedDefectIds:
+          description: Array of ids for defects being resolved with this DVIR.
+          items:
+            type: string
+          type: array
+        safetyStatus:
+          description: Whether or not this vehicle or trailer is safe to drive.
+          enum:
+          - safe
+          - unsafe
+          example: safe
+          type: string
+        trailerId:
+          description: Id of trailer being inspected. Either vehicleId or trailerId must be provided.
+          example: '11'
+          type: string
+        type:
+          description: Only type 'mechanic' is currently accepted.
+          enum:
+          - mechanic
+          example: mechanic
+          type: string
+        vehicleId:
+          description: Id of vehicle being inspected. Either vehicleId or trailerId must be provided.
+          example: '10'
+          type: string
+      required:
+      - authorId
+      - safetyStatus
+      - type
+      type: object
+    DvirResponse:
+      description: The DVIR response.
+      properties:
+        data:
+          $ref: '#/components/schemas/Dvir'
+      type: object
     DvirVehicleDefects:
       description: Defects registered for the vehicle which was part of the DVIR.
       items:
         $ref: '#/components/schemas/dvirTrailerDefectsItems'
       type: array
-    vehicleTinyResponse:
-      description: A minified vehicle object.
-      properties:
-        ExternalIds:
-          additionalProperties:
-            type: string
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          type: object
-        id:
-          description: ID of the vehicle.
-          example: '123456789'
-          type: string
-        name:
-          description: Name of the vehicle.
-          example: 'Midwest Truck #4'
-          type: string
-      type: object
-    DvirLicensePlate:
-      description: The license plate of this vehicle.
-      example: XHK1234
-      maxLength: 12
-      type: string
-    DvirSecondSignature:
-      allOf:
-      - description: An author signature object which has a signatory mini object with the signed time. Second Signature.
-        type: object
-      - $ref: '#/components/schemas/DvirSignature'
-    DvirTrailer:
-      allOf:
-      - description: The trailer the DVIR was submitted for. Only included for trailer only DVIRs.
-        type: object
-      - $ref: '#/components/schemas/trailerTinyResponse'
-    DvirLocation:
-      description: Optional string if your jurisdiction requires a location of the DVIR.
-      example: 350 Rhode Island St Ste. 400S, San Francisco, CA 94103
-      type: string
-    DvirAuthorSignature:
-      allOf:
-      - description: An author signature object which has a signatory mini object with the signed time. Author Signature.
-        type: object
-      - $ref: '#/components/schemas/DvirSignature'
-    Dvir:
-      description: Information about a DVIR.
-      properties:
-        authorSignature:
-          $ref: '#/components/schemas/DvirAuthorSignature'
-        endTime:
-          description: 'Time when driver signed and completed this DVIR. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        id:
-          description: Unique Samsara ID for the DVIR.
-          example: '7107471'
-          type: string
-        licensePlate:
-          $ref: '#/components/schemas/DvirLicensePlate'
-        location:
-          $ref: '#/components/schemas/DvirLocation'
-        mechanicNotes:
-          $ref: '#/components/schemas/DvirMechanicNotes'
-        odometerMeters:
-          $ref: '#/components/schemas/DvirOdometerMeters'
-        safetyStatus:
-          default: unsafe
-          description: 'The condition of vehicle on which DVIR was done. Valid values: `safe`, `unsafe`, `resolved`.'
-          enum:
-          - safe
-          - unsafe
-          - resolved
-          example: unsafe
-          type: string
-        secondSignature:
-          $ref: '#/components/schemas/DvirSecondSignature'
-        startTime:
-          description: 'Time when driver began filling out this DVIR. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        thirdSignature:
-          $ref: '#/components/schemas/DvirThirdSignature'
-        trailer:
-          $ref: '#/components/schemas/DvirTrailer'
-        trailerDefects:
-          $ref: '#/components/schemas/DvirTrailerDefects'
-        trailerName:
-          description: The name of the trailer the DVIR was submitted for.  Only included for tractor+trailer DVIRs.
-          example: 'Midwest Trailer #5'
-          type: string
-        type:
-          default: unspecified
-          description: 'Inspection type of the DVIR. Valid values: `preTrip`, `postTrip`, `mechanic`, `unspecified`.'
-          enum:
-          - preTrip
-          - postTrip
-          - mechanic
-          - unspecified
-          example: preTrip
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/DvirVehicle'
-        vehicleDefects:
-          $ref: '#/components/schemas/DvirVehicleDefects'
-      required:
-      - id
-      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

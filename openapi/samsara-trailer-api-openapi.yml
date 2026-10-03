@@ -302,6 +302,411 @@ paths:
       x-codegen-request-body-name: CreateDriverTrailerAssignmentRequestBody
 components:
   schemas:
+    TrailerAssignmentsUpdateDriverTrailerAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of driver trailer assignment objects and their respective driver and trailer info.
+          items:
+            $ref: '#/components/schemas/GetDriverTrailerAssignmentsResponseBodyResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PatchDriverTrailerAssignmentsResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentRequestBody:
+      description: Update a new driver-trailer assignment
+      properties:
+        endTime:
+          description: The end time in RFC 3339 format. The end time should not be in the future
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - endTime
+      type: object
+    PatchDriverTrailerAssignmentsResponseBodyResponseBody:
+      description: Response after successfully updating a Driver Trailer Assignment
+      properties:
+        createdAtTime:
+          description: Time when the driver trailer assignment was created, in RFC 3339 format
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        driverId:
+          description: Samsara ID for the driver that this assignment is for.
+          example: 0987
+          type: string
+        endTime:
+          description: Time when the driver trailer assignment ends, in RFC 3339 format
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        id:
+          description: Samsara ID for the assignment.
+          example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d6
+          type: string
+        startTime:
+          description: Time when the driver trailer assignment starts, in RFC 3339 format
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        trailerId:
+          description: Samsara ID of the trailer
+          example: '494123'
+          type: string
+        updatedAtTime:
+          description: Time when the driver trailer assignment was last updated, in RFC 3339 format
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      required:
+      - driverId
+      - endTime
+      - id
+      - startTime
+      - trailerId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentRequestBody:
+      description: Create a new driver-trailer assignment
+      properties:
+        driverId:
+          description: ID of the driver. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
+          example: '494123'
+          type: string
+        startTime:
+          description: The start time in RFC 3339 format. The time needs to be current or within the past 7 days. Defaults to now if not provided
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        trailerId:
+          description: ID of the trailer. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the trailer.
+          example: '12345'
+          type: string
+      required:
+      - driverId
+      - trailerId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverWithExternalIdObjectResponseBody:
+      description: A driver object with an id and map of external ids.
+      properties:
+        driverId:
+          description: Samsara ID of the driver.
+          example: 0987
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+      required:
+      - driverId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GetDriverTrailerAssignmentsResponseBodyResponseBody:
+      description: Object with driver assignment information and associated driver and trailer information.
+      properties:
+        createdAtTime:
+          description: Time when the driver trailer assignment was created, in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        driver:
+          $ref: '#/components/schemas/DriverWithExternalIdObjectResponseBody'
+        endTime:
+          description: Time when the driver trailer assignment will end, in RFC 3339 format.
+          example: '2019-06-13T20:10:25Z'
+          type: string
+        id:
+          description: Samsara ID of the driver trailer assignment.
+          example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d6
+          type: string
+        startTime:
+          description: Time when the driver trailer assignment starts, in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        trailer:
+          $ref: '#/components/schemas/TrailerObjectResponseBody'
+        updatedAtTime:
+          description: Time when the driver trailer assignment was last updated, in RFC 3339 format.
+          example: '2019-06-13T19:10:25Z'
+          type: string
+      required:
+      - driver
+      - id
+      - startTime
+      - trailer
+      type: object
     TrailerAssignmentsGetDriverTrailerAssignmentsNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
@@ -317,12 +722,27 @@ components:
       - message
       - requestId
       type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentNotFoundErrorResponseBody:
-      description: Resource not found
+    TrailerAssignmentsCreateDriverTrailerAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -347,12 +767,119 @@ components:
       - message
       - requestId
       type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    TrailerObjectResponseBody:
+      description: A trailer asset object associate with the assigment.
+      properties:
+        trailerId:
+          description: Samsara ID of the trailer.
+          example: '494123'
+          type: string
+      required:
+      - trailerId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostDriverTrailerAssignmentsResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsUpdateDriverTrailerAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsCreateDriverTrailerAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerAssignmentsGetDriverTrailerAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -397,345 +924,12 @@ components:
       - trailerId
       - updatedAtTime
       type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerObjectResponseBody:
-      description: A trailer asset object associate with the assigment.
-      properties:
-        trailerId:
-          description: Samsara ID of the trailer.
-          example: '494123'
-          type: string
-      required:
-      - trailerId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    PatchDriverTrailerAssignmentsResponseBodyResponseBody:
-      description: Response after successfully updating a Driver Trailer Assignment
-      properties:
-        createdAtTime:
-          description: Time when the driver trailer assignment was created, in RFC 3339 format
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        driverId:
-          description: Samsara ID for the driver that this assignment is for.
-          example: 0987
-          type: string
-        endTime:
-          description: Time when the driver trailer assignment ends, in RFC 3339 format
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        id:
-          description: Samsara ID for the assignment.
-          example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d6
-          type: string
-        startTime:
-          description: Time when the driver trailer assignment starts, in RFC 3339 format
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        trailerId:
-          description: Samsara ID of the trailer
-          example: '494123'
-          type: string
-        updatedAtTime:
-          description: Time when the driver trailer assignment was last updated, in RFC 3339 format
-          example: '2019-06-13T19:08:25Z'
-          type: string
-      required:
-      - driverId
-      - endTime
-      - id
-      - startTime
-      - trailerId
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentRequestBody:
-      description: Create a new driver-trailer assignment
-      properties:
-        driverId:
-          description: ID of the driver. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
-          example: '494123'
-          type: string
-        startTime:
-          description: The start time in RFC 3339 format. The time needs to be current or within the past 7 days. Defaults to now if not provided
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        trailerId:
-          description: ID of the trailer. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the trailer.
-          example: '12345'
-          type: string
-      required:
-      - driverId
-      - trailerId
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsNotFoundErrorResponseBody:
+    TrailerAssignmentsCreateDriverTrailerAssignmentNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
           description: Message of error
           example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GetDriverTrailerAssignmentsResponseBodyResponseBody:
-      description: Object with driver assignment information and associated driver and trailer information.
-      properties:
-        createdAtTime:
-          description: Time when the driver trailer assignment was created, in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        driver:
-          $ref: '#/components/schemas/DriverWithExternalIdObjectResponseBody'
-        endTime:
-          description: Time when the driver trailer assignment will end, in RFC 3339 format.
-          example: '2019-06-13T20:10:25Z'
-          type: string
-        id:
-          description: Samsara ID of the driver trailer assignment.
-          example: 08b3aeada5f4ab3010c0b4efa28d2d1890dbf8d48d2d6
-          type: string
-        startTime:
-          description: Time when the driver trailer assignment starts, in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        trailer:
-          $ref: '#/components/schemas/TrailerObjectResponseBody'
-        updatedAtTime:
-          description: Time when the driver trailer assignment was last updated, in RFC 3339 format.
-          example: '2019-06-13T19:10:25Z'
-          type: string
-      required:
-      - driver
-      - id
-      - startTime
-      - trailer
-      type: object
-    DriverWithExternalIdObjectResponseBody:
-      description: A driver object with an id and map of external ids.
-      properties:
-        driverId:
-          description: Samsara ID of the driver.
-          example: 0987
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-      required:
-      - driverId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentRequestBody:
-      description: Update a new driver-trailer assignment
-      properties:
-        endTime:
-          description: The end time in RFC 3339 format. The end time should not be in the future
-          example: '2019-06-13T19:08:25Z'
-          type: string
-      required:
-      - endTime
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsResponseBody:
-      properties:
-        data:
-          description: List of driver trailer assignment objects and their respective driver and trailer info.
-          items:
-            $ref: '#/components/schemas/GetDriverTrailerAssignmentsResponseBodyResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -759,200 +953,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/PatchDriverTrailerAssignmentsResponseBodyResponseBody'
-      required:
-      - data
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsUpdateDriverTrailerAssignmentUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsGetDriverTrailerAssignmentsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerAssignmentsCreateDriverTrailerAssignmentResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/PostDriverTrailerAssignmentsResponseBodyResponseBody'
-      required:
-      - data
       type: object
   securitySchemes:
     AccessTokenHeader:

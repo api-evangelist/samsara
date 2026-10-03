@@ -200,6 +200,36 @@ paths:
       - Locations
 components:
   schemas:
+    LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     LocationAndSpeedGetLocationAndSpeedNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
@@ -214,42 +244,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    AddressResponseResponseBody:
-      description: Closest address that the GPS latitude and longitude match to.
-      properties:
-        city:
-          description: The name of the city
-          example: New York
-          type: string
-        country:
-          description: The country
-          example: USA
-          type: string
-        neighborhood:
-          description: The name of the neighborhood if one exists
-          example: Mission District
-          type: string
-        pointOfInterest:
-          description: Point that may be of interest to the user
-          example: The Eiffel Tower
-          type: string
-        postalCode:
-          description: The zip code
-          example: '10010'
-          type: string
-        state:
-          description: The name of the state
-          example: New York
-          type: string
-        street:
-          description: The street name
-          example: Main Street
-          type: string
-        streetNumber:
-          description: Street number of the address
-          example: '16'
-          type: string
       type: object
     LocationAndSpeedGetLocationAndSpeedResponseBody:
       properties:
@@ -277,6 +271,21 @@ components:
           example: '12345'
           type: string
       type: object
+    LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     GoaPaginationWithTokensResponseResponseBody:
       description: Pagination parameters.
       properties:
@@ -290,6 +299,24 @@ components:
           type: boolean
       required:
       - hasNextPage
+      type: object
+    LocationAndSpeedResponseResponseBody:
+      description: Full location and speed objects.
+      properties:
+        asset:
+          $ref: '#/components/schemas/AssetResponseResponseBody'
+        happenedAtTime:
+          description: UTC timestamp in RFC 3339 format of the event.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        location:
+          $ref: '#/components/schemas/LocationResponseResponseBody'
+        speed:
+          $ref: '#/components/schemas/SpeedResponseResponseBody'
+      required:
+      - asset
+      - happenedAtTime
+      - location
       type: object
     LocationAndSpeedGetLocationAndSpeedMethodNotAllowedErrorResponseBody:
       description: Method not allowed
@@ -306,19 +333,20 @@ components:
       - message
       - requestId
       type: object
-    SpeedResponseResponseBody:
-      description: Speed object.
+    AssetResponseResponseBody:
+      description: Asset that the location readings are tied to.
       properties:
-        ecuSpeedMetersPerSecond:
-          description: Speed of asset based on ECU data.
-          example: 30.2
-          format: double
-          type: number
-        gpsSpeedMetersPerSecond:
-          description: Speed of asset based on GPS data.
-          example: 30.2
-          format: double
-          type: number
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the asset
+          example: '12345'
+          type: string
+      required:
+      - id
       type: object
     LocationAndSpeedGetLocationAndSpeedGatewayTimeoutErrorResponseBody:
       description: Gateway timeout
@@ -326,63 +354,6 @@ components:
         message:
           description: Message of error
           example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    V1AssetLocationResponse:
-      description: A list of historical asset locations.
-      items:
-        description: Asset location details.
-        properties:
-          latitude:
-            description: The latitude of the location in degrees.
-            example: 37
-            type: number
-          location:
-            description: The best effort (street,city,state) for the latitude and longitude.
-            example: 525 York, San Francisco, CA
-            type: string
-          longitude:
-            description: The longitude of the location in degrees.
-            example: -122.7
-            type: number
-          speedMilesPerHour:
-            description: The speed calculated from GPS that the asset was traveling at in miles per hour.
-            example: 35
-            type: number
-          time:
-            description: Time in Unix milliseconds since epoch when the asset was at the location.
-            example: 12314151
-            type: number
-        type: object
-      type: array
-    LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -427,69 +398,6 @@ components:
     V1ErrorResponse:
       description: Error message describing why the request failed.
       type: string
-    LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedResponseResponseBody:
-      description: Full location and speed objects.
-      properties:
-        asset:
-          $ref: '#/components/schemas/AssetResponseResponseBody'
-        happenedAtTime:
-          description: UTC timestamp in RFC 3339 format of the event.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        location:
-          $ref: '#/components/schemas/LocationResponseResponseBody'
-        speed:
-          $ref: '#/components/schemas/SpeedResponseResponseBody'
-      required:
-      - asset
-      - happenedAtTime
-      - location
-      type: object
-    LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     LocationAndSpeedGetLocationAndSpeedInternalServerErrorResponseBody:
       description: An internal server error occurred
       properties:
@@ -505,12 +413,12 @@ components:
       - message
       - requestId
       type: object
-    LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    LocationAndSpeedGetLocationAndSpeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -520,20 +428,112 @@ components:
       - message
       - requestId
       type: object
-    AssetResponseResponseBody:
-      description: Asset that the location readings are tied to.
+    SpeedResponseResponseBody:
+      description: Speed object.
       properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the asset
-          example: '12345'
+        ecuSpeedMetersPerSecond:
+          description: Speed of asset based on ECU data.
+          example: 30.2
+          format: double
+          type: number
+        gpsSpeedMetersPerSecond:
+          description: Speed of asset based on GPS data.
+          example: 30.2
+          format: double
+          type: number
+      type: object
+    AddressResponseResponseBody:
+      description: Closest address that the GPS latitude and longitude match to.
+      properties:
+        city:
+          description: The name of the city
+          example: New York
+          type: string
+        country:
+          description: The country
+          example: USA
+          type: string
+        neighborhood:
+          description: The name of the neighborhood if one exists
+          example: Mission District
+          type: string
+        pointOfInterest:
+          description: Point that may be of interest to the user
+          example: The Eiffel Tower
+          type: string
+        postalCode:
+          description: The zip code
+          example: '10010'
+          type: string
+        state:
+          description: The name of the state
+          example: New York
+          type: string
+        street:
+          description: The street name
+          example: Main Street
+          type: string
+        streetNumber:
+          description: Street number of the address
+          example: '16'
+          type: string
+      type: object
+    LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - id
+      - message
+      - requestId
+      type: object
+    V1AssetLocationResponse:
+      description: A list of historical asset locations.
+      items:
+        description: Asset location details.
+        properties:
+          latitude:
+            description: The latitude of the location in degrees.
+            example: 37
+            type: number
+          location:
+            description: The best effort (street,city,state) for the latitude and longitude.
+            example: 525 York, San Francisco, CA
+            type: string
+          longitude:
+            description: The longitude of the location in degrees.
+            example: -122.7
+            type: number
+          speedMilesPerHour:
+            description: The speed calculated from GPS that the asset was traveling at in miles per hour.
+            example: 35
+            type: number
+          time:
+            description: Time in Unix milliseconds since epoch when the asset was at the location.
+            example: 12314151
+            type: number
+        type: object
+      type: array
+    LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

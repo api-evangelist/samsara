@@ -760,12 +760,12 @@ paths:
       - Stream
 components:
   schemas:
-    LocationAndSpeedGetLocationAndSpeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    DvirGetDvirsInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -774,51 +774,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    TripsGetTripsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FormsMediaRecordObjectResponseBody:
-      description: Forms media record object.
-      properties:
-        id:
-          description: ID of the media record.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          format: uuid
-          type: string
-        processingStatus:
-          description: 'Status of the media record.  Valid values: `unknown`, `processing`, `finished`'
-          enum:
-          - unknown
-          - processing
-          - finished
-          example: processing
-          type: string
-        url:
-          description: URL containing a link to associated media content. Included if 'processingStatus' is 'finished'.
-          example: https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456
-          format: uri
-          type: string
-        urlExpiresAt:
-          description: Expiration time of the media record 'url'. UTC timestamp in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-      required:
-      - id
-      - processingStatus
       type: object
     EngineImmobilizerGetEngineImmobilizerStatesServiceUnavailableErrorResponseBody:
       description: Service unavailable
@@ -835,21 +790,189 @@ components:
       - message
       - requestId
       type: object
-    GoaPaginationWithTokensResponseResponseBody:
-      description: Pagination parameters.
+    EngineImmobilizerGetEngineImmobilizerStatesInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - hasNextPage
+      - message
+      - requestId
       type: object
-    EngineImmobilizerGetEngineImmobilizerStatesNotImplementedErrorResponseBody:
+    EngineImmobilizerGetEngineImmobilizerStatesTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TripsGetTripsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirGetDvirsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IssuesGetIssuesStreamResponseBody:
+      properties:
+        data:
+          description: List of issues.
+          items:
+            $ref: '#/components/schemas/IssueResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    EngineImmobilizerGetEngineImmobilizerStatesResponseBody:
+      properties:
+        data:
+          description: A list of engine immobilizer states in ascending order of happenedAtTime.
+          items:
+            $ref: '#/components/schemas/EngineImmobilizerStateResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrailerDvirObjectResponseBody:
+      description: A trailer object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the trailer
+          example: '494123'
+          type: string
+      type: object
+    IssuesGetIssuesStreamGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirGetDvirsResponseBody:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/DvirStreamResponseDataResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TripsGetTripsResponseBody:
+      properties:
+        data:
+          description: List of trips
+          items:
+            $ref: '#/components/schemas/TripResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    IssuesGetIssuesStreamTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IssuesGetIssuesStreamMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DefectTrailerResponseResponseBody:
+      description: Defect's trailer object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the trailer
+          example: '494123'
+          type: string
+      type: object
+    IssuesGetIssuesStreamNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
@@ -864,12 +987,42 @@ components:
       - message
       - requestId
       type: object
-    IssuesGetIssuesStreamNotFoundErrorResponseBody:
-      description: Resource not found
+    LocationAndSpeedGetLocationAndSpeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IssuesGetIssuesStreamBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -894,12 +1047,12 @@ components:
       - message
       - requestId
       type: object
-    EngineImmobilizerGetEngineImmobilizerStatesMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    IssuesGetIssuesStreamServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -909,220 +1062,12 @@ components:
       - message
       - requestId
       type: object
-    AuthorSignatureObjectResponseBody:
-      description: An author signature for DVIRs with a signed time.
-      properties:
-        signatoryUser:
-          $ref: '#/components/schemas/SignatoryUserObjectResponseBody'
-        signedAtTime:
-          description: The time when the DVIR was signed. UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        type:
-          description: 'Whether the DVIR was submitted by a driver or mechanic.  Valid values: `driver`, `mechanic`'
-          enum:
-          - driver
-          - mechanic
-          example: driver
-          type: string
-      required:
-      - signatoryUser
-      - signedAtTime
-      - type
-      type: object
-    FormsAssetObjectResponseBody:
-      description: Tracked or untracked (i.e. manually entered) asset object.
-      properties:
-        entryType:
-          description: 'The type of entry for the asset.  Valid values: `tracked`, `untracked`'
-          enum:
-          - tracked
-          - untracked
-          example: tracked
-          type: string
-        id:
-          description: ID of a tracked asset. Included if 'entryType' is 'tracked'.
-          example: '281474982859091'
-          type: string
-        name:
-          description: Name of an untracked (i.e. manually entered) asset.
-          example: trailer 123
-          type: string
-      required:
-      - entryType
-      type: object
-    DvirGetDvirsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    LocationAndSpeedGetLocationAndSpeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirDefectStreamDefectsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerRelayStateResponseBody:
-      description: An engine immobilizer relay state.
-      properties:
-        id:
-          description: 'The ID of the relay  Valid values: `relay1`, `relay2`'
-          enum:
-          - relay1
-          - relay2
-          example: relay1
-          type: string
-        isOpen:
-          description: Whether the relay is open.
-          example: false
-          type: boolean
-      required:
-      - id
-      - isOpen
-      type: object
-    TripsGetTripsNotFoundErrorResponseBody:
+    DvirGetDvirsNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
           description: Message of error
           example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IssuesGetIssuesStreamBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IssuesGetIssuesStreamTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerGetEngineImmobilizerStatesResponseBody:
-      properties:
-        data:
-          description: A list of engine immobilizer states in ascending order of happenedAtTime.
-          items:
-            $ref: '#/components/schemas/EngineImmobilizerStateResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    DvirDefectStreamDefectsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TripsGetTripsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1207,41 +1152,102 @@ components:
       - type
       - updatedAtTime
       type: object
-    AddressResponseResponseBody:
-      description: Closest address that the GPS latitude and longitude match to.
+    DefectVehicleResponseResponseBody:
+      description: Defect's vehicle object
       properties:
-        city:
-          description: The name of the city
-          example: New York
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494125'
           type: string
-        country:
-          description: The country
-          example: USA
+      type: object
+    FormsPolymorphicUserObjectResponseBody:
+      description: User or driver object.
+      properties:
+        id:
+          description: ID of the polymorphic user.
+          example: '938172'
           type: string
-        neighborhood:
-          description: The name of the neighborhood if one exists
-          example: Mission District
+        type:
+          description: 'The type of the polymorphic user.  Valid values: `driver`, `user`'
+          enum:
+          - driver
+          - user
+          example: driver
           type: string
-        pointOfInterest:
-          description: Point that may be of interest to the user
-          example: The Eiffel Tower
+      required:
+      - id
+      - type
+      type: object
+    FormsAssetObjectResponseBody:
+      description: Tracked or untracked (i.e. manually entered) asset object.
+      properties:
+        entryType:
+          description: 'The type of entry for the asset.  Valid values: `tracked`, `untracked`'
+          enum:
+          - tracked
+          - untracked
+          example: tracked
           type: string
-        postalCode:
-          description: The zip code
-          example: '10010'
+        id:
+          description: ID of a tracked asset. Included if 'entryType' is 'tracked'.
+          example: '281474982859091'
           type: string
-        state:
-          description: The name of the state
-          example: New York
+        name:
+          description: Name of an untracked (i.e. manually entered) asset.
+          example: trailer 123
           type: string
-        street:
-          description: The street name
-          example: Main Street
+      required:
+      - entryType
+      type: object
+    LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
           type: string
-        streetNumber:
-          description: Street number of the address
-          example: '16'
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IssuesGetIssuesStreamInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TripsGetTripsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     DvirDefectStreamDefectsServiceUnavailableErrorResponseBody:
       description: Service unavailable
@@ -1258,78 +1264,7 @@ components:
       - message
       - requestId
       type: object
-    TripsGetTripsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerDvirObjectResponseBody:
-      description: A trailer object
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the trailer
-          example: '494123'
-          type: string
-      type: object
-    DvirGetDvirsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerGetEngineImmobilizerStatesBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirDefectStreamDefectsResponseBody:
-      properties:
-        data:
-          description: List of DVIR defects.
-          items:
-            $ref: '#/components/schemas/DefectsResponseDataResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    IssuesGetIssuesStreamServiceUnavailableErrorResponseBody:
+    LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
         message:
@@ -1343,100 +1278,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IssuesGetIssuesStreamResponseBody:
-      properties:
-        data:
-          description: List of issues.
-          items:
-            $ref: '#/components/schemas/IssueResponseObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TripsGetTripsResponseBody:
-      properties:
-        data:
-          description: List of trips
-          items:
-            $ref: '#/components/schemas/TripResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TripResponseBody:
-      description: Trip
-      properties:
-        asset:
-          $ref: '#/components/schemas/TripAssetResponseBody'
-        completionStatus:
-          description: 'Trip completion status  Valid values: `inProgress`, `completed`'
-          enum:
-          - inProgress
-          - completed
-          example: completed
-          type: string
-        createdAtTime:
-          description: '[RFC 3339] Time the trip was created in Samsara in UTC.'
-          example: '2024-04-16T19:08:25Z'
-          type: string
-        endLocation:
-          $ref: '#/components/schemas/LocationResponseResponseBody'
-        startLocation:
-          $ref: '#/components/schemas/LocationResponseResponseBody'
-        tripEndTime:
-          description: '[RFC 3339] Time the trip ended in UTC.'
-          example: '2024-04-16T20:00:00Z'
-          type: string
-        tripStartTime:
-          description: '[RFC 3339] Time the trip started in UTC.'
-          example: '2024-04-16T19:08:25Z'
-          type: string
-        updatedAtTime:
-          description: '[RFC 3339] Time the trip was updated in Samsara in UTC. Valid updates are when `endTime` populates or `completionStatus` changes values.'
-          example: '2024-04-16T19:08:25Z'
-          type: string
-      required:
-      - asset
-      - completionStatus
-      - createdAtTime
-      - startLocation
-      - tripStartTime
-      - updatedAtTime
-      type: object
-    DefectVehicleResponseResponseBody:
-      description: Defect's vehicle object
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494125'
-          type: string
       type: object
     EngineImmobilizerGetEngineImmobilizerStatesBadRequestErrorResponseBody:
       description: Bad Request parameters
@@ -1453,12 +1294,121 @@ components:
       - message
       - requestId
       type: object
-    IssuesGetIssuesStreamUnauthorizedErrorResponseBody:
+    LocationAndSpeedGetLocationAndSpeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GeofenceResponseResponseBody:
+      description: Closest geofence based on 1000 meter radial search.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Unique ID of the geofence object.
+          example: '12345'
+          type: string
+      type: object
+    DvirDefectStreamDefectsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IssuesGetIssuesStreamNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AuthorSignatureObjectResponseBody:
+      description: An author signature for DVIRs with a signed time.
+      properties:
+        signatoryUser:
+          $ref: '#/components/schemas/SignatoryUserObjectResponseBody'
+        signedAtTime:
+          description: The time when the DVIR was signed. UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        type:
+          description: 'Whether the DVIR was submitted by a driver or mechanic.  Valid values: `driver`, `mechanic`'
+          enum:
+          - driver
+          - mechanic
+          example: driver
+          type: string
+      required:
+      - signatoryUser
+      - signedAtTime
+      - type
+      type: object
+    DvirDefectStreamDefectsUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
           description: Message of error
           example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetResponseResponseBody:
+      description: Asset that the location readings are tied to.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the asset
+          example: '12345'
+          type: string
+      required:
+      - id
+      type: object
+    DvirGetDvirsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1483,40 +1433,12 @@ components:
       - message
       - requestId
       type: object
-    TripAssetResponseBody:
-      description: Asset that the location readings are tied to
-      properties:
-        id:
-          description: Unique ID for the asset object that is reporting the location.
-          example: '12345'
-          type: string
-        name:
-          description: Name for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
-          example: MyAsset-1234
-          type: string
-        type:
-          description: 'Type for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
-          enum:
-          - uncategorized
-          - trailer
-          - equipment
-          - unpowered
-          - vehicle
-          example: trailer
-          type: string
-        vin:
-          description: VIN for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
-          example: 1GBJ6P1B2HV112765
-          type: string
-      required:
-      - id
-      type: object
-    DvirGetDvirsNotFoundErrorResponseBody:
-      description: Resource not found
+    DvirDefectStreamDefectsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1526,12 +1448,403 @@ components:
       - message
       - requestId
       type: object
-    TripsGetTripsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    IssueSourceObjectResponseBody:
+      description: Contains information about where an issue came from.
+      properties:
+        id:
+          description: ID of the issue's source object. The format depends on the 'type'. Included if 'type' is not 'ad-hoc'.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+        type:
+          description: 'The type of issue source.  Valid values: `form`, `ad-hoc`'
+          enum:
+          - form
+          - ad-hoc
+          example: form
+          type: string
+      required:
+      - type
+      type: object
+    EngineImmobilizerStateResponseBody:
+      description: An engine immobilizer state.
+      properties:
+        happenedAtTime:
+          description: 'A UTC time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isConnectedToVehicle:
+          description: Whether the engine immobilizer is connected the vehicle.
+          example: false
+          type: boolean
+        relayStates:
+          description: A list of states for each relay
+          items:
+            $ref: '#/components/schemas/EngineImmobilizerRelayStateResponseBody'
+          type: array
+        vehicleId:
+          description: The ID of the vehicle that the engine immobilizer is connected to.
+          example: '1234'
+          type: string
+      required:
+      - happenedAtTime
+      - isConnectedToVehicle
+      - relayStates
+      - vehicleId
+      type: object
+    DvirResolvedByObjectResponseBody:
+      description: The person who resolved this defect.
+      properties:
+        id:
+          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
+          example: '8172'
+          type: string
+        name:
+          description: Name of the person who resolved this defect.
+          example: Jane Mechanic
+          type: string
+        type:
+          description: 'Indicates whether this defect was resolved by a driver or a mechanic.  Valid values: `driver`, `mechanic`'
+          enum:
+          - driver
+          - mechanic
+          example: mechanic
+          type: string
+      required:
+      - id
+      - name
+      - type
+      type: object
+    LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerGetEngineImmobilizerStatesBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirDefectStreamDefectsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TripsGetTripsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormsMediaRecordObjectResponseBody:
+      description: Forms media record object.
+      properties:
+        id:
+          description: ID of the media record.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          format: uuid
+          type: string
+        processingStatus:
+          description: 'Status of the media record.  Valid values: `unknown`, `processing`, `finished`'
+          enum:
+          - unknown
+          - processing
+          - finished
+          example: processing
+          type: string
+        url:
+          description: URL containing a link to associated media content. Included if 'processingStatus' is 'finished'.
+          example: https://samsara-forms-submission-media-uploads.s3.us-west-2.amazonaws.com/123456
+          format: uri
+          type: string
+        urlExpiresAt:
+          description: Expiration time of the media record 'url'. UTC timestamp in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - id
+      - processingStatus
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    VehicleDvirObjectResponseBody:
+      description: A vehicle object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+      type: object
+    DvirGetDvirsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedResponseBody:
+      properties:
+        data:
+          description: List of location and speed objects.
+          items:
+            $ref: '#/components/schemas/LocationAndSpeedResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationWithTokensResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TripsGetTripsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DefectsResponseDataResponseBody:
+      description: DVIR defects data.
+      properties:
+        comment:
+          description: Comment on the defect.
+          example: Engine failure.
+          type: string
+        createdAtTime:
+          description: Time when defect was created in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        defectTypeId:
+          description: The unique ID of the defect type.
+          example: 25d6151e-29b5-453e-875a-7c5425332e09
+          type: string
+        dvirId:
+          description: The unique ID of the defect's DVIR.
+          example: '292371177'
+          type: string
+        id:
+          description: The unique ID of the DVIR defect.
+          example: '9700544'
+          type: string
+        isResolved:
+          description: Signifies if this defect is resolved.
+          example: true
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Broken passenger side window.
+          type: string
+        resolvedAtTime:
+          description: Time when this defect was resolved in RFC 3339 format. Will not be returned if the defect is unresolved.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/DvirResolvedByObjectResponseBody'
+        trailer:
+          $ref: '#/components/schemas/DefectTrailerResponseResponseBody'
+        updatedAtTime:
+          description: Time when defect was last updated in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/DefectVehicleResponseResponseBody'
+      required:
+      - comment
+      - dvirId
+      - id
+      - isResolved
+      type: object
+    TripsGetTripsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
           example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TripsGetTripsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerGetEngineImmobilizerStatesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SignatoryUserObjectResponseBody:
+      description: The user who signed the DVIR.
+      properties:
+        id:
+          description: ID of the user.
+          example: '938172'
+          type: string
+      required:
+      - id
+      type: object
+    DvirGetDvirsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirDefectStreamDefectsResponseBody:
+      properties:
+        data:
+          description: List of DVIR defects.
+          items:
+            $ref: '#/components/schemas/DefectsResponseDataResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    IssuesGetIssuesStreamUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirDefectStreamDefectsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1573,6 +1886,170 @@ components:
       - latitude
       - longitude
       type: object
+    TripResponseBody:
+      description: Trip
+      properties:
+        asset:
+          $ref: '#/components/schemas/TripAssetResponseBody'
+        completionStatus:
+          description: 'Trip completion status  Valid values: `inProgress`, `completed`'
+          enum:
+          - inProgress
+          - completed
+          example: completed
+          type: string
+        createdAtTime:
+          description: '[RFC 3339] Time the trip was created in Samsara in UTC.'
+          example: '2024-04-16T19:08:25Z'
+          type: string
+        endLocation:
+          $ref: '#/components/schemas/LocationResponseResponseBody'
+        startLocation:
+          $ref: '#/components/schemas/LocationResponseResponseBody'
+        tripEndTime:
+          description: '[RFC 3339] Time the trip ended in UTC.'
+          example: '2024-04-16T20:00:00Z'
+          type: string
+        tripStartTime:
+          description: '[RFC 3339] Time the trip started in UTC.'
+          example: '2024-04-16T19:08:25Z'
+          type: string
+        updatedAtTime:
+          description: '[RFC 3339] Time the trip was updated in Samsara in UTC. Valid updates are when `endTime` populates or `completionStatus` changes values.'
+          example: '2024-04-16T19:08:25Z'
+          type: string
+      required:
+      - asset
+      - completionStatus
+      - createdAtTime
+      - startLocation
+      - tripStartTime
+      - updatedAtTime
+      type: object
+    TripAssetResponseBody:
+      description: Asset that the location readings are tied to
+      properties:
+        id:
+          description: Unique ID for the asset object that is reporting the location.
+          example: '12345'
+          type: string
+        name:
+          description: Name for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
+          example: MyAsset-1234
+          type: string
+        type:
+          description: 'Type for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
+          enum:
+          - uncategorized
+          - trailer
+          - equipment
+          - unpowered
+          - vehicle
+          example: trailer
+          type: string
+        vin:
+          description: VIN for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
+          example: 1GBJ6P1B2HV112765
+          type: string
+      required:
+      - id
+      type: object
+    LocationAndSpeedGetLocationAndSpeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AddressResponseResponseBody:
+      description: Closest address that the GPS latitude and longitude match to.
+      properties:
+        city:
+          description: The name of the city
+          example: New York
+          type: string
+        country:
+          description: The country
+          example: USA
+          type: string
+        neighborhood:
+          description: The name of the neighborhood if one exists
+          example: Mission District
+          type: string
+        pointOfInterest:
+          description: Point that may be of interest to the user
+          example: The Eiffel Tower
+          type: string
+        postalCode:
+          description: The zip code
+          example: '10010'
+          type: string
+        state:
+          description: The name of the state
+          example: New York
+          type: string
+        street:
+          description: The street name
+          example: Main Street
+          type: string
+        streetNumber:
+          description: Street number of the address
+          example: '16'
+          type: string
+      type: object
+    IssuesGetIssuesStreamBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirGetDvirsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DvirGetDvirsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     TripsGetTripsBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
@@ -1588,143 +2065,30 @@ components:
       - message
       - requestId
       type: object
-    DefectTrailerResponseResponseBody:
-      description: Defect's trailer object
+    EngineImmobilizerRelayStateResponseBody:
+      description: An engine immobilizer relay state.
       properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
         id:
-          description: ID of the trailer
-          example: '494123'
+          description: 'The ID of the relay  Valid values: `relay1`, `relay2`'
+          enum:
+          - relay1
+          - relay2
+          example: relay1
           type: string
-      type: object
-    DvirGetDvirsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        isOpen:
+          description: Whether the relay is open.
+          example: false
+          type: boolean
       required:
-      - message
-      - requestId
+      - id
+      - isOpen
       type: object
-    LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirGetDvirsUnauthorizedErrorResponseBody:
+    TripsGetTripsUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
           description: Message of error
           example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IssuesGetIssuesStreamMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IssuesGetIssuesStreamBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleDvirObjectResponseBody:
-      description: A vehicle object
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-      type: object
-    IssuesGetIssuesStreamNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1814,93 +2178,8 @@ components:
       - title
       - updatedAtTime
       type: object
-    LocationAndSpeedGetLocationAndSpeedResponseBody:
-      properties:
-        data:
-          description: List of location and speed objects.
-          items:
-            $ref: '#/components/schemas/LocationAndSpeedResponseResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationWithTokensResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    EngineImmobilizerGetEngineImmobilizerStatesTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GeofenceResponseResponseBody:
-      description: Closest geofence based on 1000 meter radial search.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: Unique ID of the geofence object.
-          example: '12345'
-          type: string
-      type: object
-    DvirDefectStreamDefectsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IssuesGetIssuesStreamInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SpeedResponseResponseBody:
-      description: Speed object.
-      properties:
-        ecuSpeedMetersPerSecond:
-          description: Speed of asset based on ECU data.
-          example: 30.2
-          format: double
-          type: number
-        gpsSpeedMetersPerSecond:
-          description: Speed of asset based on GPS data.
-          example: 30.2
-          format: double
-          type: number
-      type: object
-    TripsGetTripsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    TripsGetTripsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
@@ -1914,255 +2193,12 @@ components:
       - message
       - requestId
       type: object
-    DvirDefectStreamDefectsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerGetEngineImmobilizerStatesInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirResolvedByObjectResponseBody:
-      description: The person who resolved this defect.
-      properties:
-        id:
-          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
-          example: '8172'
-          type: string
-        name:
-          description: Name of the person who resolved this defect.
-          example: Jane Mechanic
-          type: string
-        type:
-          description: 'Indicates whether this defect was resolved by a driver or a mechanic.  Valid values: `driver`, `mechanic`'
-          enum:
-          - driver
-          - mechanic
-          example: mechanic
-          type: string
-      required:
-      - id
-      - name
-      - type
-      type: object
-    DvirGetDvirsResponseBody:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/DvirStreamResponseDataResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TripsGetTripsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TripsGetTripsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirDefectStreamDefectsNotImplementedErrorResponseBody:
+    EngineImmobilizerGetEngineImmobilizerStatesNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
           example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TripsGetTripsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirGetDvirsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IssuesGetIssuesStreamGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirDefectStreamDefectsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SignatoryUserObjectResponseBody:
-      description: The user who signed the DVIR.
-      properties:
-        id:
-          description: ID of the user.
-          example: '938172'
-          type: string
-      required:
-      - id
-      type: object
-    DvirGetDvirsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirGetDvirsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    EngineImmobilizerGetEngineImmobilizerStatesGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FormsPolymorphicUserObjectResponseBody:
-      description: User or driver object.
-      properties:
-        id:
-          description: ID of the polymorphic user.
-          example: '938172'
-          type: string
-        type:
-          description: 'The type of the polymorphic user.  Valid values: `driver`, `user`'
-          enum:
-          - driver
-          - user
-          example: driver
-          type: string
-      required:
-      - id
-      - type
-      type: object
-    EngineImmobilizerGetEngineImmobilizerStatesNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2187,58 +2223,7 @@ components:
       - message
       - requestId
       type: object
-    DefectsResponseDataResponseBody:
-      description: DVIR defects data.
-      properties:
-        comment:
-          description: Comment on the defect.
-          example: Engine failure.
-          type: string
-        createdAtTime:
-          description: Time when defect was created in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        defectTypeId:
-          description: The unique ID of the defect type.
-          example: 25d6151e-29b5-453e-875a-7c5425332e09
-          type: string
-        dvirId:
-          description: The unique ID of the defect's DVIR.
-          example: '292371177'
-          type: string
-        id:
-          description: The unique ID of the DVIR defect.
-          example: '9700544'
-          type: string
-        isResolved:
-          description: Signifies if this defect is resolved.
-          example: true
-          type: boolean
-        mechanicNotes:
-          description: The mechanics notes on the defect.
-          example: Broken passenger side window.
-          type: string
-        resolvedAtTime:
-          description: Time when this defect was resolved in RFC 3339 format. Will not be returned if the defect is unresolved.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        resolvedBy:
-          $ref: '#/components/schemas/DvirResolvedByObjectResponseBody'
-        trailer:
-          $ref: '#/components/schemas/DefectTrailerResponseResponseBody'
-        updatedAtTime:
-          description: Time when defect was last updated in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/DefectVehicleResponseResponseBody'
-      required:
-      - comment
-      - dvirId
-      - id
-      - isResolved
-      type: object
-    DvirGetDvirsMethodNotAllowedErrorResponseBody:
+    DvirDefectStreamDefectsMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
         message:
@@ -2253,12 +2238,12 @@ components:
       - message
       - requestId
       type: object
-    DvirDefectStreamDefectsBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2268,33 +2253,66 @@ components:
       - message
       - requestId
       type: object
-    EngineImmobilizerStateResponseBody:
-      description: An engine immobilizer state.
+    DvirDefectStreamDefectsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
-        happenedAtTime:
-          description: 'A UTC time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
-        isConnectedToVehicle:
-          description: Whether the engine immobilizer is connected the vehicle.
-          example: false
-          type: boolean
-        relayStates:
-          description: A list of states for each relay
-          items:
-            $ref: '#/components/schemas/EngineImmobilizerRelayStateResponseBody'
-          type: array
-        vehicleId:
-          description: The ID of the vehicle that the engine immobilizer is connected to.
-          example: '1234'
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - happenedAtTime
-      - isConnectedToVehicle
-      - relayStates
-      - vehicleId
+      - message
+      - requestId
       type: object
-    DvirDefectStreamDefectsNotFoundErrorResponseBody:
+    GoaPaginationWithTokensResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - hasNextPage
+      type: object
+    DvirGetDvirsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerGetEngineImmobilizerStatesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EngineImmobilizerGetEngineImmobilizerStatesNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
@@ -2327,22 +2345,7 @@ components:
       - happenedAtTime
       - location
       type: object
-    LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DvirDefectStreamDefectsBadRequestErrorResponseBody:
+    TripsGetTripsBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
         message:
@@ -2357,29 +2360,12 @@ components:
       - message
       - requestId
       type: object
-    IssueSourceObjectResponseBody:
-      description: Contains information about where an issue came from.
-      properties:
-        id:
-          description: ID of the issue's source object. The format depends on the 'type'. Included if 'type' is not 'ad-hoc'.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          type: string
-        type:
-          description: 'The type of issue source.  Valid values: `form`, `ad-hoc`'
-          enum:
-          - form
-          - ad-hoc
-          example: form
-          type: string
-      required:
-      - type
-      type: object
-    LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    DvirDefectStreamDefectsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2389,20 +2375,34 @@ components:
       - message
       - requestId
       type: object
-    AssetResponseResponseBody:
-      description: Asset that the location readings are tied to.
+    DvirDefectStreamDefectsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the asset
-          example: '12345'
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - id
+      - message
+      - requestId
+      type: object
+    SpeedResponseResponseBody:
+      description: Speed object.
+      properties:
+        ecuSpeedMetersPerSecond:
+          description: Speed of asset based on ECU data.
+          example: 30.2
+          format: double
+          type: number
+        gpsSpeedMetersPerSecond:
+          description: Speed of asset based on GPS data.
+          example: 30.2
+          format: double
+          type: number
       type: object
   securitySchemes:
     AccessTokenHeader:

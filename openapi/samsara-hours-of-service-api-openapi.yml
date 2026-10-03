@@ -291,12 +291,12 @@ paths:
       - Hours Of  Service
 components:
   schemas:
-    HosViolationsGetHosViolationsBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    HosViolationsGetHosViolationsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -305,122 +305,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    HosClocksForDrivers:
-      description: List of HOS clocks for the specified drivers.
-      items:
-        $ref: '#/components/schemas/HosClocksForDriver'
-      type: array
-    HosBreak:
-      description: Remaining durations for the HOS rest break requirement.
-      properties:
-        timeUntilBreakDurationMs:
-          description: Time until the driver has a required break in milliseconds.
-          example: 28800000
-          type: number
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    HosViolations:
-      description: Durations the driver has been in violation of HOS rules. See [this page](https://www.samsara.com/fleet/eld-compliance/hours-of-service) for more information on HOS rules.
-      properties:
-        cycleViolationDurationMs:
-          description: Time since the driver has surpassed the driving cycle duration limit in milliseconds. For property-carrying drivers, this is the amount of time the driver has been on duty or driving past the 60/70-hour limit in 7/8 days.
-          example: 39600000
-          type: number
-        shiftDrivingViolationDurationMs:
-          description: Time since the driver has surpassed the driving shift duration limit in milliseconds. For property-carrying drivers, this is the amount of time the driver has been driving past the 11-hour limit.
-          example: 39600000
-          type: number
-      type: object
-    HosLogEntry:
-      description: A single HOS log entry.
-      properties:
-        codrivers:
-          description: The codriver information.
-          items:
-            $ref: '#/components/schemas/driverTinyResponse'
-          type: array
-        hosStatusType:
-          description: 'The Hours of Service status type. Valid values: `offDuty`, `sleeperBed`, `driving`, `onDuty`, `yardMove`, `personalConveyance`.'
-          enum:
-          - offDuty
-          - sleeperBed
-          - driving
-          - onDuty
-          - yardMove
-          - personalConveyance
-          example: offDuty
-          type: string
-        logEndTime:
-          $ref: '#/components/schemas/time'
-        logRecordedLocation:
-          $ref: '#/components/schemas/HosLogLocation'
-        logStartTime:
-          $ref: '#/components/schemas/time'
-        remark:
-          description: Remark associated with the log entry.
-          example: Lunch Break
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/vehicleTinyResponse'
-      required:
-      - logStartTime
-      type: object
-    HosViolationsGetHosViolationsResponseBody:
-      properties:
-        data:
-          description: List of violations data
-          items:
-            $ref: '#/components/schemas/HosViolationsObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    HosDrive:
-      description: Remaining durations for the HOS driving shift limits.
-      properties:
-        driveRemainingDurationMs:
-          description: Remaining driving time the driver has in the current shift in milliseconds. For property-carrying drivers, this is the amount of time the driver can drive before hitting the 11-hour limit.
-          example: 39600000
-          type: number
-      type: object
-    HosShift:
-      description: Remaining durations and start time for the HOS on duty shift limits.
-      properties:
-        shiftRemainingDurationMs:
-          description: Remaining on duty or driving time the driver in the current shift in milliseconds. For property-carrying drivers, this is the amount of time the driver can be on duty or driving before hitting the 14-hour limit.
-          example: 50400000
-          type: number
       type: object
     HosClocksResponse:
       description: Drivers HOS clocks and pagination info.
@@ -433,25 +317,13 @@ components:
       - data
       - pagination
       type: object
-    HosLogsList:
-      description: List of HOS log entries.
-      items:
-        $ref: '#/components/schemas/HosLogEntry'
-      type: array
-    HosViolationsGetHosViolationsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    HosShift:
+      description: Remaining durations and start time for the HOS on duty shift limits.
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+        shiftRemainingDurationMs:
+          description: Remaining on duty or driving time the driver in the current shift in milliseconds. For property-carrying drivers, this is the amount of time the driver can be on duty or driving before hitting the 14-hour limit.
+          example: 50400000
+          type: number
       type: object
     HosViolationsGetHosViolationsUnauthorizedErrorResponseBody:
       description: Unauthorized
@@ -468,12 +340,31 @@ components:
       - message
       - requestId
       type: object
-    HosViolationsGetHosViolationsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    HosLogsList:
+      description: List of HOS log entries.
+      items:
+        $ref: '#/components/schemas/HosLogEntry'
+      type: array
+    HosCycle:
+      description: Remaining durations and start time for the HOS driving cycle.
+      properties:
+        cycleRemainingDurationMs:
+          description: Remaining on duty or driving time the driver has in the current cycle in milliseconds. For property-carrying drivers, this is the amount of time the driver can be on duty or driving before hitting the 60/70-hour limit in 7/8 days.
+          example: 252000000
+          type: number
+        cycleStartedAtTime:
+          $ref: '#/components/schemas/time'
+        cycleTomorrowDurationMs:
+          description: Remaining on duty or driving time the driver has available tomorrow in milliseconds. For property-carrying drivers this is calculated based on the 60/70-hour limit in 7/8 days rule.
+          example: 252000000
+          type: number
+      type: object
+    HosViolationsGetHosViolationsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -483,52 +374,30 @@ components:
       - message
       - requestId
       type: object
-    HosViolationsObjectResponseBody:
+    HosLogsForDrivers:
+      description: List of HOS logs for the specified drivers.
+      items:
+        $ref: '#/components/schemas/HosLogsForDriver'
+      type: array
+    HosDrive:
+      description: Remaining durations for the HOS driving shift limits.
       properties:
-        violations:
-          description: List of violations and their associated drivers
-          items:
-            $ref: '#/components/schemas/HosViolationObjectResponseBody'
-          type: array
-      required:
-      - violations
-      type: object
-    driverTinyResponse:
-      description: A minified driver object.
-      properties:
-        id:
-          description: ID of the driver.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Susan Bob
-          type: string
-      type: object
-    HosLogsForDriver:
-      description: List of HOS logs for a driver.
-      properties:
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
-        hosLogs:
-          $ref: '#/components/schemas/HosLogsList'
-      type: object
-    HosLogLocation:
-      description: Location associated with the duty status change
-      properties:
-        latitude:
-          description: GPS latitude represented in degrees
-          example: 122.142
-          format: double
+        driveRemainingDurationMs:
+          description: Remaining driving time the driver has in the current shift in milliseconds. For property-carrying drivers, this is the amount of time the driver can drive before hitting the 11-hour limit.
+          example: 39600000
           type: number
-        longitude:
-          description: GPS longitude represented in degrees
-          example: -93.343
-          format: double
-          type: number
-      required:
-      - latitude
-      - longitude
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
       type: object
     GoaPaginationResponseResponseBody:
       description: Pagination parameters.
@@ -544,21 +413,6 @@ components:
       required:
       - endCursor
       - hasNextPage
-      type: object
-    HosViolationsGetHosViolationsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
     HosViolationObjectResponseBody:
       properties:
@@ -620,73 +474,6 @@ components:
       - type
       - violationStartTime
       type: object
-    HosCycle:
-      description: Remaining durations and start time for the HOS driving cycle.
-      properties:
-        cycleRemainingDurationMs:
-          description: Remaining on duty or driving time the driver has in the current cycle in milliseconds. For property-carrying drivers, this is the amount of time the driver can be on duty or driving before hitting the 60/70-hour limit in 7/8 days.
-          example: 252000000
-          type: number
-        cycleStartedAtTime:
-          $ref: '#/components/schemas/time'
-        cycleTomorrowDurationMs:
-          description: Remaining on duty or driving time the driver has available tomorrow in milliseconds. For property-carrying drivers this is calculated based on the 60/70-hour limit in 7/8 days rule.
-          example: 252000000
-          type: number
-      type: object
-    HosViolationsGetHosViolationsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosViolationsGetHosViolationsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosClocks:
-      description: Remaining durations and start times (where applicable) for various HOS rules. See [this page](https://www.samsara.com/fleet/eld-compliance/hours-of-service) for more information on HOS rules.
-      properties:
-        break:
-          $ref: '#/components/schemas/HosBreak'
-        cycle:
-          $ref: '#/components/schemas/HosCycle'
-        drive:
-          $ref: '#/components/schemas/HosDrive'
-        shift:
-          $ref: '#/components/schemas/HosShift'
-      type: object
-    HosLogsResponse:
-      description: HOS logs and pagination info.
-      properties:
-        data:
-          $ref: '#/components/schemas/HosLogsForDrivers'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
     vehicleTinyResponse:
       description: A minified vehicle object.
       properties:
@@ -707,11 +494,176 @@ components:
           example: 'Midwest Truck #4'
           type: string
       type: object
-    CurrentDutyStatus:
-      description: The current HOS status type and time the driver started being in this status.
+    HosClocks:
+      description: Remaining durations and start times (where applicable) for various HOS rules. See [this page](https://www.samsara.com/fleet/eld-compliance/hours-of-service) for more information on HOS rules.
       properties:
+        break:
+          $ref: '#/components/schemas/HosBreak'
+        cycle:
+          $ref: '#/components/schemas/HosCycle'
+        drive:
+          $ref: '#/components/schemas/HosDrive'
+        shift:
+          $ref: '#/components/schemas/HosShift'
+      type: object
+    HosLogLocation:
+      description: Location associated with the duty status change
+      properties:
+        latitude:
+          description: GPS latitude represented in degrees
+          example: 122.142
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees
+          example: -93.343
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    HosViolationsGetHosViolationsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosViolationsGetHosViolationsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosLogsResponse:
+      description: HOS logs and pagination info.
+      properties:
+        data:
+          $ref: '#/components/schemas/HosLogsForDrivers'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    HosViolationsGetHosViolationsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    HosLogsForDriver:
+      description: List of HOS logs for a driver.
+      properties:
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+        hosLogs:
+          $ref: '#/components/schemas/HosLogsList'
+      type: object
+    HosBreak:
+      description: Remaining durations for the HOS rest break requirement.
+      properties:
+        timeUntilBreakDurationMs:
+          description: Time until the driver has a required break in milliseconds.
+          example: 28800000
+          type: number
+      type: object
+    HosViolationsGetHosViolationsResponseBody:
+      properties:
+        data:
+          description: List of violations data
+          items:
+            $ref: '#/components/schemas/HosViolationsObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    HosViolationsGetHosViolationsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosViolationsGetHosViolationsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosLogEntry:
+      description: A single HOS log entry.
+      properties:
+        codrivers:
+          description: The codriver information.
+          items:
+            $ref: '#/components/schemas/driverTinyResponse'
+          type: array
         hosStatusType:
-          description: 'The Hours of Service status type.  If the driver app is disconnected, an empty string will be returned. To reconnect the app and return updated values, drivers should have the app open with good cell service. Valid values: `offDuty`, `sleeperBed`, `driving`, `onDuty`, `yardMove`, `personalConveyance`.'
+          description: 'The Hours of Service status type. Valid values: `offDuty`, `sleeperBed`, `driving`, `onDuty`, `yardMove`, `personalConveyance`.'
           enum:
           - offDuty
           - sleeperBed
@@ -721,13 +673,41 @@ components:
           - personalConveyance
           example: offDuty
           type: string
+        logEndTime:
+          $ref: '#/components/schemas/time'
+        logRecordedLocation:
+          $ref: '#/components/schemas/HosLogLocation'
+        logStartTime:
+          $ref: '#/components/schemas/time'
+        remark:
+          description: Remark associated with the log entry.
+          example: Lunch Break
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/vehicleTinyResponse'
+      required:
+      - logStartTime
       type: object
-    HosViolationsGetHosViolationsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    HosViolationDayObjectResponseBody:
+      properties:
+        endTime:
+          description: The end time of the day on which the violation occurred in RFC 3339 format. This is determined by the driver's ELD start hour (00:00 or 12:00)
+          example: '2019-06-14T12:00:00Z'
+          type: string
+        startTime:
+          description: The start time of the day on which the violation occurred in RFC 3339 format. This is determined by the driver's ELD start hour (00:00 or 12:00)
+          example: '2019-06-13T12:00:00Z'
+          type: string
+      required:
+      - endTime
+      - startTime
+      type: object
+    HosViolationsGetHosViolationsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -756,26 +736,58 @@ components:
       required:
       - id
       type: object
-    HosViolationsGetHosViolationsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    HosClocksForDriver:
+      description: HOS clock values for a specific driver, including remaining times and violations.
       properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+        clocks:
+          $ref: '#/components/schemas/HosClocks'
+        currentDutyStatus:
+          $ref: '#/components/schemas/CurrentDutyStatus'
+        currentVehicle:
+          $ref: '#/components/schemas/vehicleTinyResponse'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+        violations:
+          $ref: '#/components/schemas/HosViolations'
       type: object
-    HosLogsForDrivers:
-      description: List of HOS logs for the specified drivers.
-      items:
-        $ref: '#/components/schemas/HosLogsForDriver'
-      type: array
+    HosViolations:
+      description: Durations the driver has been in violation of HOS rules. See [this page](https://www.samsara.com/fleet/eld-compliance/hours-of-service) for more information on HOS rules.
+      properties:
+        cycleViolationDurationMs:
+          description: Time since the driver has surpassed the driving cycle duration limit in milliseconds. For property-carrying drivers, this is the amount of time the driver has been on duty or driving past the 60/70-hour limit in 7/8 days.
+          example: 39600000
+          type: number
+        shiftDrivingViolationDurationMs:
+          description: Time since the driver has surpassed the driving shift duration limit in milliseconds. For property-carrying drivers, this is the amount of time the driver has been driving past the 11-hour limit.
+          example: 39600000
+          type: number
+      type: object
+    HosViolationsObjectResponseBody:
+      properties:
+        violations:
+          description: List of violations and their associated drivers
+          items:
+            $ref: '#/components/schemas/HosViolationObjectResponseBody'
+          type: array
+      required:
+      - violations
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
     HosViolationsGetHosViolationsTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
@@ -791,38 +803,26 @@ components:
       - message
       - requestId
       type: object
-    HosClocksForDriver:
-      description: HOS clock values for a specific driver, including remaining times and violations.
+    CurrentDutyStatus:
+      description: The current HOS status type and time the driver started being in this status.
       properties:
-        clocks:
-          $ref: '#/components/schemas/HosClocks'
-        currentDutyStatus:
-          $ref: '#/components/schemas/CurrentDutyStatus'
-        currentVehicle:
-          $ref: '#/components/schemas/vehicleTinyResponse'
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
-        violations:
-          $ref: '#/components/schemas/HosViolations'
-      type: object
-    HosViolationDayObjectResponseBody:
-      properties:
-        endTime:
-          description: The end time of the day on which the violation occurred in RFC 3339 format. This is determined by the driver's ELD start hour (00:00 or 12:00)
-          example: '2019-06-14T12:00:00Z'
+        hosStatusType:
+          description: 'The Hours of Service status type.  If the driver app is disconnected, an empty string will be returned. To reconnect the app and return updated values, drivers should have the app open with good cell service. Valid values: `offDuty`, `sleeperBed`, `driving`, `onDuty`, `yardMove`, `personalConveyance`.'
+          enum:
+          - offDuty
+          - sleeperBed
+          - driving
+          - onDuty
+          - yardMove
+          - personalConveyance
+          example: offDuty
           type: string
-        startTime:
-          description: The start time of the day on which the violation occurred in RFC 3339 format. This is determined by the driver's ELD start hour (00:00 or 12:00)
-          example: '2019-06-13T12:00:00Z'
-          type: string
-      required:
-      - endTime
-      - startTime
       type: object
-    time:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
-      type: string
+    HosClocksForDrivers:
+      description: List of HOS clocks for the specified drivers.
+      items:
+        $ref: '#/components/schemas/HosClocksForDriver'
+      type: array
   securitySchemes:
     AccessTokenHeader:
       type: http

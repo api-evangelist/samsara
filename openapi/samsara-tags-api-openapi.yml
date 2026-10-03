@@ -234,21 +234,15 @@ paths:
       x-codegen-request-body-name: tag
 components:
   schemas:
-    paginationResponse:
-      description: Pagination parameters.
+    ParentTag:
+      description: If this tag is part a hierarchical tag tree, this is the parent tag, otherwise this will be omitted.
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
+        id:
+          $ref: '#/components/schemas/TaggedObjectId'
+        name:
+          $ref: '#/components/schemas/ParentTagName'
       required:
-      - endCursor
-      - hasNextPage
+      - id
       type: object
     standardErrorResponse:
       description: Error response
@@ -262,22 +256,152 @@ components:
           example: 8916e1c1
           type: string
       type: object
-    TagId:
-      description: Unique Samsara ID of this tag.
-      example: '342417'
+    ParentTagName:
+      description: The tag name.
+      example: US West Vehicles
       type: string
     Tag:
       allOf:
       - $ref: '#/components/schemas/TinyTag'
       - $ref: '#/components/schemas/Tag_allOf'
-    ParentTagId:
-      description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-      example: '4815'
-      type: string
+    TaggedObject:
+      properties:
+        id:
+          $ref: '#/components/schemas/TaggedObjectId'
+        name:
+          $ref: '#/components/schemas/TaggedObjectName'
+      required:
+      - id
+      type: object
     TaggedObjectName:
       description: The object name.
       example: Driver Don
       type: string
+    PatchTagRequest:
+      properties:
+        addresses:
+          description: The addresses that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        assets:
+          description: The trailers, unpowered, and powered assets that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        drivers:
+          description: The drivers that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        machines:
+          description: The machines that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        name:
+          description: Name of this tag.
+          example: California
+          maxLength: 191
+          minLength: 1
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+        sensors:
+          description: The sensors that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        vehicles:
+          description: The vehicles that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+      type: object
+    ListTagsResponse:
+      description: A list of tags.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    TaggedObjectId:
+      description: The object ID.
+      example: '23502866574'
+      type: string
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    ParentTagId:
+      description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+      example: '4815'
+      type: string
+    ReplaceTagRequest:
+      properties:
+        addresses:
+          description: The addresses that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        assets:
+          description: The trailers, unpowered, and powered assets that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        drivers:
+          description: The drivers that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        machines:
+          description: The machines that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        name:
+          description: Name of this tag.
+          example: California
+          maxLength: 191
+          minLength: 1
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+        sensors:
+          description: The sensors that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+        vehicles:
+          description: The vehicles that belong to this tag.
+          items:
+            $ref: '#/components/schemas/TaggedObjectId'
+          type: array
+      type: object
+    TinyTag:
+      properties:
+        id:
+          $ref: '#/components/schemas/TagId'
+        name:
+          $ref: '#/components/schemas/TagName'
+        parentTagId:
+          $ref: '#/components/schemas/ParentTagId'
+      type: object
     CreateTagRequest:
       properties:
         addresses:
@@ -331,105 +455,6 @@ components:
       required:
       - name
       type: object
-    ParentTagName:
-      description: The tag name.
-      example: US West Vehicles
-      type: string
-    ListTagsResponse:
-      description: A list of tags.
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Tag'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    ReplaceTagRequest:
-      properties:
-        addresses:
-          description: The addresses that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        assets:
-          description: The trailers, unpowered, and powered assets that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        drivers:
-          description: The drivers that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        machines:
-          description: The machines that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        name:
-          description: Name of this tag.
-          example: California
-          maxLength: 191
-          minLength: 1
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-        sensors:
-          description: The sensors that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        vehicles:
-          description: The vehicles that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-      type: object
-    TaggedObject:
-      properties:
-        id:
-          $ref: '#/components/schemas/TaggedObjectId'
-        name:
-          $ref: '#/components/schemas/TaggedObjectName'
-      required:
-      - id
-      type: object
-    TagName:
-      description: Name of this tag.
-      example: California
-      maxLength: 191
-      minLength: 1
-      type: string
-    standardDeleteResponse:
-      description: A successful DELETE response is a 204 with no content.
-      example: <empty content>
-      type: string
-    TinyTag:
-      properties:
-        id:
-          $ref: '#/components/schemas/TagId'
-        name:
-          $ref: '#/components/schemas/TagName'
-        parentTagId:
-          $ref: '#/components/schemas/ParentTagId'
-      type: object
-    TaggedObjectId:
-      description: The object ID.
-      example: '23502866574'
-      type: string
-    ParentTag:
-      description: If this tag is part a hierarchical tag tree, this is the parent tag, otherwise this will be omitted.
-      properties:
-        id:
-          $ref: '#/components/schemas/TaggedObjectId'
-        name:
-          $ref: '#/components/schemas/ParentTagName'
-      required:
-      - id
-      type: object
     Tag_allOf:
       properties:
         addresses:
@@ -472,62 +497,37 @@ components:
             $ref: '#/components/schemas/TaggedObject'
           type: array
       type: object
+    TagId:
+      description: Unique Samsara ID of this tag.
+      example: '342417'
+      type: string
+    TagName:
+      description: Name of this tag.
+      example: California
+      maxLength: 191
+      minLength: 1
+      type: string
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
     TagResponse:
       description: A single tag.
       properties:
         data:
           $ref: '#/components/schemas/Tag'
-      type: object
-    PatchTagRequest:
-      properties:
-        addresses:
-          description: The addresses that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        assets:
-          description: The trailers, unpowered, and powered assets that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        drivers:
-          description: The drivers that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        externalIds:
-          additionalProperties:
-            type: string
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          type: object
-        machines:
-          description: The machines that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        name:
-          description: Name of this tag.
-          example: California
-          maxLength: 191
-          minLength: 1
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-        sensors:
-          description: The sensors that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
-        vehicles:
-          description: The vehicles that belong to this tag.
-          items:
-            $ref: '#/components/schemas/TaggedObjectId'
-          type: array
       type: object
   securitySchemes:
     AccessTokenHeader:

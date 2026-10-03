@@ -64,19 +64,6 @@ paths:
       - Reefer
 components:
   schemas:
-    V1AssetReeferResponse_reeferStats_setPoint:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        tempInMilliC:
-          description: Set point temperature in millidegree Celsius.
-          example: 31110
-          format: int64
-          type: integer
-      type: object
     V1AssetReeferResponse_reeferStats_alarms:
       properties:
         alarmCode:
@@ -98,6 +85,56 @@ components:
           format: int64
           type: integer
       type: object
+    V1AssetReeferResponse_reeferStats_fuelPercentage:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        fuelPercentage:
+          description: Fuel percentage of the reefer.
+          example: 99
+          format: int64
+          type: integer
+      type: object
+    V1AssetReeferResponse_reeferStats_setPoint:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        tempInMilliC:
+          description: Set point temperature in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      type: object
+    V1AssetReeferResponse_reeferStats_powerStatus:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        status:
+          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
+          example: Active (Continuous)
+          type: string
+      type: object
+    V1AssetReeferResponse_reeferStats_alarms_1:
+      properties:
+        alarms:
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms'
+          type: array
+        changedAtMs:
+          description: Timestamp when the alarms were reported, in Unix milliseconds since epoch
+          example: 1453449599999
+          format: int64
+          type: integer
+      type: object
     V1AssetReeferResponse:
       description: Reefer-specific asset details
       properties:
@@ -116,47 +153,6 @@ components:
         reeferStats:
           $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats'
       type: object
-    V1AssetReeferResponse_reeferStats_fuelPercentage:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        fuelPercentage:
-          description: Fuel percentage of the reefer.
-          example: 99
-          format: int64
-          type: integer
-      type: object
-    V1AssetReeferResponse_reeferStats_alarms_1:
-      properties:
-        alarms:
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms'
-          type: array
-        changedAtMs:
-          description: Timestamp when the alarms were reported, in Unix milliseconds since epoch
-          example: 1453449599999
-          format: int64
-          type: integer
-      type: object
-    V1AssetReeferResponse_reeferStats_engineHours:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        engineHours:
-          description: Engine hours of the reefer.
-          example: 1200
-          format: int64
-          type: integer
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     V1AssetReeferResponse_reeferStats:
       properties:
         alarms:
@@ -190,18 +186,6 @@ components:
             $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_setPoint'
           type: array
       type: object
-    V1AssetReeferResponse_reeferStats_powerStatus:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        status:
-          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
-          example: Active (Continuous)
-          type: string
-      type: object
     V1AssetReeferResponse_reeferStats_returnAirTemp:
       properties:
         changedAtMs:
@@ -212,6 +196,22 @@ components:
         tempInMilliC:
           description: Return air temperature in millidegree Celsius.
           example: 31110
+          format: int64
+          type: integer
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1AssetReeferResponse_reeferStats_engineHours:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        engineHours:
+          description: Engine hours of the reefer.
+          example: 1200
           format: int64
           type: integer
       type: object

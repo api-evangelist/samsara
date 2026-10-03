@@ -64,6 +64,40 @@ paths:
       - Trips
 components:
   schemas:
+    V1TripResponse_startAddress:
+      description: Text representation of nearest identifiable location to the start (latitude, longitude) coordinates.
+      properties:
+        address:
+          description: The formatted address
+          example: 123 Main St, Sunnyvale, CA 94089
+          type: string
+        id:
+          description: The ID of the address
+          example: 581
+          format: int64
+          type: number
+        name:
+          description: The name of the address
+          example: Ramen Tatsunoya
+          type: string
+      type: object
+    V1TripResponse_endAddress:
+      description: Text representation of nearest identifiable location to the end (latitude, longitude) coordinates.
+      properties:
+        address:
+          description: The formatted address
+          example: 123 Main St, Sunnyvale, CA 94089
+          type: string
+        id:
+          description: The ID of the address
+          example: 581
+          format: int64
+          type: number
+        name:
+          description: The name of the address
+          example: Ramen Tatsunoya
+          type: string
+      type: object
     V1TripResponse_trips:
       properties:
         assetIds:
@@ -131,30 +165,17 @@ components:
           example: 32000
           type: integer
       type: object
-    V1TripResponse:
-      description: Contains the trips for the vehicle in the requested timeframe. A trip is represented as an object that contains startMs, startLocation, startAddress, startCoordinates, endMs, endLocation, endAddress and endCoordinates. Ongoing trips will be returned with 9223372036854775807 as their endMs.
+    V1TripResponse_startCoordinates:
+      description: Start (latitude, longitude) in decimal degrees.
       properties:
-        trips:
-          items:
-            $ref: '#/components/schemas/V1TripResponse_trips'
-          type: array
-      type: object
-    V1TripResponse_endAddress:
-      description: Text representation of nearest identifiable location to the end (latitude, longitude) coordinates.
-      properties:
-        address:
-          description: The formatted address
-          example: 123 Main St, Sunnyvale, CA 94089
-          type: string
-        id:
-          description: The ID of the address
-          example: 581
-          format: int64
+        latitude:
+          example: 29.443702345
+          format: double
           type: number
-        name:
-          description: The name of the address
-          example: Ramen Tatsunoya
-          type: string
+        longitude:
+          example: -98.502888123
+          format: double
+          type: number
       type: object
     V1TripResponse_endCoordinates:
       description: End (latitude, longitude) in decimal degrees.
@@ -168,38 +189,17 @@ components:
           format: double
           type: number
       type: object
-    V1TripResponse_startAddress:
-      description: Text representation of nearest identifiable location to the start (latitude, longitude) coordinates.
-      properties:
-        address:
-          description: The formatted address
-          example: 123 Main St, Sunnyvale, CA 94089
-          type: string
-        id:
-          description: The ID of the address
-          example: 581
-          format: int64
-          type: number
-        name:
-          description: The name of the address
-          example: Ramen Tatsunoya
-          type: string
-      type: object
-    V1TripResponse_startCoordinates:
-      description: Start (latitude, longitude) in decimal degrees.
-      properties:
-        latitude:
-          example: 29.443702345
-          format: double
-          type: number
-        longitude:
-          example: -98.502888123
-          format: double
-          type: number
-      type: object
     V1ErrorResponse:
       description: Error message describing why the request failed.
       type: string
+    V1TripResponse:
+      description: Contains the trips for the vehicle in the requested timeframe. A trip is represented as an object that contains startMs, startLocation, startAddress, startCoordinates, endMs, endLocation, endAddress and endCoordinates. Ongoing trips will be returned with 9223372036854775807 as their endMs.
+      properties:
+        trips:
+          items:
+            $ref: '#/components/schemas/V1TripResponse_trips'
+          type: array
+      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

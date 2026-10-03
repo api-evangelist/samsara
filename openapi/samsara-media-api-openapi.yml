@@ -192,12 +192,12 @@ paths:
       x-codegen-request-body-name: PostMediaRetrievalRequestBody
 components:
   schemas:
-    MediaRetrievalPostMediaRetrievalBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    MediaRetrievalGetMediaRetrievalNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -207,12 +207,12 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalPostMediaRetrievalMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    MediaRetrievalGetMediaRetrievalBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -222,23 +222,23 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalGetMediaRetrievalUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MediaRetrievalPostMediaRetrievalServiceUnavailableErrorResponseBody:
+    MediaRetrievalGetMediaRetrievalServiceUnavailableErrorResponseBody:
       description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
@@ -267,20 +267,15 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalGetMediaRetrievalServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    GetMediaRetrievalObjectResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        media:
+          description: List of media retrieval objects.
+          items:
+            $ref: '#/components/schemas/MediaObjectResponseBody'
+          type: array
       required:
-      - message
-      - requestId
+      - media
       type: object
     MediaRetrievalPostMediaRetrievalInternalServerErrorResponseBody:
       description: An internal server error occurred
@@ -297,57 +292,21 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalPostMediaRetrievalRequestBody:
+    PostMediaRetrievalObjectResponseBody:
       properties:
-        inputs:
-          description: A list of desired camera inputs for which to capture media. Only media with valid inputs (e.g. device has that input stream and device was recording at the time) will be uploaded. An empty list is invalid.
-          example:
-          - dashcamRoadFacing
-          - dashcamRoadFacing
-          - dashcamRoadFacing
-          items:
-            description: 'input  Valid values: `dashcamRoadFacing`, `dashcamDriverFacing`, `analog`'
-            enum:
-            - dashcamRoadFacing
-            - dashcamDriverFacing
-            - analog
-            example: dashcamRoadFacing
-            type: string
-          type: array
-        startTime:
-          description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        vehicleId:
-          description: 'Vehicle ID for which to initiate media capture. Examples: 1234'
-          example: '1234'
+        retrievalId:
+          description: 'Retrieval ID associated with this media capture request. Examples: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e'
+          example: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e
           type: string
       required:
-      - inputs
-      - startTime
-      - vehicleId
+      - retrievalId
       type: object
-    MediaRetrievalGetMediaRetrievalInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    MediaRetrievalPostMediaRetrievalNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MediaRetrievalPostMediaRetrievalBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -364,98 +323,12 @@ components:
       required:
       - data
       type: object
-    PostMediaRetrievalObjectResponseBody:
-      properties:
-        retrievalId:
-          description: 'Retrieval ID associated with this media capture request. Examples: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e'
-          example: 2308cec4-82e0-46f1-8b3c-a3592e5cc21e
-          type: string
-      required:
-      - retrievalId
-      type: object
-    MediaRetrievalGetMediaRetrievalGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    MediaRetrievalGetMediaRetrievalUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MediaRetrievalPostMediaRetrievalResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/PostMediaRetrievalObjectResponseBody'
-      required:
-      - data
-      type: object
-    MediaRetrievalPostMediaRetrievalGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GetMediaRetrievalObjectResponseBody:
-      properties:
-        media:
-          description: List of media retrieval objects.
-          items:
-            $ref: '#/components/schemas/MediaObjectResponseBody'
-          type: array
-      required:
-      - media
-      type: object
-    MediaRetrievalGetMediaRetrievalBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MediaRetrievalGetMediaRetrievalNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MediaRetrievalGetMediaRetrievalNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -480,12 +353,124 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalGetMediaRetrievalBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    MediaRetrievalPostMediaRetrievalBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostMediaRetrievalObjectResponseBody'
+      required:
+      - data
+      type: object
+    UrlInfoObjectResponseBody:
+      description: URL info for this piece of media. This field is only populated when the 'status' response field is 'available'
+      properties:
+        url:
+          description: 'Signed URL for this piece of media. Examples: https://sample.s3.url.com/image.jpeg'
+          example: https://sample.s3.url.com/image.jpeg
+          type: string
+        urlExpiryTime:
+          description: 'Timestamp, in RFC 3339 format, at which the URL expires. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+      required:
+      - url
+      - urlExpiryTime
+      type: object
+    MediaRetrievalGetMediaRetrievalBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalPostMediaRetrievalTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalGetMediaRetrievalGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -545,12 +530,12 @@ components:
       - status
       - vehicleId
       type: object
-    MediaRetrievalPostMediaRetrievalNotFoundErrorResponseBody:
-      description: Resource not found
+    MediaRetrievalPostMediaRetrievalBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -560,12 +545,12 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalGetMediaRetrievalTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    MediaRetrievalPostMediaRetrievalServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -575,7 +560,7 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalGetMediaRetrievalMethodNotAllowedErrorResponseBody:
+    MediaRetrievalPostMediaRetrievalMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
         message:
@@ -590,12 +575,12 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalPostMediaRetrievalTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    MediaRetrievalGetMediaRetrievalInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -605,20 +590,35 @@ components:
       - message
       - requestId
       type: object
-    UrlInfoObjectResponseBody:
-      description: URL info for this piece of media. This field is only populated when the 'status' response field is 'available'
+    MediaRetrievalPostMediaRetrievalRequestBody:
       properties:
-        url:
-          description: 'Signed URL for this piece of media. Examples: https://sample.s3.url.com/image.jpeg'
-          example: https://sample.s3.url.com/image.jpeg
+        inputs:
+          description: A list of desired camera inputs for which to capture media. Only media with valid inputs (e.g. device has that input stream and device was recording at the time) will be uploaded. An empty list is invalid.
+          example:
+          - dashcamRoadFacing
+          - dashcamRoadFacing
+          - dashcamRoadFacing
+          items:
+            description: 'input  Valid values: `dashcamRoadFacing`, `dashcamDriverFacing`, `analog`'
+            enum:
+            - dashcamRoadFacing
+            - dashcamDriverFacing
+            - analog
+            example: dashcamRoadFacing
+            type: string
+          type: array
+        startTime:
+          description: 'A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
           type: string
-        urlExpiryTime:
-          description: 'Timestamp, in RFC 3339 format, at which the URL expires. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
-          example: '2019-11-11T14:00:12-04:00'
+        vehicleId:
+          description: 'Vehicle ID for which to initiate media capture. Examples: 1234'
+          example: '1234'
           type: string
       required:
-      - url
-      - urlExpiryTime
+      - inputs
+      - startTime
+      - vehicleId
       type: object
   securitySchemes:
     AccessTokenHeader:

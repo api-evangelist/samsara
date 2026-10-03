@@ -572,361 +572,10 @@ paths:
       - Equipment
 components:
   schemas:
-    EquipmentStatsGps:
-      description: GPS location of equipment.
-      properties:
-        address:
-          $ref: '#/components/schemas/addressTinyResponse'
-        headingDegrees:
-          $ref: '#/components/schemas/AssetLocationHeading'
-        latitude:
-          description: GPS latitude represented in degrees
-          example: 122.142
-          format: double
-          type: number
-        longitude:
-          description: GPS longitude represented in degrees
-          example: -93.343
-          format: double
-          type: number
-        reverseGeo:
-          $ref: '#/components/schemas/reverseGeo'
-        speedMilesPerHour:
-          $ref: '#/components/schemas/AssetLocationSpeed'
-        time:
-          $ref: '#/components/schemas/time'
-      required:
-      - latitude
-      - longitude
-      - time
-      type: object
-    EquipmentListResponse:
-      description: List of all equipment objects, and pagination information.
-      properties:
-        data:
-          description: List of equipment objects.
-          items:
-            $ref: '#/components/schemas/Equipment'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    addressTinyResponse:
-      description: Address book entry, if one exists
-      properties:
-        id:
-          description: Address book identifier
-          example: '123'
-          type: string
-        name:
-          description: Name of this address book entry
-          example: Main Distribution Warehouse
-          type: string
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    EquipmentId:
-      description: Unique Samsara ID for the equipment.
-      example: '112'
-      type: string
-    EquipmentLocationsListResponse:
-      description: A time-series of equipment locations and pagination information
-      properties:
-        data:
-          description: Time-series of locations for the specified units of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentLocationsListResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    EquipmentEngineSeconds:
-      description: '[DEPRECATED] Please use either `gatewayEngineSeconds` or `obdEngineSeconds`.'
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
-          example: 22374000
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentLocationsListResponse_data:
-      description: A unit of equipment and its time-series of location events.
-      properties:
-        id:
-          $ref: '#/components/schemas/EquipmentId'
-        locations:
-          description: A time-series of location events for the given unit of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentLocation'
-          type: array
-        name:
-          $ref: '#/components/schemas/EquipmentName'
-      required:
-      - id
-      - locations
-      - name
-      type: object
-    EquipmentObdEngineState:
-      description: Engine state reading from on-board diagnostics.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: 'The state of the engine read from on-board diagnostics. Valid values: `Off`, `On`, `Idle`.'
-          enum:
-          - 'Off'
-          - 'On'
-          - Idle
-          example: 'On'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    Equipment:
-      description: An equipment object.
-      properties:
-        assetSerial:
-          description: An equipment identification number.
-          example: 1FUJA6BD31LJ09646
-          type: string
-        externalIds:
-          $ref: '#/components/schemas/carrierProposedAssignmentDriverAllOf2ExternalIds'
-        id:
-          $ref: '#/components/schemas/EquipmentId'
-        installedGateway:
-          $ref: '#/components/schemas/Equipment_installedGateway'
-        name:
-          $ref: '#/components/schemas/EquipmentName'
-        notes:
-          description: Notes about a piece of equipment. Samsara supports a maximum of 255 chars.
-          example: These are notes about this given equipment.
-          maxLength: 255
-          type: string
-        tags:
-          description: An array of all tag mini-objects that are associated with the given equipment.
-          items:
-            $ref: '#/components/schemas/tagTinyResponse'
-          type: array
-      required:
-      - id
-      type: object
-    EquipmentEngineState:
-      description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
-          enum:
-          - 'Off'
-          - 'On'
-          example: 'On'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    tagTinyResponse:
-      description: A minified tag object
-      properties:
-        id:
-          description: ID of the tag.
-          example: '3914'
-          type: string
-        name:
-          description: Name of the tag.
-          example: East Coast
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-      type: object
-    EquipmentGatewayJ1939EngineSeconds:
-      description: Engine seconds reading from the J1939/CAT cable.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
-          example: 22374000
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentFuelPercent:
-      description: Fuel percent reading.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: The percent of fuel in the unit of equipment.
-          example: 54
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    reverseGeo:
-      description: Reverse geocoded information.
-      properties:
-        formattedLocation:
-          description: Formatted address of the reverse geocoding data.
-          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
-          type: string
-      type: object
-    EquipmentGatewayEngineState:
-      description: Engine state reading from the aux/digio cable.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
-          enum:
-          - 'Off'
-          - 'On'
-          example: 'On'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    EquipmentStatsResponse:
-      description: The most recent equipment stats and pagination information
-      properties:
-        data:
-          description: List of the most recent stats for the specified units of equipment and stat types.
-          items:
-            $ref: '#/components/schemas/EquipmentStatsResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
     EquipmentTime:
       description: UTC timestamp of the time the data point was generated by the equipment, in RFC3339 format.
       example: '2019-05-03T04:30:31Z'
       type: string
-    EquipmentGatewayEngineSeconds:
-      description: Engine seconds reading from the aux/digio cable.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
-          example: 22374000
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentGpsOdometerMeters:
-      description: GPS odometer reading.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard.
-          example: 3200
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentLocationsResponse_data:
-      description: A unit of equipment and its most recent location.
-      properties:
-        id:
-          $ref: '#/components/schemas/EquipmentId'
-        location:
-          $ref: '#/components/schemas/EquipmentLocation'
-        name:
-          $ref: '#/components/schemas/EquipmentName'
-      required:
-      - id
-      - location
-      - name
-      type: object
-    carrierProposedAssignmentDriverAllOf2ExternalIds:
-      additionalProperties:
-        type: string
-      description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-      example:
-        maintenanceId: '250020'
-        payrollId: ABFS18600
-      type: object
-      x-go-gen-location: models
-    EquipmentName:
-      description: Name of the equipment.
-      example: Crane A7
-      type: string
-    EquipmentEngineRpm:
-      description: Engine RPM reading.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: The revolutions per minute of the engine.
-          example: 1800
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentStatsListResponse:
-      description: A time-series of equipment stats and pagination information
-      properties:
-        data:
-          description: Time-series of stats for the specified units of equipment and stat types.
-          items:
-            $ref: '#/components/schemas/EquipmentStatsListResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
     EquipmentLocation:
       description: Location reading.
       properties:
@@ -957,6 +606,67 @@ components:
       - longitude
       - time
       type: object
+    reverseGeo:
+      description: Reverse geocoded information.
+      properties:
+        formattedLocation:
+          description: Formatted address of the reverse geocoding data.
+          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
+          type: string
+      type: object
+    EquipmentId:
+      description: Unique Samsara ID for the equipment.
+      example: '112'
+      type: string
+    EquipmentLocationsListResponse:
+      description: A time-series of equipment locations and pagination information
+      properties:
+        data:
+          description: Time-series of locations for the specified units of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocationsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentEngineRpm:
+      description: Engine RPM reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: The revolutions per minute of the engine.
+          example: 1800
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    Equipment_installedGateway:
+      properties:
+        model:
+          description: The model of the installed Samsara gateway.
+          example: Ag26
+          type: string
+        serial:
+          description: The serial of the installed Samsara gateway.
+          type: string
+      type: object
     EquipmentResponse:
       description: A response containing an equipment object.
       properties:
@@ -965,19 +675,110 @@ components:
       required:
       - data
       type: object
-    EquipmentLocationsResponse:
-      description: The most recent equipment locations and pagination information
+    addressTinyResponse:
+      description: Address book entry, if one exists
       properties:
-        data:
-          description: List of the most recent locations for the specified units of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentLocationsResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
+        id:
+          description: Address book identifier
+          example: '123'
+          type: string
+        name:
+          description: Name of this address book entry
+          example: Main Distribution Warehouse
+          type: string
+      type: object
+    EquipmentEngineState:
+      description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
+          enum:
+          - 'Off'
+          - 'On'
+          example: 'On'
+          type: string
       required:
-      - data
-      - pagination
+      - time
+      - value
+      type: object
+    EquipmentStatsResponse_data:
+      description: A unit of equipment and its most recent stat.
+      properties:
+        engineRpm:
+          $ref: '#/components/schemas/EquipmentEngineRpm'
+        engineSeconds:
+          $ref: '#/components/schemas/EquipmentEngineSeconds'
+        engineState:
+          $ref: '#/components/schemas/EquipmentEngineState'
+        fuelPercent:
+          $ref: '#/components/schemas/EquipmentFuelPercent'
+        gatewayEngineSeconds:
+          $ref: '#/components/schemas/EquipmentGatewayEngineSeconds'
+        gatewayEngineState:
+          $ref: '#/components/schemas/EquipmentGatewayEngineState'
+        gps:
+          $ref: '#/components/schemas/EquipmentStatsGps'
+        gpsOdometerMeters:
+          $ref: '#/components/schemas/EquipmentGpsOdometerMeters'
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+        obdEngineSeconds:
+          $ref: '#/components/schemas/EquipmentObdEngineSeconds'
+        obdEngineState:
+          $ref: '#/components/schemas/EquipmentObdEngineState'
+      required:
+      - id
+      - name
+      type: object
+    AssetLocationSpeed:
+      description: GPS speed of the asset in miles per hour.
+      example: 48.3
+      format: double
+      type: number
+    Equipment:
+      description: An equipment object.
+      properties:
+        assetSerial:
+          description: An equipment identification number.
+          example: 1FUJA6BD31LJ09646
+          type: string
+        externalIds:
+          $ref: '#/components/schemas/carrierProposedAssignmentDriverAllOf2ExternalIds'
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        installedGateway:
+          $ref: '#/components/schemas/Equipment_installedGateway'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+        notes:
+          description: Notes about a piece of equipment. Samsara supports a maximum of 255 chars.
+          example: These are notes about this given equipment.
+          maxLength: 255
+          type: string
+        tags:
+          description: An array of all tag mini-objects that are associated with the given equipment.
+          items:
+            $ref: '#/components/schemas/tagTinyResponse'
+          type: array
+      required:
+      - id
+      type: object
+    EquipmentGatewayEngineSeconds:
+      description: Engine seconds reading from the aux/digio cable.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
       type: object
     EquipmentStatsListResponse_data:
       description: A unit of equipment and its time-series of stats events.
@@ -1045,51 +846,218 @@ components:
       - id
       - name
       type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    EquipmentGatewayEngineState:
+      description: Engine state reading from the aux/digio cable.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
+          enum:
+          - 'Off'
+          - 'On'
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    EquipmentObdEngineState:
+      description: Engine state reading from on-board diagnostics.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'The state of the engine read from on-board diagnostics. Valid values: `Off`, `On`, `Idle`.'
+          enum:
+          - 'Off'
+          - 'On'
+          - Idle
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    EquipmentStatsListResponse:
+      description: A time-series of equipment stats and pagination information
+      properties:
+        data:
+          description: Time-series of stats for the specified units of equipment and stat types.
+          items:
+            $ref: '#/components/schemas/EquipmentStatsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentEngineSeconds:
+      description: '[DEPRECATED] Please use either `gatewayEngineSeconds` or `obdEngineSeconds`.'
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentLocationsResponse:
+      description: The most recent equipment locations and pagination information
+      properties:
+        data:
+          description: List of the most recent locations for the specified units of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocationsResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentStatsGps:
+      description: GPS location of equipment.
+      properties:
+        address:
+          $ref: '#/components/schemas/addressTinyResponse'
+        headingDegrees:
+          $ref: '#/components/schemas/AssetLocationHeading'
+        latitude:
+          description: GPS latitude represented in degrees
+          example: 122.142
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees
+          example: -93.343
+          format: double
+          type: number
+        reverseGeo:
+          $ref: '#/components/schemas/reverseGeo'
+        speedMilesPerHour:
+          $ref: '#/components/schemas/AssetLocationSpeed'
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - latitude
+      - longitude
+      - time
+      type: object
+    carrierProposedAssignmentDriverAllOf2ExternalIds:
+      additionalProperties:
+        type: string
+      description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+      example:
+        maintenanceId: '250020'
+        payrollId: ABFS18600
+      type: object
+      x-go-gen-location: models
+    EquipmentLocationsListResponse_data:
+      description: A unit of equipment and its time-series of location events.
+      properties:
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        locations:
+          description: A time-series of location events for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocation'
+          type: array
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+      required:
+      - id
+      - locations
+      - name
+      type: object
+    EquipmentGatewayJ1939EngineSeconds:
+      description: Engine seconds reading from the J1939/CAT cable.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentFuelPercent:
+      description: Fuel percent reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: The percent of fuel in the unit of equipment.
+          example: 54
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentName:
+      description: Name of the equipment.
+      example: Crane A7
+      type: string
+    EquipmentLocationsResponse_data:
+      description: A unit of equipment and its most recent location.
+      properties:
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        location:
+          $ref: '#/components/schemas/EquipmentLocation'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+      required:
+      - id
+      - location
+      - name
+      type: object
     AssetLocationHeading:
       description: Heading of the asset in degrees.
       example: 120
       format: double
       type: number
-    EquipmentStatsResponse_data:
-      description: A unit of equipment and its most recent stat.
+    paginationResponse:
+      description: Pagination parameters.
       properties:
-        engineRpm:
-          $ref: '#/components/schemas/EquipmentEngineRpm'
-        engineSeconds:
-          $ref: '#/components/schemas/EquipmentEngineSeconds'
-        engineState:
-          $ref: '#/components/schemas/EquipmentEngineState'
-        fuelPercent:
-          $ref: '#/components/schemas/EquipmentFuelPercent'
-        gatewayEngineSeconds:
-          $ref: '#/components/schemas/EquipmentGatewayEngineSeconds'
-        gatewayEngineState:
-          $ref: '#/components/schemas/EquipmentGatewayEngineState'
-        gps:
-          $ref: '#/components/schemas/EquipmentStatsGps'
-        gpsOdometerMeters:
-          $ref: '#/components/schemas/EquipmentGpsOdometerMeters'
-        id:
-          $ref: '#/components/schemas/EquipmentId'
-        name:
-          $ref: '#/components/schemas/EquipmentName'
-        obdEngineSeconds:
-          $ref: '#/components/schemas/EquipmentObdEngineSeconds'
-        obdEngineState:
-          $ref: '#/components/schemas/EquipmentObdEngineState'
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
       required:
-      - id
-      - name
-      type: object
-    Equipment_installedGateway:
-      properties:
-        model:
-          description: The model of the installed Samsara gateway.
-          example: Ag26
-          type: string
-        serial:
-          description: The serial of the installed Samsara gateway.
-          type: string
+      - endCursor
+      - hasNextPage
       type: object
     EquipmentObdEngineSeconds:
       description: Engine seconds reading from on-board diagnostics.
@@ -1104,15 +1072,47 @@ components:
       - time
       - value
       type: object
-    AssetLocationSpeed:
-      description: GPS speed of the asset in miles per hour.
-      example: 48.3
-      format: double
-      type: number
-    time:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
-      type: string
+    EquipmentStatsResponse:
+      description: The most recent equipment stats and pagination information
+      properties:
+        data:
+          description: List of the most recent stats for the specified units of equipment and stat types.
+          items:
+            $ref: '#/components/schemas/EquipmentStatsResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    EquipmentGpsOdometerMeters:
+      description: GPS odometer reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard.
+          example: 3200
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentListResponse:
+      description: List of all equipment objects, and pagination information.
+      properties:
+        data:
+          description: List of equipment objects.
+          items:
+            $ref: '#/components/schemas/Equipment'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

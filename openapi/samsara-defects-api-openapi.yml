@@ -111,33 +111,27 @@ paths:
       x-codegen-request-body-name: defect
 components:
   schemas:
-    standardErrorResponse:
-      description: Error response
+    DefectsResponse:
+      description: A list of defects.
       properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
+        data:
+          items:
+            $ref: '#/components/schemas/Defect'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
-    paginationResponse:
-      description: Pagination parameters.
+    trailerTinyResponse:
+      description: A minified trailer object.
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
+        id:
+          description: ID of the trailer.
+          example: '123456789'
           type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
+          type: string
       type: object
     ResolvedBy:
       description: Information about the user who is resolving a defect.
@@ -156,38 +150,21 @@ components:
       - id
       - type
       type: object
-    DefectResponse:
-      description: A single defect.
+    paginationResponse:
+      description: Pagination parameters.
       properties:
-        data:
-          $ref: '#/components/schemas/Defect'
-      type: object
-    DefectPatch:
-      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
-      properties:
-        isResolved:
-          description: Resolves the defect. Must be `true`.
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
           type: boolean
-        mechanicNotes:
-          description: The mechanics notes on the defect.
-          example: Extremely large oddly shaped hole in passenger side window.
-          type: string
-        resolvedAtTime:
-          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        resolvedBy:
-          $ref: '#/components/schemas/ResolvedBy'
-      type: object
-    DefectsResponse:
-      description: A list of defects.
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Defect'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - endCursor
+      - hasNextPage
       type: object
     Defect_resolvedBy:
       description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
@@ -206,6 +183,41 @@ components:
           - driver
           - mechanic
           type: string
+      type: object
+    DefectResponse:
+      description: A single defect.
+      properties:
+        data:
+          $ref: '#/components/schemas/Defect'
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    DefectPatch:
+      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
+      properties:
+        isResolved:
+          description: Resolves the defect. Must be `true`.
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        resolvedAtTime:
+          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/ResolvedBy'
       type: object
     Defect:
       properties:
@@ -258,18 +270,6 @@ components:
       required:
       - id
       - isResolved
-      type: object
-    trailerTinyResponse:
-      description: A minified trailer object.
-      properties:
-        id:
-          description: ID of the trailer.
-          example: '123456789'
-          type: string
-        name:
-          description: Name of the trailer.
-          example: 'Midwest Trailer #5'
-          type: string
       type: object
     vehicleTinyResponse:
       description: A minified vehicle object.

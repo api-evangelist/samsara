@@ -83,59 +83,11 @@ paths:
       - Vehicle  Locations
 components:
   schemas:
-    VehicleLocationLongitude:
-      description: GPS longitude represented in degrees
-      example: -93.343
+    VehicleLocationSpeed:
+      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
+      example: 48.3
       format: double
       type: number
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    VehicleLocation:
-      description: Vehicle location event.
-      properties:
-        heading:
-          $ref: '#/components/schemas/VehicleLocationHeading'
-        latitude:
-          $ref: '#/components/schemas/VehicleLocationLatitude'
-        longitude:
-          $ref: '#/components/schemas/VehicleLocationLongitude'
-        reverseGeo:
-          $ref: '#/components/schemas/reverseGeo'
-        speed:
-          $ref: '#/components/schemas/VehicleLocationSpeed'
-        time:
-          $ref: '#/components/schemas/time'
-      required:
-      - latitude
-      - longitude
-      - time
-      type: object
     VehicleLocationsResponse:
       description: Most recent vehicle locations and pagination info.
       properties:
@@ -150,6 +102,15 @@ components:
       - data
       - pagination
       type: object
+    VehicleLocationLatitude:
+      description: GPS latitude represented in degrees
+      example: 122.142
+      format: double
+      type: number
+    VehicleName:
+      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+      example: Truck A7
+      type: string
     VehicleLocationsResponse_data:
       description: A vehicle and its most recent location.
       properties:
@@ -172,33 +133,72 @@ components:
           example: 16 N Fair Oaks Ave, Pasadena, CA 91103
           type: string
       type: object
+    VehicleLocation:
+      description: Vehicle location event.
+      properties:
+        heading:
+          $ref: '#/components/schemas/VehicleLocationHeading'
+        latitude:
+          $ref: '#/components/schemas/VehicleLocationLatitude'
+        longitude:
+          $ref: '#/components/schemas/VehicleLocationLongitude'
+        reverseGeo:
+          $ref: '#/components/schemas/reverseGeo'
+        speed:
+          $ref: '#/components/schemas/VehicleLocationSpeed'
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - latitude
+      - longitude
+      - time
+      type: object
+    VehicleId:
+      description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
+      example: '112'
+      type: string
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    VehicleLocationLongitude:
+      description: GPS longitude represented in degrees
+      example: -93.343
+      format: double
+      type: number
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
     VehicleLocationHeading:
       description: Heading of the vehicle in degrees.
       example: 120
       format: double
       type: number
-    VehicleLocationSpeed:
-      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
-      example: 48.3
-      format: double
-      type: number
-    time:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
-      type: string
-    VehicleId:
-      description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
-      example: '112'
-      type: string
-    VehicleLocationLatitude:
-      description: GPS latitude represented in degrees
-      example: 122.142
-      format: double
-      type: number
-    VehicleName:
-      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
-      example: Truck A7
-      type: string
   securitySchemes:
     AccessTokenHeader:
       type: http

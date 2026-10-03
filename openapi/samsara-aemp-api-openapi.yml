@@ -103,48 +103,29 @@ paths:
       - Aemp
 components:
   schemas:
-    FuelRemainingResponseBody:
-      description: Fuel remaining in equipment.
+    DistanceResponseBody:
+      description: Equipment odometer distance.
       properties:
-        Percent:
-          description: Percent of fuel remaining in tank.
+        Odometer:
+          description: Odometer value reported by equipment.
           example: 12
           format: double
           type: number
+        OdometerUnits:
+          description: Unit of measurement for distance.
+          example: kilometre
+          type: string
         datetime:
           description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
           example: '2019-06-13T19:08:25Z'
           type: string
       type: object
-    AempEquipmentGetAempEquipmentListUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    AempEquipmentGetAempEquipmentListResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        Fleet:
+          $ref: '#/components/schemas/AempFleetListResponseBody'
       required:
-      - message
-      - requestId
-      type: object
-    AempEquipmentGetAempEquipmentListServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+      - Fleet
       type: object
     AempEquipmentGetAempEquipmentListMethodNotAllowedErrorResponseBody:
       description: Method not allowed
@@ -160,64 +141,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    CumulativeOperatingHoursResponseBody:
-      description: Equipment operating hours.
-      properties:
-        Hour:
-          description: Total number of equipment operating hours.
-          example: 12.34
-          format: double
-          type: number
-        datetime:
-          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-      type: object
-    AempEquipmentGetAempEquipmentListTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AempEquipmentGetAempEquipmentListInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AempLinkResponseBody:
-      description: Contains a list of relevant links
-      properties:
-        href:
-          description: The hyperlink of the relationship.
-          example: https://api.samsara.com/aemp/Fleet/1
-          type: string
-        rel:
-          description: The link relationship to the current call.
-          example: self
-          type: string
-      required:
-      - href
-      - rel
       type: object
     AempEquipmentWithAdditionalFieldsResponseBody:
       description: Contains equipment fields.
@@ -240,16 +163,26 @@ components:
       - EquipmentHeader
       - Location
       type: object
-    LocationResponseBody:
-      description: Equipment location.
+    AempEquipmentGetAempEquipmentListTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
-        Latitude:
-          description: Location latitude.
-          example: 12.34
-          format: double
-          type: number
-        Longitude:
-          description: Location longitude.
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CumulativeOperatingHoursResponseBody:
+      description: Equipment operating hours.
+      properties:
+        Hour:
+          description: Total number of equipment operating hours.
           example: 12.34
           format: double
           type: number
@@ -258,12 +191,20 @@ components:
           example: '2019-06-13T19:08:25Z'
           type: string
       type: object
-    AempEquipmentGetAempEquipmentListResponseBody:
+    AempEquipmentGetAempEquipmentListUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
-        Fleet:
-          $ref: '#/components/schemas/AempFleetListResponseBody'
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - Fleet
+      - message
+      - requestId
       type: object
     EquipmentHeaderWithAdditionalFieldsResponseBody:
       description: Equipment header fields.
@@ -293,29 +234,12 @@ components:
           example: '2019-06-13T19:08:25Z'
           type: string
       type: object
-    DistanceResponseBody:
-      description: Equipment odometer distance.
-      properties:
-        Odometer:
-          description: Odometer value reported by equipment.
-          example: 12
-          format: double
-          type: number
-        OdometerUnits:
-          description: Unit of measurement for distance.
-          example: kilometre
-          type: string
-        datetime:
-          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-      type: object
-    AempEquipmentGetAempEquipmentListBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    AempEquipmentGetAempEquipmentListNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -324,19 +248,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    DEFRemainingResponseBody:
-      description: DEF remaining in equipment.
-      properties:
-        Percent:
-          description: Percent of DEF remaining in tank.
-          example: 12
-          format: double
-          type: number
-        datetime:
-          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
       type: object
     AempEquipmentGetAempEquipmentListGatewayTimeoutErrorResponseBody:
       description: Gateway timeout
@@ -353,17 +264,20 @@ components:
       - message
       - requestId
       type: object
-    EngineStatusResponseBody:
-      description: Equipment engine status.
+    AempEquipmentGetAempEquipmentListInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
-        Running:
-          description: Boolean value for whether engine is running or not.
-          example: true
-          type: boolean
-        datetime:
-          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     AempEquipmentGetAempEquipmentListNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
@@ -380,12 +294,39 @@ components:
       - message
       - requestId
       type: object
-    AempEquipmentGetAempEquipmentListBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    AempLinkResponseBody:
+      description: Contains a list of relevant links
+      properties:
+        href:
+          description: The hyperlink of the relationship.
+          example: https://api.samsara.com/aemp/Fleet/1
+          type: string
+        rel:
+          description: The link relationship to the current call.
+          example: self
+          type: string
+      required:
+      - href
+      - rel
+      type: object
+    EngineStatusResponseBody:
+      description: Equipment engine status.
+      properties:
+        Running:
+          description: Boolean value for whether engine is running or not.
+          example: true
+          type: boolean
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    AempEquipmentGetAempEquipmentListServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -394,6 +335,65 @@ components:
       required:
       - message
       - requestId
+      type: object
+    AempEquipmentGetAempEquipmentListBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelRemainingResponseBody:
+      description: Fuel remaining in equipment.
+      properties:
+        Percent:
+          description: Percent of fuel remaining in tank.
+          example: 12
+          format: double
+          type: number
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    LocationResponseBody:
+      description: Equipment location.
+      properties:
+        Latitude:
+          description: Location latitude.
+          example: 12.34
+          format: double
+          type: number
+        Longitude:
+          description: Location longitude.
+          example: 12.34
+          format: double
+          type: number
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+      type: object
+    DEFRemainingResponseBody:
+      description: DEF remaining in equipment.
+      properties:
+        Percent:
+          description: Percent of DEF remaining in tank.
+          example: 12
+          format: double
+          type: number
+        datetime:
+          description: 'Date time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
       type: object
     AempFleetListResponseBody:
       description: Contains a list of equipment objects and links
@@ -422,12 +422,12 @@ components:
       - snapshotTime
       - version
       type: object
-    AempEquipmentGetAempEquipmentListNotFoundErrorResponseBody:
-      description: Resource not found
+    AempEquipmentGetAempEquipmentListBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

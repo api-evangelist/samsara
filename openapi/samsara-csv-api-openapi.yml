@@ -224,66 +224,6 @@ components:
       - name
       - recordCount
       type: object
-    IFTAGetIftaDetailJobUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTACreateIftaDetailJobNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaDetailJobNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTACreateIftaDetailJobMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     IFTACreateIftaDetailJobUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
@@ -299,12 +239,12 @@ components:
       - message
       - requestId
       type: object
-    IFTACreateIftaDetailJobInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    IFTAGetIftaDetailJobServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -314,19 +254,57 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaDetailJobResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/IftaDetailJobResponseBody'
-      required:
-      - data
-      type: object
-    IFTAGetIftaDetailJobMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    IFTAGetIftaDetailJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -351,12 +329,121 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaDetailJobGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    IFTAGetIftaDetailJobUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobRequestBody:
+      description: The payload to create a new IftaDetailJob.
+      properties:
+        endHour:
+          description: ' An end time in RFC 3339 format. Hour precision and timezones are supported. Any minutes or seconds will be truncated down to the nearest hour. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. The maximum request duration is 1 month. Limit the number of vehicles to 1000 when requesting more than 24 hours of data. (Examples: 2019-06-13T19:00:00Z, 2019-06-13T19:00:00.000Z, OR 2015-09-15T14:00:00-04:00).'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        startHour:
+          description: ' A start time in RFC 3339 format. Hour precision and timezones are supported. Any minutes or seconds will be truncated down to the nearest hour. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. The maximum request duration is 1 month. Limit the number of vehicles to 1000 when requesting more than 24 hours of data. (Examples: 2019-06-13T19:00:00Z, 2019-06-13T19:00:00.000Z, OR 2015-09-15T14:00:00-04:00).'
+          example: '2019-06-13T19:00:00Z'
+          type: string
+        vehicleIds:
+          description: 'A filter on the data based on this comma-separated list of vehicle IDs and external IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleIds: ''1234,5678,samsara.vin:1HGBH41JXMN109186''`'
+          example: 1234,5678,samsara.vin:1HGBH41JXMN109186
+          type: string
+        vehicleParentTagIds:
+          description: ' A filter on the data based on this comma-separated list of vehicle parent tag IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleParentTagIds: ''1234,5678''`'
+          example: 1234,5678
+          type: string
+        vehicleTagIds:
+          description: ' A filter on the data based on this comma-separated list of vehicle tag IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleTagIds: ''1234,5678''`'
+          example: 1234,5678
+          type: string
+      required:
+      - endHour
+      - startHour
+      type: object
+    IFTAGetIftaDetailJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaDetailJobResponseBody'
+      required:
+      - data
+      type: object
+    IFTACreateIftaDetailJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -415,12 +502,12 @@ components:
       - jobStatus
       - requestedAtTime
       type: object
-    IFTACreateIftaDetailJobNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    IFTAGetIftaDetailJobMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -457,114 +544,12 @@ components:
       - startHour
       - vehicleIds
       type: object
-    IFTACreateIftaDetailJobBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    IFTACreateIftaDetailJobNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTACreateIftaDetailJobGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaDetailJobBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaDetailJobTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaDetailJobBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTACreateIftaDetailJobRequestBody:
-      description: The payload to create a new IftaDetailJob.
-      properties:
-        endHour:
-          description: ' An end time in RFC 3339 format. Hour precision and timezones are supported. Any minutes or seconds will be truncated down to the nearest hour. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. The maximum request duration is 1 month. Limit the number of vehicles to 1000 when requesting more than 24 hours of data. (Examples: 2019-06-13T19:00:00Z, 2019-06-13T19:00:00.000Z, OR 2015-09-15T14:00:00-04:00).'
-          example: '2019-06-13T19:00:00Z'
-          type: string
-        startHour:
-          description: ' A start time in RFC 3339 format. Hour precision and timezones are supported. Any minutes or seconds will be truncated down to the nearest hour. Note that the most recent 72 hours of data may still be processing and is subject to change and latency, so it is not recommended to request data for the most recent 72 hours. The maximum request duration is 1 month. Limit the number of vehicles to 1000 when requesting more than 24 hours of data. (Examples: 2019-06-13T19:00:00Z, 2019-06-13T19:00:00.000Z, OR 2015-09-15T14:00:00-04:00).'
-          example: '2019-06-13T19:00:00Z'
-          type: string
-        vehicleIds:
-          description: 'A filter on the data based on this comma-separated list of vehicle IDs and external IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleIds: ''1234,5678,samsara.vin:1HGBH41JXMN109186''`'
-          example: 1234,5678,samsara.vin:1HGBH41JXMN109186
-          type: string
-        vehicleParentTagIds:
-          description: ' A filter on the data based on this comma-separated list of vehicle parent tag IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleParentTagIds: ''1234,5678''`'
-          example: 1234,5678
-          type: string
-        vehicleTagIds:
-          description: ' A filter on the data based on this comma-separated list of vehicle tag IDs. The number of vehicles requested per job shouldn''t exceed 5000. Example: `vehicleTagIds: ''1234,5678''`'
-          example: 1234,5678
-          type: string
-      required:
-      - endHour
-      - startHour
-      type: object
-    IFTACreateIftaDetailJobServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -589,28 +574,6 @@ components:
       - message
       - requestId
       type: object
-    IFTACreateIftaDetailJobResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/IftaDetailJobResponseBody'
-      required:
-      - data
-      type: object
-    IFTAGetIftaDetailJobNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     IFTACreateIftaDetailJobTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
@@ -626,12 +589,49 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaDetailJobServiceUnavailableErrorResponseBody:
+    IFTACreateIftaDetailJobServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
         message:
           description: Message of error
           example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaDetailJobTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTACreateIftaDetailJobResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaDetailJobResponseBody'
+      required:
+      - data
+      type: object
+    IFTAGetIftaDetailJobBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

@@ -84,40 +84,13 @@ paths:
       - Activity
 components:
   schemas:
-    TachographActivityListWrapper:
+    DriverTachographActivityResponse:
+      description: List of all driver tachograph activities in a specified time range.
       properties:
-        activity:
-          $ref: '#/components/schemas/TachographActivityList'
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
+        data:
+          $ref: '#/components/schemas/DriverTachographActivityData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
     driverTinyResponse:
       description: A minified driver object.
@@ -131,18 +104,6 @@ components:
           example: Susan Bob
           type: string
       type: object
-    DriverTachographActivityResponse:
-      description: List of all driver tachograph activities in a specified time range.
-      properties:
-        data:
-          $ref: '#/components/schemas/DriverTachographActivityData'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    DriverTachographActivityData:
-      items:
-        $ref: '#/components/schemas/TachographActivityListWrapper'
-      type: array
     TachographActivity:
       description: Tachograph activity
       properties:
@@ -168,11 +129,50 @@ components:
           - UNKNOWN
           type: string
       type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
     TachographActivityList:
       description: List of all driver tachograph activities in a specified time range.
       items:
         $ref: '#/components/schemas/TachographActivity'
       type: array
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    DriverTachographActivityData:
+      items:
+        $ref: '#/components/schemas/TachographActivityListWrapper'
+      type: array
+    TachographActivityListWrapper:
+      properties:
+        activity:
+          $ref: '#/components/schemas/TachographActivityList'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

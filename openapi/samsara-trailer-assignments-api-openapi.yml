@@ -74,6 +74,19 @@ paths:
       - Trailer  Assignments
 components:
   schemas:
+    inline_response_200_7:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+        trailers:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          type: array
+      type: object
+    V1TrailerAssignmentsResponse:
+      allOf:
+      - $ref: '#/components/schemas/V1TrailerBase'
+      - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
     V1Pagination:
       properties:
         endCursor:
@@ -96,12 +109,21 @@ components:
       - hasPrevPage
       - startCursor
       type: object
-    V1TrailerAssignmentsResponse_allOf:
+    V1TrailerBase:
       properties:
-        trailerAssignments:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
-          type: array
+        id:
+          description: ID of the trailer
+          example: 2041
+          format: int64
+          type: integer
+        name:
+          description: Assignment trailer name (given when creating trailer via the trailer portal)
+          example: myTrailer
+          format: string
+          type: string
+      required:
+      - id
+      - name
       type: object
     V1TrailerAssignmentResponse:
       properties:
@@ -121,38 +143,16 @@ components:
           format: int64
           type: integer
       type: object
-    V1TrailerAssignmentsResponse:
-      allOf:
-      - $ref: '#/components/schemas/V1TrailerBase'
-      - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
-    V1TrailerBase:
+    V1TrailerAssignmentsResponse_allOf:
       properties:
-        id:
-          description: ID of the trailer
-          example: 2041
-          format: int64
-          type: integer
-        name:
-          description: Assignment trailer name (given when creating trailer via the trailer portal)
-          example: myTrailer
-          format: string
-          type: string
-      required:
-      - id
-      - name
+        trailerAssignments:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentResponse'
+          type: array
       type: object
     V1ErrorResponse:
       description: Error message describing why the request failed.
       type: string
-    inline_response_200_7:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-        trailers:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
-          type: array
-      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

@@ -62,6 +62,19 @@ paths:
       x-codegen-request-body-name: V1sensorParam
 components:
   schemas:
+    inline_object_5:
+      properties:
+        sensors:
+          description: List of sensor IDs to query.
+          example:
+          - 122
+          items:
+            format: int64
+            type: integer
+          type: array
+      required:
+      - sensors
+      type: object
     V1DoorResponse_sensors:
       properties:
         doorClosed:
@@ -90,22 +103,6 @@ components:
           example: 124
           type: integer
       type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    inline_object_5:
-      properties:
-        sensors:
-          description: List of sensor IDs to query.
-          example:
-          - 122
-          items:
-            format: int64
-            type: integer
-          type: array
-      required:
-      - sensors
-      type: object
     V1DoorResponse:
       description: Contains the current door status of a sensor.
       properties:
@@ -119,6 +116,9 @@ components:
             $ref: '#/components/schemas/V1DoorResponse_sensors'
           type: array
       type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
   requestBodies:
     inline_object_5:
       content:

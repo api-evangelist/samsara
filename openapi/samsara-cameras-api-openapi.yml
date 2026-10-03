@@ -178,12 +178,27 @@ paths:
       - Cameras
 components:
   schemas:
-    MediaRetrievalListUploadedMediaNotFoundErrorResponseBody:
-      description: Resource not found
+    MediaRetrievalListUploadedMediaBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -247,57 +262,12 @@ components:
       - triggerReason
       - vehicleId
       type: object
-    UrlInfoObjectResponseBody:
-      description: URL info for this piece of media. This field is only populated when the 'status' response field is 'available'
-      properties:
-        url:
-          description: 'Signed URL for this piece of media. Examples: https://sample.s3.url.com/image.jpeg'
-          example: https://sample.s3.url.com/image.jpeg
-          type: string
-        urlExpiryTime:
-          description: 'Timestamp, in RFC 3339 format, at which the URL expires. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
-          example: '2019-11-11T14:00:12-04:00'
-          type: string
-      required:
-      - url
-      - urlExpiryTime
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    MediaRetrievalListUploadedMediaMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    MediaRetrievalListUploadedMediaNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MediaRetrievalListUploadedMediaInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -322,6 +292,21 @@ components:
       - message
       - requestId
       type: object
+    MediaRetrievalListUploadedMediaMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     MediaRetrievalListUploadedMediaResponseBody:
       properties:
         data:
@@ -332,12 +317,42 @@ components:
       - data
       - pagination
       type: object
-    MediaRetrievalListUploadedMediaServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    UrlInfoObjectResponseBody:
+      description: URL info for this piece of media. This field is only populated when the 'status' response field is 'available'
+      properties:
+        url:
+          description: 'Signed URL for this piece of media. Examples: https://sample.s3.url.com/image.jpeg'
+          example: https://sample.s3.url.com/image.jpeg
+          type: string
+        urlExpiryTime:
+          description: 'Timestamp, in RFC 3339 format, at which the URL expires. Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00'
+          example: '2019-11-11T14:00:12-04:00'
+          type: string
+      required:
+      - url
+      - urlExpiryTime
+      type: object
+    MediaRetrievalListUploadedMediaInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MediaRetrievalListUploadedMediaNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -362,46 +377,6 @@ components:
       - message
       - requestId
       type: object
-    ListUploadedMediaObjectResponseBody:
-      properties:
-        media:
-          description: List of media retrieval objects.
-          items:
-            $ref: '#/components/schemas/UploadedMediaObjectResponseBody'
-          type: array
-      required:
-      - media
-      type: object
-    MediaRetrievalListUploadedMediaNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MediaRetrievalListUploadedMediaGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     MediaRetrievalListUploadedMediaTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
@@ -417,12 +392,37 @@ components:
       - message
       - requestId
       type: object
-    MediaRetrievalListUploadedMediaBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    ListUploadedMediaObjectResponseBody:
+      properties:
+        media:
+          description: List of media retrieval objects.
+          items:
+            $ref: '#/components/schemas/UploadedMediaObjectResponseBody'
+          type: array
+      required:
+      - media
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    MediaRetrievalListUploadedMediaGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

@@ -61,27 +61,7 @@ paths:
       - Cargo
       x-codegen-request-body-name: V1sensorParam
 components:
-  requestBodies:
-    inline_object_4:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/inline_object_4'
-      required: true
   schemas:
-    inline_object_4:
-      properties:
-        sensors:
-          description: List of sensor IDs to query.
-          example:
-          - 122
-          items:
-            format: int64
-            type: integer
-          type: array
-      required:
-      - sensors
-      type: object
     V1CargoResponse:
       description: Contains the current cargo status of a sensor.
       properties:
@@ -95,9 +75,6 @@ components:
             $ref: '#/components/schemas/V1CargoResponse_sensors'
           type: array
       type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     V1CargoResponse_sensors:
       properties:
         cargoEmpty:
@@ -130,6 +107,29 @@ components:
           example: 124
           type: integer
       type: object
+    inline_object_4:
+      properties:
+        sensors:
+          description: List of sensor IDs to query.
+          example:
+          - 122
+          items:
+            format: int64
+            type: integer
+          type: array
+      required:
+      - sensors
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+  requestBodies:
+    inline_object_4:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      required: true
   securitySchemes:
     AccessTokenHeader:
       type: http

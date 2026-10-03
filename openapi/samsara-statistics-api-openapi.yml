@@ -635,8 +635,23 @@ paths:
       - Statistics
 components:
   schemas:
-    TrailerStatReeferSetPointTemperatureMilliCZone1WithDecorationsTypeResponseBody:
-      description: Set point temperature of zone 1 of the reefer.
+    TrailerStatsGetTrailerStatsFeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferDoorStateZone2WithDecorationsTypeResponseBody:
+      description: Door stats that have been emitted by the reefer.
       properties:
         decorations:
           $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
@@ -645,15 +660,17 @@ components:
           example: '2020-01-27T07:06:25Z'
           type: string
         value:
-          description: The set point temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
+          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
+          enum:
+          - open
+          - closed
+          example: closed
+          type: string
       required:
       - time
       - value
       type: object
-    TrailerStatsGetTrailerStatsHistoryNotFoundErrorResponseBody:
+    TrailerStatsGetTrailerStatsSnapshotNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
@@ -668,12 +685,43 @@ components:
       - message
       - requestId
       type: object
-    TrailerStatsGetTrailerStatsHistoryMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    TrailerStatReeferSupplyAirTemperatureMilliCZone2WithDecorationsTypeResponseBody:
+      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The supply or discharge air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsHistoryResponseBody:
+      properties:
+        data:
+          description: List of trailers and their stats
+          items:
+            $ref: '#/components/schemas/TrailerStatsObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrailerStatsGetTrailerStatsHistoryTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -683,12 +731,190 @@ components:
       - message
       - requestId
       type: object
-    TrailerStatsGetTrailerStatsSnapshotMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    TrailerStatsSnapshotObjectResponseBody:
+      description: A trailer and its stats
+      properties:
+        carrierReeferState:
+          $ref: '#/components/schemas/TrailerStatReeferStateTypeResponseBody'
+        gps:
+          $ref: '#/components/schemas/TrailerStatGpsTypeResponseBody'
+        gpsOdometerMeters:
+          $ref: '#/components/schemas/TrailerStatGpsOdometerMetersTypeResponseBody'
+        id:
+          description: ID of the trailer.
+          example: '1234'
+          type: string
+        name:
+          description: Name of the vehicle.
+          example: Trailer-123
+          type: string
+        reeferAlarms:
+          $ref: '#/components/schemas/TrailerStatReeferAlarmTypeResponseBody'
+        reeferAmbientAirTemperatureMilliC:
+          $ref: '#/components/schemas/TrailerStatReeferAmbientAirTemperatureMilliCTypeResponseBody'
+        reeferDoorStateZone1:
+          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone1TypeResponseBody'
+        reeferDoorStateZone2:
+          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone2TypeResponseBody'
+        reeferDoorStateZone3:
+          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone3TypeResponseBody'
+        reeferFuelPercent:
+          $ref: '#/components/schemas/TrailerStatReeferFuelPercentTypeResponseBody'
+        reeferObdEngineSeconds:
+          $ref: '#/components/schemas/TrailerStatReeferObdEngineSecondsTypeResponseBody'
+        reeferReturnAirTemperatureMilliCZone1:
+          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone1TypeResponseBody'
+        reeferReturnAirTemperatureMilliCZone2:
+          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone2TypeResponseBody'
+        reeferReturnAirTemperatureMilliCZone3:
+          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone3TypeResponseBody'
+        reeferRunMode:
+          $ref: '#/components/schemas/TrailerStatReeferRunModeTypeResponseBody'
+        reeferSetPointTemperatureMilliCZone1:
+          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone1TypeResponseBody'
+        reeferSetPointTemperatureMilliCZone2:
+          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone2TypeResponseBody'
+        reeferSetPointTemperatureMilliCZone3:
+          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone3TypeResponseBody'
+        reeferStateZone1:
+          $ref: '#/components/schemas/TrailerStatReeferStateZone1TypeResponseBody'
+        reeferStateZone2:
+          $ref: '#/components/schemas/TrailerStatReeferStateZone2TypeResponseBody'
+        reeferStateZone3:
+          $ref: '#/components/schemas/TrailerStatReeferStateZone3TypeResponseBody'
+        reeferSupplyAirTemperatureMilliCZone1:
+          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone1TypeResponseBody'
+        reeferSupplyAirTemperatureMilliCZone2:
+          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone2TypeResponseBody'
+        reeferSupplyAirTemperatureMilliCZone3:
+          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone3TypeResponseBody'
+      required:
+      - id
+      - name
+      type: object
+    TrailerStatReeferReturnAirTemperatureMilliCZone1WithDecorationsTypeResponseBody:
+      description: Return air temperature of zone 1 of the reefer. This is the temperature of the air as it enters the cooling unit.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The return air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferStateZone2WithDecorationsTypeResponseBody:
+      description: Reefer state event.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        substateValue:
+          description: The substate zone 2 of the reefer, if available.
+          example: '`Pretrip`, `Defrost`'
+          type: string
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The state zone 2 of the reefer.
+          example: '`Off`, `On`'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsFeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferRunModeWithDecorationsTypeResponseBody:
+      description: The run mode of the reefer.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The operational mode of the reefer.
+          example: '`Start/Stop`,`Continuous`'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsSnapshotResponseBody:
+      properties:
+        data:
+          description: List of trailers and their stats
+          items:
+            $ref: '#/components/schemas/TrailerStatsSnapshotObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    TrailerStatReeferSupplyAirTemperatureMilliCZone3WithDecorationsTypeResponseBody:
+      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The supply or discharge air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsSnapshotTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -718,6 +944,676 @@ components:
       required:
       - time
       - value
+      type: object
+    TrailerStatsGetTrailerStatsFeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferObdEngineSecondsTypeResponseBody:
+      description: Reefer onboard engine seconds reading.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The number of seconds the reefer has been on according to the onboard diagnostics.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsHistoryInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatsGetTrailerStatsHistoryGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatsGetTrailerStatsSnapshotInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferDoorStateZone2TypeResponseBody:
+      description: The door state of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
+          enum:
+          - open
+          - closed
+          example: closed
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatReeferSetPointTemperatureMilliCZone1WithDecorationsTypeResponseBody:
+      description: Set point temperature of zone 1 of the reefer.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The set point temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatReeferFuelPercentTypeResponseBody:
+      description: The fuel percentage of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The fuel level in percentage points (e.g. `99`, `50`, etc).
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatGpsTypeResponseBody:
+      description: GPS location data for the trailer.
+      properties:
+        headingDegrees:
+          description: Heading of the trailer in degrees.
+          example: 5478981605182468000
+          format: int64
+          type: integer
+        latitude:
+          description: GPS latitude represented in degrees.
+          example: 0.955367680792097
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees.
+          example: 0.1542964882122642
+          format: double
+          type: number
+        reverseGeo:
+          $ref: '#/components/schemas/ReverseGeoObjectResponseBody'
+        speedMilesPerHour:
+          description: GPS speed of the trailer in miles per hour.
+          example: 6626263886997561000
+          format: int64
+          type: integer
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+      required:
+      - latitude
+      - longitude
+      - time
+      type: object
+    TrailerStatReeferStateZone3WithDecorationsTypeResponseBody:
+      description: Reefer state event.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        substateValue:
+          description: The substate zone 3 of the reefer, if available.
+          example: '`Pretrip`, `Defrost`'
+          type: string
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The state zone 3 of the reefer.
+          example: '`Off`, `On`'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatReeferAmbientAirTemperatureMilliCTypeResponseBody:
+      description: Reefer ambient air temperature reading.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The ambient air temperature reading of the reefer in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatReeferSetPointTemperatureMilliCZone3WithDecorationsTypeResponseBody:
+      description: Set point temperature of zone 3 of the reefer.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The set point temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsHistoryMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferDoorStateZone1TypeResponseBody:
+      description: The door state of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
+          enum:
+          - open
+          - closed
+          example: closed
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferAlarmTypeResponseBody:
+      description: Alarms that have been emitted by the reefer.
+      properties:
+        alarms:
+          description: The alarms reported by the reefer.
+          items:
+            $ref: '#/components/schemas/TrailerStatReeferAlarmResponseBody'
+          type: array
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+      required:
+      - alarms
+      - time
+      type: object
+    TrailerStatsGetTrailerStatsSnapshotServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferSupplyAirTemperatureMilliCZone2TypeResponseBody:
+      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The supply or discharge air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsHistoryNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferSetPointTemperatureMilliCZone1TypeResponseBody:
+      description: Set point temperature of zone 1 of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The set point temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatReeferSetPointTemperatureMilliCZone2WithDecorationsTypeResponseBody:
+      description: Set point temperature of zone 2 of the reefer.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The set point temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsHistoryBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferReturnAirTemperatureMilliCZone2TypeResponseBody:
+      description: Return air temperature of zone 2 of the reefer. This is the temperature of the air as it enters the cooling unit.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The return air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    ReverseGeoObjectResponseBody:
+      description: Reverse geocoded information
+      properties:
+        formattedLocation:
+          description: Formatted address of the reverse geocoding data.
+          example: 850 Made Up Lane, Orange, CA
+          type: string
+      type: object
+    TrailerStatReeferSetPointTemperatureMilliCZone3TypeResponseBody:
+      description: Set point temperature of zone 3 of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The set point temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatReeferAlarmWithDecorationsTypeResponseBody:
+      description: Alarms that have been emitted by the reefer.
+      properties:
+        alarms:
+          description: The alarms reported by the reefer.
+          items:
+            $ref: '#/components/schemas/TrailerStatReeferAlarmResponseBody'
+          type: array
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+      required:
+      - alarms
+      - time
+      type: object
+    TrailerStatReeferSetPointTemperatureMilliCZone2TypeResponseBody:
+      description: Set point temperature of zone 2 of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The set point temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsSnapshotGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferReturnAirTemperatureMilliCZone1TypeResponseBody:
+      description: Return air temperature of zone 1 of the reefer. This is the temperature of the air as it enters the cooling unit.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The return air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatReeferRunModeTypeResponseBody:
+      description: The run mode of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The operational mode of the reefer.
+          example: '`Start/Stop`,`Continuous`'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsSnapshotUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatsGetTrailerStatsHistoryServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    TrailerStatDecorationResponseBody:
+      description: Decorated values for the primary trailer stat datapoints.
+      properties:
+        carrierReeferState:
+          $ref: '#/components/schemas/TrailerStatReeferStateTypeResponseBody'
+        gps:
+          $ref: '#/components/schemas/TrailerStatGpsTypeResponseBody'
+        gpsOdometerMeters:
+          $ref: '#/components/schemas/TrailerStatGpsOdometerMetersTypeResponseBody'
+        reeferAlarms:
+          $ref: '#/components/schemas/TrailerStatReeferAlarmTypeResponseBody'
+        reeferAmbientAirTemperatureMilliC:
+          $ref: '#/components/schemas/TrailerStatReeferAmbientAirTemperatureMilliCTypeResponseBody'
+        reeferDoorStateZone1:
+          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone1TypeResponseBody'
+        reeferDoorStateZone2:
+          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone2TypeResponseBody'
+        reeferDoorStateZone3:
+          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone3TypeResponseBody'
+        reeferFuelPercent:
+          $ref: '#/components/schemas/TrailerStatReeferFuelPercentTypeResponseBody'
+        reeferObdEngineSeconds:
+          $ref: '#/components/schemas/TrailerStatReeferObdEngineSecondsTypeResponseBody'
+        reeferReturnAirTemperatureMilliCZone1:
+          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone1TypeResponseBody'
+        reeferReturnAirTemperatureMilliCZone2:
+          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone2TypeResponseBody'
+        reeferReturnAirTemperatureMilliCZone3:
+          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone3TypeResponseBody'
+        reeferRunMode:
+          $ref: '#/components/schemas/TrailerStatReeferRunModeTypeResponseBody'
+        reeferSetPointTemperatureMilliCZone1:
+          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone1TypeResponseBody'
+        reeferSetPointTemperatureMilliCZone2:
+          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone2TypeResponseBody'
+        reeferSetPointTemperatureMilliCZone3:
+          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone3TypeResponseBody'
+        reeferStateZone1:
+          $ref: '#/components/schemas/TrailerStatReeferStateZone1TypeResponseBody'
+        reeferStateZone2:
+          $ref: '#/components/schemas/TrailerStatReeferStateZone2TypeResponseBody'
+        reeferStateZone3:
+          $ref: '#/components/schemas/TrailerStatReeferStateZone3TypeResponseBody'
+        reeferSupplyAirTemperatureMilliCZone1:
+          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone1TypeResponseBody'
+        reeferSupplyAirTemperatureMilliCZone2:
+          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone2TypeResponseBody'
+        reeferSupplyAirTemperatureMilliCZone3:
+          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone3TypeResponseBody'
+      type: object
+    TrailerStatReeferSupplyAirTemperatureMilliCZone1TypeResponseBody:
+      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The supply or discharge air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsHistoryBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferDoorStateZone3TypeResponseBody:
+      description: The door state of the reefer.
+      properties:
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
+          enum:
+          - open
+          - closed
+          example: closed
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsFeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatsGetTrailerStatsFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     TrailerStatsObjectResponseBody:
       description: A trailer and its stats
@@ -849,86 +1745,96 @@ components:
       - id
       - name
       type: object
-    TrailerStatsGetTrailerStatsFeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    TrailerStatReeferAlarmResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Not implemented.
+        alarmCode:
+          description: The ID of the alarm.
+          example: '3'
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
+        description:
+          description: The description of the alarm.
+          example: Test alarm
           type: string
+        operatorAction:
+          description: The recommended operator action.
+          example: Manually disable alarm
+          type: string
+        severity:
+          description: 'The severity of the alarm. `1`: Ok to run, `2`: Check as specified, `3`: Take immediate action.'
+          example: 6644289420805649000
+          format: int64
+          type: integer
       required:
-      - message
-      - requestId
+      - alarmCode
+      - description
+      - operatorAction
+      - severity
       type: object
-    TrailerStatsGetTrailerStatsHistoryUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    TrailerStatsGetTrailerStatsFeedResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        data:
+          description: List of trailers and their stats
+          items:
+            $ref: '#/components/schemas/TrailerStatsObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
       required:
-      - message
-      - requestId
+      - data
+      - pagination
       type: object
-    TrailerStatsGetTrailerStatsFeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    TrailerStatReeferReturnAirTemperatureMilliCZone3WithDecorationsTypeResponseBody:
+      description: Return air temperature of zone 3 of the reefer. This is the temperature of the air as it enters the cooling unit.
       properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferStateZone3TypeResponseBody:
-      description: Reefer state event.
-      properties:
-        substateValue:
-          description: The substate zone 3 of the reefer, if available.
-          example: '`Pretrip`, `Defrost`'
-          type: string
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
         time:
           description: UTC timestamp in RFC 3339 format.
           example: '2020-01-27T07:06:25Z'
           type: string
         value:
-          description: The state zone 3 of the reefer.
-          example: '`Off`, `On`'
-          type: string
+          description: The return air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
       required:
       - time
       - value
       type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
+    TrailerStatReeferReturnAirTemperatureMilliCZone2WithDecorationsTypeResponseBody:
+      description: Return air temperature of zone 2 of the reefer. This is the temperature of the air as it enters the cooling unit.
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
           type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
+        value:
+          description: The return air temperature reading in millidegree Celsius.
+          example: 50
+          format: int64
+          type: integer
       required:
-      - endCursor
-      - hasNextPage
+      - time
+      - value
       type: object
-    TrailerStatReeferSupplyAirTemperatureMilliCZone1TypeResponseBody:
+    TrailerStatsGetTrailerStatsHistoryNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TrailerStatReeferSupplyAirTemperatureMilliCZone3TypeResponseBody:
       description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
       properties:
         time:
@@ -960,259 +1866,6 @@ components:
       - time
       - value
       type: object
-    TrailerStatsGetTrailerStatsSnapshotNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferSupplyAirTemperatureMilliCZone2WithDecorationsTypeResponseBody:
-      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The supply or discharge air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatsGetTrailerStatsFeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatsGetTrailerStatsFeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferDoorStateZone3TypeResponseBody:
-      description: The door state of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
-          enum:
-          - open
-          - closed
-          example: closed
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferRunModeWithDecorationsTypeResponseBody:
-      description: The run mode of the reefer.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The operational mode of the reefer.
-          example: '`Start/Stop`,`Continuous`'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferObdEngineSecondsWithDecorationsTypeResponseBody:
-      description: Reefer onboard engine seconds reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The number of seconds the reefer has been on according to the onboard diagnostics.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferRunModeTypeResponseBody:
-      description: The run mode of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The operational mode of the reefer.
-          example: '`Start/Stop`,`Continuous`'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferSupplyAirTemperatureMilliCZone3TypeResponseBody:
-      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The supply or discharge air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferStateZone3WithDecorationsTypeResponseBody:
-      description: Reefer state event.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        substateValue:
-          description: The substate zone 3 of the reefer, if available.
-          example: '`Pretrip`, `Defrost`'
-          type: string
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The state zone 3 of the reefer.
-          example: '`Off`, `On`'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferDoorStateZone3WithDecorationsTypeResponseBody:
-      description: Door stats that have been emitted by the reefer.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
-          enum:
-          - open
-          - closed
-          example: closed
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferSupplyAirTemperatureMilliCZone2TypeResponseBody:
-      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The supply or discharge air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatsGetTrailerStatsFeedNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferSetPointTemperatureMilliCZone3TypeResponseBody:
-      description: Set point temperature of zone 3 of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The set point temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferReturnAirTemperatureMilliCZone3WithDecorationsTypeResponseBody:
-      description: Return air temperature of zone 3 of the reefer. This is the temperature of the air as it enters the cooling unit.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The return air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
     TrailerStatReeferSupplyAirTemperatureMilliCZone1WithDecorationsTypeResponseBody:
       description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
       properties:
@@ -1231,38 +1884,8 @@ components:
       - time
       - value
       type: object
-    TrailerStatsGetTrailerStatsHistoryBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatsGetTrailerStatsSnapshotBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferFuelPercentWithDecorationsTypeResponseBody:
-      description: The fuel percentage of the reefer.
+    TrailerStatReeferAmbientAirTemperatureWithDecorationsTypeResponseBody:
+      description: Reefer ambient air temperature reading.
       properties:
         decorations:
           $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
@@ -1271,25 +1894,7 @@ components:
           example: '2020-01-27T07:06:25Z'
           type: string
         value:
-          description: The fuel level in percentage points (e.g. `99`, `50`, etc).
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatGpsOdometerMetersWithDecorationsTypeResponseBody:
-      description: Trailer GPS odometer event.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: Number of meters the trailer has traveled according to the GPS calculations and the manually specified odometer reading.
+          description: The ambient air temperature reading of the reefer in millidegree Celsius.
           example: 50
           format: int64
           type: integer
@@ -1312,67 +1917,27 @@ components:
       - message
       - requestId
       type: object
-    TrailerStatReeferAlarmTypeResponseBody:
-      description: Alarms that have been emitted by the reefer.
+    TrailerStatReeferStateZone2TypeResponseBody:
+      description: Reefer state event.
       properties:
-        alarms:
-          description: The alarms reported by the reefer.
-          items:
-            $ref: '#/components/schemas/TrailerStatReeferAlarmResponseBody'
-          type: array
+        substateValue:
+          description: The substate zone 2 of the reefer, if available.
+          example: '`Pretrip`, `Defrost`'
+          type: string
         time:
           description: UTC timestamp in RFC 3339 format.
           example: '2020-01-27T07:06:25Z'
           type: string
+        value:
+          description: The state zone 2 of the reefer.
+          example: '`Off`, `On`'
+          type: string
       required:
-      - alarms
       - time
+      - value
       type: object
-    TrailerStatsGetTrailerStatsSnapshotServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatsGetTrailerStatsHistoryResponseBody:
-      properties:
-        data:
-          description: List of trailers and their stats
-          items:
-            $ref: '#/components/schemas/TrailerStatsObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TrailerStatsGetTrailerStatsHistoryServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferDoorStateZone2WithDecorationsTypeResponseBody:
-      description: Door stats that have been emitted by the reefer.
+    TrailerStatReeferFuelPercentWithDecorationsTypeResponseBody:
+      description: The fuel percentage of the reefer.
       properties:
         decorations:
           $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
@@ -1381,146 +1946,7 @@ components:
           example: '2020-01-27T07:06:25Z'
           type: string
         value:
-          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
-          enum:
-          - open
-          - closed
-          example: closed
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatsGetTrailerStatsSnapshotTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatsGetTrailerStatsSnapshotNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatsGetTrailerStatsFeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatsSnapshotObjectResponseBody:
-      description: A trailer and its stats
-      properties:
-        carrierReeferState:
-          $ref: '#/components/schemas/TrailerStatReeferStateTypeResponseBody'
-        gps:
-          $ref: '#/components/schemas/TrailerStatGpsTypeResponseBody'
-        gpsOdometerMeters:
-          $ref: '#/components/schemas/TrailerStatGpsOdometerMetersTypeResponseBody'
-        id:
-          description: ID of the trailer.
-          example: '1234'
-          type: string
-        name:
-          description: Name of the vehicle.
-          example: Trailer-123
-          type: string
-        reeferAlarms:
-          $ref: '#/components/schemas/TrailerStatReeferAlarmTypeResponseBody'
-        reeferAmbientAirTemperatureMilliC:
-          $ref: '#/components/schemas/TrailerStatReeferAmbientAirTemperatureMilliCTypeResponseBody'
-        reeferDoorStateZone1:
-          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone1TypeResponseBody'
-        reeferDoorStateZone2:
-          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone2TypeResponseBody'
-        reeferDoorStateZone3:
-          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone3TypeResponseBody'
-        reeferFuelPercent:
-          $ref: '#/components/schemas/TrailerStatReeferFuelPercentTypeResponseBody'
-        reeferObdEngineSeconds:
-          $ref: '#/components/schemas/TrailerStatReeferObdEngineSecondsTypeResponseBody'
-        reeferReturnAirTemperatureMilliCZone1:
-          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone1TypeResponseBody'
-        reeferReturnAirTemperatureMilliCZone2:
-          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone2TypeResponseBody'
-        reeferReturnAirTemperatureMilliCZone3:
-          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone3TypeResponseBody'
-        reeferRunMode:
-          $ref: '#/components/schemas/TrailerStatReeferRunModeTypeResponseBody'
-        reeferSetPointTemperatureMilliCZone1:
-          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone1TypeResponseBody'
-        reeferSetPointTemperatureMilliCZone2:
-          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone2TypeResponseBody'
-        reeferSetPointTemperatureMilliCZone3:
-          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone3TypeResponseBody'
-        reeferStateZone1:
-          $ref: '#/components/schemas/TrailerStatReeferStateZone1TypeResponseBody'
-        reeferStateZone2:
-          $ref: '#/components/schemas/TrailerStatReeferStateZone2TypeResponseBody'
-        reeferStateZone3:
-          $ref: '#/components/schemas/TrailerStatReeferStateZone3TypeResponseBody'
-        reeferSupplyAirTemperatureMilliCZone1:
-          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone1TypeResponseBody'
-        reeferSupplyAirTemperatureMilliCZone2:
-          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone2TypeResponseBody'
-        reeferSupplyAirTemperatureMilliCZone3:
-          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone3TypeResponseBody'
-      required:
-      - id
-      - name
-      type: object
-    TrailerStatsGetTrailerStatsFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferSetPointTemperatureMilliCZone1TypeResponseBody:
-      description: Set point temperature of zone 1 of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The set point temperature reading in millidegree Celsius.
+          description: The fuel level in percentage points (e.g. `99`, `50`, etc).
           example: 50
           format: int64
           type: integer
@@ -1544,119 +1970,6 @@ components:
       - time
       - value
       type: object
-    TrailerStatsGetTrailerStatsFeedResponseBody:
-      properties:
-        data:
-          description: List of trailers and their stats
-          items:
-            $ref: '#/components/schemas/TrailerStatsObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TrailerStatsGetTrailerStatsHistoryTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatsGetTrailerStatsSnapshotGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferSupplyAirTemperatureMilliCZone3WithDecorationsTypeResponseBody:
-      description: Supply or discharge air temperature of zone 2 of the reefer. This is the temperature of the air as it leaves the cooling unit.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The supply or discharge air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatGpsTypeResponseBody:
-      description: GPS location data for the trailer.
-      properties:
-        headingDegrees:
-          description: Heading of the trailer in degrees.
-          example: 5478981605182468000
-          format: int64
-          type: integer
-        latitude:
-          description: GPS latitude represented in degrees.
-          example: 0.955367680792097
-          format: double
-          type: number
-        longitude:
-          description: GPS longitude represented in degrees.
-          example: 0.1542964882122642
-          format: double
-          type: number
-        reverseGeo:
-          $ref: '#/components/schemas/ReverseGeoObjectResponseBody'
-        speedMilesPerHour:
-          description: GPS speed of the trailer in miles per hour.
-          example: 6626263886997561000
-          format: int64
-          type: integer
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-      required:
-      - latitude
-      - longitude
-      - time
-      type: object
-    TrailerStatReeferDoorStateZone1TypeResponseBody:
-      description: The door state of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
-          enum:
-          - open
-          - closed
-          example: closed
-          type: string
-      required:
-      - time
-      - value
-      type: object
     TrailerStatReeferStateTypeResponseBody:
       description: Reefer state event.
       properties:
@@ -1676,12 +1989,12 @@ components:
       - time
       - value
       type: object
-    TrailerStatsGetTrailerStatsSnapshotInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    TrailerStatsGetTrailerStatsSnapshotMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1691,12 +2004,12 @@ components:
       - message
       - requestId
       type: object
-    TrailerStatsGetTrailerStatsHistoryBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    TrailerStatsGetTrailerStatsHistoryUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1705,6 +2018,26 @@ components:
       required:
       - message
       - requestId
+      type: object
+    TrailerStatReeferDoorStateZone3WithDecorationsTypeResponseBody:
+      description: Door stats that have been emitted by the reefer.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
+          enum:
+          - open
+          - closed
+          example: closed
+          type: string
+      required:
+      - time
+      - value
       type: object
     TrailerStatReeferStateZone1TypeResponseBody:
       description: Reefer state event.
@@ -1725,55 +2058,11 @@ components:
       - time
       - value
       type: object
-    TrailerStatsGetTrailerStatsHistoryNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferSetPointTemperatureMilliCZone2TypeResponseBody:
-      description: Set point temperature of zone 2 of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The set point temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatsGetTrailerStatsHistoryInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TrailerStatReeferObdEngineSecondsTypeResponseBody:
+    TrailerStatReeferObdEngineSecondsWithDecorationsTypeResponseBody:
       description: Reefer onboard engine seconds reading.
       properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
         time:
           description: UTC timestamp in RFC 3339 format.
           example: '2020-01-27T07:06:25Z'
@@ -1787,213 +2076,12 @@ components:
       - time
       - value
       type: object
-    TrailerStatReeferReturnAirTemperatureMilliCZone2TypeResponseBody:
-      description: Return air temperature of zone 2 of the reefer. This is the temperature of the air as it enters the cooling unit.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The return air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferStateZone1WithDecorationsTypeResponseBody:
-      description: Reefer state event.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        substateValue:
-          description: The substate zone 1 of the reefer, if available.
-          example: '`Pretrip`, `Defrost`'
-          type: string
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The state zone 1 of the reefer.
-          example: '`Off`, `On`'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferAlarmResponseBody:
-      properties:
-        alarmCode:
-          description: The ID of the alarm.
-          example: '3'
-          type: string
-        description:
-          description: The description of the alarm.
-          example: Test alarm
-          type: string
-        operatorAction:
-          description: The recommended operator action.
-          example: Manually disable alarm
-          type: string
-        severity:
-          description: 'The severity of the alarm. `1`: Ok to run, `2`: Check as specified, `3`: Take immediate action.'
-          example: 6644289420805649000
-          format: int64
-          type: integer
-      required:
-      - alarmCode
-      - description
-      - operatorAction
-      - severity
-      type: object
-    TrailerStatReeferReturnAirTemperatureMilliCZone1WithDecorationsTypeResponseBody:
-      description: Return air temperature of zone 1 of the reefer. This is the temperature of the air as it enters the cooling unit.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The return air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatDecorationResponseBody:
-      description: Decorated values for the primary trailer stat datapoints.
-      properties:
-        carrierReeferState:
-          $ref: '#/components/schemas/TrailerStatReeferStateTypeResponseBody'
-        gps:
-          $ref: '#/components/schemas/TrailerStatGpsTypeResponseBody'
-        gpsOdometerMeters:
-          $ref: '#/components/schemas/TrailerStatGpsOdometerMetersTypeResponseBody'
-        reeferAlarms:
-          $ref: '#/components/schemas/TrailerStatReeferAlarmTypeResponseBody'
-        reeferAmbientAirTemperatureMilliC:
-          $ref: '#/components/schemas/TrailerStatReeferAmbientAirTemperatureMilliCTypeResponseBody'
-        reeferDoorStateZone1:
-          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone1TypeResponseBody'
-        reeferDoorStateZone2:
-          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone2TypeResponseBody'
-        reeferDoorStateZone3:
-          $ref: '#/components/schemas/TrailerStatReeferDoorStateZone3TypeResponseBody'
-        reeferFuelPercent:
-          $ref: '#/components/schemas/TrailerStatReeferFuelPercentTypeResponseBody'
-        reeferObdEngineSeconds:
-          $ref: '#/components/schemas/TrailerStatReeferObdEngineSecondsTypeResponseBody'
-        reeferReturnAirTemperatureMilliCZone1:
-          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone1TypeResponseBody'
-        reeferReturnAirTemperatureMilliCZone2:
-          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone2TypeResponseBody'
-        reeferReturnAirTemperatureMilliCZone3:
-          $ref: '#/components/schemas/TrailerStatReeferReturnAirTemperatureMilliCZone3TypeResponseBody'
-        reeferRunMode:
-          $ref: '#/components/schemas/TrailerStatReeferRunModeTypeResponseBody'
-        reeferSetPointTemperatureMilliCZone1:
-          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone1TypeResponseBody'
-        reeferSetPointTemperatureMilliCZone2:
-          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone2TypeResponseBody'
-        reeferSetPointTemperatureMilliCZone3:
-          $ref: '#/components/schemas/TrailerStatReeferSetPointTemperatureMilliCZone3TypeResponseBody'
-        reeferStateZone1:
-          $ref: '#/components/schemas/TrailerStatReeferStateZone1TypeResponseBody'
-        reeferStateZone2:
-          $ref: '#/components/schemas/TrailerStatReeferStateZone2TypeResponseBody'
-        reeferStateZone3:
-          $ref: '#/components/schemas/TrailerStatReeferStateZone3TypeResponseBody'
-        reeferSupplyAirTemperatureMilliCZone1:
-          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone1TypeResponseBody'
-        reeferSupplyAirTemperatureMilliCZone2:
-          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone2TypeResponseBody'
-        reeferSupplyAirTemperatureMilliCZone3:
-          $ref: '#/components/schemas/TrailerStatReeferSupplyAirTemperatureMilliCZone3TypeResponseBody'
-      type: object
-    TrailerStatReeferDoorStateZone2TypeResponseBody:
-      description: The door state of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
-          enum:
-          - open
-          - closed
-          example: closed
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferSetPointTemperatureMilliCZone3WithDecorationsTypeResponseBody:
-      description: Set point temperature of zone 3 of the reefer.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The set point temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferReturnAirTemperatureMilliCZone1TypeResponseBody:
-      description: Return air temperature of zone 1 of the reefer. This is the temperature of the air as it enters the cooling unit.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The return air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferStateZone2TypeResponseBody:
-      description: Reefer state event.
-      properties:
-        substateValue:
-          description: The substate zone 2 of the reefer, if available.
-          example: '`Pretrip`, `Defrost`'
-          type: string
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The state zone 2 of the reefer.
-          example: '`Off`, `On`'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatsGetTrailerStatsFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    TrailerStatsGetTrailerStatsFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2003,95 +2091,12 @@ components:
       - message
       - requestId
       type: object
-    TrailerStatReeferFuelPercentTypeResponseBody:
-      description: The fuel percentage of the reefer.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The fuel level in percentage points (e.g. `99`, `50`, etc).
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferReturnAirTemperatureMilliCZone2WithDecorationsTypeResponseBody:
-      description: Return air temperature of zone 2 of the reefer. This is the temperature of the air as it enters the cooling unit.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The return air temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferDoorStateZone1WithDecorationsTypeResponseBody:
-      description: Door stats that have been emitted by the reefer.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
-          enum:
-          - open
-          - closed
-          example: closed
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatReeferAmbientAirTemperatureMilliCTypeResponseBody:
-      description: Reefer ambient air temperature reading.
-      properties:
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The ambient air temperature reading of the reefer in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatsGetTrailerStatsSnapshotResponseBody:
-      properties:
-        data:
-          description: List of trailers and their stats
-          items:
-            $ref: '#/components/schemas/TrailerStatsSnapshotObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    TrailerStatsGetTrailerStatsFeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    TrailerStatsGetTrailerStatsSnapshotNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2100,24 +2105,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    TrailerStatReeferAmbientAirTemperatureWithDecorationsTypeResponseBody:
-      description: Reefer ambient air temperature reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The ambient air temperature reading of the reefer in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
       type: object
     TrailerStatGpsWithDecorationsTypeResponseBody:
       description: GPS location data for the trailer.
@@ -2155,13 +2142,13 @@ components:
       - longitude
       - time
       type: object
-    TrailerStatReeferStateZone2WithDecorationsTypeResponseBody:
+    TrailerStatReeferStateZone1WithDecorationsTypeResponseBody:
       description: Reefer state event.
       properties:
         decorations:
           $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
         substateValue:
-          description: The substate zone 2 of the reefer, if available.
+          description: The substate zone 1 of the reefer, if available.
           example: '`Pretrip`, `Defrost`'
           type: string
         time:
@@ -2169,55 +2156,14 @@ components:
           example: '2020-01-27T07:06:25Z'
           type: string
         value:
-          description: The state zone 2 of the reefer.
+          description: The state zone 1 of the reefer.
           example: '`Off`, `On`'
           type: string
       required:
       - time
       - value
       type: object
-    TrailerStatReeferSetPointTemperatureMilliCZone2WithDecorationsTypeResponseBody:
-      description: Set point temperature of zone 2 of the reefer.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
-        time:
-          description: UTC timestamp in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        value:
-          description: The set point temperature reading in millidegree Celsius.
-          example: 50
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    TrailerStatsGetTrailerStatsSnapshotUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    ReverseGeoObjectResponseBody:
-      description: Reverse geocoded information
-      properties:
-        formattedLocation:
-          description: Formatted address of the reverse geocoding data.
-          example: 850 Made Up Lane, Orange, CA
-          type: string
-      type: object
-    TrailerStatsGetTrailerStatsFeedBadGatewayErrorResponseBody:
+    TrailerStatsGetTrailerStatsSnapshotBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
@@ -2232,12 +2178,31 @@ components:
       - message
       - requestId
       type: object
-    TrailerStatsGetTrailerStatsHistoryGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    TrailerStatReeferStateZone3TypeResponseBody:
+      description: Reefer state event.
+      properties:
+        substateValue:
+          description: The substate zone 3 of the reefer, if available.
+          example: '`Pretrip`, `Defrost`'
+          type: string
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: The state zone 3 of the reefer.
+          example: '`Off`, `On`'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsFeedNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2247,23 +2212,58 @@ components:
       - message
       - requestId
       type: object
-    TrailerStatReeferAlarmWithDecorationsTypeResponseBody:
-      description: Alarms that have been emitted by the reefer.
+    TrailerStatReeferDoorStateZone1WithDecorationsTypeResponseBody:
+      description: Door stats that have been emitted by the reefer.
       properties:
-        alarms:
-          description: The alarms reported by the reefer.
-          items:
-            $ref: '#/components/schemas/TrailerStatReeferAlarmResponseBody'
-          type: array
         decorations:
           $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
         time:
           description: UTC timestamp in RFC 3339 format.
           example: '2020-01-27T07:06:25Z'
           type: string
+        value:
+          description: 'The door state of zone 2 of the reefer.  Valid values: `open`, `closed`'
+          enum:
+          - open
+          - closed
+          example: closed
+          type: string
       required:
-      - alarms
       - time
+      - value
+      type: object
+    TrailerStatGpsOdometerMetersWithDecorationsTypeResponseBody:
+      description: Trailer GPS odometer event.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/TrailerStatDecorationResponseBody'
+        time:
+          description: UTC timestamp in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        value:
+          description: Number of meters the trailer has traveled according to the GPS calculations and the manually specified odometer reading.
+          example: 50
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    TrailerStatsGetTrailerStatsFeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

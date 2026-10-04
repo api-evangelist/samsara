@@ -907,12 +907,12 @@ paths:
       - Driver
 components:
   schemas:
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    DriverEfficiencyGetDriverEfficiencyByVehiclesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -922,12 +922,12 @@ components:
       - message
       - requestId
       type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    DriverCoachAssignmentsGetDriverCoachAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -937,23 +937,36 @@ components:
       - message
       - requestId
       type: object
-    singleDriverEfficiencyByDriverDataObjectResponseBody:
-      description: singleDriverEfficiencyByDriverDataObject
+    DriverEfficiencyGetDriverEfficiencyByVehiclesBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
-        difficultyScore:
-          $ref: '#/components/schemas/DriverEfficiencyDifficultyScoreDataObjectResponseBody'
-        driverId:
-          description: ID of the driver.
-          example: driver_001
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
-        percentageData:
-          $ref: '#/components/schemas/DriverEfficiencyPercentageDataObjectResponseBody'
-        rawData:
-          $ref: '#/components/schemas/DriverEfficiencyRawDataObjectResponseBody'
-        scoreData:
-          $ref: '#/components/schemas/DriverEfficiencyDataObjectResponseBody'
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - driverId
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyDifficultyScoreDataObjectResponseBody:
+      description: Difficulty score won't be available if there is no data to compute it against.
+      properties:
+        overallScore:
+          description: Represents the overall difficulty score. It has scores from 1 to 5.
+          example: '4'
+          type: string
+        topographyScore:
+          description: Represents the topography difficulty score. It has scores from 1 to 5.
+          example: '5'
+          type: string
+        vehicleWeightScore:
+          description: ' Represents the average vehicle weight score. It has scores from 1 to 5.'
+          example: '4'
+          type: string
       type: object
     DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentBadRequestErrorResponseBody:
       description: Bad Request parameters
@@ -970,12 +983,12 @@ components:
       - message
       - requestId
       type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -985,12 +998,12 @@ components:
       - message
       - requestId
       type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1000,7 +1013,22 @@ components:
       - message
       - requestId
       type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotImplementedErrorResponseBody:
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
@@ -1014,6 +1042,34 @@ components:
       required:
       - message
       - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsResponseBody:
+      properties:
+        data:
+          description: List of driver assignment objects and their respective vehcile and driver info.
+          items:
+            $ref: '#/components/schemas/DriverVehicleAssignmentV2ObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
       type: object
     DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsMethodNotAllowedErrorResponseBody:
       description: Method not allowed
@@ -1030,12 +1086,219 @@ components:
       - message
       - requestId
       type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostDriverVehicleAssignmentsV2ResponseBodyResponseBody:
+      description: Response after successfully submitting a Driver Assignment
+      properties:
+        message:
+          description: A description of the outcome from submitting Driver Assignment information
+          example: Driver assignment was successfully submitted
+          type: string
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsRequestBody:
+      description: Driver assignments to be deleted
+      properties:
+        assignedAtTime:
+          description: ' Assigned at time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        endTime:
+          description: ' An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Indicates if assigned driver is passenger
+          example: true
+          type: boolean
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicleId:
+          description: ID of the vehicle. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
+          example: '281474978683353'
+          type: string
+      required:
+      - vehicleId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PatchDriverVehicleAssignmentsV2ResponseBodyResponseBody:
+      description: Response after successfully updating a Driver Assignment
+      properties:
+        message:
+          description: A description of the outcome from updating Driver Assignment information
+          example: Driver assignment was successfully updated
+          type: string
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1079,693 +1342,14 @@ components:
       - startTime
       - vehicleId
       type: object
-    CoachAssignmentWithoutDriverExternalIdsResponseResponseBody:
-      description: Driver coach assignment object.
-      properties:
-        coachId:
-          description: Coach ID associated with coach assignment. Optional. Will be empty if no driver coach is assigned
-          example: '45646'
-          type: string
-        createdAtTime:
-          description: Time coach assignment was created in UTC. Always returned.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        driverId:
-          description: Unique user ID for the driver of the driver coach assignment
-          example: '45646'
-          type: string
-        updatedAtTime:
-          description: Time coaching assignment was updated in UTC. Always returned.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-      required:
-      - createdAtTime
-      - driverId
-      - updatedAtTime
-      type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentV2ObjectResponseBody:
-      description: Object with driver assignment info and associated driver and vehicle info.
-      properties:
-        assignedAtTime:
-          description: ' An assigned at time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        assignmentType:
-          description: 'Name of the assigning source for the driver assignment record.  Valid values: `invalid`, `unknown`, `HOS`, `idCard`, `static`, `faceId`, `tachograph`, `safetyManual`, `RFID`, `trailer`, `external`, `qrCode`'
-          enum:
-          - invalid
-          - unknown
-          - HOS
-          - idCard
-          - static
-          - faceId
-          - tachograph
-          - safetyManual
-          - RFID
-          - trailer
-          - external
-          - qrCode
-          example: idCard
-          type: string
-        driver:
-          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
-        endTime:
-          description: ' An end time in RFC 3339 format. Omitted if not applicable. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        isPassenger:
-          description: Boolean indicating whether the driver is a passenger.
-          example: false
-          type: boolean
-        metadata:
-          $ref: '#/components/schemas/DriverAssignmentMetadataTinyObjectResponseBody'
-        startTime:
-          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
-      required:
-      - driver
-      - isPassenger
-      - startTime
-      - vehicle
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    PostDriverVehicleAssignmentsV2ResponseBodyResponseBody:
-      description: Response after successfully submitting a Driver Assignment
-      properties:
-        message:
-          description: A description of the outcome from submitting Driver Assignment information
-          example: Driver assignment was successfully submitted
-          type: string
-      type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentRequestBody:
-      description: Driver Assignment to be created
-      properties:
-        assignedAtTime:
-          description: 'The time at which the assignment was made in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        driverId:
-          description: ID of the driver. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
-          example: '494123'
-          type: string
-        endTime:
-          description: 'The end time in RFC 3339 format. Defaults to max-time (meaning it''s an ongoing assignment) if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        isPassenger:
-          description: Is this driver a passenger? Defaults to false if not provided
-          example: true
-          type: boolean
-        metadata:
-          $ref: '#/components/schemas/PostDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody'
-        startTime:
-          description: 'The start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        vehicleId:
-          description: ID of the vehicle. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
-          example: '281474978683353'
-          type: string
-      required:
-      - driverId
-      - vehicleId
-      type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CoachAssignmentWithDriverExternalIdsResponseResponseBody:
-      description: Driver coach assignment object.
-      properties:
-        coachId:
-          description: Coach ID associated with coach assignment. Always returned.
-          example: '45646'
-          type: string
-        createdAtTime:
-          description: Time coach assignment was created in UTC. Always returned.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        driver:
-          $ref: '#/components/schemas/DriverWithExternalIdObjectResponseBody'
-        updatedAtTime:
-          description: Time coaching assignment was updated in UTC. Always returned.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-      required:
-      - coachId
-      - createdAtTime
-      - driver
-      - updatedAtTime
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverAssignmentMetadataTinyObjectResponseBody:
-      description: Metadata object for external assignment source data.
-      properties:
-        sourceName:
-          description: Assigned source name from an external source.
-          example: ExternalSourceName
-          type: string
-      type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentResponseBody:
+    DriverCoachAssignmentsPutDriverCoachAssignmentResponseBody:
       properties:
         data:
-          description: List of driver coach assignment objects
-          items:
-            $ref: '#/components/schemas/CoachAssignmentWithDriverExternalIdsResponseResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+          $ref: '#/components/schemas/CoachAssignmentWithoutDriverExternalIdsResponseResponseBody'
       required:
       - data
-      - pagination
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    PostDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody:
-      description: Metadata about this driver assignment
-      properties:
-        sourceName:
-          description: Describes where the external assignment is coming from
-          example: My custom assignment source
-          maxLength: 100
-          type: string
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyPercentageDataObjectResponseBody:
-      description: Driver Efficiency percentage data. This object is returned when the percentage format is specified in dataFormats.
-      properties:
-        anticipationPercentage:
-          description: Percentage of time a driver is in quickly breaking events vs total breaking events.
-          example: 9.5
-          format: double
-          type: number
-        coastingPercentage:
-          description: Percentage of time a driver is in coasting.
-          example: 45.6
-          format: double
-          type: number
-        cruiseControlPercentage:
-          description: Percentage of time a vehicle is in cruise control.
-          example: 45.6
-          format: double
-          type: number
-        greenBandPercentage:
-          description: Percentage of time a driver is driving within the green band.
-          example: 78.9
-          format: double
-          type: number
-        highGradeRoadDrivingPercentage:
-          description: Percentage of time a driver is driving on high-grade road.
-          example: 15.3
-          format: double
-          type: number
-        highTorquePercentage:
-          description: Percentage of time a driver is driving in high torque.
-          example: 23.4
-          format: double
-          type: number
-        idlingPercentage:
-          description: Percentage of time a driver is idling.
-          example: 12.8
-          format: double
-          type: number
-        overSpeedPercentage:
-          description: Percentage of time a driver is in over-speeding.
-          example: 5.6
-          format: double
-          type: number
-        wearFreeBrakePercentage:
-          description: Percentage of time a driver is in wear-free breaking.
-          example: 88.2
-          format: double
-          type: number
-      required:
-      - idlingPercentage
-      type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
     DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
@@ -1795,113 +1379,6 @@ components:
       - message
       - requestId
       type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaVehicleTinyResponseResponseBody:
-      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
-          type: string
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     GoaPaginationResponseResponseBody:
       description: Pagination parameters.
       properties:
@@ -1917,12 +1394,12 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    DriverEfficiencyGetDriverEfficiencyByVehiclesBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1931,137 +1408,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    PatchDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody:
-      description: Metadata about this driver assignment
-      properties:
-        sourceName:
-          description: Describes where the external assignment is coming from
-          example: My custom assignment source
-          maxLength: 100
-          type: string
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsResponseBody:
-      properties:
-        data:
-          description: List of driver assignment objects and their respective vehcile and driver info.
-          items:
-            $ref: '#/components/schemas/DriverVehicleAssignmentV2ObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyDifficultyScoreDataObjectResponseBody:
-      description: Difficulty score won't be available if there is no data to compute it against.
-      properties:
-        overallScore:
-          description: Represents the overall difficulty score. It has scores from 1 to 5.
-          example: '4'
-          type: string
-        topographyScore:
-          description: Represents the topography difficulty score. It has scores from 1 to 5.
-          example: '5'
-          type: string
-        vehicleWeightScore:
-          description: ' Represents the average vehicle weight score. It has scores from 1 to 5.'
-          example: '4'
-          type: string
-      type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/PatchDriverVehicleAssignmentsV2ResponseBodyResponseBody'
-      required:
-      - data
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsRequestBody:
-      description: Driver assignments to be deleted
-      properties:
-        assignedAtTime:
-          description: ' Assigned at time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        endTime:
-          description: ' An end time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        isPassenger:
-          description: Indicates if assigned driver is passenger
-          example: true
-          type: boolean
-        startTime:
-          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        vehicleId:
-          description: ID of the vehicle. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
-          example: '281474978683353'
-          type: string
-      required:
-      - vehicleId
       type: object
     DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentMethodNotAllowedErrorResponseBody:
       description: Method not allowed
@@ -2078,12 +1424,12 @@ components:
       - message
       - requestId
       type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2093,12 +1439,42 @@ components:
       - message
       - requestId
       type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2123,82 +1499,7 @@ components:
       - message
       - requestId
       type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentTooManyRequestsErrorResponseBody:
+    DriverCoachAssignmentsPutDriverCoachAssignmentTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
         message:
@@ -2213,246 +1514,7 @@ components:
       - message
       - requestId
       type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversResponseBody:
-      properties:
-        data:
-          description: List of driver efficiency data associated with drivers.
-          items:
-            $ref: '#/components/schemas/singleDriverEfficiencyByDriverDataObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByDriversNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    singleDriverEfficiencyByVehicleDataObjectResponseBody:
-      description: singleDriverEfficiencyByVehicleDataObject
-      properties:
-        difficultyScore:
-          $ref: '#/components/schemas/DriverEfficiencyDifficultyScoreDataObjectResponseBody'
-        percentageData:
-          $ref: '#/components/schemas/DriverEfficiencyPercentageDataObjectResponseBody'
-        rawData:
-          $ref: '#/components/schemas/DriverEfficiencyRawDataObjectResponseBody'
-        scoreData:
-          $ref: '#/components/schemas/DriverEfficiencyDataObjectResponseBody'
-        vehicleId:
-          description: ID of the vehicle.
-          example: vehicle_001
-          type: string
-      required:
-      - vehicleId
-      type: object
-    DriverEfficiencyGetDriverEfficiencyByVehiclesResponseBody:
-      properties:
-        data:
-          description: List of driver efficiency data associated with vehicles.
-          items:
-            $ref: '#/components/schemas/singleDriverEfficiencyByVehicleDataObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    PatchDriverVehicleAssignmentsV2ResponseBodyResponseBody:
-      description: Response after successfully updating a Driver Assignment
-      properties:
-        message:
-          description: A description of the outcome from updating Driver Assignment information
-          example: Driver assignment was successfully updated
-          type: string
-      type: object
-    DriverWithExternalIdObjectResponseBody:
-      description: A driver object with an id and map of external ids.
-      properties:
-        driverId:
-          description: Samsara ID of the driver.
-          example: 0987
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-      required:
-      - driverId
-      type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/CoachAssignmentWithoutDriverExternalIdsResponseResponseBody'
-      required:
-      - data
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverCoachAssignmentsGetDriverCoachAssignmentNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsTooManyRequestsErrorResponseBody:
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
         message:
@@ -2509,6 +1571,184 @@ components:
       required:
       - overallScore
       type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversResponseBody:
+      properties:
+        data:
+          description: List of driver efficiency data associated with drivers.
+          items:
+            $ref: '#/components/schemas/singleDriverEfficiencyByDriverDataObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
@@ -2524,12 +1764,27 @@ components:
       - message
       - requestId
       type: object
-    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    DriverCoachAssignmentsGetDriverCoachAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -2554,8 +1809,242 @@ components:
       - message
       - requestId
       type: object
-    GoaDriverTinyResponseResponseBody:
-      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+    DriverEfficiencyGetDriverEfficiencyByDriversInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesResponseBody:
+      properties:
+        data:
+          description: List of driver efficiency data associated with vehicles.
+          items:
+            $ref: '#/components/schemas/singleDriverEfficiencyByVehicleDataObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    CoachAssignmentWithoutDriverExternalIdsResponseResponseBody:
+      description: Driver coach assignment object.
+      properties:
+        coachId:
+          description: Coach ID associated with coach assignment. Optional. Will be empty if no driver coach is assigned
+          example: '45646'
+          type: string
+        createdAtTime:
+          description: Time coach assignment was created in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        driverId:
+          description: Unique user ID for the driver of the driver coach assignment
+          example: '45646'
+          type: string
+        updatedAtTime:
+          description: Time coaching assignment was updated in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - createdAtTime
+      - driverId
+      - updatedAtTime
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
       properties:
         externalIds:
           additionalProperties:
@@ -2563,17 +2052,103 @@ components:
           description: A map of external ids
           type: object
         id:
-          description: ID of the driver
-          example: '45646'
+          description: ID of the vehicle
+          example: '494123'
           type: string
         name:
-          description: Name of the driver
-          example: Driver Bob
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    DriverEfficiencyPercentageDataObjectResponseBody:
+      description: Driver Efficiency percentage data. This object is returned when the percentage format is specified in dataFormats.
+      properties:
+        anticipationPercentage:
+          description: Percentage of time a driver is in quickly breaking events vs total breaking events.
+          example: 9.5
+          format: double
+          type: number
+        coastingPercentage:
+          description: Percentage of time a driver is in coasting.
+          example: 45.6
+          format: double
+          type: number
+        cruiseControlPercentage:
+          description: Percentage of time a vehicle is in cruise control.
+          example: 45.6
+          format: double
+          type: number
+        greenBandPercentage:
+          description: Percentage of time a driver is driving within the green band.
+          example: 78.9
+          format: double
+          type: number
+        highGradeRoadDrivingPercentage:
+          description: Percentage of time a driver is driving on high-grade road.
+          example: 15.3
+          format: double
+          type: number
+        highTorquePercentage:
+          description: Percentage of time a driver is driving in high torque.
+          example: 23.4
+          format: double
+          type: number
+        idlingPercentage:
+          description: Percentage of time a driver is idling.
+          example: 12.8
+          format: double
+          type: number
+        overSpeedPercentage:
+          description: Percentage of time a driver is in over-speeding.
+          example: 5.6
+          format: double
+          type: number
+        wearFreeBrakePercentage:
+          description: Percentage of time a driver is in wear-free breaking.
+          example: 88.2
+          format: double
+          type: number
+      required:
+      - idlingPercentage
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - id
+      - message
+      - requestId
       type: object
-    DriverCoachAssignmentsPutDriverCoachAssignmentTooManyRequestsErrorResponseBody:
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostDriverVehicleAssignmentsV2ResponseBodyResponseBody'
+      required:
+      - data
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
         message:
@@ -2587,6 +2162,149 @@ components:
       required:
       - message
       - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverWithExternalIdObjectResponseBody:
+      description: A driver object with an id and map of external ids.
+      properties:
+        driverId:
+          description: Samsara ID of the driver.
+          example: 0987
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+      required:
+      - driverId
+      type: object
+    DriverVehicleAssignmentV2ObjectResponseBody:
+      description: Object with driver assignment info and associated driver and vehicle info.
+      properties:
+        assignedAtTime:
+          description: ' An assigned at time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        assignmentType:
+          description: 'Name of the assigning source for the driver assignment record.  Valid values: `invalid`, `unknown`, `HOS`, `idCard`, `static`, `faceId`, `tachograph`, `safetyManual`, `RFID`, `trailer`, `external`, `qrCode`'
+          enum:
+          - invalid
+          - unknown
+          - HOS
+          - idCard
+          - static
+          - faceId
+          - tachograph
+          - safetyManual
+          - RFID
+          - trailer
+          - external
+          - qrCode
+          example: idCard
+          type: string
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        endTime:
+          description: ' An end time in RFC 3339 format. Omitted if not applicable. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Boolean indicating whether the driver is a passenger.
+          example: false
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/DriverAssignmentMetadataTinyObjectResponseBody'
+        startTime:
+          description: ' A start time in RFC 3339 format. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - driver
+      - isPassenger
+      - startTime
+      - vehicle
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentResponseBody:
+      properties:
+        data:
+          description: List of driver coach assignment objects
+          items:
+            $ref: '#/components/schemas/CoachAssignmentWithDriverExternalIdsResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PatchDriverVehicleAssignmentsV2ResponseBodyResponseBody'
+      required:
+      - data
       type: object
     DriverEfficiencyRawDataObjectResponseBody:
       description: Driver Efficiency raw data. This object is returned when the raw format is specified in dataFormats.
@@ -2667,7 +2385,34 @@ components:
       - idlingDurationMs
       - totalBrakeDurationMs
       type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotImplementedErrorResponseBody:
+    PostDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody:
+      description: Metadata about this driver assignment
+      properties:
+        sourceName:
+          description: Describes where the external assignment is coming from
+          example: My custom assignment source
+          maxLength: 100
+          type: string
+      type: object
+    singleDriverEfficiencyByDriverDataObjectResponseBody:
+      description: singleDriverEfficiencyByDriverDataObject
+      properties:
+        difficultyScore:
+          $ref: '#/components/schemas/DriverEfficiencyDifficultyScoreDataObjectResponseBody'
+        driverId:
+          description: ID of the driver.
+          example: driver_001
+          type: string
+        percentageData:
+          $ref: '#/components/schemas/DriverEfficiencyPercentageDataObjectResponseBody'
+        rawData:
+          $ref: '#/components/schemas/DriverEfficiencyRawDataObjectResponseBody'
+        scoreData:
+          $ref: '#/components/schemas/DriverEfficiencyDataObjectResponseBody'
+      required:
+      - driverId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
@@ -2682,14 +2427,181 @@ components:
       - message
       - requestId
       type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentResponseBody:
+    CoachAssignmentWithDriverExternalIdsResponseResponseBody:
+      description: Driver coach assignment object.
       properties:
-        data:
-          $ref: '#/components/schemas/PostDriverVehicleAssignmentsV2ResponseBodyResponseBody'
+        coachId:
+          description: Coach ID associated with coach assignment. Always returned.
+          example: '45646'
+          type: string
+        createdAtTime:
+          description: Time coach assignment was created in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        driver:
+          $ref: '#/components/schemas/DriverWithExternalIdObjectResponseBody'
+        updatedAtTime:
+          description: Time coaching assignment was updated in UTC. Always returned.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
       required:
-      - data
+      - coachId
+      - createdAtTime
+      - driver
+      - updatedAtTime
       type: object
-    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentTooManyRequestsErrorResponseBody:
+    DriverVehicleAssignmentsV2DeleteDriverVehicleAssignmentsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverCoachAssignmentsGetDriverCoachAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    singleDriverEfficiencyByVehicleDataObjectResponseBody:
+      description: singleDriverEfficiencyByVehicleDataObject
+      properties:
+        difficultyScore:
+          $ref: '#/components/schemas/DriverEfficiencyDifficultyScoreDataObjectResponseBody'
+        percentageData:
+          $ref: '#/components/schemas/DriverEfficiencyPercentageDataObjectResponseBody'
+        rawData:
+          $ref: '#/components/schemas/DriverEfficiencyRawDataObjectResponseBody'
+        scoreData:
+          $ref: '#/components/schemas/DriverEfficiencyDataObjectResponseBody'
+        vehicleId:
+          description: ID of the vehicle.
+          example: vehicle_001
+          type: string
+      required:
+      - vehicleId
+      type: object
+    DriverVehicleAssignmentsV2GetDriverVehicleAssignmentsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverAssignmentMetadataTinyObjectResponseBody:
+      description: Metadata object for external assignment source data.
+      properties:
+        sourceName:
+          description: Assigned source name from an external source.
+          example: ExternalSourceName
+          type: string
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentRequestBody:
+      description: Driver Assignment to be created
+      properties:
+        assignedAtTime:
+          description: 'The time at which the assignment was made in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        driverId:
+          description: ID of the driver. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
+          example: '494123'
+          type: string
+        endTime:
+          description: 'The end time in RFC 3339 format. Defaults to max-time (meaning it''s an ongoing assignment) if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        isPassenger:
+          description: Is this driver a passenger? Defaults to false if not provided
+          example: true
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/PostDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody'
+        startTime:
+          description: 'The start time in RFC 3339 format. Defaults to now if not provided. Millisecond precision and timezones are supported. (Examples: 2019-06-13T19:08:25Z, 2019-06-13T19:08:25.455Z, OR 2015-09-15T14:00:12-04:00).'
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicleId:
+          description: ID of the vehicle. This can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
+          example: '281474978683353'
+          type: string
+      required:
+      - driverId
+      - vehicleId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByVehiclesTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
         message:
@@ -2703,6 +2615,94 @@ components:
       required:
       - message
       - requestId
+      type: object
+    DriverCoachAssignmentsPutDriverCoachAssignmentBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PatchDriverVehicleAssignmentsV2RequestBodyMetadataRequestBody:
+      description: Metadata about this driver assignment
+      properties:
+        sourceName:
+          description: Describes where the external assignment is coming from
+          example: My custom assignment source
+          maxLength: 100
+          type: string
+      type: object
+    DriverVehicleAssignmentsV2UpdateDriverVehicleAssignmentUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverVehicleAssignmentsV2CreateDriverVehicleAssignmentServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverEfficiencyGetDriverEfficiencyByDriversBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaDriverTinyResponseResponseBody:
+      description: A minified driver object. This object is only returned if the route is assigned to the driver.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the driver
+          example: '45646'
+          type: string
+        name:
+          description: Name of the driver
+          example: Driver Bob
+          type: string
+      required:
+      - id
       type: object
   securitySchemes:
     AccessTokenHeader:

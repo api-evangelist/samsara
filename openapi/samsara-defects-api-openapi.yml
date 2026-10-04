@@ -111,85 +111,6 @@ paths:
       x-codegen-request-body-name: defect
 components:
   schemas:
-    DefectsResponse:
-      description: A list of defects.
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Defect'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    trailerTinyResponse:
-      description: A minified trailer object.
-      properties:
-        id:
-          description: ID of the trailer.
-          example: '123456789'
-          type: string
-        name:
-          description: Name of the trailer.
-          example: 'Midwest Trailer #5'
-          type: string
-      type: object
-    ResolvedBy:
-      description: Information about the user who is resolving a defect.
-      properties:
-        id:
-          description: The Id of user who is resolving the defect.
-          example: '11'
-          type: string
-        type:
-          description: The type of user who is resolving the defect. Must be "mechanic".
-          enum:
-          - mechanic
-          example: mechanic
-          type: string
-      required:
-      - id
-      - type
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    Defect_resolvedBy:
-      description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
-      properties:
-        id:
-          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
-          example: '11'
-          type: string
-        name:
-          description: Name of the person who resolved this defect.
-          example: Christopher 'The Handyman' Zhen
-          type: string
-        type:
-          description: Indicates whether this defect was resolved by a `driver` or a `mechanic`.
-          enum:
-          - driver
-          - mechanic
-          type: string
-      type: object
-    DefectResponse:
-      description: A single defect.
-      properties:
-        data:
-          $ref: '#/components/schemas/Defect'
-      type: object
     standardErrorResponse:
       description: Error response
       properties:
@@ -202,22 +123,11 @@ components:
           example: 8916e1c1
           type: string
       type: object
-    DefectPatch:
-      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
+    DefectResponse:
+      description: A single defect.
       properties:
-        isResolved:
-          description: Resolves the defect. Must be `true`.
-          type: boolean
-        mechanicNotes:
-          description: The mechanics notes on the defect.
-          example: Extremely large oddly shaped hole in passenger side window.
-          type: string
-        resolvedAtTime:
-          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        resolvedBy:
-          $ref: '#/components/schemas/ResolvedBy'
+        data:
+          $ref: '#/components/schemas/Defect'
       type: object
     Defect:
       properties:
@@ -271,6 +181,18 @@ components:
       - id
       - isResolved
       type: object
+    trailerTinyResponse:
+      description: A minified trailer object.
+      properties:
+        id:
+          description: ID of the trailer.
+          example: '123456789'
+          type: string
+        name:
+          description: Name of the trailer.
+          example: 'Midwest Trailer #5'
+          type: string
+      type: object
     vehicleTinyResponse:
       description: A minified vehicle object.
       properties:
@@ -290,6 +212,84 @@ components:
           description: Name of the vehicle.
           example: 'Midwest Truck #4'
           type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    Defect_resolvedBy:
+      description: The person who resolved this defect.  Will not be returned if the defect is unresolved.
+      properties:
+        id:
+          description: ID of the entity that resolved this defect. If the defect was resolved by a driver, this will be a Samsara Driver ID. If the defect was resolved by a mechanic, this will be the Samsara Dashboard User ID of the mechanic.
+          example: '11'
+          type: string
+        name:
+          description: Name of the person who resolved this defect.
+          example: Christopher 'The Handyman' Zhen
+          type: string
+        type:
+          description: Indicates whether this defect was resolved by a `driver` or a `mechanic`.
+          enum:
+          - driver
+          - mechanic
+          type: string
+      type: object
+    DefectPatch:
+      description: Information about resolving a defect. If resolving a defect, must specify `isResolved` as `true` and `resolvedBy`.
+      properties:
+        isResolved:
+          description: Resolves the defect. Must be `true`.
+          type: boolean
+        mechanicNotes:
+          description: The mechanics notes on the defect.
+          example: Extremely large oddly shaped hole in passenger side window.
+          type: string
+        resolvedAtTime:
+          description: 'Time when defect was resolved. Defaults to now if not provided. UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        resolvedBy:
+          $ref: '#/components/schemas/ResolvedBy'
+      type: object
+    DefectsResponse:
+      description: A list of defects.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Defect'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    ResolvedBy:
+      description: Information about the user who is resolving a defect.
+      properties:
+        id:
+          description: The Id of user who is resolving the defect.
+          example: '11'
+          type: string
+        type:
+          description: The type of user who is resolving the defect. Must be "mechanic".
+          enum:
+          - mechanic
+          example: mechanic
+          type: string
+      required:
+      - id
+      - type
       type: object
   securitySchemes:
     AccessTokenHeader:

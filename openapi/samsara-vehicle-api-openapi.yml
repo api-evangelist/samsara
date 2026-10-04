@@ -183,60 +183,50 @@ paths:
       - Vehicle
 components:
   schemas:
-    IftaReportTroubleshootingObjectResponseBody:
-      description: IFTA report troubleshooting information.
+    IFTAGetIftaVehicleReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
-        noPurchasesFound:
-          description: Whether or not fuel purchases were found for this report.
-          example: false
-          type: boolean
-        unassignedFuelTypePurchases:
-          description: The number of fuel purchases without a fuel type assigned. Fuel purchases are used to calculate tax paid gallons.
-          example: 200
-          format: int64
-          type: integer
-        unassignedFuelTypeVehicles:
-          description: The number of vehicles without a fuel type assigned. Vehicles without an assigned fuel type may affect total mileage.
-          example: 2500
-          format: int64
-          type: integer
-        unassignedVehiclePurchases:
-          description: Purchases without an assigned fuel type may affect tax-paid gallons and fleet mpg.
-          example: 2500
-          format: int64
-          type: integer
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - noPurchasesFound
-      - unassignedFuelTypePurchases
-      - unassignedFuelTypeVehicles
-      - unassignedVehiclePurchases
+      - message
+      - requestId
       type: object
-    IftaVehicleReportDataObjectResponseBody:
-      description: Dictionary containing summarized vehicle report data.
+    IFTAGetIftaVehicleReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
-        month:
-          description: The specified month duration for this IFTA report.
-          example: January
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
-        quarter:
-          description: The specified quarter duration for this IFTA report.
-          example: Q4
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
-        troubleshooting:
-          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
-        vehicleReports:
-          description: List of summarized vehicle reports.
-          items:
-            $ref: '#/components/schemas/IftaVehicleReportObjectResponseBody'
-          type: array
-        year:
-          description: The specified year for this IFTA report.
-          example: 2021
-          format: int64
-          type: integer
       required:
-      - vehicleReports
-      - year
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     IftaJurisdictionSummaryObjectResponseBody:
       description: A summary of this jurisdiction's IFTA data.
@@ -265,8 +255,67 @@ components:
       - taxableMeters
       - totalMeters
       type: object
-    IFTAGetIftaVehicleReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    IFTAGetIftaVehicleReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    IftaVehicleReportObjectResponseBody:
+      description: A summary of this vehicle's IFTA data.
+      properties:
+        jurisdictions:
+          description: List of jurisdiction summaries.
+          items:
+            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
+          type: array
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - jurisdictions
+      - vehicle
+      type: object
+    IFTAGetIftaVehicleReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
@@ -280,12 +329,27 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaVehicleReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    IFTAGetIftaVehicleReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IFTAGetIftaVehicleReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -312,107 +376,36 @@ components:
           example: 'Fleet Truck #1'
           type: string
       type: object
-    IFTAGetIftaVehicleReportsResponseBody:
+    IftaReportTroubleshootingObjectResponseBody:
+      description: IFTA report troubleshooting information.
       properties:
-        data:
-          $ref: '#/components/schemas/IftaVehicleReportDataObjectResponseBody'
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+        noPurchasesFound:
+          description: Whether or not fuel purchases were found for this report.
+          example: false
+          type: boolean
+        unassignedFuelTypePurchases:
+          description: The number of fuel purchases without a fuel type assigned. Fuel purchases are used to calculate tax paid gallons.
+          example: 200
+          format: int64
+          type: integer
+        unassignedFuelTypeVehicles:
+          description: The number of vehicles without a fuel type assigned. Vehicles without an assigned fuel type may affect total mileage.
+          example: 2500
+          format: int64
+          type: integer
+        unassignedVehiclePurchases:
+          description: Purchases without an assigned fuel type may affect tax-paid gallons and fleet mpg.
+          example: 2500
+          format: int64
+          type: integer
       required:
-      - data
-      - pagination
+      - noPurchasesFound
+      - unassignedFuelTypePurchases
+      - unassignedFuelTypeVehicles
+      - unassignedVehiclePurchases
       type: object
-    IFTAGetIftaVehicleReportsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IftaVehicleReportObjectResponseBody:
-      description: A summary of this vehicle's IFTA data.
-      properties:
-        jurisdictions:
-          description: List of jurisdiction summaries.
-          items:
-            $ref: '#/components/schemas/IftaJurisdictionSummaryObjectResponseBody'
-          type: array
-        vehicle:
-          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
-      required:
-      - jurisdictions
-      - vehicle
-      type: object
-    IFTAGetIftaVehicleReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IFTAGetIftaVehicleReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    IFTAGetIftaVehicleReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
@@ -426,42 +419,49 @@ components:
       - message
       - requestId
       type: object
-    IFTAGetIftaVehicleReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    IftaVehicleReportDataObjectResponseBody:
+      description: Dictionary containing summarized vehicle report data.
+      properties:
+        month:
+          description: The specified month duration for this IFTA report.
+          example: January
+          type: string
+        quarter:
+          description: The specified quarter duration for this IFTA report.
+          example: Q4
+          type: string
+        troubleshooting:
+          $ref: '#/components/schemas/IftaReportTroubleshootingObjectResponseBody'
+        vehicleReports:
+          description: List of summarized vehicle reports.
+          items:
+            $ref: '#/components/schemas/IftaVehicleReportObjectResponseBody'
+          type: array
+        year:
+          description: The specified year for this IFTA report.
+          example: 2021
+          format: int64
+          type: integer
+      required:
+      - vehicleReports
+      - year
+      type: object
+    IFTAGetIftaVehicleReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/IftaVehicleReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    IFTAGetIftaVehicleReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    IFTAGetIftaVehicleReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

@@ -113,14 +113,39 @@ paths:
       - Messages
       x-codegen-request-body-name: createMessages
 components:
-  requestBodies:
-    inline_object_2:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/inline_object_2'
-      required: true
   schemas:
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1MessageSender:
+      properties:
+        name:
+          description: Name of user that is sending the message.
+          example: John Doe
+          type: string
+        type:
+          description: Type of user that is sending the message. It will be either dispatch or driver.
+          example: dispatch
+          type: string
+      required:
+      - name
+      - type
+      type: object
+    V1Message:
+      properties:
+        driverId:
+          description: ID of the driver for whom the message is sent to or sent by.
+          example: 555
+          format: int64
+          type: integer
+        text:
+          description: The text sent in the message.
+          example: This is a message.
+          type: string
+      required:
+      - driverId
+      - text
+      type: object
     V1MessageResponse:
       properties:
         driverId:
@@ -150,37 +175,12 @@ components:
       - sentAtMs
       - text
       type: object
-    V1Message:
-      properties:
-        driverId:
-          description: ID of the driver for whom the message is sent to or sent by.
-          example: 555
-          format: int64
-          type: integer
-        text:
-          description: The text sent in the message.
-          example: This is a message.
-          type: string
-      required:
-      - driverId
-      - text
-      type: object
     inline_response_200_5:
       description: A list of messages.
       properties:
         data:
           $ref: '#/components/schemas/V1MessagesResponse'
       type: object
-    inline_response_200_6:
-      description: A list of created messages.
-      properties:
-        data:
-          $ref: '#/components/schemas/V1Messages'
-      type: object
-    V1MessagesResponse:
-      items:
-        $ref: '#/components/schemas/V1MessageResponse'
-      type: array
     inline_object_2:
       properties:
         driverIds:
@@ -206,23 +206,23 @@ components:
       items:
         $ref: '#/components/schemas/V1Message'
       type: array
-    V1MessageSender:
+    inline_response_200_6:
+      description: A list of created messages.
       properties:
-        name:
-          description: Name of user that is sending the message.
-          example: John Doe
-          type: string
-        type:
-          description: Type of user that is sending the message. It will be either dispatch or driver.
-          example: dispatch
-          type: string
-      required:
-      - name
-      - type
+        data:
+          $ref: '#/components/schemas/V1Messages'
       type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
+    V1MessagesResponse:
+      items:
+        $ref: '#/components/schemas/V1MessageResponse'
+      type: array
+  requestBodies:
+    inline_object_2:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      required: true
   securitySchemes:
     AccessTokenHeader:
       type: http

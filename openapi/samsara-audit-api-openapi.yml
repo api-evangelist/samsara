@@ -118,58 +118,34 @@ paths:
       - Audit
 components:
   schemas:
-    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventDriverObjectResponseBody:
-      description: A minified driver object.
+    SafetyEventVehicleObjectResponseBody:
+      description: A minified vehicle object.
       properties:
         id:
-          description: ID of the driver.
-          example: 0987
+          description: ID of the vehicle.
+          example: '1234'
           type: string
+      type: object
+    SafetyEventObjectResponseBody:
+      description: The safety event that was updated.
+      properties:
+        behaviorLabels:
+          description: Behavior labels for a safety event.
+          items:
+            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
+          type: array
+        driver:
+          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
+        id:
+          description: The unique Samsara ID of the safety event.
+          example: 212014918174029-1550954461759
+          type: string
+        time:
+          description: The time the safety event occurred in RFC 3339 milliseconds format.
+          example: '2019-06-13T19:08:25.455Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
       type: object
     SafetyEventsGetSafetyActivityEventFeedResponseBody:
       properties:
@@ -183,6 +159,51 @@ components:
       required:
       - data
       - pagination
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     SafetyEventActivityFeedItemResponseBody:
       description: Safety event activity feed item.
@@ -211,86 +232,27 @@ components:
       - time
       - type
       type: object
+    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
           example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventObjectResponseBody:
-      description: The safety event that was updated.
-      properties:
-        behaviorLabels:
-          description: Behavior labels for a safety event.
-          items:
-            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
-          type: array
-        driver:
-          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
-        id:
-          description: The unique Samsara ID of the safety event.
-          example: 212014918174029-1550954461759
-          type: string
-        time:
-          description: The time the safety event occurred in RFC 3339 milliseconds format.
-          example: '2019-06-13T19:08:25.455Z'
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
-      type: object
-    SafetyEventVehicleObjectResponseBody:
-      description: A minified vehicle object.
-      properties:
-        id:
-          description: ID of the vehicle.
-          example: '1234'
-          type: string
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -345,20 +307,58 @@ components:
           example: Acceleration
           type: string
       type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
+    SafetyEventDriverObjectResponseBody:
+      description: A minified driver object.
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
+        id:
+          description: ID of the driver.
+          example: 0987
           type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
       required:
-      - endCursor
-      - hasNextPage
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
       description: An internal server error occurred
@@ -375,12 +375,12 @@ components:
       - message
       - requestId
       type: object
-    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -390,12 +390,12 @@ components:
       - message
       - requestId
       type: object
-    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
-      description: Resource not found
+    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

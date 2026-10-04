@@ -116,38 +116,6 @@ paths:
       x-codegen-request-body-name: UpdateShippingDocsRequestBody
 components:
   schemas:
-    HosDailyLogsUpdateShippingDocsResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
-      required:
-      - data
-      type: object
-    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsRequestBody:
-      description: Update the shippingDocs field.
-      properties:
-        shippingDocs:
-          description: ShippingDocs associated with the driver for the day.
-          example: ShippingID1, ShippingID2
-          type: string
-      required:
-      - shippingDocs
-      type: object
     PatchShippingDocsResponseBodyResponseBody:
       description: Response after successfully updating the LogMetaData object.
       properties:
@@ -198,12 +166,12 @@ components:
             type: string
           type: array
       type: object
-    HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -228,12 +196,82 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsRequestBody:
+      description: Update the shippingDocs field.
+      properties:
+        shippingDocs:
+          description: ShippingDocs associated with the driver for the day.
+          example: ShippingID1, ShippingID2
+          type: string
+      required:
+      - shippingDocs
+      type: object
+    HosDailyLogsUpdateShippingDocsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -273,12 +311,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    HosDailyLogsUpdateShippingDocsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -288,50 +326,12 @@ components:
       - message
       - requestId
       type: object
-    HosDailyLogsUpdateShippingDocsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    HosDailyLogsUpdateShippingDocsResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        data:
+          $ref: '#/components/schemas/PatchShippingDocsResponseBodyResponseBody'
       required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    HosDailyLogsUpdateShippingDocsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+      - data
       type: object
   securitySchemes:
     AccessTokenHeader:

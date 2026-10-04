@@ -722,70 +722,98 @@ paths:
       - Feed
 components:
   schemas:
-    VehicleStatsFaultCodesVendorSpecificFields:
-      description: Vendor specific data for J1939 vehicles.
+    VehicleStatsDefLevelMilliPercentWithDecoration:
+      description: The Diesel Exhaust Fluid (DEF) milli percentage reading.
       properties:
-        dtcDescription:
-          description: The DTC description, if available.
-          example: 'false'
-          type: string
-        repairInstructionsUrl:
-          description: A link to vendor repair instructions, if available.
-          example: 'false'
-          type: string
-      type: object
-    VehicleStatsGpsDistanceMetersValue:
-      description: Number of meters the vehicle has traveled since the gateway was installed, based on GPS calculations.
-      example: 81029.591434899
-      format: double
-      type: number
-    LocationDataPoint:
-      description: A single location data point of a data input.
-      properties:
-        gpsLocation:
-          $ref: '#/components/schemas/LocationDataPoint_gpsLocation'
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
         time:
           $ref: '#/components/schemas/time'
-      type: object
-    EquipmentEngineRpm:
-      description: Engine RPM reading.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
         value:
-          description: The revolutions per minute of the engine.
-          example: 1800
+          description: The Diesel Exhaust Fluid (DEF) level in milli percentage points (e.g. `99001`, `49999`, etc).
+          example: 54200
+          format: int64
+          maximum: 99999
+          minimum: 0
           type: integer
       required:
       - time
       - value
       type: object
-    VehicleLocation:
-      description: Vehicle location event.
+    VehicleStatsSeatbeltDriver:
+      description: Seatbelt Driver Status as read from the vehicle. `Buckled` or `Unbuckled`.
       properties:
-        heading:
-          $ref: '#/components/schemas/VehicleLocationHeading'
-        latitude:
-          $ref: '#/components/schemas/VehicleLocationLatitude'
-        longitude:
-          $ref: '#/components/schemas/VehicleLocationLongitude'
-        reverseGeo:
-          $ref: '#/components/schemas/reverseGeo'
-        speed:
-          $ref: '#/components/schemas/VehicleLocationSpeed'
         time:
           $ref: '#/components/schemas/time'
+        value:
+          description: Seatbelt Driver Status as read from the vehicle. `Buckled` or `Unbuckled`.
+          enum:
+          - Buckled
+          - Unbuckled
+          example: Buckled
+          type: string
       required:
-      - latitude
-      - longitude
       - time
+      - value
       type: object
-    VehicleStatsDecorations_gpsOdometerMeters:
+    VehicleStatsDecorations_intakeManifoldTemperatureMilliC:
       properties:
         value:
-          $ref: '#/components/schemas/VehicleStatsGpsOdometerMetersValue'
+          $ref: '#/components/schemas/VehicleStatsIntakeManifoldTempMilliCValue'
       required:
       - value
+      type: object
+    EquipmentStatsListResponse:
+      description: A time-series of equipment stats and pagination information
+      properties:
+        data:
+          description: Time-series of stats for the specified units of equipment and stat types.
+          items:
+            $ref: '#/components/schemas/EquipmentStatsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    VehicleStatsEvBatteryStateOfHealthMilliPercent:
+      description: Milli percent battery state of health for electric and hybrid vehicles. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Milli percent battery state of health for electric and hybrid vehicles.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsDecorations_engineStates:
+      properties:
+        value:
+          description: The state of the engine.
+          enum:
+          - 'Off'
+          - 'On'
+          - Idle
+          example: 'On'
+          type: string
+      required:
+      - value
+      type: object
+    J1939D1StatusDataPoint:
+      description: Active J1939D1 statuses of a device.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: List of active statuses.
+          items:
+            $ref: '#/components/schemas/J1939D1StatusDataPoint_value'
+          type: array
       type: object
     VehicleStatsDefLevelMilliPercentValue:
       description: The Diesel Exhaust Fluid (DEF) level in milli percentage points (e.g. `99001`, `49999`, etc).
@@ -794,24 +822,236 @@ components:
       maximum: 99999
       minimum: 0
       type: integer
-    VehicleStatsEngineRpmValue:
-      description: The revolutions per minute of the engine.
-      example: 1000
-      format: int64
-      type: integer
-    VehicleStatsEvStateOfChargeMilliPercent:
-      description: State of Charge for electric and hybrid vehicles. Not all EV and HEVs may report this field.
+    VehicleStatsFaultCodesJ1939Lights:
+      description: Status of engine lights on J1939 vehicles.
+      properties:
+        emissionsIsOn:
+          description: True if the MIL status is nonzero.
+          example: true
+          type: boolean
+        protectIsOn:
+          description: True if the engine protect lamp status is nonzero.
+          example: false
+          type: boolean
+        stopIsOn:
+          description: True if the red lamp status is nonzero.
+          example: false
+          type: boolean
+        warningIsOn:
+          description: True if the amber lamp status is nonzero.
+          example: false
+          type: boolean
+      required:
+      - emissionsIsOn
+      - protectIsOn
+      - stopIsOn
+      - warningIsOn
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    EquipmentEngineSeconds:
+      description: '[DEPRECATED] Please use either `gatewayEngineSeconds` or `obdEngineSeconds`.'
       properties:
         time:
-          $ref: '#/components/schemas/time'
+          $ref: '#/components/schemas/EquipmentTime'
         value:
-          description: Milli percent State of Charge for electric and hybrid vehicles.
-          example: 1000
-          format: int64
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
           type: integer
       required:
       - time
       - value
+      type: object
+    EquipmentEngineState:
+      description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
+          enum:
+          - 'Off'
+          - 'On'
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsDecorations:
+      description: "Optional decorations to the primary stat event. See [here](doc:decorations) for more details. The example shows the response if you were to submit `decorations=engineStates&obdEngineSeconds` to the query parameter:\n\n```json\n\"decorations\":{\n  \"engineStates\": {\n    \"value\": \"Off\"\n  },\n  \"obdEngineSeconds\": {\n    \"value\": 9723103\n  }\n}\n```"
+      properties:
+        ambientAirTemperatureMilliC:
+          $ref: '#/components/schemas/VehicleStatsDecorations_ambientAirTemperatureMilliC'
+        auxInput1:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput10:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput11:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput12:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput13:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput2:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput3:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput4:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput5:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput6:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput7:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput8:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        auxInput9:
+          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
+        barometricPressurePa:
+          $ref: '#/components/schemas/VehicleStatsDecorations_barometricPressurePa'
+        batteryMilliVolts:
+          $ref: '#/components/schemas/VehicleStatsDecorations_batteryMilliVolts'
+        defLevelMilliPercent:
+          $ref: '#/components/schemas/VehicleStatsDecorations_defLevelMilliPercent'
+        ecuSpeedMph:
+          $ref: '#/components/schemas/VehicleStatsDecorations_ecuSpeedMph'
+        engineCoolantTemperatureMilliC:
+          $ref: '#/components/schemas/VehicleStatsDecorations_engineCoolantTemperatureMilliC'
+        engineImmobilizer:
+          $ref: '#/components/schemas/VehicleStatsEngineImmobilizer'
+        engineLoadPercent:
+          $ref: '#/components/schemas/VehicleStatsDecorations_engineLoadPercent'
+        engineOilPressureKPa:
+          $ref: '#/components/schemas/VehicleStatsDecorations_engineOilPressureKPa'
+        engineRpm:
+          $ref: '#/components/schemas/VehicleStatsDecorations_engineRpm'
+        engineStates:
+          $ref: '#/components/schemas/VehicleStatsDecorations_engineStates'
+        evAverageBatteryTemperatureMilliCelsius:
+          $ref: '#/components/schemas/VehicleStatsEvAverageBatteryTemperatureMilliCelsius'
+        evBatteryCurrentMilliAmp:
+          $ref: '#/components/schemas/VehicleStatsEvBatteryCurrentMilliAmp'
+        evBatteryStateOfHealthMilliPercent:
+          $ref: '#/components/schemas/VehicleStatsEvBatteryStateOfHealthMilliPercent'
+        evBatteryVoltageMilliVolt:
+          $ref: '#/components/schemas/VehicleStatsEvBatteryVoltageMilliVolt'
+        evChargingCurrentMilliAmp:
+          $ref: '#/components/schemas/VehicleStatsEvChargingCurrentMilliAmp'
+        evChargingEnergyMicroWh:
+          $ref: '#/components/schemas/VehicleStatsEvChargingEnergyMicroWh'
+        evChargingStatus:
+          $ref: '#/components/schemas/VehicleStatsEvChargingStatus'
+        evChargingVoltageMilliVolt:
+          $ref: '#/components/schemas/VehicleStatsEvChargingVoltageMilliVolt'
+        evConsumedEnergyMicroWh:
+          $ref: '#/components/schemas/VehicleStatsEvConsumedEnergyMicroWh'
+        evDistanceDrivenMeters:
+          $ref: '#/components/schemas/VehicleStatsEvDistanceDrivenMeters'
+        evRegeneratedEnergyMicroWh:
+          $ref: '#/components/schemas/VehicleStatsEvRegeneratedEnergyMicroWh'
+        evStateOfChargeMilliPercent:
+          $ref: '#/components/schemas/VehicleStatsEvStateOfChargeMilliPercent'
+        faultCodes:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesValue'
+        fuelPercents:
+          $ref: '#/components/schemas/VehicleStatsDecorations_fuelPercents'
+        gps:
+          $ref: '#/components/schemas/VehicleStatsDecorations_gps'
+        gpsDistanceMeters:
+          $ref: '#/components/schemas/VehicleStatsDecorations_gpsDistanceMeters'
+        gpsOdometerMeters:
+          $ref: '#/components/schemas/VehicleStatsDecorations_gpsOdometerMeters'
+        intakeManifoldTemperatureMilliC:
+          $ref: '#/components/schemas/VehicleStatsDecorations_intakeManifoldTemperatureMilliC'
+        obdEngineSeconds:
+          $ref: '#/components/schemas/VehicleStatsDecorations_obdEngineSeconds'
+        obdOdometerMeters:
+          $ref: '#/components/schemas/VehicleStatsDecorations_obdOdometerMeters'
+        seatbeltDriver:
+          $ref: '#/components/schemas/VehicleStatsSeatbeltDriver'
+        spreaderActive:
+          $ref: '#/components/schemas/VehicleStatsSpreaderActive'
+        spreaderAirTemp:
+          $ref: '#/components/schemas/VehicleStatsSpreaderAirTemp'
+        spreaderBlastState:
+          $ref: '#/components/schemas/VehicleStatsSpreaderBlastState'
+        spreaderGranularName:
+          $ref: '#/components/schemas/VehicleStatsSpreaderGranularName'
+        spreaderGranularRate:
+          $ref: '#/components/schemas/VehicleStatsSpreaderGranularRate'
+        spreaderLiquidName:
+          $ref: '#/components/schemas/VehicleStatsSpreaderLiquidName'
+        spreaderLiquidRate:
+          $ref: '#/components/schemas/VehicleStatsSpreaderLiquidRate'
+        spreaderOnState:
+          $ref: '#/components/schemas/VehicleStatsSpreaderOnState'
+        spreaderPlowStatus:
+          $ref: '#/components/schemas/VehicleStatsSpreaderPlowStatus'
+        spreaderPrewetName:
+          $ref: '#/components/schemas/VehicleStatsSpreaderPrewetName'
+        spreaderPrewetRate:
+          $ref: '#/components/schemas/VehicleStatsSpreaderPrewetRate'
+        spreaderRoadTemp:
+          $ref: '#/components/schemas/VehicleStatsSpreaderRoadTemp'
+        tirePressure:
+          $ref: '#/components/schemas/VehicleStatsTirePressures'
+      type: object
+    VehicleStatsAuxInputDecoration:
+      properties:
+        name:
+          description: 'The type of <a href="https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs" target="_blank">auxiliary input</a> configured for this Vehicle. Once configured, these inputs will generate dynamic, time-series data that will be available to view in the Samsara Dashboard. **By default**: empty. This can be set or updated through the Samsara Dashboard or the API at any time. Inputs 3-13 are only available on gateways with an attached aux expander. The value returned will match what is configured in the dashboard per vehicle.'
+          example: Boom
+          type: string
+        value:
+          $ref: '#/components/schemas/VehicleStatsAuxInputValue'
+      required:
+      - name
+      - value
+      type: object
+    EquipmentLocation:
+      description: Location reading.
+      properties:
+        heading:
+          description: Heading of the unit of equipment in degrees.
+          example: 120
+          format: double
+          type: number
+        latitude:
+          description: GPS latitude represented in degrees
+          example: 122.142
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees
+          example: -93.343
+          format: double
+          type: number
+        speed:
+          description: GPS speed of the unit of equipment in miles per hour.
+          example: 48.3
+          format: double
+          type: number
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - latitude
+      - longitude
+      - time
       type: object
     VehicleStatsListGps:
       description: GPS location data for the vehicle.
@@ -839,44 +1079,22 @@ components:
       - longitude
       - time
       type: object
-    VehicleStatsDecorations_ambientAirTemperatureMilliC:
+    EquipmentLocationsListResponse_data:
+      description: A unit of equipment and its time-series of location events.
       properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsAmbientAirTempMilliCValue'
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        locations:
+          description: A time-series of location events for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocation'
+          type: array
+        name:
+          $ref: '#/components/schemas/EquipmentName'
       required:
-      - value
-      type: object
-    EquipmentEngineState:
-      description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: 'An approximation of engine state based on readings the AG26 receives from the aux/digio cable. Valid values: `Off`, `On`.'
-          enum:
-          - 'Off'
-          - 'On'
-          example: 'On'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsSpreaderActive:
-      description: Whether vehicle is actively spreading any material.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Whether vehicle is actively spreading any material.
-          enum:
-          - 'Off'
-          - 'On'
-          example: 'On'
-          type: string
-      required:
-      - time
-      - value
+      - id
+      - locations
+      - name
       type: object
     VehicleStatsSpreaderPrewetName:
       description: Name of most recent type of prewet material spread, read from the material spreader.
@@ -891,13 +1109,79 @@ components:
       - time
       - value
       type: object
-    VehicleStatsEvChargingVoltageMilliVolt:
-      description: Charging voltage for electric and hybrid vehicles in milli volts. Not all EV and HEVs may report this field.
+    VehicleStatsFaultCodesJ1939:
+      description: Vehicle fault codes for J1939 vehicles.
+      properties:
+        checkEngineLights:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939Lights'
+        diagnosticTroubleCodes:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939TroubleCodes'
+      type: object
+    VehicleStatsAuxInputValue:
+      description: Boolean indicating the state of the auxiliary equipment.
+      example: true
+      type: boolean
+    VehicleStatsDecorations_batteryMilliVolts:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsBatteryMilliVoltsValue'
+      required:
+      - value
+      type: object
+    LocationDataPoint_gpsLocation:
+      description: GPS location information of the data input's datapoint.
+      properties:
+        formattedAddress:
+          description: Formatted address of the location
+          example: 350 Rhode Island St, San Francisco CA, 94103
+          format: string
+          type: string
+        gpsMetersPerSecond:
+          description: Speed of GPS (meters per second)
+          example: 35.5
+          format: double
+          type: number
+        headingDegrees:
+          description: Heading degrees
+          example: 91.2
+          format: double
+          type: number
+        latitude:
+          description: Latitude of the location
+          example: 42.44817
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the location
+          example: -71.224716
+          format: double
+          type: number
+        place:
+          $ref: '#/components/schemas/LocationDataPoint_gpsLocation_place'
+      type: object
+    VehicleStatsFuelPercentWithDecoration:
+      description: Vehicle fuel percentage reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: The engine fuel level in percentage points (e.g. `99`, `50`, etc).
+          example: 54
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsEvStateOfChargeMilliPercent:
+      description: State of Charge for electric and hybrid vehicles. Not all EV and HEVs may report this field.
       properties:
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: Charging voltage for electric and hybrid vehicles in milli volts.
+          description: Milli percent State of Charge for electric and hybrid vehicles.
           example: 1000
           format: int64
           type: integer
@@ -905,65 +1189,34 @@ components:
       - time
       - value
       type: object
-    VehicleStatsDecorations_defLevelMilliPercent:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsDefLevelMilliPercentValue'
-      required:
-      - value
-      type: object
-    VehicleStatsSpreaderPlowStatus:
-      description: 'Snow plow status (`Up` or `Down`), as read from the material spreader. Note: this is separate from plow status defined via auxInput.'
+    EquipmentFuelPercent:
+      description: Fuel percent reading.
       properties:
         time:
-          $ref: '#/components/schemas/time'
+          $ref: '#/components/schemas/EquipmentTime'
         value:
-          description: Snow plow status, as read from the material spreader
-          enum:
-          - Up
-          - Down
-          example: Down
-          type: string
+          description: The percent of fuel in the unit of equipment.
+          example: 54
+          type: integer
       required:
       - time
       - value
       type: object
-    VehicleStatsFaultCodesOem:
-      description: Vehicle fault codes for OEM vehicles.
-      properties:
-        diagnosticTroubleCodes:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesOemTroubleCodes'
-      type: object
-    VehicleStatsDefLevelMilliPercentWithDecoration:
-      description: The Diesel Exhaust Fluid (DEF) milli percentage reading.
+    VehicleStatsIntakeManifoldTempMilliCWithDecoration:
+      description: Vehicle intake manifold temperature reading.
       properties:
         decorations:
           $ref: '#/components/schemas/VehicleStatsDecorations'
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: The Diesel Exhaust Fluid (DEF) level in milli percentage points (e.g. `99001`, `49999`, etc).
-          example: 54200
+          description: The intake manifold temperature reading in millidegree Celsius.
+          example: 88000
           format: int64
-          maximum: 99999
-          minimum: 0
           type: integer
       required:
       - time
       - value
-      type: object
-    VehicleStatsFaultCodesValue_obdii:
-      description: Vehicle fault codes for passenger vehicles.
-      properties:
-        checkEngineLightIsOn:
-          description: True if the check engine light is illuminated (MIL status field is nonzero for any faults).
-          example: true
-          type: boolean
-        diagnosticTroubleCodes:
-          description: Diagnostic trouble codes for passenger vehicles.
-          items:
-            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_diagnosticTroubleCodes'
-          type: array
       type: object
     VehicleStatsFaultCodesValue_obdii_monitorStatus:
       description: Readings from engine sensors
@@ -1137,29 +1390,237 @@ components:
           - U
           type: string
       type: object
-    vehicleStatsAuxInputTime:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
-      type: string
-      x-go-gen-location: models
-    VehicleStatsFaultCodesValue_obdii_confirmedDtcs:
-      description: Passenger vehicle DTC information
+    EquipmentGatewayEngineSeconds:
+      description: Engine seconds reading from the aux/digio cable.
       properties:
-        dtcDescription:
-          description: The DTC description, if available.
-          example: Fuel Rail/System Pressure - Too Low Bank 1
-          type: string
-        dtcId:
-          description: The DTC identifier.
-          example: 135
-          format: int32
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
           type: integer
-        dtcShortCode:
-          description: The DTC short code, if available.
-          example: P0087
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsEvBatteryCurrentMilliAmp:
+      description: Battery current for electric and hybrid vehicles in milli amps. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Battery current for electric and hybrid vehicles in milli amps.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsFaultCodesOBDII:
+      description: Vehicle fault codes for passenger vehicles.
+      properties:
+        checkEngineLightIsOn:
+          description: True if the check engine light is illuminated (MIL status field is nonzero for any faults).
+          example: true
+          type: boolean
+        diagnosticTroubleCodes:
+          description: Diagnostic trouble codes for passenger vehicles.
+          items:
+            $ref: '#/components/schemas/VehicleStatsFaultCodesOBDIITroubleCode'
+          type: array
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - dtcId
+      - message
+      - requestId
+      type: object
+    VehicleStatsEngineRpmWithDecoration:
+      description: Vehicle engine RPM reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: The revolutions per minute of the engine.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsGpsDistanceMetersWithDecoration:
+      description: Vehicle GPS distance event.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Number of meters the vehicle has traveled since the gateway was installed, based on GPS calculations.
+          example: 81029.591434899
+          format: double
+          type: number
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsSpreaderRoadTemp:
+      description: Road temperature reading in milli celsius from material spreader.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Road temperature reading in milli celsius from material spreader.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsDecorations_gps:
+      properties:
+        address:
+          $ref: '#/components/schemas/VehicleLocationAddress'
+        headingDegrees:
+          $ref: '#/components/schemas/VehicleLocationHeading'
+        isEcuSpeed:
+          $ref: '#/components/schemas/VehicleLocationIsEcuSpeed'
+        latitude:
+          $ref: '#/components/schemas/VehicleLocationLatitude'
+        longitude:
+          $ref: '#/components/schemas/VehicleLocationLongitude'
+        reverseGeo:
+          $ref: '#/components/schemas/reverseGeo'
+        speedMilesPerHour:
+          $ref: '#/components/schemas/VehicleLocationSpeed'
+      required:
+      - latitude
+      - longitude
+      type: object
+    reverseGeo:
+      description: Reverse geocoded information.
+      properties:
+        formattedLocation:
+          description: Formatted address of the reverse geocoding data.
+          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
+          type: string
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedResponseBody:
+      properties:
+        data:
+          description: Paginated safety event activity feed limited to 10 events.
+          items:
+            $ref: '#/components/schemas/SafetyEventActivityFeedItemResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    VehicleStatsObdEngineSecondsWithDecoration:
+      description: Vehicle OBD engine seconds reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Number of seconds the vehicle's engine has been on according to the on-board diagnostics.
+          example: 9723103
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsFaultCodesWithDecoration:
+      description: Engine fault codes read from J1939, OBDII, and OEM vehicles.
+      properties:
+        canBusType:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesCanBusType'
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        j1939:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939'
+        obdii:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesOBDII'
+        oem:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesOem'
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - time
+      type: object
+    VehicleStatsAmbientAirTempMilliCWithDecoration:
+      description: Vehicle ambient air temperature reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: The ambient air temperature reading in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleLocationSpeed:
+      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
+      example: 48.3
+      format: double
+      type: number
+    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleStatsFaultCodesOemTroubleCode:
+      description: Proprietary diagnostic trouble code for some OEM vehicles.
+      properties:
+        codeDescription:
+          description: The OEM code description.
+          example: KVGT Servo Error
+          type: string
+        codeIdentifier:
+          description: The OEM code identifier.
+          example: CA2387
+          type: string
+        codeSeverity:
+          description: The OEM code severity.
+          example: L03
+          type: string
+        codeSource:
+          description: The OEM code source.
+          example: ENG/M
+          type: string
       type: object
     SafetyEventObjectResponseBody:
       description: The safety event that was updated.
@@ -1182,11 +1643,47 @@ components:
         vehicle:
           $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
       type: object
+    VehicleStatsFaultCodesPassengerMonitorStatusValue:
+      description: 'Enum of monitor status:
+
+        -U: Unsupported
+
+        -N: Not Complete
+
+        -R: Complete
+
+        '
+      enum:
+      - N
+      - R
+      - U
+      type: string
     VehicleStatsSyntheticEngineSecondsValue:
       description: Stats for the number of seconds the vehicle's engine has been on, calculated based on a manually-specified engine seconds reading and the number of seconds the vehicle has been on according to the engine state changes reported to the vehicle gateway since that reading was set. This stat will not be present for any vehicle that does not have the engine seconds reading set. The engine seconds reading can be set from the UI on the vehicle details page.
       example: 14010293
       format: int64
       type: integer
+    VehicleStatsDecorations_barometricPressurePa:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsBarometricPressurePaValue'
+      required:
+      - value
+      type: object
+    EquipmentLocationsListResponse:
+      description: A time-series of equipment locations and pagination information
+      properties:
+        data:
+          description: Time-series of locations for the specified units of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentLocationsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
     VehicleStatsSpreaderLiquidName:
       description: Name of most recent type of liquid material spread, read from the material spreader.
       properties:
@@ -1200,53 +1697,6 @@ components:
       - time
       - value
       type: object
-    VehicleLocationsListResponse:
-      description: List of vehicle location events and pagination info.
-      properties:
-        data:
-          description: A list of vehicles and an array of location events for each vehicle.
-          items:
-            $ref: '#/components/schemas/VehicleLocationsListResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    DataInputResponse_allOf:
-      properties:
-        fftSpectraPoints:
-          description: List of FFT spectra data points from the data input.
-          items:
-            $ref: '#/components/schemas/FftSpectraDataPoint'
-          type: array
-        j1939D1StatusPoints:
-          description: List of active J1939D1 statuses.
-          items:
-            $ref: '#/components/schemas/J1939D1StatusDataPoint'
-          type: array
-        locationPoints:
-          description: List of location data points from the data input.
-          items:
-            $ref: '#/components/schemas/LocationDataPoint'
-          type: array
-        numberPoints:
-          description: List of numeric data points from the data input.
-          items:
-            $ref: '#/components/schemas/NumberDataPoint'
-          type: array
-        stringPoints:
-          description: List of string data points from the data input.
-          items:
-            $ref: '#/components/schemas/StringDataPoint'
-          type: array
-      type: object
-    VehicleStatsEngineOilPressureKPaValue:
-      description: The engine oil pressure reading in kilopascals.
-      example: 100
-      format: int64
-      type: integer
     EquipmentGatewayEngineState:
       description: Engine state reading from the aux/digio cable.
       properties:
@@ -1263,11 +1713,460 @@ components:
       - time
       - value
       type: object
-    VehicleExternalIds:
-      description: The <a href="/docs/external-ids" target="_blank">external IDs</a> for the given object.
-      example:
-        maintenanceId: '250020'
-        payrollId: ABFS18600
+    VehicleStatsFaultCodesPassengerDtc:
+      description: Passenger vehicle DTC information
+      properties:
+        dtcDescription:
+          description: The DTC description, if available.
+          example: Fuel Rail/System Pressure - Too Low Bank 1
+          type: string
+        dtcId:
+          description: The DTC identifier.
+          example: 135
+          format: int32
+          type: integer
+        dtcShortCode:
+          description: The DTC short code, if available.
+          example: P0087
+          type: string
+      required:
+      - dtcId
+      type: object
+    VehicleStatsFaultCodesValue_j1939:
+      description: Vehicle fault codes for J1939 vehicles.
+      properties:
+        checkEngineLights:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_j1939_checkEngineLights'
+        diagnosticTroubleCodes:
+          description: Diagnostic trouble codes for J1939 vehicles.
+          items:
+            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_j1939_diagnosticTroubleCodes'
+          type: array
+      type: object
+    VehicleStatsFaultCodesIgnitionType:
+      description: 'The ignition type of this passenger vehicle. Valid values: `spark`, `compression`.'
+      enum:
+      - spark
+      - compression
+      type: string
+    VehicleStatsBarometricPressurePaValue:
+      description: The barometric pressure reading in pascals.
+      example: 99000
+      format: int64
+      type: integer
+    EquipmentObdEngineSeconds:
+      description: Engine seconds reading from on-board diagnostics.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: The number of seconds the engine has been running since it was new. This value is provided directly from on-board diagnostics.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleLocationsListResponse_data:
+      description: A vehicle and its list of location events.
+      properties:
+        id:
+          $ref: '#/components/schemas/VehicleId'
+        locations:
+          description: A list of location events for the given vehicle.
+          items:
+            $ref: '#/components/schemas/VehicleLocation'
+          type: array
+        name:
+          $ref: '#/components/schemas/VehicleName'
+      required:
+      - id
+      - locations
+      - name
+      type: object
+    FftSpectraDataPoint_fftSpectra:
+      description: FFT spectrum data
+      properties:
+        frequencies:
+          description: Frequencies
+          items:
+            format: double
+            type: number
+          type: array
+        x:
+          description: X-axis data
+          items:
+            format: double
+            type: number
+          type: array
+        y:
+          description: Y-axis data
+          items:
+            format: double
+            type: number
+          type: array
+        z:
+          description: Z-axis data
+          items:
+            format: double
+            type: number
+          type: array
+      type: object
+    VehicleStatsEcuSpeedMphValue:
+      description: The speed of the vehicle in miles per hour, as reported by the ECU.
+      example: 58.3
+      format: double
+      type: number
+    VehicleStatsFaultCodesOem:
+      description: Vehicle fault codes for OEM vehicles.
+      properties:
+        diagnosticTroubleCodes:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesOemTroubleCodes'
+      type: object
+    VehicleStatsFaultCodesValue:
+      description: Fault codes for the vehicle
+      properties:
+        canBusType:
+          description: The CAN bus type of the vehicle.
+          example: CANBUS_J1939_500
+          type: string
+        j1939:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_j1939'
+        obdii:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii'
+        oem:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_oem'
+      type: object
+    VehicleStatsDecorations_engineOilPressureKPa:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsEngineOilPressureKPaValue'
+      required:
+      - value
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    EquipmentStatsListResponse_data:
+      description: A unit of equipment and its time-series of stats events.
+      properties:
+        engineRpm:
+          description: A time-series of engine RPM readings for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentEngineRpm'
+          type: array
+        engineSeconds:
+          description: '[DEPRECATED] Please use either `gatewayEngineSeconds`, `obdEngineSeconds`, or `gatewayJ1939EngineSeconds`.'
+          items:
+            $ref: '#/components/schemas/EquipmentEngineSeconds'
+          type: array
+        engineStates:
+          description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
+          items:
+            $ref: '#/components/schemas/EquipmentEngineState'
+          type: array
+        fuelPercents:
+          description: A time-series of fuel percent level changes for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentFuelPercent'
+          type: array
+        gatewayEngineSeconds:
+          description: A time-series of engine seconds readings for the given unit of equipment as an approximate based on readings from the AG26's aux/digio cable.
+          items:
+            $ref: '#/components/schemas/EquipmentGatewayEngineSeconds'
+          type: array
+        gatewayEngineStates:
+          description: A time-series of engine state changes (as read from the AG26's aux/digio cable) for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentGatewayEngineState'
+          type: array
+        gatewayJ1939EngineSeconds:
+          description: A time-series of engine seconds readings for the given unit of equipment as an approximate based on readings from the AG26's CAT/J1939 cable.
+          items:
+            $ref: '#/components/schemas/EquipmentGatewayJ1939EngineSeconds'
+          type: array
+        gps:
+          description: A time-series of GPS locations.
+          items:
+            $ref: '#/components/schemas/EquipmentStatsGps'
+          type: array
+        gpsOdometerMeters:
+          description: A time-series of GPS odometer readings for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentGpsOdometerMeters'
+          type: array
+        id:
+          $ref: '#/components/schemas/EquipmentId'
+        name:
+          $ref: '#/components/schemas/EquipmentName'
+        obdEngineSeconds:
+          description: A time-series of engine seconds readings for the given unit of equipment directly from on-board diagnostics.
+          items:
+            $ref: '#/components/schemas/EquipmentObdEngineSeconds'
+          type: array
+        obdEngineStates:
+          description: A time-series of engine state changes (as read from on-board diagnostics) for the given unit of equipment.
+          items:
+            $ref: '#/components/schemas/EquipmentObdEngineState'
+          type: array
+      required:
+      - id
+      - name
+      type: object
+    VehicleLocationsListResponse:
+      description: List of vehicle location events and pagination info.
+      properties:
+        data:
+          description: A list of vehicles and an array of location events for each vehicle.
+          items:
+            $ref: '#/components/schemas/VehicleLocationsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleStatsSpreaderBlastState:
+      description: Whether vehicle is actively spreading material in blast mode.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Whether vehicle is actively spreading material in blast mode.
+          enum:
+          - 'On'
+          - 'Off'
+          example: 'Off'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsNfcCardScanWithDecoration:
+      description: Data for the nfc card and the time that it was scanned.
+      properties:
+        card:
+          $ref: '#/components/schemas/VehicleStatsNfcCardScan_card'
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
+      required:
+      - card
+      - time
+      type: object
+    VehicleStatsEvChargingVoltageMilliVolt:
+      description: Charging voltage for electric and hybrid vehicles in milli volts. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Charging voltage for electric and hybrid vehicles in milli volts.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentGpsOdometerMeters:
+      description: GPS odometer reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard.
+          example: 3200
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleLocationLongitude:
+      description: GPS longitude represented in degrees
+      example: -93.343
+      format: double
+      type: number
+    SafetyEventBehaviorLabelsResponseBody:
+      description: Behavior label for a safety event.
+      properties:
+        name:
+          description: Name of the behavior label.
+          example: Acceleration
+          type: string
+        type:
+          description: 'Type of the BehaviorLabel.  Valid values: `Acceleration`, `Braking`, `Crash`, `DefensiveDriving`, `DidNotYield`, `Drinking`, `Drowsy`, `Eating`, `EatingDrinking`, `EdgeDistractedDriving`, `EdgeRailroadCrossingViolation`, `FollowingDistance`, `FollowingDistanceModerate`, `FollowingDistanceSevere`, `ForwardCollisionWarning`, `GenericDistraction`, `GenericTailgating`, `HarshTurn`, `Invalid`, `LaneDeparture`, `LateResponse`, `MobileUsage`, `NearCollison`, `NoSeatbelt`, `ObstructedCamera`, `PolicyViolationMask`, `RanRedLight`, `RollingStop`, `RolloverProtection`, `Smoking`, `Speeding`, `YawControl`'
+          enum:
+          - Acceleration
+          - Braking
+          - Crash
+          - DefensiveDriving
+          - DidNotYield
+          - Drinking
+          - Drowsy
+          - Eating
+          - EatingDrinking
+          - EdgeDistractedDriving
+          - EdgeRailroadCrossingViolation
+          - FollowingDistance
+          - FollowingDistanceModerate
+          - FollowingDistanceSevere
+          - ForwardCollisionWarning
+          - GenericDistraction
+          - GenericTailgating
+          - HarshTurn
+          - Invalid
+          - LaneDeparture
+          - LateResponse
+          - MobileUsage
+          - NearCollison
+          - NoSeatbelt
+          - ObstructedCamera
+          - PolicyViolationMask
+          - RanRedLight
+          - RollingStop
+          - RolloverProtection
+          - Smoking
+          - Speeding
+          - YawControl
+          example: Acceleration
+          type: string
+      type: object
+    AssetLocationHeading:
+      description: Heading of the asset in degrees.
+      example: 120
+      format: double
+      type: number
+    VehicleStatsEvConsumedEnergyMicroWh:
+      description: Consumed energy (including regenerated) for electric and hybrid vehicles in microwatt hours. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Consumed energy (including regenerated) for electric and hybrid vehicles in microwatt hours.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleLocationHeading:
+      description: Heading of the vehicle in degrees.
+      example: 120
+      format: double
+      type: number
+    VehicleLocationAddress:
+      description: Address that the location is in.
+      properties:
+        id:
+          description: Id of the address.
+          example: '1234'
+          type: string
+        name:
+          description: Name of address.
+          example: Address 1
+          type: string
+      type: object
+    VehicleStatsTirePressures:
+      description: Tire pressure readings for each of four tires in kilopascals.
+      properties:
+        backLeftTirePressureKPa:
+          description: The tire pressure of the rear left tire as seen when standing behind the vehicle in kilopascals.
+          example: 200
+          format: int64
+          type: integer
+        backRightTirePressureKPa:
+          description: The tire pressure of the rear right tire as seen when standing behind the vehicle in kilopascals.
+          example: 200
+          format: int64
+          type: integer
+        frontLeftTirePressureKPa:
+          description: The tire pressure of the front left tire as seen when standing behind the vehicle in kilopascals.
+          example: 200
+          format: int64
+          type: integer
+        frontRightTirePressureKPa:
+          description: The tire pressure of the front right tire as seen when standing behind the vehicle in kilopascals.
+          example: 200
+          format: int64
+          type: integer
+      type: object
+    AssetLocationSpeed:
+      description: GPS speed of the asset in miles per hour.
+      example: 48.3
+      format: double
+      type: number
+    EquipmentGatewayJ1939EngineSeconds:
+      description: Engine seconds reading from the J1939/CAT cable.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
+          example: 22374000
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     VehicleStatsEcuSpeedMphWithDecoration:
       description: The speed of the vehicle in miles per hour, as reported by the ECU.
@@ -1281,6 +2180,693 @@ components:
           example: 32.1
           format: double
           type: number
+      required:
+      - time
+      - value
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    VehicleStatsEngineImmobilizerWithDecoration:
+      description: Data for the engine immobilizer
+      properties:
+        connected:
+          description: Whether the engine immobilizer is connected or not
+          example: false
+          type: boolean
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        state:
+          description: 'The state of the engine immobilizer. Valid values: `ignition_disabled`, `ignition_enabled`. This stat type will only return states of our first Engine Immobilizer Hardware (ACC-EI). Please use <a href="https://developers.samsara.com/reference/getengineimmobilizerstates" target="_blank">Get engine immobilizer states</a> to get states for both Engine Immobilizer Hardware versions (incl. HW-EI21).'
+          enum:
+          - ignition_disabled
+          - ignition_enabled
+          example: ignition_disabled
+          type: string
+        time:
+          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
+      required:
+      - connected
+      - state
+      - time
+      type: object
+    VehicleStatsDecorations_obdEngineSeconds:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsObdEngineSecondsValue'
+      required:
+      - value
+      type: object
+    VehicleStatsSpreaderGranularRate:
+      description: Granular spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Granular spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsSpreaderPrewetRate:
+      description: Prewet spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Prewet spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsEngineCoolantTempMilliCValue:
+      description: The engine coolant temperature reading in millidegree Celsius.
+      example: 31110
+      format: int64
+      type: integer
+    VehicleStatsIntakeManifoldTempMilliCValue:
+      description: The intake manifold temperature reading in millidegree Celsius.
+      example: 88000
+      format: int64
+      type: integer
+    VehicleStatsFaultCodesValue_j1939_vendorSpecificFields:
+      description: Vendor specific data for J1939 vehicles.
+      properties:
+        dtcDescription:
+          description: The DTC description, if available.
+          example: 'false'
+          type: string
+        repairInstructionsUrl:
+          description: A link to vendor repair instructions, if available.
+          example: 'false'
+          type: string
+      type: object
+    VehicleStatsEngineImmobilizer:
+      description: Data for the engine immobilizer
+      properties:
+        connected:
+          description: Whether the engine immobilizer is connected or not
+          example: false
+          type: boolean
+        state:
+          description: 'The state of the engine immobilizer. Valid values: `ignition_disabled`, `ignition_enabled`. This stat type will only return states of our first Engine Immobilizer Hardware (ACC-EI). Please use <a href="https://developers.samsara.com/reference/getengineimmobilizerstates" target="_blank">Get engine immobilizer states</a> to get states for both Engine Immobilizer Hardware versions (incl. HW-EI21).'
+          enum:
+          - ignition_disabled
+          - ignition_enabled
+          example: ignition_disabled
+          type: string
+        time:
+          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
+      required:
+      - connected
+      - state
+      - time
+      type: object
+    LocationDataPoint:
+      description: A single location data point of a data input.
+      properties:
+        gpsLocation:
+          $ref: '#/components/schemas/LocationDataPoint_gpsLocation'
+        time:
+          $ref: '#/components/schemas/time'
+      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+    VehicleStatsDecorations_gpsOdometerMeters:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsGpsOdometerMetersValue'
+      required:
+      - value
+      type: object
+    VehicleStatsGpsOdometerMetersValue:
+      description: Number of meters the vehicle has traveled according to the GPS calculations and the manually-specified odometer reading.
+      example: 14010293
+      format: int64
+      type: integer
+    VehicleStatsListResponse:
+      description: List of vehicle stat events and pagination info.
+      properties:
+        data:
+          description: A list of vehicles and an array of stat events for each vehicle.
+          items:
+            $ref: '#/components/schemas/VehicleStatsListResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    VehicleStatsFaultCodesJ1939TroubleCodes:
+      description: Diagnostic trouble codes for J1939 vehicles.
+      items:
+        $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939TroubleCode'
+      type: array
+    EquipmentEngineRpm:
+      description: Engine RPM reading.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: The revolutions per minute of the engine.
+          example: 1800
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsBatteryVoltageWithDecoration:
+      description: Vehicle battery voltage reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: The battery voltage in millivolts.
+          example: 7991
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleStatsFaultCodesValue_obdii:
+      description: Vehicle fault codes for passenger vehicles.
+      properties:
+        checkEngineLightIsOn:
+          description: True if the check engine light is illuminated (MIL status field is nonzero for any faults).
+          example: true
+          type: boolean
+        diagnosticTroubleCodes:
+          description: Diagnostic trouble codes for passenger vehicles.
+          items:
+            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_diagnosticTroubleCodes'
+          type: array
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleStatsDecorations_engineRpm:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsEngineRpmValue'
+      required:
+      - value
+      type: object
+    DataInputResponse:
+      allOf:
+      - $ref: '#/components/schemas/DataInputTinyResponse'
+      - $ref: '#/components/schemas/DataInputResponse_allOf'
+    VehicleStatsObdEngineSecondsValue:
+      description: Number of seconds the vehicle's engine has been on according to the on-board diagnostics.
+      example: 9723103
+      format: int64
+      type: integer
+    VehicleStatsFuelPercentValue:
+      description: The engine fuel level in percentage points (e.g. `99`, `50`, etc).
+      example: 54
+      format: int64
+      type: integer
+    VehicleStatsEngineLoadPercentWithDecoration:
+      description: The engine load percentage reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: The engine load in percentage points (e.g. `99`, `50`, etc).
+          example: 54
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleLocationLatitude:
+      description: GPS latitude represented in degrees
+      example: 122.142
+      format: double
+      type: number
+    VehicleStatsEngineStateSetting:
+      description: The state of the engine.
+      enum:
+      - 'Off'
+      - 'On'
+      - Idle
+      example: 'On'
+      type: string
+    VehicleStatsSpreaderActive:
+      description: Whether vehicle is actively spreading any material.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Whether vehicle is actively spreading any material.
+          enum:
+          - 'Off'
+          - 'On'
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsEngineOilPressureKPaValue:
+      description: The engine oil pressure reading in kilopascals.
+      example: 100
+      format: int64
+      type: integer
+    VehicleStatsFaultCodesCanBusType:
+      description: The CAN bus type of the vehicle.
+      example: CANBUS_J1939_500
+      type: string
+    VehicleStatsObdOdometerMetersWithDecoration:
+      description: Vehicle OBD odometer reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Number of meters the vehicle has traveled according to the on-board diagnostics.
+          example: 14010293
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    DataInputListResponse:
+      properties:
+        data:
+          description: An array of data input data points. Each object in the array represents a data input and will contain its associated data points.
+          items:
+            $ref: '#/components/schemas/DataInputResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    FftSpectraDataPoint:
+      description: FFT spectrum data point of a data input.
+      properties:
+        fftSpectra:
+          $ref: '#/components/schemas/FftSpectraDataPoint_fftSpectra'
+        time:
+          $ref: '#/components/schemas/time'
+      type: object
+    VehicleStatsSpreaderLiquidRate:
+      description: Liquid spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Liquid spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsNfcCardScan_card:
+      description: The card that was scanned.
+      properties:
+        id:
+          description: The id code of the card that was scanned.
+          example: '835063'
+          type: string
+      type: object
+    addressTinyResponse:
+      description: Address book entry, if one exists
+      properties:
+        id:
+          description: Address book identifier
+          example: '123'
+          type: string
+        name:
+          description: Name of this address book entry
+          example: Main Distribution Warehouse
+          type: string
+      type: object
+    VehicleStatsFaultCodesValue_obdii_diagnosticTroubleCodes:
+      description: Diagnostic trouble code for passenger vehicles.
+      properties:
+        confirmedDtcs:
+          description: Confirmed DTC codes.
+          items:
+            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_confirmedDtcs'
+          type: array
+        ignitionType:
+          description: 'The ignition type of this passenger vehicle. Valid values: `spark`, `compression`.'
+          enum:
+          - spark
+          - compression
+          type: string
+        milStatus:
+          description: The MIL status, indicating a check engine light.
+          example: true
+          type: boolean
+        monitorStatus:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_monitorStatus'
+        pendingDtcs:
+          description: Pending DTC codes.
+          items:
+            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_confirmedDtcs'
+          type: array
+        permanentDtcs:
+          description: Permanent DTC codes.
+          items:
+            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_confirmedDtcs'
+          type: array
+        txId:
+          description: The TX identifier.
+          example: 0
+          format: int32
+          type: integer
+      required:
+      - txId
+      type: object
+    SafetyEventVehicleObjectResponseBody:
+      description: A minified vehicle object.
+      properties:
+        id:
+          description: ID of the vehicle.
+          example: '1234'
+          type: string
+      type: object
+    VehicleStatsFaultCodesPassengerMonitorStatus:
+      description: Readings from engine sensors
+      properties:
+        catalyst:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        comprehensive:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        egr:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        evapSystem:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        fuel:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        heatedCatalyst:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        heatedO2Sensor:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        isoSaeReserved:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        misfire:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        notReadyCount:
+          description: 'Count of the number of sensors reporting N: Not Complete'
+          type: integer
+        o2Sensor:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+        secondaryAir:
+          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
+      type: object
+    VehicleStatsListSyntheticEngineSeconds:
+      description: A list of synthetic engine seconds for the vehicle.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
+        value:
+          $ref: '#/components/schemas/VehicleStatsSyntheticEngineSecondsValue'
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsBatteryMilliVoltsValue:
+      description: The battery voltage in millivolts.
+      example: 7991
+      format: int64
+      type: integer
+    VehicleStatsEvAverageBatteryTemperatureMilliCelsius:
+      description: Battery temperature for electric and hybrid vehicles in milli celsius. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Battery temperature for electric and hybrid vehicles in milli celsius.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    EquipmentObdEngineState:
+      description: Engine state reading from on-board diagnostics.
+      properties:
+        time:
+          $ref: '#/components/schemas/EquipmentTime'
+        value:
+          description: 'The state of the engine read from on-board diagnostics. Valid values: `Off`, `On`, `Idle`.'
+          enum:
+          - 'Off'
+          - 'On'
+          - Idle
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsDecorations_engineLoadPercent:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsEngineLoadPercentValue'
+      required:
+      - value
+      type: object
+    EquipmentTime:
+      description: UTC timestamp of the time the data point was generated by the equipment, in RFC3339 format.
+      example: '2019-05-03T04:30:31Z'
+      type: string
+    VehicleStatsEngineLoadPercentValue:
+      description: The engine load in percentage points (e.g. `99`, `50`, etc).
+      example: 54
+      format: int64
+      type: integer
+    VehicleStatsEvDistanceDrivenMeters:
+      description: Electric distance driven for electric and hybrid vehicles in meters. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Electric distance driven for electric and hybrid vehicles in meters.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    vehicleStatsAuxInputTime:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
+      type: string
+      x-go-gen-location: models
+    EquipmentName:
+      description: Name of the equipment.
+      example: Crane A7
+      type: string
+    VehicleName:
+      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+      example: Truck A7
+      type: string
+    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    VehicleExternalIds:
+      description: The <a href="/docs/external-ids" target="_blank">external IDs</a> for the given object.
+      example:
+        maintenanceId: '250020'
+        payrollId: ABFS18600
+      type: object
+    NumberDataPoint:
+      description: A single numeric data point of a data input.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Numeric value of the data point.
+          example: 1992.0506
+          format: double
+          type: number
+      type: object
+    VehicleStatsFaultCodesOemTroubleCodes:
+      description: Proprietary diagnostic trouble codes for OEM vehicles.
+      items:
+        $ref: '#/components/schemas/VehicleStatsFaultCodesOemTroubleCode'
+      type: array
+    VehicleStatsDecorations_defLevelMilliPercent:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsDefLevelMilliPercentValue'
+      required:
+      - value
+      type: object
+    VehicleStatsDecorations_engineCoolantTemperatureMilliC:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsEngineCoolantTempMilliCValue'
+      required:
+      - value
+      type: object
+    VehicleStatsAuxInputWithDecoration:
+      description: Data for auxiliary digio equipment.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        name:
+          $ref: '#/components/schemas/VehicleAuxInputName'
+        time:
+          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
+        value:
+          description: Boolean indicating the state of the auxiliary equipment.
+          example: true
+          type: boolean
+      type: object
+    VehicleStatsBarometricPressurePaWithDecoration:
+      description: Vehicle barometric pressure reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: The barometric pressure reading in pascals.
+          example: 100
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleLocationIsEcuSpeed:
+      description: True if the speed value is reported from the ECU. Speed value is reported from GPS otherwise.
+      example: true
+      type: boolean
+    VehicleLocation:
+      description: Vehicle location event.
+      properties:
+        heading:
+          $ref: '#/components/schemas/VehicleLocationHeading'
+        latitude:
+          $ref: '#/components/schemas/VehicleLocationLatitude'
+        longitude:
+          $ref: '#/components/schemas/VehicleLocationLongitude'
+        reverseGeo:
+          $ref: '#/components/schemas/reverseGeo'
+        speed:
+          $ref: '#/components/schemas/VehicleLocationSpeed'
+        time:
+          $ref: '#/components/schemas/time'
+      required:
+      - latitude
+      - longitude
+      - time
+      type: object
+    VehicleStatsFaultCodesTxId:
+      description: The TX identifier.
+      example: 0
+      format: int32
+      type: integer
+    VehicleStatsEngineRpmValue:
+      description: The revolutions per minute of the engine.
+      example: 1000
+      format: int64
+      type: integer
+    VehicleStatsSpreaderAirTemp:
+      description: Air (ambient) temperature in milli celsius reading from material spreader.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Air (ambient) temperature in milli celsius reading from material spreader.
+          example: 1000
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsEngineOilPressureKPaWithDecoration:
+      description: Vehicle engine oil pressure reading.
+      properties:
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: The engine oil pressure reading in kilopascals.
+          example: 100
+          format: int64
+          type: integer
       required:
       - time
       - value
@@ -1590,156 +3176,13 @@ components:
             $ref: '#/components/schemas/VehicleStatsListSyntheticEngineSeconds'
           type: array
       type: object
-    VehicleStatsFuelPercentWithDecoration:
-      description: Vehicle fuel percentage reading.
+    VehicleStatsDecorations_fuelPercents:
       properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
         value:
-          description: The engine fuel level in percentage points (e.g. `99`, `50`, etc).
-          example: 54
-          format: int64
-          type: integer
+          $ref: '#/components/schemas/VehicleStatsFuelPercentValue'
       required:
-      - time
       - value
       type: object
-    VehicleStatsSpreaderAirTemp:
-      description: Air (ambient) temperature in milli celsius reading from material spreader.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Air (ambient) temperature in milli celsius reading from material spreader.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleId:
-      description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
-      example: '112'
-      type: string
-    VehicleStatsFaultCodesOemTroubleCodes:
-      description: Proprietary diagnostic trouble codes for OEM vehicles.
-      items:
-        $ref: '#/components/schemas/VehicleStatsFaultCodesOemTroubleCode'
-      type: array
-    LocationDataPoint_gpsLocation_place:
-      description: Address of the location
-      properties:
-        city:
-          description: City
-          example: San Francisco
-          format: string
-          type: string
-        houseNumber:
-          description: House number
-          example: '350'
-          format: string
-          type: string
-        neighborhood:
-          description: Neighborhood
-          example: Castro
-          format: string
-          type: string
-        poi:
-          description: POI
-          example: '400'
-          format: string
-          type: string
-        postcode:
-          description: Postcode
-          example: '94103'
-          format: string
-          type: string
-        state:
-          description: State
-          example: CA
-          format: string
-          type: string
-        street:
-          description: Street
-          example: Rhode Island
-          format: string
-          type: string
-      type: object
-    EquipmentStatsGps:
-      description: GPS location of equipment.
-      properties:
-        address:
-          $ref: '#/components/schemas/addressTinyResponse'
-        headingDegrees:
-          $ref: '#/components/schemas/AssetLocationHeading'
-        latitude:
-          description: GPS latitude represented in degrees
-          example: 122.142
-          format: double
-          type: number
-        longitude:
-          description: GPS longitude represented in degrees
-          example: -93.343
-          format: double
-          type: number
-        reverseGeo:
-          $ref: '#/components/schemas/reverseGeo'
-        speedMilesPerHour:
-          $ref: '#/components/schemas/AssetLocationSpeed'
-        time:
-          $ref: '#/components/schemas/time'
-      required:
-      - latitude
-      - longitude
-      - time
-      type: object
-    VehicleStatsListResponse:
-      description: List of vehicle stat events and pagination info.
-      properties:
-        data:
-          description: A list of vehicles and an array of stat events for each vehicle.
-          items:
-            $ref: '#/components/schemas/VehicleStatsListResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    VehicleStatsFaultCodesValue_j1939_checkEngineLights:
-      description: Status of engine lights on J1939 vehicles.
-      properties:
-        emissionsIsOn:
-          description: True if the MIL status is nonzero.
-          example: true
-          type: boolean
-        protectIsOn:
-          description: True if the engine protect lamp status is nonzero.
-          example: false
-          type: boolean
-        stopIsOn:
-          description: True if the red lamp status is nonzero.
-          example: false
-          type: boolean
-        warningIsOn:
-          description: True if the amber lamp status is nonzero.
-          example: false
-          type: boolean
-      required:
-      - emissionsIsOn
-      - protectIsOn
-      - stopIsOn
-      - warningIsOn
-      type: object
-    VehicleStatsFaultCodesJ1939TroubleCodes:
-      description: Diagnostic trouble codes for J1939 vehicles.
-      items:
-        $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939TroubleCode'
-      type: array
     VehicleStatsFaultCodesOBDIITroubleCode:
       description: Diagnostic trouble code for passenger vehicles.
       properties:
@@ -1771,10 +3214,70 @@ components:
       required:
       - txId
       type: object
-    EquipmentName:
-      description: Name of the equipment.
-      example: Crane A7
-      type: string
+    VehicleStatsFaultCodesVendorSpecificFields:
+      description: Vendor specific data for J1939 vehicles.
+      properties:
+        dtcDescription:
+          description: The DTC description, if available.
+          example: 'false'
+          type: string
+        repairInstructionsUrl:
+          description: A link to vendor repair instructions, if available.
+          example: 'false'
+          type: string
+      type: object
+    VehicleStatsEvChargingStatus:
+      description: Charging status for electric and hybrid vehicles. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: "Charging status for electric and hybrid vehicles. Statuses:\n unknown - 0,\n not charging - 1,\n charging - 2."
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsGpsDistanceMetersValue:
+      description: Number of meters the vehicle has traveled since the gateway was installed, based on GPS calculations.
+      example: 81029.591434899
+      format: double
+      type: number
+    VehicleStatsSpreaderOnState:
+      description: Whether vehicle spreader is enabled.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Whether vehicle spreader is enabled.
+          enum:
+          - 'On'
+          - 'Off'
+          example: 'On'
+          type: string
+      required:
+      - time
+      - value
+      type: object
+    VehicleStatsAmbientAirTempMilliCValue:
+      description: The ambient air temperature reading in millidegree Celsius.
+      example: 31110
+      format: int64
+      type: integer
+    VehicleStatsDecorations_ecuSpeedMph:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsEcuSpeedMphValue'
+      required:
+      - value
+      type: object
     VehicleStatsFaultCodesValue_j1939_diagnosticTroubleCodes:
       description: Diagnostic trouble code for J1939 vehicles.
       properties:
@@ -1824,63 +3327,15 @@ components:
       - spnId
       - txId
       type: object
-    J1939D1StatusDataPoint:
-      description: Active J1939D1 statuses of a device.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: List of active statuses.
-          items:
-            $ref: '#/components/schemas/J1939D1StatusDataPoint_value'
-          type: array
-      type: object
-    EquipmentTime:
-      description: UTC timestamp of the time the data point was generated by the equipment, in RFC3339 format.
-      example: '2019-05-03T04:30:31Z'
-      type: string
-    VehicleStatsObdOdometerMetersValue:
-      description: Number of meters the vehicle has traveled according to the on-board diagnostics.
-      example: 14010293
-      format: int64
-      type: integer
-    VehicleStatsSpreaderRoadTemp:
-      description: Road temperature reading in milli celsius from material spreader.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Road temperature reading in milli celsius from material spreader.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsEvChargingCurrentMilliAmp:
-      description: Charging current for electric and hybrid vehicles in milli amps. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Charging current for electric and hybrid vehicles in milli amps.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsAmbientAirTempMilliCWithDecoration:
-      description: Vehicle ambient air temperature reading.
+    VehicleStatsEngineCoolantTempMilliCWithDecoration:
+      description: Vehicle engine coolant temperature reading.
       properties:
         decorations:
           $ref: '#/components/schemas/VehicleStatsDecorations'
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: The ambient air temperature reading in millidegree Celsius.
+          description: The engine coolant temperature reading in millidegree Celsius.
           example: 31110
           format: int64
           type: integer
@@ -1888,1346 +3343,35 @@ components:
       - time
       - value
       type: object
-    VehicleStatsDecorations_gpsDistanceMeters:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsGpsDistanceMetersValue'
-      required:
-      - value
-      type: object
-    VehicleStatsFaultCodesValue:
-      description: Fault codes for the vehicle
-      properties:
-        canBusType:
-          description: The CAN bus type of the vehicle.
-          example: CANBUS_J1939_500
-          type: string
-        j1939:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_j1939'
-        obdii:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii'
-        oem:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_oem'
-      type: object
-    reverseGeo:
-      description: Reverse geocoded information.
-      properties:
-        formattedLocation:
-          description: Formatted address of the reverse geocoding data.
-          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
-          type: string
-      type: object
-    VehicleStatsEngineStateSetting:
-      description: The state of the engine.
-      enum:
-      - 'Off'
-      - 'On'
-      - Idle
-      example: 'On'
-      type: string
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleLocationHeading:
-      description: Heading of the vehicle in degrees.
-      example: 120
-      format: double
-      type: number
-    VehicleStatsEvConsumedEnergyMicroWh:
-      description: Consumed energy (including regenerated) for electric and hybrid vehicles in microwatt hours. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Consumed energy (including regenerated) for electric and hybrid vehicles in microwatt hours.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsDecorations_obdOdometerMeters:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsObdOdometerMetersValue'
-      required:
-      - value
-      type: object
-    VehicleStatsFaultCodesJ1939:
-      description: Vehicle fault codes for J1939 vehicles.
-      properties:
-        checkEngineLights:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939Lights'
-        diagnosticTroubleCodes:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939TroubleCodes'
-      type: object
-    VehicleStatsDecorations_gps:
-      properties:
-        address:
-          $ref: '#/components/schemas/VehicleLocationAddress'
-        headingDegrees:
-          $ref: '#/components/schemas/VehicleLocationHeading'
-        isEcuSpeed:
-          $ref: '#/components/schemas/VehicleLocationIsEcuSpeed'
-        latitude:
-          $ref: '#/components/schemas/VehicleLocationLatitude'
-        longitude:
-          $ref: '#/components/schemas/VehicleLocationLongitude'
-        reverseGeo:
-          $ref: '#/components/schemas/reverseGeo'
-        speedMilesPerHour:
-          $ref: '#/components/schemas/VehicleLocationSpeed'
-      required:
-      - latitude
-      - longitude
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleStatsEvBatteryVoltageMilliVolt:
-      description: Battery voltage for electric and hybrid vehicles in milli volts. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Battery voltage for electric and hybrid vehicles in milli volts.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsSpreaderOnState:
-      description: Whether vehicle spreader is enabled.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Whether vehicle spreader is enabled.
-          enum:
-          - 'On'
-          - 'Off'
-          example: 'On'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsEvBatteryStateOfHealthMilliPercent:
-      description: Milli percent battery state of health for electric and hybrid vehicles. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Milli percent battery state of health for electric and hybrid vehicles.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsListSyntheticEngineSeconds:
-      description: A list of synthetic engine seconds for the vehicle.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
-        value:
-          $ref: '#/components/schemas/VehicleStatsSyntheticEngineSecondsValue'
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsFaultCodesWithDecoration:
-      description: Engine fault codes read from J1939, OBDII, and OEM vehicles.
-      properties:
-        canBusType:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesCanBusType'
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        j1939:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesJ1939'
-        obdii:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesOBDII'
-        oem:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesOem'
-        time:
-          $ref: '#/components/schemas/time'
-      required:
-      - time
-      type: object
-    VehicleStatsFaultCodesIgnitionType:
-      description: 'The ignition type of this passenger vehicle. Valid values: `spark`, `compression`.'
-      enum:
-      - spark
-      - compression
-      type: string
-    EquipmentStatsListResponse_data:
-      description: A unit of equipment and its time-series of stats events.
-      properties:
-        engineRpm:
-          description: A time-series of engine RPM readings for the given unit of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentEngineRpm'
-          type: array
-        engineSeconds:
-          description: '[DEPRECATED] Please use either `gatewayEngineSeconds`, `obdEngineSeconds`, or `gatewayJ1939EngineSeconds`.'
-          items:
-            $ref: '#/components/schemas/EquipmentEngineSeconds'
-          type: array
-        engineStates:
-          description: '[DEPRECATED] Please use either `gatewayEngineStates` or `obdEngineStates`.'
-          items:
-            $ref: '#/components/schemas/EquipmentEngineState'
-          type: array
-        fuelPercents:
-          description: A time-series of fuel percent level changes for the given unit of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentFuelPercent'
-          type: array
-        gatewayEngineSeconds:
-          description: A time-series of engine seconds readings for the given unit of equipment as an approximate based on readings from the AG26's aux/digio cable.
-          items:
-            $ref: '#/components/schemas/EquipmentGatewayEngineSeconds'
-          type: array
-        gatewayEngineStates:
-          description: A time-series of engine state changes (as read from the AG26's aux/digio cable) for the given unit of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentGatewayEngineState'
-          type: array
-        gatewayJ1939EngineSeconds:
-          description: A time-series of engine seconds readings for the given unit of equipment as an approximate based on readings from the AG26's CAT/J1939 cable.
-          items:
-            $ref: '#/components/schemas/EquipmentGatewayJ1939EngineSeconds'
-          type: array
-        gps:
-          description: A time-series of GPS locations.
-          items:
-            $ref: '#/components/schemas/EquipmentStatsGps'
-          type: array
-        gpsOdometerMeters:
-          description: A time-series of GPS odometer readings for the given unit of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentGpsOdometerMeters'
-          type: array
-        id:
-          $ref: '#/components/schemas/EquipmentId'
-        name:
-          $ref: '#/components/schemas/EquipmentName'
-        obdEngineSeconds:
-          description: A time-series of engine seconds readings for the given unit of equipment directly from on-board diagnostics.
-          items:
-            $ref: '#/components/schemas/EquipmentObdEngineSeconds'
-          type: array
-        obdEngineStates:
-          description: A time-series of engine state changes (as read from on-board diagnostics) for the given unit of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentObdEngineState'
-          type: array
-      required:
-      - id
-      - name
-      type: object
-    VehicleStatsEngineLoadPercentWithDecoration:
-      description: The engine load percentage reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: The engine load in percentage points (e.g. `99`, `50`, etc).
-          example: 54
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsFaultCodesValue_oem:
-      description: Vehicle fault codes for OEM vehicles.
-      properties:
-        diagnosticTroubleCodes:
-          description: Proprietary diagnostic trouble codes for OEM vehicles.
-          items:
-            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_oem_diagnosticTroubleCodes'
-          type: array
-      type: object
-    time:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
-      type: string
-    SafetyEventsGetSafetyActivityEventFeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleStatsEvRegeneratedEnergyMicroWh:
-      description: Regenerated energy for electric and hybrid vehicles in microwatt hours. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Regenerated energy for electric and hybrid vehicles in microwatt hours.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleLocationLatitude:
-      description: GPS latitude represented in degrees
-      example: 122.142
-      format: double
-      type: number
-    VehicleStatsAuxInputDecoration:
-      properties:
-        name:
-          description: 'The type of <a href="https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs" target="_blank">auxiliary input</a> configured for this Vehicle. Once configured, these inputs will generate dynamic, time-series data that will be available to view in the Samsara Dashboard. **By default**: empty. This can be set or updated through the Samsara Dashboard or the API at any time. Inputs 3-13 are only available on gateways with an attached aux expander. The value returned will match what is configured in the dashboard per vehicle.'
-          example: Boom
-          type: string
-        value:
-          $ref: '#/components/schemas/VehicleStatsAuxInputValue'
-      required:
-      - name
-      - value
-      type: object
-    VehicleStatsFaultCodesPassengerMonitorStatus:
-      description: Readings from engine sensors
-      properties:
-        catalyst:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        comprehensive:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        egr:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        evapSystem:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        fuel:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        heatedCatalyst:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        heatedO2Sensor:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        isoSaeReserved:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        misfire:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        notReadyCount:
-          description: 'Count of the number of sensors reporting N: Not Complete'
-          type: integer
-        o2Sensor:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-        secondaryAir:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesPassengerMonitorStatusValue'
-      type: object
-    VehicleStatsEcuSpeedMphValue:
-      description: The speed of the vehicle in miles per hour, as reported by the ECU.
-      example: 58.3
-      format: double
-      type: number
-    VehicleStatsTirePressures:
-      description: Tire pressure readings for each of four tires in kilopascals.
-      properties:
-        backLeftTirePressureKPa:
-          description: The tire pressure of the rear left tire as seen when standing behind the vehicle in kilopascals.
-          example: 200
-          format: int64
-          type: integer
-        backRightTirePressureKPa:
-          description: The tire pressure of the rear right tire as seen when standing behind the vehicle in kilopascals.
-          example: 200
-          format: int64
-          type: integer
-        frontLeftTirePressureKPa:
-          description: The tire pressure of the front left tire as seen when standing behind the vehicle in kilopascals.
-          example: 200
-          format: int64
-          type: integer
-        frontRightTirePressureKPa:
-          description: The tire pressure of the front right tire as seen when standing behind the vehicle in kilopascals.
-          example: 200
-          format: int64
-          type: integer
-      type: object
-    VehicleStatsEvChargingEnergyMicroWh:
-      description: Charging energy for electric and hybrid vehicles in microwatt hours. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Charging energy for electric and hybrid vehicles in microwatt hours.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsSpreaderLiquidRate:
-      description: Liquid spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Liquid spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsGpsOdometerMetersValue:
-      description: Number of meters the vehicle has traveled according to the GPS calculations and the manually-specified odometer reading.
-      example: 14010293
-      format: int64
-      type: integer
-    EquipmentFuelPercent:
-      description: Fuel percent reading.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: The percent of fuel in the unit of equipment.
-          example: 54
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    NumberDataPoint:
-      description: A single numeric data point of a data input.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Numeric value of the data point.
-          example: 1992.0506
-          format: double
-          type: number
-      type: object
-    SafetyEventBehaviorLabelsResponseBody:
-      description: Behavior label for a safety event.
-      properties:
-        name:
-          description: Name of the behavior label.
-          example: Acceleration
-          type: string
-        type:
-          description: 'Type of the BehaviorLabel.  Valid values: `Acceleration`, `Braking`, `Crash`, `DefensiveDriving`, `DidNotYield`, `Drinking`, `Drowsy`, `Eating`, `EatingDrinking`, `EdgeDistractedDriving`, `EdgeRailroadCrossingViolation`, `FollowingDistance`, `FollowingDistanceModerate`, `FollowingDistanceSevere`, `ForwardCollisionWarning`, `GenericDistraction`, `GenericTailgating`, `HarshTurn`, `Invalid`, `LaneDeparture`, `LateResponse`, `MobileUsage`, `NearCollison`, `NoSeatbelt`, `ObstructedCamera`, `PolicyViolationMask`, `RanRedLight`, `RollingStop`, `RolloverProtection`, `Smoking`, `Speeding`, `YawControl`'
-          enum:
-          - Acceleration
-          - Braking
-          - Crash
-          - DefensiveDriving
-          - DidNotYield
-          - Drinking
-          - Drowsy
-          - Eating
-          - EatingDrinking
-          - EdgeDistractedDriving
-          - EdgeRailroadCrossingViolation
-          - FollowingDistance
-          - FollowingDistanceModerate
-          - FollowingDistanceSevere
-          - ForwardCollisionWarning
-          - GenericDistraction
-          - GenericTailgating
-          - HarshTurn
-          - Invalid
-          - LaneDeparture
-          - LateResponse
-          - MobileUsage
-          - NearCollison
-          - NoSeatbelt
-          - ObstructedCamera
-          - PolicyViolationMask
-          - RanRedLight
-          - RollingStop
-          - RolloverProtection
-          - Smoking
-          - Speeding
-          - YawControl
-          example: Acceleration
-          type: string
-      type: object
-    AssetLocationHeading:
-      description: Heading of the asset in degrees.
-      example: 120
-      format: double
-      type: number
-    VehicleStatsDecorations_ecuSpeedMph:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsEcuSpeedMphValue'
-      required:
-      - value
-      type: object
-    EquipmentObdEngineSeconds:
-      description: Engine seconds reading from on-board diagnostics.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: The number of seconds the engine has been running since it was new. This value is provided directly from on-board diagnostics.
-          example: 22374000
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsFaultCodesPassengerMonitorStatusValue:
-      description: 'Enum of monitor status:
-
-        -U: Unsupported
-
-        -N: Not Complete
-
-        -R: Complete
-
-        '
-      enum:
-      - N
-      - R
-      - U
-      type: string
-    VehicleStatsEvChargingStatus:
-      description: Charging status for electric and hybrid vehicles. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: "Charging status for electric and hybrid vehicles. Statuses:\n unknown - 0,\n not charging - 1,\n charging - 2."
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleStatsEngineImmobilizer:
-      description: Data for the engine immobilizer
-      properties:
-        connected:
-          description: Whether the engine immobilizer is connected or not
-          example: false
-          type: boolean
-        state:
-          description: 'The state of the engine immobilizer. Valid values: `ignition_disabled`, `ignition_enabled`. This stat type will only return states of our first Engine Immobilizer Hardware (ACC-EI). Please use <a href="https://developers.samsara.com/reference/getengineimmobilizerstates" target="_blank">Get engine immobilizer states</a> to get states for both Engine Immobilizer Hardware versions (incl. HW-EI21).'
-          enum:
-          - ignition_disabled
-          - ignition_enabled
-          example: ignition_disabled
-          type: string
-        time:
-          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
-      required:
-      - connected
-      - state
-      - time
-      type: object
-    EquipmentLocation:
-      description: Location reading.
-      properties:
-        heading:
-          description: Heading of the unit of equipment in degrees.
-          example: 120
-          format: double
-          type: number
-        latitude:
-          description: GPS latitude represented in degrees
-          example: 122.142
-          format: double
-          type: number
-        longitude:
-          description: GPS longitude represented in degrees
-          example: -93.343
-          format: double
-          type: number
-        speed:
-          description: GPS speed of the unit of equipment in miles per hour.
-          example: 48.3
-          format: double
-          type: number
-        time:
-          $ref: '#/components/schemas/time'
-      required:
-      - latitude
-      - longitude
-      - time
-      type: object
-    VehicleStatsObdOdometerMetersWithDecoration:
-      description: Vehicle OBD odometer reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Number of meters the vehicle has traveled according to the on-board diagnostics.
-          example: 14010293
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsSpreaderBlastState:
-      description: Whether vehicle is actively spreading material in blast mode.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Whether vehicle is actively spreading material in blast mode.
-          enum:
-          - 'On'
-          - 'Off'
-          example: 'Off'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsFaultCodesCanBusType:
-      description: The CAN bus type of the vehicle.
-      example: CANBUS_J1939_500
-      type: string
-    EquipmentLocationsListResponse:
-      description: A time-series of equipment locations and pagination information
-      properties:
-        data:
-          description: Time-series of locations for the specified units of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentLocationsListResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
     EquipmentId:
       description: Unique Samsara ID for the equipment.
       example: '112'
       type: string
-    VehicleStatsAuxInputWithDecoration:
-      description: Data for auxiliary digio equipment.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        name:
-          $ref: '#/components/schemas/VehicleAuxInputName'
-        time:
-          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
-        value:
-          description: Boolean indicating the state of the auxiliary equipment.
-          example: true
-          type: boolean
-      type: object
-    VehicleStatsFuelPercentValue:
-      description: The engine fuel level in percentage points (e.g. `99`, `50`, etc).
-      example: 54
-      format: int64
-      type: integer
-    VehicleStatsBatteryVoltageWithDecoration:
-      description: Vehicle battery voltage reading.
+    VehicleStatsEngineStateWithDecoration:
+      description: Vehicle engine state event.
       properties:
         decorations:
           $ref: '#/components/schemas/VehicleStatsDecorations'
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: The battery voltage in millivolts.
-          example: 7991
-          format: int64
-          type: integer
+          $ref: '#/components/schemas/VehicleStatsEngineStateSetting'
       required:
       - time
       - value
       type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    VehicleStatsNfcCardScanWithDecoration:
-      description: Data for the nfc card and the time that it was scanned.
-      properties:
-        card:
-          $ref: '#/components/schemas/VehicleStatsNfcCardScan_card'
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
-      required:
-      - card
-      - time
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleStatsFaultCodesPassengerDtc:
-      description: Passenger vehicle DTC information
-      properties:
-        dtcDescription:
-          description: The DTC description, if available.
-          example: Fuel Rail/System Pressure - Too Low Bank 1
-          type: string
-        dtcId:
-          description: The DTC identifier.
-          example: 135
-          format: int32
-          type: integer
-        dtcShortCode:
-          description: The DTC short code, if available.
-          example: P0087
-          type: string
-      required:
-      - dtcId
-      type: object
-    VehicleStatsFaultCodesValue_obdii_diagnosticTroubleCodes:
-      description: Diagnostic trouble code for passenger vehicles.
-      properties:
-        confirmedDtcs:
-          description: Confirmed DTC codes.
-          items:
-            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_confirmedDtcs'
-          type: array
-        ignitionType:
-          description: 'The ignition type of this passenger vehicle. Valid values: `spark`, `compression`.'
-          enum:
-          - spark
-          - compression
-          type: string
-        milStatus:
-          description: The MIL status, indicating a check engine light.
-          example: true
-          type: boolean
-        monitorStatus:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_monitorStatus'
-        pendingDtcs:
-          description: Pending DTC codes.
-          items:
-            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_confirmedDtcs'
-          type: array
-        permanentDtcs:
-          description: Permanent DTC codes.
-          items:
-            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_obdii_confirmedDtcs'
-          type: array
-        txId:
-          description: The TX identifier.
-          example: 0
-          format: int32
-          type: integer
-      required:
-      - txId
-      type: object
-    StringDataPoint:
-      description: A single string data point of a data input.
+    VehicleStatsSpreaderGranularName:
+      description: Name of most recent type of granular material spread, read from the material spreader.
       properties:
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: String value of the data point.
-          example: 'On'
-          format: string
-          type: string
-      type: object
-    FftSpectraDataPoint:
-      description: FFT spectrum data point of a data input.
-      properties:
-        fftSpectra:
-          $ref: '#/components/schemas/FftSpectraDataPoint_fftSpectra'
-        time:
-          $ref: '#/components/schemas/time'
-      type: object
-    addressTinyResponse:
-      description: Address book entry, if one exists
-      properties:
-        id:
-          description: Address book identifier
-          example: '123'
-          type: string
-        name:
-          description: Name of this address book entry
-          example: Main Distribution Warehouse
-          type: string
-      type: object
-    VehicleStatsSeatbeltDriver:
-      description: Seatbelt Driver Status as read from the vehicle. `Buckled` or `Unbuckled`.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Seatbelt Driver Status as read from the vehicle. `Buckled` or `Unbuckled`.
-          enum:
-          - Buckled
-          - Unbuckled
-          example: Buckled
+          description: Name of most recent type of granular material spread, read from the material spreader.
+          example: SALT
           type: string
       required:
       - time
       - value
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedResponseBody:
-      properties:
-        data:
-          description: Paginated safety event activity feed limited to 10 events.
-          items:
-            $ref: '#/components/schemas/SafetyEventActivityFeedItemResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    VehicleStatsDecorations_intakeManifoldTemperatureMilliC:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsIntakeManifoldTempMilliCValue'
-      required:
-      - value
-      type: object
-    AssetLocationSpeed:
-      description: GPS speed of the asset in miles per hour.
-      example: 48.3
-      format: double
-      type: number
-    VehicleStatsBatteryMilliVoltsValue:
-      description: The battery voltage in millivolts.
-      example: 7991
-      format: int64
-      type: integer
-    EquipmentGatewayEngineSeconds:
-      description: Engine seconds reading from the aux/digio cable.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
-          example: 22374000
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsDecorations_engineLoadPercent:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsEngineLoadPercentValue'
-      required:
-      - value
-      type: object
-    SafetyEventVehicleObjectResponseBody:
-      description: A minified vehicle object.
-      properties:
-        id:
-          description: ID of the vehicle.
-          example: '1234'
-          type: string
-      type: object
-    VehicleStatsDecorations_barometricPressurePa:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsBarometricPressurePaValue'
-      required:
-      - value
-      type: object
-    VehicleLocationLongitude:
-      description: GPS longitude represented in degrees
-      example: -93.343
-      format: double
-      type: number
-    VehicleStatsDecorations_engineCoolantTemperatureMilliC:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsEngineCoolantTempMilliCValue'
-      required:
-      - value
-      type: object
-    VehicleLocationsListResponse_data:
-      description: A vehicle and its list of location events.
-      properties:
-        id:
-          $ref: '#/components/schemas/VehicleId'
-        locations:
-          description: A list of location events for the given vehicle.
-          items:
-            $ref: '#/components/schemas/VehicleLocation'
-          type: array
-        name:
-          $ref: '#/components/schemas/VehicleName'
-      required:
-      - id
-      - locations
-      - name
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleStatsSpreaderGranularRate:
-      description: Granular spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Granular spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsGpsOdometerMetersWithDecoration:
-      description: Vehicle GPS odometer event.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Number of meters the vehicle has traveled according to the GPS calculations and the manually-specified odometer reading.
-          example: 14010293
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentObdEngineState:
-      description: Engine state reading from on-board diagnostics.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: 'The state of the engine read from on-board diagnostics. Valid values: `Off`, `On`, `Idle`.'
-          enum:
-          - 'Off'
-          - 'On'
-          - Idle
-          example: 'On'
-          type: string
-      required:
-      - time
-      - value
-      type: object
-    DataInputTinyResponse:
-      description: A minified data input object
-      properties:
-        assetId:
-          description: Unique identifier for the data input's asset.
-          example: 74771078-5edb-4733-88f2-7242f520d1f1
-          format: uuid
-          type: string
-        dataGroup:
-          description: Data group for this data input.
-          example: Flow
-          format: string
-          type: string
-        id:
-          description: Unique identifier for the data input.
-          format: uuid
-          type: string
-        name:
-          description: Name of this data input.
-          example: Pump Flow
-          format: string
-          type: string
-        units:
-          description: Units of data for this data input.
-          example: Gallons Per Minute
-          format: string
-          type: string
-      type: object
-    VehicleStatsEvBatteryCurrentMilliAmp:
-      description: Battery current for electric and hybrid vehicles in milli amps. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Battery current for electric and hybrid vehicles in milli amps.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsObdEngineSecondsWithDecoration:
-      description: Vehicle OBD engine seconds reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Number of seconds the vehicle's engine has been on according to the on-board diagnostics.
-          example: 9723103
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsBarometricPressurePaWithDecoration:
-      description: Vehicle barometric pressure reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: The barometric pressure reading in pascals.
-          example: 100
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsFaultCodesOemTroubleCode:
-      description: Proprietary diagnostic trouble code for some OEM vehicles.
-      properties:
-        codeDescription:
-          description: The OEM code description.
-          example: KVGT Servo Error
-          type: string
-        codeIdentifier:
-          description: The OEM code identifier.
-          example: CA2387
-          type: string
-        codeSeverity:
-          description: The OEM code severity.
-          example: L03
-          type: string
-        codeSource:
-          description: The OEM code source.
-          example: ENG/M
-          type: string
-      type: object
-    VehicleStatsAuxInputValue:
-      description: Boolean indicating the state of the auxiliary equipment.
-      example: true
-      type: boolean
-    VehicleAuxInputName:
-      description: 'The type of <a href="https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs" target="_blank">auxiliary input</a> configured for this Vehicle. Once configured, these inputs will generate dynamic, time-series data that will be available to view in the Samsara Dashboard. **By default**: empty. This can be set or updated through the Samsara Dashboard or the API at any time. Inputs 3-13 are only available on gateways with an attached aux expander. The value returned will match what is configured in the dashboard per vehicle.'
-      example: Boom
-      type: string
-    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    VehicleStatsDecorations_batteryMilliVolts:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsBatteryMilliVoltsValue'
-      required:
-      - value
-      type: object
-    VehicleStatsDecorations_fuelPercents:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsFuelPercentValue'
-      required:
-      - value
-      type: object
-    VehicleStatsEvDistanceDrivenMeters:
-      description: Electric distance driven for electric and hybrid vehicles in meters. Not all EV and HEVs may report this field.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Electric distance driven for electric and hybrid vehicles in meters.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DataInputListResponse:
-      properties:
-        data:
-          description: An array of data input data points. Each object in the array represents a data input and will contain its associated data points.
-          items:
-            $ref: '#/components/schemas/DataInputResponse'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    VehicleStatsFaultCodesJ1939Lights:
-      description: Status of engine lights on J1939 vehicles.
-      properties:
-        emissionsIsOn:
-          description: True if the MIL status is nonzero.
-          example: true
-          type: boolean
-        protectIsOn:
-          description: True if the engine protect lamp status is nonzero.
-          example: false
-          type: boolean
-        stopIsOn:
-          description: True if the red lamp status is nonzero.
-          example: false
-          type: boolean
-        warningIsOn:
-          description: True if the amber lamp status is nonzero.
-          example: false
-          type: boolean
-      required:
-      - emissionsIsOn
-      - protectIsOn
-      - stopIsOn
-      - warningIsOn
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    VehicleStatsDecorations_engineRpm:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsEngineRpmValue'
-      required:
-      - value
-      type: object
-    VehicleStatsFaultCodesTxId:
-      description: The TX identifier.
-      example: 0
-      format: int32
-      type: integer
-    VehicleStatsBarometricPressurePaValue:
-      description: The barometric pressure reading in pascals.
-      example: 99000
-      format: int64
-      type: integer
-    VehicleLocationIsEcuSpeed:
-      description: True if the speed value is reported from the ECU. Speed value is reported from GPS otherwise.
-      example: true
-      type: boolean
-    VehicleStatsSpreaderPrewetRate:
-      description: Prewet spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Prewet spread rate reading in milliliters per meter, read from the material spreader. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance. Unfiltered live stats are supplied as-read from the Material Spreader unit. Readings do not consider total spread rate(s) over time or distance.
-          example: 1000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsIntakeManifoldTempMilliCValue:
-      description: The intake manifold temperature reading in millidegree Celsius.
-      example: 88000
-      format: int64
-      type: integer
-    VehicleLocationAddress:
-      description: Address that the location is in.
-      properties:
-        id:
-          description: Id of the address.
-          example: '1234'
-          type: string
-        name:
-          description: Name of address.
-          example: Address 1
-          type: string
-      type: object
-    VehicleStatsIntakeManifoldTempMilliCWithDecoration:
-      description: Vehicle intake manifold temperature reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: The intake manifold temperature reading in millidegree Celsius.
-          example: 88000
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
     J1939D1StatusDataPoint_value:
       description: A single J1939D1 status
@@ -3257,78 +3401,269 @@ components:
           format: int32
           type: number
       type: object
-    VehicleStatsSpreaderGranularName:
-      description: Name of most recent type of granular material spread, read from the material spreader.
+    SafetyEventDriverObjectResponseBody:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: 0987
+          type: string
+      type: object
+    VehicleId:
+      description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
+      example: '112'
+      type: string
+    VehicleStatsDecorations_obdOdometerMeters:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsObdOdometerMetersValue'
+      required:
+      - value
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    LocationDataPoint_gpsLocation_place:
+      description: Address of the location
+      properties:
+        city:
+          description: City
+          example: San Francisco
+          format: string
+          type: string
+        houseNumber:
+          description: House number
+          example: '350'
+          format: string
+          type: string
+        neighborhood:
+          description: Neighborhood
+          example: Castro
+          format: string
+          type: string
+        poi:
+          description: POI
+          example: '400'
+          format: string
+          type: string
+        postcode:
+          description: Postcode
+          example: '94103'
+          format: string
+          type: string
+        state:
+          description: State
+          example: CA
+          format: string
+          type: string
+        street:
+          description: Street
+          example: Rhode Island
+          format: string
+          type: string
+      type: object
+    StringDataPoint:
+      description: A single string data point of a data input.
       properties:
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: Name of most recent type of granular material spread, read from the material spreader.
-          example: SALT
+          description: String value of the data point.
+          example: 'On'
+          format: string
           type: string
+      type: object
+    DataInputResponse_allOf:
+      properties:
+        fftSpectraPoints:
+          description: List of FFT spectra data points from the data input.
+          items:
+            $ref: '#/components/schemas/FftSpectraDataPoint'
+          type: array
+        j1939D1StatusPoints:
+          description: List of active J1939D1 statuses.
+          items:
+            $ref: '#/components/schemas/J1939D1StatusDataPoint'
+          type: array
+        locationPoints:
+          description: List of location data points from the data input.
+          items:
+            $ref: '#/components/schemas/LocationDataPoint'
+          type: array
+        numberPoints:
+          description: List of numeric data points from the data input.
+          items:
+            $ref: '#/components/schemas/NumberDataPoint'
+          type: array
+        stringPoints:
+          description: List of string data points from the data input.
+          items:
+            $ref: '#/components/schemas/StringDataPoint'
+          type: array
+      type: object
+    VehicleStatsFaultCodesValue_j1939_checkEngineLights:
+      description: Status of engine lights on J1939 vehicles.
+      properties:
+        emissionsIsOn:
+          description: True if the MIL status is nonzero.
+          example: true
+          type: boolean
+        protectIsOn:
+          description: True if the engine protect lamp status is nonzero.
+          example: false
+          type: boolean
+        stopIsOn:
+          description: True if the red lamp status is nonzero.
+          example: false
+          type: boolean
+        warningIsOn:
+          description: True if the amber lamp status is nonzero.
+          example: false
+          type: boolean
+      required:
+      - emissionsIsOn
+      - protectIsOn
+      - stopIsOn
+      - warningIsOn
+      type: object
+    VehicleAuxInputName:
+      description: 'The type of <a href="https://kb.samsara.com/hc/en-us/articles/360043040512-Auxiliary-Inputs" target="_blank">auxiliary input</a> configured for this Vehicle. Once configured, these inputs will generate dynamic, time-series data that will be available to view in the Samsara Dashboard. **By default**: empty. This can be set or updated through the Samsara Dashboard or the API at any time. Inputs 3-13 are only available on gateways with an attached aux expander. The value returned will match what is configured in the dashboard per vehicle.'
+      example: Boom
+      type: string
+    SafetyEventActivityFeedItemResponseBody:
+      description: Safety event activity feed item.
+      properties:
+        id:
+          description: The ID of the activity event feed line item.
+          example: 1622151765-212014918174029-1550954461759
+          type: string
+        safetyEvent:
+          $ref: '#/components/schemas/SafetyEventObjectResponseBody'
+        time:
+          description: The time the activity occurred in the corresponding safety event in RFC 3339 milliseconds format.
+          example: '2019-10-12T07:20:50.52Z'
+          type: string
+        type:
+          description: 'The type of activity that occurred in the safety event. We currently only support CoachingStateActivityType, BehaviorLabelActivityType, and CreateSafetyEventActivityType, but we may add support for more activity types in the future.  Valid values: `BehaviorLabelActivityType`, `CoachingStateActivityType`, `CreateSafetyEventActivityType`'
+          enum:
+          - BehaviorLabelActivityType
+          - CoachingStateActivityType
+          - CreateSafetyEventActivityType
+          example: CreateSafetyEventActivityType
+          type: string
+      required:
+      - id
+      - safetyEvent
+      - time
+      - type
+      type: object
+    DataInputTinyResponse:
+      description: A minified data input object
+      properties:
+        assetId:
+          description: Unique identifier for the data input's asset.
+          example: 74771078-5edb-4733-88f2-7242f520d1f1
+          format: uuid
+          type: string
+        dataGroup:
+          description: Data group for this data input.
+          example: Flow
+          format: string
+          type: string
+        id:
+          description: Unique identifier for the data input.
+          format: uuid
+          type: string
+        name:
+          description: Name of this data input.
+          example: Pump Flow
+          format: string
+          type: string
+        units:
+          description: Units of data for this data input.
+          example: Gallons Per Minute
+          format: string
+          type: string
+      type: object
+    VehicleStatsEvChargingCurrentMilliAmp:
+      description: Charging current for electric and hybrid vehicles in milli amps. Not all EV and HEVs may report this field.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Charging current for electric and hybrid vehicles in milli amps.
+          example: 1000
+          format: int64
+          type: integer
       required:
       - time
       - value
       type: object
-    VehicleStatsDecorations_engineStates:
+    VehicleStatsEvBatteryVoltageMilliVolt:
+      description: Battery voltage for electric and hybrid vehicles in milli volts. Not all EV and HEVs may report this field.
       properties:
+        time:
+          $ref: '#/components/schemas/time'
         value:
-          description: The state of the engine.
-          enum:
-          - 'Off'
-          - 'On'
-          - Idle
-          example: 'On'
-          type: string
+          description: Battery voltage for electric and hybrid vehicles in milli volts.
+          example: 1000
+          format: int64
+          type: integer
       required:
+      - time
       - value
       type: object
-    FftSpectraDataPoint_fftSpectra:
-      description: FFT spectrum data
+    EquipmentStatsGps:
+      description: GPS location of equipment.
       properties:
-        frequencies:
-          description: Frequencies
-          items:
-            format: double
-            type: number
-          type: array
-        x:
-          description: X-axis data
-          items:
-            format: double
-            type: number
-          type: array
-        y:
-          description: Y-axis data
-          items:
-            format: double
-            type: number
-          type: array
-        z:
-          description: Z-axis data
-          items:
-            format: double
-            type: number
-          type: array
-      type: object
-    VehicleStatsFaultCodesValue_j1939_vendorSpecificFields:
-      description: Vendor specific data for J1939 vehicles.
-      properties:
-        dtcDescription:
-          description: The DTC description, if available.
-          example: 'false'
-          type: string
-        repairInstructionsUrl:
-          description: A link to vendor repair instructions, if available.
-          example: 'false'
-          type: string
-      type: object
-    VehicleStatsDecorations_engineOilPressureKPa:
-      properties:
-        value:
-          $ref: '#/components/schemas/VehicleStatsEngineOilPressureKPaValue'
+        address:
+          $ref: '#/components/schemas/addressTinyResponse'
+        headingDegrees:
+          $ref: '#/components/schemas/AssetLocationHeading'
+        latitude:
+          description: GPS latitude represented in degrees
+          example: 122.142
+          format: double
+          type: number
+        longitude:
+          description: GPS longitude represented in degrees
+          example: -93.343
+          format: double
+          type: number
+        reverseGeo:
+          $ref: '#/components/schemas/reverseGeo'
+        speedMilesPerHour:
+          $ref: '#/components/schemas/AssetLocationSpeed'
+        time:
+          $ref: '#/components/schemas/time'
       required:
-      - value
+      - latitude
+      - longitude
+      - time
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     VehicleStatsFaultCodesJ1939TroubleCode:
       description: Diagnostic trouble code for J1939 vehicles.
@@ -3376,13 +3711,13 @@ components:
       - spnId
       - txId
       type: object
-    VehicleStatsEvAverageBatteryTemperatureMilliCelsius:
-      description: Battery temperature for electric and hybrid vehicles in milli celsius. Not all EV and HEVs may report this field.
+    VehicleStatsEvChargingEnergyMicroWh:
+      description: Charging energy for electric and hybrid vehicles in microwatt hours. Not all EV and HEVs may report this field.
       properties:
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: Battery temperature for electric and hybrid vehicles in milli celsius.
+          description: Charging energy for electric and hybrid vehicles in microwatt hours.
           example: 1000
           format: int64
           type: integer
@@ -3390,18 +3725,21 @@ components:
       - time
       - value
       type: object
-    VehicleStatsAmbientAirTempMilliCValue:
-      description: The ambient air temperature reading in millidegree Celsius.
-      example: 31110
-      format: int64
-      type: integer
-    VehicleStatsNfcCardScan_card:
-      description: The card that was scanned.
+    VehicleStatsGpsOdometerMetersWithDecoration:
+      description: Vehicle GPS odometer event.
       properties:
-        id:
-          description: The id code of the card that was scanned.
-          example: '835063'
-          type: string
+        decorations:
+          $ref: '#/components/schemas/VehicleStatsDecorations'
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Number of meters the vehicle has traveled according to the GPS calculations and the manually-specified odometer reading.
+          example: 14010293
+          format: int64
+          type: integer
+      required:
+      - time
+      - value
       type: object
     VehicleStatsFaultCodesValue_oem_diagnosticTroubleCodes:
       description: Proprietary diagnostic trouble code for some OEM vehicles.
@@ -3423,373 +3761,13 @@ components:
           example: ENG/M
           type: string
       type: object
-    VehicleStatsFaultCodesOBDII:
-      description: Vehicle fault codes for passenger vehicles.
+    VehicleStatsEvRegeneratedEnergyMicroWh:
+      description: Regenerated energy for electric and hybrid vehicles in microwatt hours. Not all EV and HEVs may report this field.
       properties:
-        checkEngineLightIsOn:
-          description: True if the check engine light is illuminated (MIL status field is nonzero for any faults).
-          example: true
-          type: boolean
-        diagnosticTroubleCodes:
-          description: Diagnostic trouble codes for passenger vehicles.
-          items:
-            $ref: '#/components/schemas/VehicleStatsFaultCodesOBDIITroubleCode'
-          type: array
-      type: object
-    VehicleStatsEngineOilPressureKPaWithDecoration:
-      description: Vehicle engine oil pressure reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: The engine oil pressure reading in kilopascals.
-          example: 100
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentStatsListResponse:
-      description: A time-series of equipment stats and pagination information
-      properties:
-        data:
-          description: Time-series of stats for the specified units of equipment and stat types.
-          items:
-            $ref: '#/components/schemas/EquipmentStatsListResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    VehicleStatsEngineImmobilizerWithDecoration:
-      description: Data for the engine immobilizer
-      properties:
-        connected:
-          description: Whether the engine immobilizer is connected or not
-          example: false
-          type: boolean
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        state:
-          description: 'The state of the engine immobilizer. Valid values: `ignition_disabled`, `ignition_enabled`. This stat type will only return states of our first Engine Immobilizer Hardware (ACC-EI). Please use <a href="https://developers.samsara.com/reference/getengineimmobilizerstates" target="_blank">Get engine immobilizer states</a> to get states for both Engine Immobilizer Hardware versions (incl. HW-EI21).'
-          enum:
-          - ignition_disabled
-          - ignition_enabled
-          example: ignition_disabled
-          type: string
-        time:
-          $ref: '#/components/schemas/vehicleStatsAuxInputTime'
-      required:
-      - connected
-      - state
-      - time
-      type: object
-    EquipmentEngineSeconds:
-      description: '[DEPRECATED] Please use either `gatewayEngineSeconds` or `obdEngineSeconds`.'
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
-          example: 22374000
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    DataInputResponse:
-      allOf:
-      - $ref: '#/components/schemas/DataInputTinyResponse'
-      - $ref: '#/components/schemas/DataInputResponse_allOf'
-    VehicleStatsEngineLoadPercentValue:
-      description: The engine load in percentage points (e.g. `99`, `50`, etc).
-      example: 54
-      format: int64
-      type: integer
-    VehicleStatsDecorations:
-      description: "Optional decorations to the primary stat event. See [here](doc:decorations) for more details. The example shows the response if you were to submit `decorations=engineStates&obdEngineSeconds` to the query parameter:\n\n```json\n\"decorations\":{\n  \"engineStates\": {\n    \"value\": \"Off\"\n  },\n  \"obdEngineSeconds\": {\n    \"value\": 9723103\n  }\n}\n```"
-      properties:
-        ambientAirTemperatureMilliC:
-          $ref: '#/components/schemas/VehicleStatsDecorations_ambientAirTemperatureMilliC'
-        auxInput1:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput10:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput11:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput12:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput13:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput2:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput3:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput4:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput5:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput6:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput7:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput8:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        auxInput9:
-          $ref: '#/components/schemas/VehicleStatsAuxInputDecoration'
-        barometricPressurePa:
-          $ref: '#/components/schemas/VehicleStatsDecorations_barometricPressurePa'
-        batteryMilliVolts:
-          $ref: '#/components/schemas/VehicleStatsDecorations_batteryMilliVolts'
-        defLevelMilliPercent:
-          $ref: '#/components/schemas/VehicleStatsDecorations_defLevelMilliPercent'
-        ecuSpeedMph:
-          $ref: '#/components/schemas/VehicleStatsDecorations_ecuSpeedMph'
-        engineCoolantTemperatureMilliC:
-          $ref: '#/components/schemas/VehicleStatsDecorations_engineCoolantTemperatureMilliC'
-        engineImmobilizer:
-          $ref: '#/components/schemas/VehicleStatsEngineImmobilizer'
-        engineLoadPercent:
-          $ref: '#/components/schemas/VehicleStatsDecorations_engineLoadPercent'
-        engineOilPressureKPa:
-          $ref: '#/components/schemas/VehicleStatsDecorations_engineOilPressureKPa'
-        engineRpm:
-          $ref: '#/components/schemas/VehicleStatsDecorations_engineRpm'
-        engineStates:
-          $ref: '#/components/schemas/VehicleStatsDecorations_engineStates'
-        evAverageBatteryTemperatureMilliCelsius:
-          $ref: '#/components/schemas/VehicleStatsEvAverageBatteryTemperatureMilliCelsius'
-        evBatteryCurrentMilliAmp:
-          $ref: '#/components/schemas/VehicleStatsEvBatteryCurrentMilliAmp'
-        evBatteryStateOfHealthMilliPercent:
-          $ref: '#/components/schemas/VehicleStatsEvBatteryStateOfHealthMilliPercent'
-        evBatteryVoltageMilliVolt:
-          $ref: '#/components/schemas/VehicleStatsEvBatteryVoltageMilliVolt'
-        evChargingCurrentMilliAmp:
-          $ref: '#/components/schemas/VehicleStatsEvChargingCurrentMilliAmp'
-        evChargingEnergyMicroWh:
-          $ref: '#/components/schemas/VehicleStatsEvChargingEnergyMicroWh'
-        evChargingStatus:
-          $ref: '#/components/schemas/VehicleStatsEvChargingStatus'
-        evChargingVoltageMilliVolt:
-          $ref: '#/components/schemas/VehicleStatsEvChargingVoltageMilliVolt'
-        evConsumedEnergyMicroWh:
-          $ref: '#/components/schemas/VehicleStatsEvConsumedEnergyMicroWh'
-        evDistanceDrivenMeters:
-          $ref: '#/components/schemas/VehicleStatsEvDistanceDrivenMeters'
-        evRegeneratedEnergyMicroWh:
-          $ref: '#/components/schemas/VehicleStatsEvRegeneratedEnergyMicroWh'
-        evStateOfChargeMilliPercent:
-          $ref: '#/components/schemas/VehicleStatsEvStateOfChargeMilliPercent'
-        faultCodes:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesValue'
-        fuelPercents:
-          $ref: '#/components/schemas/VehicleStatsDecorations_fuelPercents'
-        gps:
-          $ref: '#/components/schemas/VehicleStatsDecorations_gps'
-        gpsDistanceMeters:
-          $ref: '#/components/schemas/VehicleStatsDecorations_gpsDistanceMeters'
-        gpsOdometerMeters:
-          $ref: '#/components/schemas/VehicleStatsDecorations_gpsOdometerMeters'
-        intakeManifoldTemperatureMilliC:
-          $ref: '#/components/schemas/VehicleStatsDecorations_intakeManifoldTemperatureMilliC'
-        obdEngineSeconds:
-          $ref: '#/components/schemas/VehicleStatsDecorations_obdEngineSeconds'
-        obdOdometerMeters:
-          $ref: '#/components/schemas/VehicleStatsDecorations_obdOdometerMeters'
-        seatbeltDriver:
-          $ref: '#/components/schemas/VehicleStatsSeatbeltDriver'
-        spreaderActive:
-          $ref: '#/components/schemas/VehicleStatsSpreaderActive'
-        spreaderAirTemp:
-          $ref: '#/components/schemas/VehicleStatsSpreaderAirTemp'
-        spreaderBlastState:
-          $ref: '#/components/schemas/VehicleStatsSpreaderBlastState'
-        spreaderGranularName:
-          $ref: '#/components/schemas/VehicleStatsSpreaderGranularName'
-        spreaderGranularRate:
-          $ref: '#/components/schemas/VehicleStatsSpreaderGranularRate'
-        spreaderLiquidName:
-          $ref: '#/components/schemas/VehicleStatsSpreaderLiquidName'
-        spreaderLiquidRate:
-          $ref: '#/components/schemas/VehicleStatsSpreaderLiquidRate'
-        spreaderOnState:
-          $ref: '#/components/schemas/VehicleStatsSpreaderOnState'
-        spreaderPlowStatus:
-          $ref: '#/components/schemas/VehicleStatsSpreaderPlowStatus'
-        spreaderPrewetName:
-          $ref: '#/components/schemas/VehicleStatsSpreaderPrewetName'
-        spreaderPrewetRate:
-          $ref: '#/components/schemas/VehicleStatsSpreaderPrewetRate'
-        spreaderRoadTemp:
-          $ref: '#/components/schemas/VehicleStatsSpreaderRoadTemp'
-        tirePressure:
-          $ref: '#/components/schemas/VehicleStatsTirePressures'
-      type: object
-    VehicleStatsFaultCodesValue_j1939:
-      description: Vehicle fault codes for J1939 vehicles.
-      properties:
-        checkEngineLights:
-          $ref: '#/components/schemas/VehicleStatsFaultCodesValue_j1939_checkEngineLights'
-        diagnosticTroubleCodes:
-          description: Diagnostic trouble codes for J1939 vehicles.
-          items:
-            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_j1939_diagnosticTroubleCodes'
-          type: array
-      type: object
-    LocationDataPoint_gpsLocation:
-      description: GPS location information of the data input's datapoint.
-      properties:
-        formattedAddress:
-          description: Formatted address of the location
-          example: 350 Rhode Island St, San Francisco CA, 94103
-          format: string
-          type: string
-        gpsMetersPerSecond:
-          description: Speed of GPS (meters per second)
-          example: 35.5
-          format: double
-          type: number
-        headingDegrees:
-          description: Heading degrees
-          example: 91.2
-          format: double
-          type: number
-        latitude:
-          description: Latitude of the location
-          example: 42.44817
-          format: double
-          type: number
-        longitude:
-          description: Longitude of the location
-          example: -71.224716
-          format: double
-          type: number
-        place:
-          $ref: '#/components/schemas/LocationDataPoint_gpsLocation_place'
-      type: object
-    EquipmentLocationsListResponse_data:
-      description: A unit of equipment and its time-series of location events.
-      properties:
-        id:
-          $ref: '#/components/schemas/EquipmentId'
-        locations:
-          description: A time-series of location events for the given unit of equipment.
-          items:
-            $ref: '#/components/schemas/EquipmentLocation'
-          type: array
-        name:
-          $ref: '#/components/schemas/EquipmentName'
-      required:
-      - id
-      - locations
-      - name
-      type: object
-    VehicleLocationSpeed:
-      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
-      example: 48.3
-      format: double
-      type: number
-    VehicleStatsEngineCoolantTempMilliCWithDecoration:
-      description: Vehicle engine coolant temperature reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: The engine coolant temperature reading in millidegree Celsius.
-          example: 31110
-          format: int64
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    EquipmentGatewayJ1939EngineSeconds:
-      description: Engine seconds reading from the J1939/CAT cable.
-      properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of the number of seconds the engine has been running since it was new, based on the amount of time the AG26 device is receiving power and an offset provided manually through the Samsara cloud dashboard.
-          example: 22374000
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsEngineStateWithDecoration:
-      description: Vehicle engine state event.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          $ref: '#/components/schemas/VehicleStatsEngineStateSetting'
-      required:
-      - time
-      - value
-      type: object
-    VehicleName:
-      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
-      example: Truck A7
-      type: string
-    SafetyEventDriverObjectResponseBody:
-      description: A minified driver object.
-      properties:
-        id:
-          description: ID of the driver.
-          example: 0987
-          type: string
-      type: object
-    SafetyEventActivityFeedItemResponseBody:
-      description: Safety event activity feed item.
-      properties:
-        id:
-          description: The ID of the activity event feed line item.
-          example: 1622151765-212014918174029-1550954461759
-          type: string
-        safetyEvent:
-          $ref: '#/components/schemas/SafetyEventObjectResponseBody'
-        time:
-          description: The time the activity occurred in the corresponding safety event in RFC 3339 milliseconds format.
-          example: '2019-10-12T07:20:50.52Z'
-          type: string
-        type:
-          description: 'The type of activity that occurred in the safety event. We currently only support CoachingStateActivityType, BehaviorLabelActivityType, and CreateSafetyEventActivityType, but we may add support for more activity types in the future.  Valid values: `BehaviorLabelActivityType`, `CoachingStateActivityType`, `CreateSafetyEventActivityType`'
-          enum:
-          - BehaviorLabelActivityType
-          - CoachingStateActivityType
-          - CreateSafetyEventActivityType
-          example: CreateSafetyEventActivityType
-          type: string
-      required:
-      - id
-      - safetyEvent
-      - time
-      - type
-      type: object
-    VehicleStatsEngineCoolantTempMilliCValue:
-      description: The engine coolant temperature reading in millidegree Celsius.
-      example: 31110
-      format: int64
-      type: integer
-    VehicleStatsEngineRpmWithDecoration:
-      description: Vehicle engine RPM reading.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: The revolutions per minute of the engine.
+          description: Regenerated energy for electric and hybrid vehicles in microwatt hours.
           example: 1000
           format: int64
           type: integer
@@ -3797,46 +3775,68 @@ components:
       - time
       - value
       type: object
-    VehicleStatsDecorations_obdEngineSeconds:
+    VehicleStatsDecorations_ambientAirTemperatureMilliC:
       properties:
         value:
-          $ref: '#/components/schemas/VehicleStatsObdEngineSecondsValue'
+          $ref: '#/components/schemas/VehicleStatsAmbientAirTempMilliCValue'
       required:
       - value
       type: object
-    EquipmentGpsOdometerMeters:
-      description: GPS odometer reading.
+    VehicleStatsSpreaderPlowStatus:
+      description: 'Snow plow status (`Up` or `Down`), as read from the material spreader. Note: this is separate from plow status defined via auxInput.'
       properties:
-        time:
-          $ref: '#/components/schemas/EquipmentTime'
-        value:
-          description: An approximation of odometer reading based on GPS calculations since the AG26 was activated, and a manual odometer offset provided in the Samsara cloud dashboard.
-          example: 3200
-          type: integer
-      required:
-      - time
-      - value
-      type: object
-    VehicleStatsObdEngineSecondsValue:
-      description: Number of seconds the vehicle's engine has been on according to the on-board diagnostics.
-      example: 9723103
-      format: int64
-      type: integer
-    VehicleStatsGpsDistanceMetersWithDecoration:
-      description: Vehicle GPS distance event.
-      properties:
-        decorations:
-          $ref: '#/components/schemas/VehicleStatsDecorations'
         time:
           $ref: '#/components/schemas/time'
         value:
-          description: Number of meters the vehicle has traveled since the gateway was installed, based on GPS calculations.
-          example: 81029.591434899
-          format: double
-          type: number
+          description: Snow plow status, as read from the material spreader
+          enum:
+          - Up
+          - Down
+          example: Down
+          type: string
       required:
       - time
       - value
+      type: object
+    VehicleStatsDecorations_gpsDistanceMeters:
+      properties:
+        value:
+          $ref: '#/components/schemas/VehicleStatsGpsDistanceMetersValue'
+      required:
+      - value
+      type: object
+    VehicleStatsObdOdometerMetersValue:
+      description: Number of meters the vehicle has traveled according to the on-board diagnostics.
+      example: 14010293
+      format: int64
+      type: integer
+    VehicleStatsFaultCodesValue_oem:
+      description: Vehicle fault codes for OEM vehicles.
+      properties:
+        diagnosticTroubleCodes:
+          description: Proprietary diagnostic trouble codes for OEM vehicles.
+          items:
+            $ref: '#/components/schemas/VehicleStatsFaultCodesValue_oem_diagnosticTroubleCodes'
+          type: array
+      type: object
+    VehicleStatsFaultCodesValue_obdii_confirmedDtcs:
+      description: Passenger vehicle DTC information
+      properties:
+        dtcDescription:
+          description: The DTC description, if available.
+          example: Fuel Rail/System Pressure - Too Low Bank 1
+          type: string
+        dtcId:
+          description: The DTC identifier.
+          example: 135
+          format: int32
+          type: integer
+        dtcShortCode:
+          description: The DTC short code, if available.
+          example: P0087
+          type: string
+      required:
+      - dtcId
       type: object
   securitySchemes:
     AccessTokenHeader:

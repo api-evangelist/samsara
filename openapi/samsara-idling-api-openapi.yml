@@ -148,80 +148,12 @@ paths:
       - Idling
 components:
   schemas:
-    IdlingReportEventResponseBody:
-      description: A summary of the idling event.
-      properties:
-        address:
-          $ref: '#/components/schemas/IdlingReportEventAddressResponseBody'
-        durationMs:
-          description: The duration of this idling event in milliseconds.
-          example: 860000
-          format: int64
-          type: integer
-        endTime:
-          description: The end time of this idling event in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        fuelConsumptionMl:
-          description: The amount of fuel consumed in milliliters during this idling event.
-          example: 2500
-          format: double
-          type: number
-        isPtoActive:
-          description: Whether or not power take-off was active during this idling event.
-          example: false
-          type: boolean
-        startTime:
-          description: The start time of this idling event in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          type: string
-        vehicle:
-          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
-      required:
-      - address
-      - durationMs
-      - endTime
-      - fuelConsumptionMl
-      - isPtoActive
-      - startTime
-      - vehicle
-      type: object
-    IdlingReportsGetVehicleIdlingReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    IdlingReportsGetVehicleIdlingReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    IdlingReportsGetVehicleIdlingReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -237,6 +169,21 @@ components:
         message:
           description: Message of error
           example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -269,21 +216,6 @@ components:
       - requestEndTime
       - requestStartTime
       type: object
-    IdlingReportsGetVehicleIdlingReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     IdlingReportsGetVehicleIdlingReportsNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
@@ -299,12 +231,87 @@ components:
       - message
       - requestId
       type: object
-    IdlingReportsGetVehicleIdlingReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    IdlingReportsGetVehicleIdlingReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    IdlingReportsGetVehicleIdlingReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -346,21 +353,6 @@ components:
           example: 'Fleet Truck #1'
           type: string
       type: object
-    IdlingReportsGetVehicleIdlingReportsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     IdlingReportEventAddressResponseBody:
       description: Address where the idling event took place.
       properties:
@@ -383,35 +375,43 @@ components:
       - latitude
       - longitude
       type: object
-    IdlingReportsGetVehicleIdlingReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    IdlingReportEventResponseBody:
+      description: A summary of the idling event.
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+        address:
+          $ref: '#/components/schemas/IdlingReportEventAddressResponseBody'
+        durationMs:
+          description: The duration of this idling event in milliseconds.
+          example: 860000
+          format: int64
+          type: integer
+        endTime:
+          description: The end time of this idling event in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
+        fuelConsumptionMl:
+          description: The amount of fuel consumed in milliliters during this idling event.
+          example: 2500
+          format: double
+          type: number
+        isPtoActive:
+          description: Whether or not power take-off was active during this idling event.
+          example: false
           type: boolean
+        startTime:
+          description: The start time of this idling event in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
       required:
-      - endCursor
-      - hasNextPage
+      - address
+      - durationMs
+      - endTime
+      - fuelConsumptionMl
+      - isPtoActive
+      - startTime
+      - vehicle
       type: object
   securitySchemes:
     AccessTokenHeader:

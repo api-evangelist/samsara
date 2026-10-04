@@ -218,6 +218,18 @@ paths:
       x-codegen-request-body-name: attribute
 components:
   schemas:
+    attributeValueTiny:
+      description: A minified attribute value
+      properties:
+        id:
+          description: The samsara id of this value object.
+          example: 123e4567-e89b-12d3-a456-426614174000
+          type: string
+        stringValue:
+          description: The human-readable string for this value.
+          example: CDL
+          type: string
+      type: object
     AttributeEntity:
       properties:
         entityId:
@@ -254,27 +266,26 @@ components:
         data:
           $ref: '#/components/schemas/AttributeExpanded'
       type: object
-    attributeValueTiny:
-      description: A minified attribute value
+    GetAttributesByEntityTypeResponse:
       properties:
-        id:
-          description: The samsara id of this value object.
-          example: 123e4567-e89b-12d3-a456-426614174000
-          type: string
-        stringValue:
-          description: The human-readable string for this value.
-          example: CDL
-          type: string
-      type: object
-    AttributeExpanded_allOf:
-      properties:
-        entities:
-          description: Entities that this attribute is applied onto
+        data:
           items:
-            $ref: '#/components/schemas/AttributeEntity'
+            $ref: '#/components/schemas/Attribute'
           type: array
-      required:
-      - entities
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
       type: object
     CreateAttributeRequest_entities:
       properties:
@@ -301,113 +312,16 @@ components:
             type: string
           type: array
       type: object
-    standardDeleteResponse:
-      description: A successful DELETE response is a 204 with no content.
-      example: <empty content>
-      type: string
-    Attribute:
+    AttributeExpanded_allOf:
       properties:
-        attributeType:
-          default: string
-          description: 'Denotes the data type of the attribute''s values. Valid values: `string`, `number`.'
-          enum:
-          - string
-          - number
-          example: string
-          type: string
-        attributeValueQuantity:
-          default: multi
-          description: 'Defines whether or not this attribute can be used on the same entity many times (with different values). Valid values: `single`, `multi`.'
-          enum:
-          - single
-          - multi
-          example: multi
-          type: string
-        entityType:
-          description: 'Denotes the type of entity, driver or asset. Valid values: `driver`, `asset`.'
-          enum:
-          - driver
-          - asset
-          example: asset
-          type: string
-        id:
-          description: The samsara id of the attribute object.
-          example: 123e4567-e89b-12d3-a456-426614174000
-          type: string
-        name:
-          description: Name of attribute.
-          example: License Certifications
-          type: string
-        numberValues:
-          description: Number values that can be associated with this attribute
-          items:
-            format: double
-            type: number
-          type: array
-        stringValues:
-          description: String values that can be associated with this attribute
-          items:
-            type: string
-          type: array
-        values:
-          description: Representation of values that includes ids.
-          items:
-            $ref: '#/components/schemas/attributeValueTiny'
-          type: array
-      type: object
-    UpdateAttributeRequest:
-      description: A request body to update an Attribute.
-      properties:
-        attributeType:
-          default: string
-          description: 'Denotes the data type of the attribute''s values. Valid values: `string`, `number`.'
-          enum:
-          - string
-          - number
-          example: string
-          type: string
-        attributeValueQuantity:
-          default: multi
-          description: 'Defines whether or not this attribute can be used on the same entity many times (with different values). Denotes the type of entity, driver or asset. Valid values: `driver`, `asset`.'
-          enum:
-          - single
-          - multi
-          example: multi
-          type: string
         entities:
-          description: Entities that will be applied to this attribute
+          description: Entities that this attribute is applied onto
           items:
-            $ref: '#/components/schemas/CreateAttributeRequest_entities'
-          type: array
-        entityType:
-          description: Denotes the type of entity, driver or asset.
-          enum:
-          - driver
-          - asset
-          example: asset
-          type: string
-        name:
-          description: Name
-          example: License Certifications
-          type: string
-        numberValues:
-          description: Number values that can be associated with this attribute
-          items:
-            format: double
-            type: number
-          type: array
-        stringValues:
-          description: String values that can be associated with this attribute
-          items:
-            type: string
+            $ref: '#/components/schemas/AttributeEntity'
           type: array
       required:
-      - entityType
+      - entities
       type: object
-    AttributeExpanded:
-      allOf:
-      - $ref: '#/components/schemas/Attribute'
-      - $ref: '#/components/schemas/AttributeExpanded_allOf'
     paginationResponse:
       description: Pagination parameters.
       properties:
@@ -424,6 +338,14 @@ components:
       - endCursor
       - hasNextPage
       type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    AttributeExpanded:
+      allOf:
+      - $ref: '#/components/schemas/Attribute'
+      - $ref: '#/components/schemas/AttributeExpanded_allOf'
     CreateAttributeRequest:
       description: A request body to create an Attribute.
       properties:
@@ -476,26 +398,104 @@ components:
       - entityType
       - name
       type: object
-    GetAttributesByEntityTypeResponse:
+    UpdateAttributeRequest:
+      description: A request body to update an Attribute.
       properties:
-        data:
+        attributeType:
+          default: string
+          description: 'Denotes the data type of the attribute''s values. Valid values: `string`, `number`.'
+          enum:
+          - string
+          - number
+          example: string
+          type: string
+        attributeValueQuantity:
+          default: multi
+          description: 'Defines whether or not this attribute can be used on the same entity many times (with different values). Denotes the type of entity, driver or asset. Valid values: `driver`, `asset`.'
+          enum:
+          - single
+          - multi
+          example: multi
+          type: string
+        entities:
+          description: Entities that will be applied to this attribute
           items:
-            $ref: '#/components/schemas/Attribute'
+            $ref: '#/components/schemas/CreateAttributeRequest_entities'
           type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
+        entityType:
+          description: Denotes the type of entity, driver or asset.
+          enum:
+          - driver
+          - asset
+          example: asset
+          type: string
+        name:
+          description: Name
+          example: License Certifications
+          type: string
+        numberValues:
+          description: Number values that can be associated with this attribute
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that can be associated with this attribute
+          items:
+            type: string
+          type: array
+      required:
+      - entityType
       type: object
-    standardErrorResponse:
-      description: Error response
+    Attribute:
       properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
+        attributeType:
+          default: string
+          description: 'Denotes the data type of the attribute''s values. Valid values: `string`, `number`.'
+          enum:
+          - string
+          - number
+          example: string
           type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
+        attributeValueQuantity:
+          default: multi
+          description: 'Defines whether or not this attribute can be used on the same entity many times (with different values). Valid values: `single`, `multi`.'
+          enum:
+          - single
+          - multi
+          example: multi
           type: string
+        entityType:
+          description: 'Denotes the type of entity, driver or asset. Valid values: `driver`, `asset`.'
+          enum:
+          - driver
+          - asset
+          example: asset
+          type: string
+        id:
+          description: The samsara id of the attribute object.
+          example: 123e4567-e89b-12d3-a456-426614174000
+          type: string
+        name:
+          description: Name of attribute.
+          example: License Certifications
+          type: string
+        numberValues:
+          description: Number values that can be associated with this attribute
+          items:
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: String values that can be associated with this attribute
+          items:
+            type: string
+          type: array
+        values:
+          description: Representation of values that includes ids.
+          items:
+            $ref: '#/components/schemas/attributeValueTiny'
+          type: array
       type: object
   securitySchemes:
     AccessTokenHeader:

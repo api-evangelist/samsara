@@ -74,19 +74,9 @@ paths:
       - Trailer  Assignments
 components:
   schemas:
-    inline_response_200_7:
-      properties:
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-        trailers:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
-          type: array
-      type: object
-    V1TrailerAssignmentsResponse:
-      allOf:
-      - $ref: '#/components/schemas/V1TrailerBase'
-      - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
     V1Pagination:
       properties:
         endCursor:
@@ -109,6 +99,10 @@ components:
       - hasPrevPage
       - startCursor
       type: object
+    V1TrailerAssignmentsResponse:
+      allOf:
+      - $ref: '#/components/schemas/V1TrailerBase'
+      - $ref: '#/components/schemas/V1TrailerAssignmentsResponse_allOf'
     V1TrailerBase:
       properties:
         id:
@@ -150,9 +144,15 @@ components:
             $ref: '#/components/schemas/V1TrailerAssignmentResponse'
           type: array
       type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
+    inline_response_200_7:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+        trailers:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          type: array
+      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

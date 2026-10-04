@@ -436,8 +436,8 @@ paths:
       - Custom
 components:
   schemas:
-    CustomReportsPostCustomReportRunGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    CustomReportsGetCustomReportConfigsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
@@ -451,85 +451,12 @@ components:
       - message
       - requestId
       type: object
-    GetCustomReportRunObjectResponseBody:
-      description: The full custom report run object.
-      properties:
-        attributeValueIds:
-          description: The optional array of attribute value ids to filter the custom report run data by.
-          example:
-          - 19abdecf-54f0-41de-991c-ee1e031134d1
-          - ab83dfce-54f0-41de-991c-ee1e031134d2
-          items:
-            example: Quibusdam beatae.
-            type: string
-          type: array
-        createdAtTime:
-          description: Time of when the custom report run was created in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        customReportId:
-          description: Unique ID for the custom report that it belongs to.
-          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
-          type: string
-        endTime:
-          description: The end time of the custom report run in RFC 3339 format.
-          example: '2019-06-13T21:08:25Z'
-          format: date-time
-          type: string
-        id:
-          description: Unique ID for the custom report run object.
-          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
-          type: string
-        percentComplete:
-          description: The percentage completed of this custom report run. Valid values from 0-100, inclusive.
-          example: 5264689607490754000
-          format: int64
-          type: integer
-        startTime:
-          description: The start time of the custom report run in RFC 3339 format.
-          example: '2019-06-13T21:08:25Z'
-          format: date-time
-          type: string
-        status:
-          description: 'The status of the custom report run.  Valid values: `completed`, `pending`, `failed`, `cancelled`'
-          enum:
-          - completed
-          - pending
-          - failed
-          - cancelled
-          example: completed
-          type: string
-        tagIds:
-          description: The optional array of tag ids to filter the custom report run by.
-          example:
-          - 4f71fd67-54f0-41de-991c-ee1e031134d1
-          - a0befd37-54f0-41de-991c-ee1e031134d2
-          items:
-            example: Rerum veritatis quia et repellat vero.
-            type: string
-          type: array
-        updatedAtTime:
-          description: Time of when the custom report run was last updated in RFC 3339 format.
-          example: '2019-06-13T21:08:25Z'
-          format: date-time
-          type: string
-      required:
-      - createdAtTime
-      - customReportId
-      - endTime
-      - id
-      - percentComplete
-      - startTime
-      - status
-      - updatedAtTime
-      type: object
-    CustomReportsGetCustomReportRunDataTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    CustomReportsPostCustomReportRunMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -539,12 +466,12 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsGetCustomReportRunsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    CustomReportsGetCustomReportConfigsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Not implemented.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -554,12 +481,12 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsPostCustomReportRunBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    CustomReportsGetCustomReportRunDataInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -569,12 +496,12 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsGetCustomReportConfigsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    CustomReportsGetCustomReportRunsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -583,49 +510,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    CustomReportsPostCustomReportRunRequestBody:
-      description: This creates and queues a new custom report run for the given body parameters.
-      properties:
-        attributeValueIds:
-          description: The optional array of attribute value ids to filter the custom report run by.
-          example:
-          - 19abdecf-54f0-41de-991c-ee1e031134d1
-          - ab83dfce-54f0-41de-991c-ee1e031134d2
-          items:
-            description: Attribute value ids.
-            example: Culpa dolore.
-            type: string
-          type: array
-        customReportId:
-          description: Required unique ID for the custom report linked to this run.
-          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
-          type: string
-        endTime:
-          description: The end time of the custom report run in RFC 3339 format.
-          example: '2019-06-13T21:08:25Z'
-          format: date-time
-          type: string
-        startTime:
-          description: The start time of the custom report run in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        tagIds:
-          description: The optional array of tag ids to filter the custom report run by.
-          example:
-          - 48923049
-          - 198349
-          items:
-            description: Tag ids.
-            example: 7325739965213532000
-            format: int64
-            type: integer
-          type: array
-      required:
-      - customReportId
-      - endTime
-      - startTime
       type: object
     CustomReportColumnsObjectResponseBody:
       description: Information about a custom report column.
@@ -739,12 +623,12 @@ components:
       - displayName
       - type
       type: object
-    CustomReportsGetCustomReportRunDataServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    CustomReportsGetCustomReportRunsUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -754,12 +638,12 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsGetCustomReportRunDataInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    CustomReportsGetCustomReportRunDataMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -769,38 +653,8 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsGetCustomReportRunsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunDataBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    CustomReportsPostCustomReportRunGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
@@ -827,115 +681,27 @@ components:
       - data
       - pagination
       type: object
-    CustomReportsPostCustomReportRunResponseBody:
+    CustomReportsPostCustomReportRunBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
-        data:
-          $ref: '#/components/schemas/PostCustomReportRunResponseObjectResponseBody'
-      required:
-      - data
-      type: object
-    PostCustomReportRunResponseObjectResponseBody:
-      description: Full post custom report run response object
-      properties:
-        createdAtTime:
-          description: Time of when the custom report run was created and queued in UTC.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
-        customReportId:
-          description: Unique Id for the custom report (config) linked to this run.
-          example: a0befd37-54f0-41de-991c-ee1e031134d2
-          type: string
-        id:
-          description: Unique id for the custom report run object.
-          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - createdAtTime
-      - customReportId
-      - id
+      - message
+      - requestId
       type: object
-    CustomReportsGetCustomReportRunDataUnauthorizedErrorResponseBody:
+    CustomReportsGetCustomReportConfigsUnauthorizedErrorResponseBody:
       description: Unauthorized
       properties:
         message:
           description: Message of error
           example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportConfigsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    CustomReportsGetCustomReportConfigsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportConfigsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsPostCustomReportRunInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -960,12 +726,27 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsGetCustomReportConfigsBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    CustomReportsGetCustomReportRunDataTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -975,12 +756,310 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsGetCustomReportRunDataNotImplementedErrorResponseBody:
+    CustomReportsGetCustomReportConfigsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportConfigsNotImplementedErrorResponseBody:
       description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
           example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportConfigsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GetCustomReportRunObjectResponseBody:
+      description: The full custom report run object.
+      properties:
+        attributeValueIds:
+          description: The optional array of attribute value ids to filter the custom report run data by.
+          example:
+          - 19abdecf-54f0-41de-991c-ee1e031134d1
+          - ab83dfce-54f0-41de-991c-ee1e031134d2
+          items:
+            example: Quibusdam beatae.
+            type: string
+          type: array
+        createdAtTime:
+          description: Time of when the custom report run was created in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        customReportId:
+          description: Unique ID for the custom report that it belongs to.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+        endTime:
+          description: The end time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+        id:
+          description: Unique ID for the custom report run object.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+        percentComplete:
+          description: The percentage completed of this custom report run. Valid values from 0-100, inclusive.
+          example: 5264689607490754000
+          format: int64
+          type: integer
+        startTime:
+          description: The start time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+        status:
+          description: 'The status of the custom report run.  Valid values: `completed`, `pending`, `failed`, `cancelled`'
+          enum:
+          - completed
+          - pending
+          - failed
+          - cancelled
+          example: completed
+          type: string
+        tagIds:
+          description: The optional array of tag ids to filter the custom report run by.
+          example:
+          - 4f71fd67-54f0-41de-991c-ee1e031134d1
+          - a0befd37-54f0-41de-991c-ee1e031134d2
+          items:
+            example: Rerum veritatis quia et repellat vero.
+            type: string
+          type: array
+        updatedAtTime:
+          description: Time of when the custom report run was last updated in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+      required:
+      - createdAtTime
+      - customReportId
+      - endTime
+      - id
+      - percentComplete
+      - startTime
+      - status
+      - updatedAtTime
+      type: object
+    CustomReportsGetCustomReportConfigsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1000,12 +1079,173 @@ components:
       - data
       - pagination
       type: object
-    CustomReportsGetCustomReportRunDataNotFoundErrorResponseBody:
+    CustomReportsGetCustomReportRunsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostCustomReportRunResponseObjectResponseBody:
+      description: Full post custom report run response object
+      properties:
+        createdAtTime:
+          description: Time of when the custom report run was created and queued in UTC.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        customReportId:
+          description: Unique Id for the custom report (config) linked to this run.
+          example: a0befd37-54f0-41de-991c-ee1e031134d2
+          type: string
+        id:
+          description: Unique id for the custom report run object.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+      required:
+      - createdAtTime
+      - customReportId
+      - id
+      type: object
+    CustomReportsGetCustomReportRunsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportConfigsResponseBody:
+      properties:
+        data:
+          description: List of custom report config objects.
+          items:
+            $ref: '#/components/schemas/CustomReportConfigObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    CustomReportsGetCustomReportConfigsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/PostCustomReportRunResponseObjectResponseBody'
+      required:
+      - data
+      type: object
+    CustomReportsGetCustomReportRunDataGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsPostCustomReportRunNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
           description: Message of error
           example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportConfigsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1045,304 +1285,6 @@ components:
       required:
       - rows
       type: object
-    CustomReportsGetCustomReportRunsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunDataBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsPostCustomReportRunServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsPostCustomReportRunUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportConfigsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsPostCustomReportRunNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunDataGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunDataMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportConfigsResponseBody:
-      properties:
-        data:
-          description: List of custom report config objects.
-          items:
-            $ref: '#/components/schemas/CustomReportConfigObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    CustomReportsPostCustomReportRunMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportRunsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportConfigsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportConfigsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsGetCustomReportConfigsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsPostCustomReportRunTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CustomReportsPostCustomReportRunNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     CustomReportConfigObjectResponseBody:
       description: Full Custom report config object
       properties:
@@ -1364,12 +1306,55 @@ components:
       - id
       - reportName
       type: object
-    CustomReportsGetCustomReportRunsNotFoundErrorResponseBody:
-      description: Resource not found
+    CustomReportsPostCustomReportRunRequestBody:
+      description: This creates and queues a new custom report run for the given body parameters.
+      properties:
+        attributeValueIds:
+          description: The optional array of attribute value ids to filter the custom report run by.
+          example:
+          - 19abdecf-54f0-41de-991c-ee1e031134d1
+          - ab83dfce-54f0-41de-991c-ee1e031134d2
+          items:
+            description: Attribute value ids.
+            example: Culpa dolore.
+            type: string
+          type: array
+        customReportId:
+          description: Required unique ID for the custom report linked to this run.
+          example: 4f71fd67-54f0-41de-991c-ee1e031134d1
+          type: string
+        endTime:
+          description: The end time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T21:08:25Z'
+          format: date-time
+          type: string
+        startTime:
+          description: The start time of the custom report run in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        tagIds:
+          description: The optional array of tag ids to filter the custom report run by.
+          example:
+          - 48923049
+          - 198349
+          items:
+            description: Tag ids.
+            example: 7325739965213532000
+            format: int64
+            type: integer
+          type: array
+      required:
+      - customReportId
+      - endTime
+      - startTime
+      type: object
+    CustomReportsGetCustomReportConfigsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1379,12 +1364,27 @@ components:
       - message
       - requestId
       type: object
-    CustomReportsGetCustomReportConfigsTooManyRequestsErrorResponseBody:
-      description: Too many requests
+    CustomReportsGetCustomReportRunDataNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Exceeded rate limit.
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CustomReportsGetCustomReportRunDataBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

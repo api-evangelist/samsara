@@ -83,34 +83,6 @@ paths:
       - Vehicle  Locations
 components:
   schemas:
-    VehicleLocationSpeed:
-      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
-      example: 48.3
-      format: double
-      type: number
-    VehicleLocationsResponse:
-      description: Most recent vehicle locations and pagination info.
-      properties:
-        data:
-          description: List of the most recent locations for the specified vehicles.
-          items:
-            $ref: '#/components/schemas/VehicleLocationsResponse_data'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    VehicleLocationLatitude:
-      description: GPS latitude represented in degrees
-      example: 122.142
-      format: double
-      type: number
-    VehicleName:
-      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
-      example: Truck A7
-      type: string
     VehicleLocationsResponse_data:
       description: A vehicle and its most recent location.
       properties:
@@ -124,14 +96,6 @@ components:
       - id
       - location
       - name
-      type: object
-    reverseGeo:
-      description: Reverse geocoded information.
-      properties:
-        formattedLocation:
-          description: Formatted address of the reverse geocoding data.
-          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
-          type: string
       type: object
     VehicleLocation:
       description: Vehicle location event.
@@ -153,10 +117,58 @@ components:
       - longitude
       - time
       type: object
-    VehicleId:
-      description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
-      example: '112'
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
       type: string
+    VehicleLocationLatitude:
+      description: GPS latitude represented in degrees
+      example: 122.142
+      format: double
+      type: number
+    VehicleName:
+      description: The human-readable name of the Vehicle. This is set by a fleet administrator and will appear in both Samsaras cloud dashboard as well as the Samsara Driver mobile app. **By default**, this name is the serial number of the Samsara Vehicle Gateway. It can be set or updated through the Samsara Dashboard or through the API at any time.
+      example: Truck A7
+      type: string
+    VehicleLocationsResponse:
+      description: Most recent vehicle locations and pagination info.
+      properties:
+        data:
+          description: List of the most recent locations for the specified vehicles.
+          items:
+            $ref: '#/components/schemas/VehicleLocationsResponse_data'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
+      type: object
+    reverseGeo:
+      description: Reverse geocoded information.
+      properties:
+        formattedLocation:
+          description: Formatted address of the reverse geocoding data.
+          example: 16 N Fair Oaks Ave, Pasadena, CA 91103
+          type: string
+      type: object
+    VehicleLocationLongitude:
+      description: GPS longitude represented in degrees
+      example: -93.343
+      format: double
+      type: number
     paginationResponse:
       description: Pagination parameters.
       properties:
@@ -173,26 +185,14 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    VehicleLocationLongitude:
-      description: GPS longitude represented in degrees
-      example: -93.343
+    VehicleLocationSpeed:
+      description: GPS speed of the vehicle in miles per hour. See `isEcuSpeed` to determine speed data source.
+      example: 48.3
       format: double
       type: number
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    time:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
+    VehicleId:
+      description: The unique Samsara ID of the Vehicle. This is automatically generated when the Vehicle object is created. It cannot be changed.
+      example: '112'
       type: string
     VehicleLocationHeading:
       description: Heading of the vehicle in degrees.

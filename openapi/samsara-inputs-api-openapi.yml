@@ -202,12 +202,12 @@ components:
       - units
       - value
       type: object
-    AssetsInputsGetAssetsInputsBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -232,59 +232,12 @@ components:
       - message
       - requestId
       type: object
-    GoaTagTinyResponseResponseBody:
-      description: A minified tag object
-      properties:
-        id:
-          description: ID of the tag
-          example: '3914'
-          type: string
-        name:
-          description: Name of the tag.
-          example: East Coast
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    AssetsInputsGetAssetsInputsResponseBody:
-      properties:
-        data:
-          description: Array of assets inputs objects.
-          items:
-            $ref: '#/components/schemas/assetsInputsResponseResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    AssetsInputsGetAssetsInputsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -309,35 +262,18 @@ components:
       - message
       - requestId
       type: object
-    AssetsInputsGetAssetsInputsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
+    AssetsInputsGetAssetsInputsResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
+        data:
+          description: Array of assets inputs objects.
+          items:
+            $ref: '#/components/schemas/assetsInputsResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
       required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+      - data
+      - pagination
       type: object
     GoaPaginationResponseResponseBody:
       description: Pagination parameters.
@@ -353,6 +289,21 @@ components:
       required:
       - endCursor
       - hasNextPage
+      type: object
+    AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     AssetsInputsAssetResponseResponseBody:
       description: Asset that the input data is from.
@@ -379,12 +330,62 @@ components:
       required:
       - id
       type: object
-    AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    GoaAttributeTinyResponseBody:
+      description: Attribute properties.
+      properties:
+        id:
+          description: Id of the attribute
+          example: '494123'
+          type: string
+        name:
+          description: Name of the attribute
+          example: Compliance/ELD
+          type: string
+        numberValues:
+          description: List of number values associated with the attribute
+          example:
+          - 867
+          - 5309
+          items:
+            example: 0.7405685598633346
+            format: double
+            type: number
+          type: array
+        stringValues:
+          description: List of string values associated with the attribute.
+          example:
+          - HQ
+          - Leased
+          items:
+            example: Tempora dolorum placeat.
+            type: string
+          type: array
+      type: object
+    GoaTagTinyResponseResponseBody:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -424,36 +425,35 @@ components:
       - message
       - requestId
       type: object
-    GoaAttributeTinyResponseBody:
-      description: Attribute properties.
+    AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
-        id:
-          description: Id of the attribute
-          example: '494123'
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
-        name:
-          description: Name of the attribute
-          example: Compliance/ELD
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
-        numberValues:
-          description: List of number values associated with the attribute
-          example:
-          - 867
-          - 5309
-          items:
-            example: 0.7405685598633346
-            format: double
-            type: number
-          type: array
-        stringValues:
-          description: List of string values associated with the attribute.
-          example:
-          - HQ
-          - Leased
-          items:
-            example: Tempora dolorum placeat.
-            type: string
-          type: array
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

@@ -252,47 +252,31 @@ paths:
       x-codegen-request-body-name: address
 components:
   schemas:
-    CreateAddressRequest_geofence:
-      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+    standardErrorResponse:
+      description: Error response
       properties:
-        circle:
-          $ref: '#/components/schemas/AddressGeofence_circle'
-        polygon:
-          $ref: '#/components/schemas/AddressGeofence_polygon'
-        settings:
-          $ref: '#/components/schemas/CreateAddressRequest_geofence_settings'
-      type: object
-    AddressGeofence_settings:
-      description: Information about a geofence's settings.
-      properties:
-        showAddresses:
-          description: If this property is set to true, then underlying geofence addresses will be shown in reports instead of a geofence's name.
-          example: false
-          type: boolean
-      type: object
-    contactTinyResponse:
-      description: A minified contact object
-      properties:
-        firstName:
-          description: First name of the contact.
-          example: Jane
+        message:
+          description: The message of the error.
+          example: An error has occurred.
           type: string
-        id:
-          description: ID of the contact.
-          example: '22408'
-          type: string
-        lastName:
-          description: Last name of the contact.
-          example: Jones
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
           type: string
       type: object
-    CreateAddressRequest_geofence_settings:
-      description: Information about a geofence's settings.
+    ListAddressesResponse:
+      description: A list of Addresses and pagination information.
       properties:
-        showAddresses:
-          description: If this property is set to true, then underlying geofence addresses will be shown in reports instead of a geofence's name.
-          example: true
-          type: boolean
+        data:
+          description: A list of Addresses.
+          items:
+            $ref: '#/components/schemas/Address'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      required:
+      - data
+      - pagination
       type: object
     AddressGeofence_polygon_vertices:
       properties:
@@ -307,6 +291,16 @@ components:
       required:
       - latitude
       - longitude
+      type: object
+    AddressGeofence:
+      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+      properties:
+        circle:
+          $ref: '#/components/schemas/AddressGeofence_circle'
+        polygon:
+          $ref: '#/components/schemas/AddressGeofence_polygon'
+        settings:
+          $ref: '#/components/schemas/AddressGeofence_settings'
       type: object
     AddressGeofence_polygon:
       description: Information about a polygon geofence. This field is only needed if the geofence is a polygon.
@@ -348,228 +342,6 @@ components:
           type: integer
       required:
       - radiusMeters
-      type: object
-    tagTinyResponse:
-      description: A minified tag object
-      properties:
-        id:
-          description: ID of the tag.
-          example: '3914'
-          type: string
-        name:
-          description: Name of the tag.
-          example: East Coast
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-      type: object
-    UpdateAddressRequest:
-      description: A request body to update an Address.
-      properties:
-        addressTypes:
-          description: 'Reporting location type associated with the address (used for ELD reporting purposes). Valid values: `yard`, `shortHaul`, `workforceSite`, `riskZone`, `industrialSite`, `alertsOnly`.'
-          items:
-            enum:
-            - yard
-            - shortHaul
-            - workforceSite
-            - riskZone
-            - industrialSite
-            - alertsOnly
-            example: yard
-            type: string
-          type: array
-        contactIds:
-          description: An array of Contact IDs associated with this Address.
-          items:
-            example: '22408'
-            type: string
-          type: array
-        externalIds:
-          additionalProperties:
-            type: string
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          type: object
-        formattedAddress:
-          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
-          example: 350 Rhode Island St, San Francisco, CA
-          maxLength: 1024
-          type: string
-        geofence:
-          $ref: '#/components/schemas/UpdateAddressRequest_geofence'
-        latitude:
-          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
-          example: 37.765363
-          format: double
-          type: number
-        longitude:
-          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
-          example: -122.4029238
-          format: double
-          type: number
-        name:
-          description: Name of the address.
-          example: Samsara HQ
-          maxLength: 255
-          type: string
-        notes:
-          description: Notes about the address.
-          example: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
-          maxLength: 280
-          type: string
-        tagIds:
-          description: An array of IDs of tags to associate with this address.
-          items:
-            example: '3914'
-            type: string
-          type: array
-      type: object
-    UpdateAddressRequest_geofence:
-      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
-      properties:
-        circle:
-          $ref: '#/components/schemas/AddressGeofence_circle'
-        polygon:
-          $ref: '#/components/schemas/AddressGeofence_polygon'
-        settings:
-          $ref: '#/components/schemas/AddressGeofence_settings'
-      type: object
-    standardDeleteResponse:
-      description: A successful DELETE response is a 204 with no content.
-      example: <empty content>
-      type: string
-    AddressResponse:
-      description: An Address response body.
-      properties:
-        data:
-          $ref: '#/components/schemas/Address'
-      required:
-      - data
-      type: object
-    ListAddressesResponse:
-      description: A list of Addresses and pagination information.
-      properties:
-        data:
-          description: A list of Addresses.
-          items:
-            $ref: '#/components/schemas/Address'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      required:
-      - data
-      - pagination
-      type: object
-    AddressGeofence:
-      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
-      properties:
-        circle:
-          $ref: '#/components/schemas/AddressGeofence_circle'
-        polygon:
-          $ref: '#/components/schemas/AddressGeofence_polygon'
-        settings:
-          $ref: '#/components/schemas/AddressGeofence_settings'
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    CreateAddressRequest:
-      description: A request body to create an Address.
-      properties:
-        addressTypes:
-          description: 'Reporting location type associated with the address (used for ELD reporting purposes). Valid values: `yard`, `shortHaul`, `workforceSite`, `riskZone`, `industrialSite`, `alertsOnly`.'
-          items:
-            enum:
-            - yard
-            - shortHaul
-            - workforceSite
-            - riskZone
-            - industrialSite
-            - alertsOnly
-            example: yard
-            type: string
-          type: array
-        contactIds:
-          description: An array of Contact IDs associated with this Address.
-          items:
-            example: '22408'
-            type: string
-          type: array
-        externalIds:
-          additionalProperties:
-            type: string
-          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
-          example:
-            maintenanceId: '250020'
-            payrollId: ABFS18600
-          type: object
-        formattedAddress:
-          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
-          example: 350 Rhode Island St, San Francisco, CA
-          maxLength: 1024
-          type: string
-        geofence:
-          $ref: '#/components/schemas/CreateAddressRequest_geofence'
-        latitude:
-          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
-          example: 37.765363
-          format: double
-          type: number
-        longitude:
-          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
-          example: -122.4029238
-          format: double
-          type: number
-        name:
-          description: Name of the address.
-          example: Samsara HQ
-          maxLength: 255
-          type: string
-        notes:
-          description: Notes about the address.
-          example: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
-          maxLength: 280
-          type: string
-        tagIds:
-          description: An array of IDs of tags to associate with this address.
-          items:
-            example: '3914'
-            type: string
-          type: array
-      required:
-      - formattedAddress
-      - geofence
-      - name
       type: object
     Address:
       description: An Address object.
@@ -645,6 +417,234 @@ components:
       - geofence
       - id
       - name
+      type: object
+    contactTinyResponse:
+      description: A minified contact object
+      properties:
+        firstName:
+          description: First name of the contact.
+          example: Jane
+          type: string
+        id:
+          description: ID of the contact.
+          example: '22408'
+          type: string
+        lastName:
+          description: Last name of the contact.
+          example: Jones
+          type: string
+      type: object
+    AddressResponse:
+      description: An Address response body.
+      properties:
+        data:
+          $ref: '#/components/schemas/Address'
+      required:
+      - data
+      type: object
+    CreateAddressRequest:
+      description: A request body to create an Address.
+      properties:
+        addressTypes:
+          description: 'Reporting location type associated with the address (used for ELD reporting purposes). Valid values: `yard`, `shortHaul`, `workforceSite`, `riskZone`, `industrialSite`, `alertsOnly`.'
+          items:
+            enum:
+            - yard
+            - shortHaul
+            - workforceSite
+            - riskZone
+            - industrialSite
+            - alertsOnly
+            example: yard
+            type: string
+          type: array
+        contactIds:
+          description: An array of Contact IDs associated with this Address.
+          items:
+            example: '22408'
+            type: string
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        formattedAddress:
+          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
+          example: 350 Rhode Island St, San Francisco, CA
+          maxLength: 1024
+          type: string
+        geofence:
+          $ref: '#/components/schemas/CreateAddressRequest_geofence'
+        latitude:
+          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: 37.765363
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: -122.4029238
+          format: double
+          type: number
+        name:
+          description: Name of the address.
+          example: Samsara HQ
+          maxLength: 255
+          type: string
+        notes:
+          description: Notes about the address.
+          example: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
+          maxLength: 280
+          type: string
+        tagIds:
+          description: An array of IDs of tags to associate with this address.
+          items:
+            example: '3914'
+            type: string
+          type: array
+      required:
+      - formattedAddress
+      - geofence
+      - name
+      type: object
+    UpdateAddressRequest_geofence:
+      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+      properties:
+        circle:
+          $ref: '#/components/schemas/AddressGeofence_circle'
+        polygon:
+          $ref: '#/components/schemas/AddressGeofence_polygon'
+        settings:
+          $ref: '#/components/schemas/AddressGeofence_settings'
+      type: object
+    CreateAddressRequest_geofence:
+      description: The geofence that defines this address and its bounds. This can either be a circle or a polygon, but not both.
+      properties:
+        circle:
+          $ref: '#/components/schemas/AddressGeofence_circle'
+        polygon:
+          $ref: '#/components/schemas/AddressGeofence_polygon'
+        settings:
+          $ref: '#/components/schemas/CreateAddressRequest_geofence_settings'
+      type: object
+    CreateAddressRequest_geofence_settings:
+      description: Information about a geofence's settings.
+      properties:
+        showAddresses:
+          description: If this property is set to true, then underlying geofence addresses will be shown in reports instead of a geofence's name.
+          example: true
+          type: boolean
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    UpdateAddressRequest:
+      description: A request body to update an Address.
+      properties:
+        addressTypes:
+          description: 'Reporting location type associated with the address (used for ELD reporting purposes). Valid values: `yard`, `shortHaul`, `workforceSite`, `riskZone`, `industrialSite`, `alertsOnly`.'
+          items:
+            enum:
+            - yard
+            - shortHaul
+            - workforceSite
+            - riskZone
+            - industrialSite
+            - alertsOnly
+            example: yard
+            type: string
+          type: array
+        contactIds:
+          description: An array of Contact IDs associated with this Address.
+          items:
+            example: '22408'
+            type: string
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: The [external IDs](https://developers.samsara.com/docs/external-ids) for the given object.
+          example:
+            maintenanceId: '250020'
+            payrollId: ABFS18600
+          type: object
+        formattedAddress:
+          description: The full street address for this address/geofence, as it might be recognized by Google Maps.
+          example: 350 Rhode Island St, San Francisco, CA
+          maxLength: 1024
+          type: string
+        geofence:
+          $ref: '#/components/schemas/UpdateAddressRequest_geofence'
+        latitude:
+          description: Latitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: 37.765363
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the address. Will be geocoded from `formattedAddress` if not provided.
+          example: -122.4029238
+          format: double
+          type: number
+        name:
+          description: Name of the address.
+          example: Samsara HQ
+          maxLength: 255
+          type: string
+        notes:
+          description: Notes about the address.
+          example: 'Hours of operation: 8am - 6pm; Truck entrance on the Rhode Island street side.'
+          maxLength: 280
+          type: string
+        tagIds:
+          description: An array of IDs of tags to associate with this address.
+          items:
+            example: '3914'
+            type: string
+          type: array
+      type: object
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    AddressGeofence_settings:
+      description: Information about a geofence's settings.
+      properties:
+        showAddresses:
+          description: If this property is set to true, then underlying geofence addresses will be shown in reports instead of a geofence's name.
+          example: false
+          type: boolean
       type: object
   securitySchemes:
     AccessTokenHeader:

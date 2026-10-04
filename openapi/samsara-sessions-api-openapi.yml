@@ -152,61 +152,6 @@ paths:
       - Sessions
 components:
   schemas:
-    CoachingSessionsGetCoachingSessionsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CoachingSessionsGetCoachingSessionsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CoachingSessionsGetCoachingSessionsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    coachableEventResponseBody:
-      description: Object reference for the coachable event within the behavior.
-      properties:
-        id:
-          description: Unique ID for an event within the item in a coaching session.
-          example: f5271458-21f9-4a9f-a290-780c6d8840ff
-          type: string
-      required:
-      - id
-      type: object
     CoachingSessionsGetCoachingSessionsServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
@@ -237,51 +182,6 @@ components:
       - message
       - requestId
       type: object
-    CoachingSessionsGetCoachingSessionsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    DriverWithExternalIdObjectResponseBody:
-      description: A driver object with an id and map of external ids.
-      properties:
-        driverId:
-          description: Samsara ID of the driver.
-          example: 0987
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-      required:
-      - driverId
-      type: object
-    CoachingSessionsGetCoachingSessionsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     CoachingSessionsGetCoachingSessionsMethodNotAllowedErrorResponseBody:
       description: Method not allowed
       properties:
@@ -296,34 +196,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    CoachingSessionsGetCoachingSessionsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    CoachingSessionsGetCoachingSessionsResponseBody:
-      properties:
-        data:
-          description: List of coaching sessions objects.
-          items:
-            $ref: '#/components/schemas/CoachingSessionsResponseResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
       type: object
     CoachingSessionsResponseResponseBody:
       description: List of coaching sessions objects.
@@ -394,6 +266,21 @@ components:
       - sessionStatus
       - updatedAtTime
       type: object
+    CoachingSessionsGetCoachingSessionsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     GoaPaginationResponseResponseBody:
       description: Pagination parameters.
       properties:
@@ -409,12 +296,12 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    CoachingSessionsGetCoachingSessionsNotFoundErrorResponseBody:
-      description: Resource not found
+    CoachingSessionsGetCoachingSessionsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -423,6 +310,46 @@ components:
       required:
       - message
       - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    DriverWithExternalIdObjectResponseBody:
+      description: A driver object with an id and map of external ids.
+      properties:
+        driverId:
+          description: Samsara ID of the driver.
+          example: 0987
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+      required:
+      - driverId
+      type: object
+    coachableEventResponseBody:
+      description: Object reference for the coachable event within the behavior.
+      properties:
+        id:
+          description: Unique ID for an event within the item in a coaching session.
+          example: f5271458-21f9-4a9f-a290-780c6d8840ff
+          type: string
+      required:
+      - id
       type: object
     behaviorResponseBody:
       description: Object reference for the behavior within the session.
@@ -501,6 +428,79 @@ components:
       - id
       - lastCoachedTime
       - updatedAtTime
+      type: object
+    CoachingSessionsGetCoachingSessionsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    CoachingSessionsGetCoachingSessionsResponseBody:
+      properties:
+        data:
+          description: List of coaching sessions objects.
+          items:
+            $ref: '#/components/schemas/CoachingSessionsResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    CoachingSessionsGetCoachingSessionsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

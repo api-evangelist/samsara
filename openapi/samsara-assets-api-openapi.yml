@@ -520,48 +520,6 @@ paths:
       - Assets
 components:
   schemas:
-    V1AssetReeferResponse_reeferStats_alarms:
-      properties:
-        alarmCode:
-          description: ID of the alarm
-          example: 102
-          format: int64
-          type: integer
-        description:
-          description: Description of the alarm
-          example: Check Return Air Sensor
-          type: string
-        operatorAction:
-          description: Recommended operator action
-          example: Check and repair at end of trip
-          type: string
-        severity:
-          description: 'Severity of the alarm: 1: OK to run, 2: Check as specified, 3: Take immediate action'
-          example: 1
-          format: int64
-          type: integer
-      type: object
-    AssetDataOutput:
-      properties:
-        dataGroup:
-          description: Name of the data group that the data output is associated with
-          example: Control Pressure
-          type: string
-        dataInput:
-          $ref: '#/components/schemas/AssetDataInput'
-        deviceId:
-          description: ID of the device that the data output is configured on
-          example: '123'
-          type: string
-        id:
-          description: ID of the data output
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-          type: string
-        name:
-          description: Name of the data output
-          example: Digital Output 1
-          type: string
-      type: object
     AssetDataOutputsPatchAssetDataOutputsGatewayTimeoutErrorResponseBody:
       description: Gateway timeout
       properties:
@@ -576,69 +534,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    PatchAssetDataOutputsSingleResponseResponseBody:
-      description: A response that corresponds to an element in the original request body.
-      properties:
-        errorMessage:
-          description: If the request failed, this displays the error message.
-          example: 'Failed to write to Device: GFRV-43N-VGX'
-          type: string
-        id:
-          description: The data output ID.
-          example: 8a9371af-82d1-4158-bf91-4ecc8d3a114c
-          type: string
-        statusCode:
-          description: The status code of the request. 200 indicates the request succeeded for this data output. 500 indicates an internal server error.
-          example: 200
-          format: int64
-          type: integer
-      required:
-      - id
-      - statusCode
-      type: object
-    AssetDataOutputsPatchAssetDataOutputsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    ParentId:
-      description: The id of the parent asset that the asset belongs to.
-      example: 123abcde-4567-8910-1112-fghi1314jklm
-      type: string
-    V1AssetReeferResponse_reeferStats_setPoint:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        tempInMilliC:
-          description: Set point temperature in millidegree Celsius.
-          example: 31110
-          format: int64
-          type: integer
-      type: object
-    AssetDataInput_lastPoint:
-      description: The last reported point of a data input.
-      properties:
-        time:
-          $ref: '#/components/schemas/time'
-        value:
-          description: Numeric value of the data point.
-          example: 1992.0506
-          format: double
-          type: number
       type: object
     V1AssetCurrentLocation:
       description: Current location of an asset
@@ -664,8 +559,8 @@ components:
           example: 12314151
           type: number
       type: object
-    V1AssetReeferResponse:
-      description: Reefer-specific asset details
+    V1AssetsReefer:
+      description: Reefer-specific details
       properties:
         assetType:
           description: Asset type
@@ -680,112 +575,64 @@ components:
           example: Reefer 123
           type: string
         reeferStats:
-          $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats'
+          $ref: '#/components/schemas/V1AssetsReefer_reeferStats'
       type: object
-    CustomMetadata:
-      additionalProperties:
-        type: string
-      description: The custom fields of an asset.
-      example:
-        manufacturer: Samsara
-        serialNumber: 123ABC
-      type: object
-    LocationType:
-      description: 'The format of the location. This field is required if a location is provided. Valid values: `point`, `address`, `dataInput`.'
-      enum:
-      - point
-      - address
-      - dataInput
+    time:
+      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
+      example: '2020-01-27T07:06:25Z'
       type: string
-    V1AssetReeferResponse_reeferStats:
+    V1AssetLocationResponse:
+      description: A list of historical asset locations.
+      items:
+        description: Asset location details.
+        properties:
+          latitude:
+            description: The latitude of the location in degrees.
+            example: 37
+            type: number
+          location:
+            description: The best effort (street,city,state) for the latitude and longitude.
+            example: 525 York, San Francisco, CA
+            type: string
+          longitude:
+            description: The longitude of the location in degrees.
+            example: -122.7
+            type: number
+          speedMilesPerHour:
+            description: The speed calculated from GPS that the asset was traveling at in miles per hour.
+            example: 35
+            type: number
+          time:
+            description: Time in Unix milliseconds since epoch when the asset was at the location.
+            example: 12314151
+            type: number
+        type: object
+      type: array
+    AssetCreate:
+      description: The asset creation arguments
       properties:
-        alarms:
-          description: Reefer alarms
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms_1'
-          type: array
-        engineHours:
-          description: Engine hours of the reefer
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_engineHours'
-          type: array
-        fuelPercentage:
-          description: Fuel percentage of the reefer
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_fuelPercentage'
-          type: array
-        powerStatus:
-          description: Power status of the reefer
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_powerStatus'
-          type: array
-        returnAirTemp:
-          description: Return air temperature of the reefer
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_returnAirTemp'
-          type: array
-        setPoint:
-          description: Set point temperature of the reefer
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_setPoint'
-          type: array
-      type: object
-    AssetDataOutputsPatchAssetDataOutputsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+        customMetadata:
+          $ref: '#/components/schemas/CustomMetadata'
+        location:
+          $ref: '#/components/schemas/AssetLocation'
+        locationDataInputId:
+          description: Required if locationType is "dataInput". Specifies the id of a location data input which will determine the asset's location. **The data input will be moved to the new asset.**
+          example: '12345'
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        name:
+          $ref: '#/components/schemas/AssetName'
+        parentId:
+          $ref: '#/components/schemas/ParentId'
+        runningStatusDataInputId:
+          description: The asset's isRunning status will be true when the associated data input's value is 1. Data input cannot be of location format. **The data input will be moved to the new asset.**
+          example: '67890'
           type: string
+        tagIds:
+          $ref: '#/components/schemas/TagIds'
       required:
-      - message
-      - requestId
-      type: object
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
-      type: object
-    AssetDataOutputsPatchAssetDataOutputsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetDataOutputsPatchAssetDataOutputsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
+      - name
       type: object
     AssetDataInput:
       properties:
@@ -808,12 +655,12 @@ components:
           example: PSI
           type: string
       type: object
-    AssetDataOutputsPatchAssetDataOutputsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    AssetDataOutputsPatchAssetDataOutputsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -823,63 +670,71 @@ components:
       - message
       - requestId
       type: object
-    V1AssetReeferResponse_reeferStats_returnAirTemp:
+    CustomMetadata:
+      additionalProperties:
+        type: string
+      description: The custom fields of an asset.
+      example:
+        manufacturer: Samsara
+        serialNumber: 123ABC
+      type: object
+    AssetDataInput_lastPoint:
+      description: The last reported point of a data input.
+      properties:
+        time:
+          $ref: '#/components/schemas/time'
+        value:
+          description: Numeric value of the data point.
+          example: 1992.0506
+          format: double
+          type: number
+      type: object
+    AssetPatch:
+      description: The asset creation arguments
+      properties:
+        customMetadata:
+          $ref: '#/components/schemas/CustomMetadata'
+        location:
+          $ref: '#/components/schemas/AssetLocation'
+        locationDataInputId:
+          description: Required if locationType is "dataInput". Specifies the id of a location data input which will determine the asset's location. The data input must be in the asset.
+          example: '12345'
+          type: string
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        name:
+          $ref: '#/components/schemas/AssetName'
+        parentId:
+          description: The id of the parent asset that the asset belongs to. Pass in an empty string to remove the child from the parent.
+          example: ''
+          type: string
+        runningStatusDataInputId:
+          description: The asset's isRunning status will be true when the associated data input's value is 1. Data input cannot be of location format. The data input must be in the asset.
+          example: '67890'
+          type: string
+        tagIds:
+          $ref: '#/components/schemas/TagIds'
+      type: object
+    V1AssetsReefer_reeferStats_powerStatus:
       properties:
         changedAtMs:
           description: Timestamp in Unix milliseconds since epoch.
           example: 1453449599999
           format: int64
           type: integer
-        tempInMilliC:
-          description: Return air temperature in millidegree Celsius.
-          example: 31110
-          format: int64
-          type: integer
-      type: object
-    AssetResponse_runningStatusDataInput:
-      description: The associated running status data input. isRunning will be true when the data input's value is 1.
-      properties:
-        id:
-          description: Id of the data input
-          example: '12345'
+        status:
+          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
+          enum:
+          - 'Off'
+          - Active
+          - Active (Start/Stop)
+          - Active (Continuous)
+          example: Active (Continuous)
           type: string
-      required:
-      - id
       type: object
-    TagIds:
-      description: The ids of the tags that the asset should belong to.
-      items:
-        example: '123'
-        type: string
-      type: array
-    time:
-      description: 'UTC timestamp in RFC 3339 format. Example: `2020-01-27T07:06:25Z`.'
-      example: '2020-01-27T07:06:25Z'
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
       type: string
-    AssetDataOutputsPatchAssetDataOutputsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    inline_response_200_3:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/V1AssetsReefer'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-      type: object
     AssetResponse:
       description: Asset
       properties:
@@ -919,122 +774,6 @@ components:
       - isRunning
       - name
       type: object
-    AssetLocation:
-      description: For locationType "point", latitude and longitude are required. For "address", formattedAddress must be provided, and lat/long can be optionally included for displaying a dot on the assets map. For "dataInput", this object should not be passed in.
-      properties:
-        formattedAddress:
-          description: Formatted address of the location
-          example: 350 Rhode Island St, San Francisco CA, 94103
-          type: string
-        latitude:
-          $ref: '#/components/schemas/latitude'
-        longitude:
-          $ref: '#/components/schemas/longitude'
-      type: object
-    AssetResponse_locationDataInput:
-      description: The associated location data input (only applicable when locationType is "dataInput").
-      properties:
-        id:
-          description: Id of the data input
-          type: string
-      required:
-      - id
-      type: object
-    inline_response_200_2:
-      properties:
-        assets:
-          items:
-            $ref: '#/components/schemas/V1AssetCurrentLocationsResponse'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-      type: object
-    tagTinyResponse:
-      description: A minified tag object
-      properties:
-        id:
-          description: ID of the tag.
-          example: '3914'
-          type: string
-        name:
-          description: Name of the tag.
-          example: East Coast
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-      type: object
-    ListIndustrialAssetsResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/AssetResponse'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    AssetResponse_parentAsset:
-      description: The asset's parent
-      properties:
-        id:
-          $ref: '#/components/schemas/ParentId'
-        name:
-          $ref: '#/components/schemas/AssetName'
-      required:
-      - id
-      - name
-      type: object
-    V1AssetsReefer:
-      description: Reefer-specific details
-      properties:
-        assetType:
-          description: Asset type
-          example: Thermo King
-          type: string
-        id:
-          description: Asset ID
-          example: 1
-          type: integer
-        name:
-          description: Asset name
-          example: Reefer 123
-          type: string
-        reeferStats:
-          $ref: '#/components/schemas/V1AssetsReefer_reeferStats'
-      type: object
-    V1AssetsReefer_reeferStats_powerStatus:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        status:
-          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
-          enum:
-          - 'Off'
-          - Active
-          - Active (Start/Stop)
-          - Active (Continuous)
-          example: Active (Continuous)
-          type: string
-      type: object
-    AssetDataOutputsPatchAssetDataOutputsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     AssetDataOutputsPatchAssetDataOutputsInternalServerErrorResponseBody:
       description: An internal server error occurred
       properties:
@@ -1049,6 +788,82 @@ components:
       required:
       - message
       - requestId
+      type: object
+    V1AssetReeferResponse_reeferStats_fuelPercentage:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        fuelPercentage:
+          description: Fuel percentage of the reefer.
+          example: 99
+          format: int64
+          type: integer
+      type: object
+    inline_response_200_3:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/V1AssetsReefer'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+      type: object
+    inline_response_200:
+      properties:
+        data:
+          $ref: '#/components/schemas/AssetResponse'
+      type: object
+    LocationType:
+      description: 'The format of the location. This field is required if a location is provided. Valid values: `point`, `address`, `dataInput`.'
+      enum:
+      - point
+      - address
+      - dataInput
+      type: string
+    ListIndustrialAssetsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AssetResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    V1AssetReeferResponse_reeferStats:
+      properties:
+        alarms:
+          description: Reefer alarms
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms_1'
+          type: array
+        engineHours:
+          description: Engine hours of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_engineHours'
+          type: array
+        fuelPercentage:
+          description: Fuel percentage of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_fuelPercentage'
+          type: array
+        powerStatus:
+          description: Power status of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_powerStatus'
+          type: array
+        returnAirTemp:
+          description: Return air temperature of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_returnAirTemp'
+          type: array
+        setPoint:
+          description: Set point temperature of the reefer
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_setPoint'
+          type: array
       type: object
     AssetDataOutputsPatchAssetDataOutputsNotFoundErrorResponseBody:
       description: Resource not found
@@ -1065,95 +880,6 @@ components:
       - message
       - requestId
       type: object
-    standardDeleteResponse:
-      description: A successful DELETE response is a 204 with no content.
-      example: <empty content>
-      type: string
-    AssetName:
-      description: The name of the asset.
-      type: string
-    V1Asset_cable:
-      description: The cable connected to the asset
-      properties:
-        assetType:
-          description: Asset type
-          example: Thermo King
-          type: string
-      type: object
-    AssetDataOutputsPatchAssetDataOutputsRequestBody:
-      properties:
-        values:
-          description: A map of data output IDs to values. All data outputs must belong to the same asset. Only the specified IDs will be written to.
-          example: ''
-          type: object
-      required:
-      - values
-      type: object
-    V1Pagination:
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
-          example: MTU5MTEzNjA2OTU0MzQ3
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results after this response.
-          type: boolean
-        hasPrevPage:
-          description: True if there are more pages of results before this response.
-          type: boolean
-        startCursor:
-          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
-          example: MTU5MTEzNjA2OTU0MzQ3
-          type: string
-      required:
-      - endCursor
-      - hasNextPage
-      - hasPrevPage
-      - startCursor
-      type: object
-    V1AssetCurrentLocationsResponse:
-      description: Basic information of an asset
-      properties:
-        assetSerialNumber:
-          description: Asset serial number
-          example: 8dka2810
-          type: string
-        cable:
-          $ref: '#/components/schemas/V1Asset_cable'
-        engineHours:
-          description: Engine hours
-          example: 104
-          type: integer
-        id:
-          description: Asset ID
-          example: 1
-          format: int64
-          type: integer
-        location:
-          description: Current location of an asset
-          items:
-            $ref: '#/components/schemas/V1AssetCurrentLocation'
-          type: array
-        name:
-          description: Asset name
-          example: Trailer 123
-          type: string
-      required:
-      - id
-      type: object
-    AssetDataOutputsPatchAssetDataOutputsResponseBody:
-      properties:
-        data:
-          description: List of responses for each data output from the original request.
-          items:
-            $ref: '#/components/schemas/PatchAssetDataOutputsSingleResponseResponseBody'
-          type: array
-      required:
-      - data
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     V1AssetsReefer_reeferStats:
       description: Contains all the state changes of the reefer for the included stat types. Each state change is recorded independently, so the number of records in each array may differ depending on when that stat changed state. Stat types with a continuous value (such as temperature) will be recorded at different rates depending on the reefer, but generally readings have a frequency on the order of seconds.
       properties:
@@ -1198,19 +924,150 @@ components:
             $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_setPoint'
           type: array
       type: object
-    V1AssetReeferResponse_reeferStats_engineHours:
+    AssetDataOutputsPatchAssetDataOutputsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1AssetsReefer_reeferStats_ambientAirTemperature:
       properties:
         changedAtMs:
           description: Timestamp in Unix milliseconds since epoch.
           example: 1453449599999
           format: int64
           type: integer
-        engineHours:
-          description: Engine hours of the reefer.
-          example: 1200
+        tempInMilliC:
+          description: Ambient temperature in millidegree Celsius.
+          example: 31110
           format: int64
           type: integer
       type: object
+    V1AssetReeferResponse_reeferStats_alarms:
+      properties:
+        alarmCode:
+          description: ID of the alarm
+          example: 102
+          format: int64
+          type: integer
+        description:
+          description: Description of the alarm
+          example: Check Return Air Sensor
+          type: string
+        operatorAction:
+          description: Recommended operator action
+          example: Check and repair at end of trip
+          type: string
+        severity:
+          description: 'Severity of the alarm: 1: OK to run, 2: Check as specified, 3: Take immediate action'
+          example: 1
+          format: int64
+          type: integer
+      type: object
+    V1AssetReeferResponse_reeferStats_returnAirTemp:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        tempInMilliC:
+          description: Return air temperature in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetResponse_locationDataInput:
+      description: The associated location data input (only applicable when locationType is "dataInput").
+      properties:
+        id:
+          description: Id of the data input
+          type: string
+      required:
+      - id
+      type: object
+    V1AssetReeferResponse_reeferStats_setPoint:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        tempInMilliC:
+          description: Set point temperature in millidegree Celsius.
+          example: 31110
+          format: int64
+          type: integer
+      type: object
+    V1AssetReeferResponse_reeferStats_powerStatus:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        status:
+          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
+          example: Active (Continuous)
+          type: string
+      type: object
+    inline_response_200_1:
+      properties:
+        assets:
+          items:
+            $ref: '#/components/schemas/V1Asset'
+          type: array
+      type: object
+    AssetResponse_runningStatusDataInput:
+      description: The associated running status data input. isRunning will be true when the data input's value is 1.
+      properties:
+        id:
+          description: Id of the data input
+          example: '12345'
+          type: string
+      required:
+      - id
+      type: object
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    ParentId:
+      description: The id of the parent asset that the asset belongs to.
+      example: 123abcde-4567-8910-1112-fghi1314jklm
+      type: string
     V1AssetsReefer_reeferStats_dischargeAirTemperature:
       properties:
         changedAtMs:
@@ -1224,16 +1081,66 @@ components:
           format: int64
           type: integer
       type: object
-    V1AssetReeferResponse_reeferStats_fuelPercentage:
+    AssetDataOutputsPatchAssetDataOutputsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetDataOutput:
+      properties:
+        dataGroup:
+          description: Name of the data group that the data output is associated with
+          example: Control Pressure
+          type: string
+        dataInput:
+          $ref: '#/components/schemas/AssetDataInput'
+        deviceId:
+          description: ID of the device that the data output is configured on
+          example: '123'
+          type: string
+        id:
+          description: ID of the data output
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          type: string
+        name:
+          description: Name of the data output
+          example: Digital Output 1
+          type: string
+      type: object
+    longitude:
+      description: The longitude of the asset in decimal degrees.
+      example: -122.403098
+      format: double
+      type: number
+    AssetDataOutputsPatchAssetDataOutputsResponseBody:
+      properties:
+        data:
+          description: List of responses for each data output from the original request.
+          items:
+            $ref: '#/components/schemas/PatchAssetDataOutputsSingleResponseResponseBody'
+          type: array
+      required:
+      - data
+      type: object
+    V1AssetReeferResponse_reeferStats_alarms_1:
+      properties:
+        alarms:
+          items:
+            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms'
+          type: array
         changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
+          description: Timestamp when the alarms were reported, in Unix milliseconds since epoch
           example: 1453449599999
-          format: int64
-          type: integer
-        fuelPercentage:
-          description: Fuel percentage of the reefer.
-          example: 99
           format: int64
           type: integer
       type: object
@@ -1267,78 +1174,157 @@ components:
       required:
       - id
       type: object
-    inline_response_200:
+    AssetResponse_parentAsset:
+      description: The asset's parent
       properties:
-        data:
-          $ref: '#/components/schemas/AssetResponse'
-      type: object
-    V1AssetsReefer_reeferStats_ambientAirTemperature:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        tempInMilliC:
-          description: Ambient temperature in millidegree Celsius.
-          example: 31110
-          format: int64
-          type: integer
-      type: object
-    V1AssetReeferResponse_reeferStats_alarms_1:
-      properties:
-        alarms:
-          items:
-            $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats_alarms'
-          type: array
-        changedAtMs:
-          description: Timestamp when the alarms were reported, in Unix milliseconds since epoch
-          example: 1453449599999
-          format: int64
-          type: integer
-      type: object
-    V1AssetReeferResponse_reeferStats_powerStatus:
-      properties:
-        changedAtMs:
-          description: Timestamp in Unix milliseconds since epoch.
-          example: 1453449599999
-          format: int64
-          type: integer
-        status:
-          description: 'Power status of the reefer. Valid values: `Off`, `Active`, `Active (Start/Stop)`, `Active (Continuous)`.'
-          example: Active (Continuous)
-          type: string
-      type: object
-    longitude:
-      description: The longitude of the asset in decimal degrees.
-      example: -122.403098
-      format: double
-      type: number
-    AssetPatch:
-      description: The asset creation arguments
-      properties:
-        customMetadata:
-          $ref: '#/components/schemas/CustomMetadata'
-        location:
-          $ref: '#/components/schemas/AssetLocation'
-        locationDataInputId:
-          description: Required if locationType is "dataInput". Specifies the id of a location data input which will determine the asset's location. The data input must be in the asset.
-          example: '12345'
-          type: string
-        locationType:
-          $ref: '#/components/schemas/LocationType'
+        id:
+          $ref: '#/components/schemas/ParentId'
         name:
           $ref: '#/components/schemas/AssetName'
-        parentId:
-          description: The id of the parent asset that the asset belongs to. Pass in an empty string to remove the child from the parent.
+      required:
+      - id
+      - name
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1AssetReeferResponse_reeferStats_engineHours:
+      properties:
+        changedAtMs:
+          description: Timestamp in Unix milliseconds since epoch.
+          example: 1453449599999
+          format: int64
+          type: integer
+        engineHours:
+          description: Engine hours of the reefer.
+          example: 1200
+          format: int64
+          type: integer
+      type: object
+    TagIds:
+      description: The ids of the tags that the asset should belong to.
+      items:
+        example: '123'
+        type: string
+      type: array
+    AssetDataOutputsPatchAssetDataOutputsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetLocation:
+      description: For locationType "point", latitude and longitude are required. For "address", formattedAddress must be provided, and lat/long can be optionally included for displaying a dot on the assets map. For "dataInput", this object should not be passed in.
+      properties:
+        formattedAddress:
+          description: Formatted address of the location
+          example: 350 Rhode Island St, San Francisco CA, 94103
+          type: string
+        latitude:
+          $ref: '#/components/schemas/latitude'
+        longitude:
+          $ref: '#/components/schemas/longitude'
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsRequestBody:
+      properties:
+        values:
+          description: A map of data output IDs to values. All data outputs must belong to the same asset. Only the specified IDs will be written to.
           example: ''
+          type: object
+      required:
+      - values
+      type: object
+    inline_response_200_2:
+      properties:
+        assets:
+          items:
+            $ref: '#/components/schemas/V1AssetCurrentLocationsResponse'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+      type: object
+    latitude:
+      description: The latitude of the asset in decimal degrees.
+      example: 37.765363
+      format: double
+      type: number
+    V1Pagination:
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
           type: string
-        runningStatusDataInputId:
-          description: The asset's isRunning status will be true when the associated data input's value is 1. Data input cannot be of location format. The data input must be in the asset.
-          example: '67890'
+        hasNextPage:
+          description: True if there are more pages of results after this response.
+          type: boolean
+        hasPrevPage:
+          description: True if there are more pages of results before this response.
+          type: boolean
+        startCursor:
+          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
           type: string
-        tagIds:
-          $ref: '#/components/schemas/TagIds'
+      required:
+      - endCursor
+      - hasNextPage
+      - hasPrevPage
+      - startCursor
+      type: object
+    PatchAssetDataOutputsSingleResponseResponseBody:
+      description: A response that corresponds to an element in the original request body.
+      properties:
+        errorMessage:
+          description: If the request failed, this displays the error message.
+          example: 'Failed to write to Device: GFRV-43N-VGX'
+          type: string
+        id:
+          description: The data output ID.
+          example: 8a9371af-82d1-4158-bf91-4ecc8d3a114c
+          type: string
+        statusCode:
+          description: The status code of the request. 200 indicates the request succeeded for this data output. 500 indicates an internal server error.
+          example: 200
+          format: int64
+          type: integer
+      required:
+      - id
+      - statusCode
+      type: object
+    AssetDataOutputsPatchAssetDataOutputsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     paginationResponse:
       description: Pagination parameters.
@@ -1356,71 +1342,85 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    inline_response_200_1:
+    V1AssetCurrentLocationsResponse:
+      description: Basic information of an asset
       properties:
-        assets:
-          items:
-            $ref: '#/components/schemas/V1Asset'
-          type: array
-      type: object
-    AssetCreate:
-      description: The asset creation arguments
-      properties:
-        customMetadata:
-          $ref: '#/components/schemas/CustomMetadata'
+        assetSerialNumber:
+          description: Asset serial number
+          example: 8dka2810
+          type: string
+        cable:
+          $ref: '#/components/schemas/V1Asset_cable'
+        engineHours:
+          description: Engine hours
+          example: 104
+          type: integer
+        id:
+          description: Asset ID
+          example: 1
+          format: int64
+          type: integer
         location:
-          $ref: '#/components/schemas/AssetLocation'
-        locationDataInputId:
-          description: Required if locationType is "dataInput". Specifies the id of a location data input which will determine the asset's location. **The data input will be moved to the new asset.**
-          example: '12345'
-          type: string
-        locationType:
-          $ref: '#/components/schemas/LocationType'
+          description: Current location of an asset
+          items:
+            $ref: '#/components/schemas/V1AssetCurrentLocation'
+          type: array
         name:
-          $ref: '#/components/schemas/AssetName'
-        parentId:
-          $ref: '#/components/schemas/ParentId'
-        runningStatusDataInputId:
-          description: The asset's isRunning status will be true when the associated data input's value is 1. Data input cannot be of location format. **The data input will be moved to the new asset.**
-          example: '67890'
+          description: Asset name
+          example: Trailer 123
           type: string
-        tagIds:
-          $ref: '#/components/schemas/TagIds'
       required:
-      - name
+      - id
       type: object
-    latitude:
-      description: The latitude of the asset in decimal degrees.
-      example: 37.765363
-      format: double
-      type: number
-    V1AssetLocationResponse:
-      description: A list of historical asset locations.
-      items:
-        description: Asset location details.
-        properties:
-          latitude:
-            description: The latitude of the location in degrees.
-            example: 37
-            type: number
-          location:
-            description: The best effort (street,city,state) for the latitude and longitude.
-            example: 525 York, San Francisco, CA
-            type: string
-          longitude:
-            description: The longitude of the location in degrees.
-            example: -122.7
-            type: number
-          speedMilesPerHour:
-            description: The speed calculated from GPS that the asset was traveling at in miles per hour.
-            example: 35
-            type: number
-          time:
-            description: Time in Unix milliseconds since epoch when the asset was at the location.
-            example: 12314151
-            type: number
-        type: object
-      type: array
+    AssetName:
+      description: The name of the asset.
+      type: string
+    V1AssetReeferResponse:
+      description: Reefer-specific asset details
+      properties:
+        assetType:
+          description: Asset type
+          example: Thermo King
+          type: string
+        id:
+          description: Asset ID
+          example: 1
+          type: integer
+        name:
+          description: Asset name
+          example: Reefer 123
+          type: string
+        reeferStats:
+          $ref: '#/components/schemas/V1AssetReeferResponse_reeferStats'
+      type: object
+    standardDeleteResponse:
+      description: A successful DELETE response is a 204 with no content.
+      example: <empty content>
+      type: string
+    tagTinyResponse:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag.
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      type: object
+    V1Asset_cable:
+      description: The cable connected to the asset
+      properties:
+        assetType:
+          description: Asset type
+          example: Thermo King
+          type: string
+      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

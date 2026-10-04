@@ -103,73 +103,6 @@ paths:
       x-codegen-request-body-name: PostFuelPurchaseRequestBody
 components:
   schemas:
-    FuelPurchasePostFuelPurchaseInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelPurchasePostFuelPurchaseMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelPurchasePostFuelPurchaseResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/PostFuelPurchaseResponseBodyResponseBody'
-      required:
-      - data
-      type: object
-    FuelPurchasePostFuelPurchaseBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelPurchasePostFuelPurchaseGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     FuelPurchasePostFuelPurchaseRequestBody:
       description: Request payload for creating a new fuel purchase transaction.
       properties:
@@ -226,6 +159,68 @@ components:
       - transactionReference
       - transactionTime
       type: object
+    PostFuelPurchaseRequestBodyPriceRequestBody:
+      description: The price of the fuel transaction in the currency of the country where the transaction occurred.
+      properties:
+        amount:
+          description: The money amount.
+          example: '640.2'
+          type: string
+        currency:
+          description: 'The currency of money. This is a 3-letter ISO 4217 currency code.  Valid values: `usd`, `gbp`, `cad`, `eur`, `chf`, `mxn`'
+          enum:
+          - usd
+          - gbp
+          - cad
+          - eur
+          - chf
+          - mxn
+          example: usd
+          type: string
+      required:
+      - amount
+      - currency
+      type: object
+    FuelPurchasePostFuelPurchaseNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    PostFuelPurchaseResponseBodyResponseBody:
+      description: Response after successfully adding a Fuel Purchase transaction
+      properties:
+        uuid:
+          description: Universally unique identifier for the fuel purchase.
+          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
+          type: string
+      required:
+      - uuid
+      type: object
+    FuelPurchasePostFuelPurchaseMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     FuelPurchasePostFuelPurchaseServiceUnavailableErrorResponseBody:
       description: Service unavailable
       properties:
@@ -256,42 +251,57 @@ components:
       - message
       - requestId
       type: object
+    FuelPurchasePostFuelPurchaseInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelPurchasePostFuelPurchaseBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     FuelPurchasePostFuelPurchaseBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
           description: Message of error
           example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelPurchasePostFuelPurchaseTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelPurchasePostFuelPurchaseNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -316,37 +326,27 @@ components:
       - message
       - requestId
       type: object
-    PostFuelPurchaseRequestBodyPriceRequestBody:
-      description: The price of the fuel transaction in the currency of the country where the transaction occurred.
+    FuelPurchasePostFuelPurchaseTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
-        amount:
-          description: The money amount.
-          example: '640.2'
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
-        currency:
-          description: 'The currency of money. This is a 3-letter ISO 4217 currency code.  Valid values: `usd`, `gbp`, `cad`, `eur`, `chf`, `mxn`'
-          enum:
-          - usd
-          - gbp
-          - cad
-          - eur
-          - chf
-          - mxn
-          example: usd
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - amount
-      - currency
+      - message
+      - requestId
       type: object
-    PostFuelPurchaseResponseBodyResponseBody:
-      description: Response after successfully adding a Fuel Purchase transaction
+    FuelPurchasePostFuelPurchaseResponseBody:
       properties:
-        uuid:
-          description: Universally unique identifier for the fuel purchase.
-          example: 9814a1fa-f0c6-408b-bf85-51dc3bc71ac7
-          type: string
+        data:
+          $ref: '#/components/schemas/PostFuelPurchaseResponseBodyResponseBody'
       required:
-      - uuid
+      - data
       type: object
   securitySchemes:
     AccessTokenHeader:

@@ -62,9 +62,6 @@ paths:
       x-codegen-request-body-name: V1sensorParam
 components:
   schemas:
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
     inline_object_5:
       properties:
         sensors:
@@ -78,19 +75,9 @@ components:
       required:
       - sensors
       type: object
-    V1DoorResponse:
-      description: Contains the current door status of a sensor.
-      properties:
-        groupId:
-          description: Deprecated.
-          example: 101
-          format: int64
-          type: integer
-        sensors:
-          items:
-            $ref: '#/components/schemas/V1DoorResponse_sensors'
-          type: array
-      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
     V1DoorResponse_sensors:
       properties:
         doorClosed:
@@ -118,6 +105,19 @@ components:
           description: ID of the vehicle associated with the sensor for the data point. If no vehicle is connected, this parameter will not be reported.
           example: 124
           type: integer
+      type: object
+    V1DoorResponse:
+      description: Contains the current door status of a sensor.
+      properties:
+        groupId:
+          description: Deprecated.
+          example: 101
+          format: int64
+          type: integer
+        sensors:
+          items:
+            $ref: '#/components/schemas/V1DoorResponse_sensors'
+          type: array
       type: object
   requestBodies:
     inline_object_5:

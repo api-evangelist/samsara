@@ -258,138 +258,20 @@ paths:
       - Fuel
 components:
   schemas:
-    FuelEnergyGetFuelEnergyDriverReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyVehicleReportDataObjectResponseBody:
-      description: Dictionary containing summarized vehicle report data.
-      properties:
-        vehicleReports:
-          description: List of summarized vehicle reports.
-          items:
-            $ref: '#/components/schemas/FuelEnergyVehicleReportObjectResponseBody'
-          type: array
-      required:
-      - vehicleReports
-      type: object
-    FuelEnergyVehicleObjectResponseBody:
-      description: A minified vehicle object.
-      properties:
-        energyType:
-          description: 'Type of energy used by the vehicle  Valid values: `fuel`, `hybrid`, `electric`'
-          enum:
-          - fuel
-          - hybrid
-          - electric
-          example: fuel
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
-          type: string
-      required:
-      - energyType
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
     FuelEnergyGetFuelEnergyDriverReportsResponseBody:
       properties:
         data:
           $ref: '#/components/schemas/FuelEnergyDriverReportDataObjectResponseBody'
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/FuelEnergyVehicleReportDataObjectResponseBody'
         pagination:
           $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
       required:
@@ -411,21 +293,20 @@ components:
       - message
       - requestId
       type: object
-    FuelEnergyCostResponseResponseBody:
-      description: Estimated cost of fuel and energy over the given time range.
+    FuelEnergyGetFuelEnergyVehicleReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
       properties:
-        amount:
-          description: Amount of the currency.
-          example: 94.01
-          format: double
-          type: number
-        currencyCode:
-          description: Type of the currency.
-          example: USD
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
       required:
-      - amount
-      - currencyCode
+      - message
+      - requestId
       type: object
     GoaPaginationResponseResponseBody:
       description: Pagination parameters.
@@ -442,220 +323,12 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    FuelEnergyGetFuelEnergyDriverReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    FuelEnergyGetFuelEnergyVehicleReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/FuelEnergyVehicleReportDataObjectResponseBody'
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyDriverReportObjectResponseBody:
-      description: A summary of this driver's fuel and energy data.
-      properties:
-        distanceTraveledMeters:
-          description: Meters traveled over the given time range.
-          example: 1384000
-          format: double
-          type: number
-        driver:
-          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
-        efficiencyMpge:
-          description: Efficiency in MPG or MPGE over the given time range. For fuel vehicles this will be provided in MPG, for hybrid and electric vehicles this will be provided in MPGE. MPG/MPGE values are provided based on US gallons.
-          example: 21.4
-          format: double
-          type: number
-        energyUsedKwh:
-          description: Kilowatt-hours of energy used over the given time range. Only provided for hybrid and electric vehicles.
-          example: 73.2
-          format: double
-          type: number
-        engineIdleTimeDurationMs:
-          description: Milliseconds of engine idle time over the given time range. Only provided for fuel and hybrid vehicles.
-          example: 4320000
-          format: int64
-          type: integer
-        engineRunTimeDurationMs:
-          description: Milliseconds of engine run time over the given time range. Only provided for fuel and hybrid vehicles.
-          example: 576000
-          format: int64
-          type: integer
-        estCarbonEmissionsKg:
-          description: Estimated kilograms of carbon emissions over the given time range. Only provided for fuel and hybrid vehicles.
-          example: 22.7
-          format: double
-          type: number
-        estFuelEnergyCost:
-          $ref: '#/components/schemas/FuelEnergyCostResponseResponseBody'
-        fuelConsumedMl:
-          description: Milliliters of fuel consumed over the given time range. Only provided for fuel and hybrid vehicles.
-          example: 162773
-          format: double
-          type: number
-      required:
-      - distanceTraveledMeters
-      - driver
-      - efficiencyMpge
-      - estFuelEnergyCost
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyDriverReportsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FuelEnergyGetFuelEnergyVehicleReportsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -713,12 +386,75 @@ components:
       - estFuelEnergyCost
       - vehicle
       type: object
-    FuelEnergyGetFuelEnergyDriverReportsUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    FuelEnergyDriverReportObjectResponseBody:
+      description: A summary of this driver's fuel and energy data.
+      properties:
+        distanceTraveledMeters:
+          description: Meters traveled over the given time range.
+          example: 1384000
+          format: double
+          type: number
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        efficiencyMpge:
+          description: Efficiency in MPG or MPGE over the given time range. For fuel vehicles this will be provided in MPG, for hybrid and electric vehicles this will be provided in MPGE. MPG/MPGE values are provided based on US gallons.
+          example: 21.4
+          format: double
+          type: number
+        energyUsedKwh:
+          description: Kilowatt-hours of energy used over the given time range. Only provided for hybrid and electric vehicles.
+          example: 73.2
+          format: double
+          type: number
+        engineIdleTimeDurationMs:
+          description: Milliseconds of engine idle time over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 4320000
+          format: int64
+          type: integer
+        engineRunTimeDurationMs:
+          description: Milliseconds of engine run time over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 576000
+          format: int64
+          type: integer
+        estCarbonEmissionsKg:
+          description: Estimated kilograms of carbon emissions over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 22.7
+          format: double
+          type: number
+        estFuelEnergyCost:
+          $ref: '#/components/schemas/FuelEnergyCostResponseResponseBody'
+        fuelConsumedMl:
+          description: Milliliters of fuel consumed over the given time range. Only provided for fuel and hybrid vehicles.
+          example: 162773
+          format: double
+          type: number
+      required:
+      - distanceTraveledMeters
+      - driver
+      - efficiencyMpge
+      - estFuelEnergyCost
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -739,6 +475,228 @@ components:
       required:
       - driverReports
       type: object
+    FuelEnergyGetFuelEnergyDriverReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyVehicleReportDataObjectResponseBody:
+      description: Dictionary containing summarized vehicle report data.
+      properties:
+        vehicleReports:
+          description: List of summarized vehicle reports.
+          items:
+            $ref: '#/components/schemas/FuelEnergyVehicleReportObjectResponseBody'
+          type: array
+      required:
+      - vehicleReports
+      type: object
+    FuelEnergyGetFuelEnergyVehicleReportsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyCostResponseResponseBody:
+      description: Estimated cost of fuel and energy over the given time range.
+      properties:
+        amount:
+          description: Amount of the currency.
+          example: 94.01
+          format: double
+          type: number
+        currencyCode:
+          description: Type of the currency.
+          example: USD
+          type: string
+      required:
+      - amount
+      - currencyCode
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     GoaDriverTinyResponseResponseBody:
       description: A minified driver object. This object is only returned if the route is assigned to the driver.
       properties:
@@ -758,12 +716,54 @@ components:
       required:
       - id
       type: object
-    FuelEnergyGetFuelEnergyDriverReportsNotFoundErrorResponseBody:
-      description: Resource not found
+    FuelEnergyGetFuelEnergyVehicleReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FuelEnergyVehicleObjectResponseBody:
+      description: A minified vehicle object.
+      properties:
+        energyType:
+          description: 'Type of energy used by the vehicle  Valid values: `fuel`, `hybrid`, `electric`'
+          enum:
+          - fuel
+          - hybrid
+          - electric
+          example: fuel
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      required:
+      - energyType
+      type: object
+    FuelEnergyGetFuelEnergyDriverReportsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.

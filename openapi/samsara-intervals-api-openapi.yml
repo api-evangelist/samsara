@@ -168,212 +168,12 @@ components:
       - message
       - requestId
       type: object
-    SpeedingIntervalsGetSpeedingIntervalsNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SpeedingIntervalsGetSpeedingIntervalsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SpeedingIntervalLocationResponseResponseBody:
-      description: Location object of the closest location point to the interval.
-      properties:
-        accuracyMeters:
-          description: Radial accuracy of gps location in meters. This will only return if strong GPS is not available.
-          example: 5.801
-          format: double
-          type: number
-        address:
-          $ref: '#/components/schemas/AddressResponseResponseBody'
-        headingDegrees:
-          description: Heading of the asset in degrees. May be 0 if the asset is not moving.
-          example: 120
-          format: int64
-          type: integer
-        latitude:
-          description: Latitude of the closest location point to the interval.
-          example: 37.7749
-          format: double
-          type: number
-        longitude:
-          description: Longitude of the closest location point to the interval.
-          example: 137.2719
-          format: double
-          type: number
-      required:
-      - address
-      - headingDegrees
-      - latitude
-      - longitude
-      type: object
-    SpeedingIntervalsGetSpeedingIntervalsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SpeedingIntervalsGetSpeedingIntervalsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SpeedingIntervalsGetSpeedingIntervalsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AddressResponseResponseBody:
-      description: Closest address that the GPS latitude and longitude match to.
-      properties:
-        city:
-          description: The name of the city
-          example: New York
-          type: string
-        country:
-          description: The country
-          example: USA
-          type: string
-        neighborhood:
-          description: The name of the neighborhood if one exists
-          example: Mission District
-          type: string
-        pointOfInterest:
-          description: Point that may be of interest to the user
-          example: The Eiffel Tower
-          type: string
-        postalCode:
-          description: The zip code
-          example: '10010'
-          type: string
-        state:
-          description: The name of the state
-          example: New York
-          type: string
-        street:
-          description: The street name
-          example: Main Street
-          type: string
-        streetNumber:
-          description: Street number of the address
-          example: '16'
-          type: string
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
     SpeedingIntervalsGetSpeedingIntervalsNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
           description: Message of error
           example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    TripAssetResponseBody:
-      description: Asset that the location readings are tied to
-      properties:
-        id:
-          description: Unique ID for the asset object that is reporting the location.
-          example: '12345'
-          type: string
-        name:
-          description: Name for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
-          example: MyAsset-1234
-          type: string
-        type:
-          description: 'Type for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
-          enum:
-          - uncategorized
-          - trailer
-          - equipment
-          - unpowered
-          - vehicle
-          example: trailer
-          type: string
-        vin:
-          description: VIN for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
-          example: 1GBJ6P1B2HV112765
-          type: string
-      required:
-      - id
-      type: object
-    SpeedingIntervalsGetSpeedingIntervalsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -415,6 +215,49 @@ components:
       - intervals
       - tripStartTime
       - updatedAtTime
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    SpeedingIntervalsGetSpeedingIntervalsResponseBody:
+      properties:
+        data:
+          description: List of speeding intervals associated with trips.
+          items:
+            $ref: '#/components/schemas/TripSpeedingIntervalsResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    SpeedingIntervalsGetSpeedingIntervalsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     SpeedingIntervalResponseBody:
       description: Speeding Interval Object
@@ -461,18 +304,175 @@ components:
       - severityLevel
       - startTime
       type: object
-    SpeedingIntervalsGetSpeedingIntervalsResponseBody:
+    SpeedingIntervalLocationResponseResponseBody:
+      description: Location object of the closest location point to the interval.
       properties:
-        data:
-          description: List of speeding intervals associated with trips.
-          items:
-            $ref: '#/components/schemas/TripSpeedingIntervalsResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+        accuracyMeters:
+          description: Radial accuracy of gps location in meters. This will only return if strong GPS is not available.
+          example: 5.801
+          format: double
+          type: number
+        address:
+          $ref: '#/components/schemas/AddressResponseResponseBody'
+        headingDegrees:
+          description: Heading of the asset in degrees. May be 0 if the asset is not moving.
+          example: 120
+          format: int64
+          type: integer
+        latitude:
+          description: Latitude of the closest location point to the interval.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the closest location point to the interval.
+          example: 137.2719
+          format: double
+          type: number
       required:
-      - data
-      - pagination
+      - address
+      - headingDegrees
+      - latitude
+      - longitude
+      type: object
+    AddressResponseResponseBody:
+      description: Closest address that the GPS latitude and longitude match to.
+      properties:
+        city:
+          description: The name of the city
+          example: New York
+          type: string
+        country:
+          description: The country
+          example: USA
+          type: string
+        neighborhood:
+          description: The name of the neighborhood if one exists
+          example: Mission District
+          type: string
+        pointOfInterest:
+          description: Point that may be of interest to the user
+          example: The Eiffel Tower
+          type: string
+        postalCode:
+          description: The zip code
+          example: '10010'
+          type: string
+        state:
+          description: The name of the state
+          example: New York
+          type: string
+        street:
+          description: The street name
+          example: Main Street
+          type: string
+        streetNumber:
+          description: Street number of the address
+          example: '16'
+          type: string
+      type: object
+    SpeedingIntervalsGetSpeedingIntervalsNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SpeedingIntervalsGetSpeedingIntervalsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SpeedingIntervalsGetSpeedingIntervalsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SpeedingIntervalsGetSpeedingIntervalsUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SpeedingIntervalsGetSpeedingIntervalsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    TripAssetResponseBody:
+      description: Asset that the location readings are tied to
+      properties:
+        id:
+          description: Unique ID for the asset object that is reporting the location.
+          example: '12345'
+          type: string
+        name:
+          description: Name for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
+          example: MyAsset-1234
+          type: string
+        type:
+          description: 'Type for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.  Valid values: `uncategorized`, `trailer`, `equipment`, `unpowered`, `vehicle`'
+          enum:
+          - uncategorized
+          - trailer
+          - equipment
+          - unpowered
+          - vehicle
+          example: trailer
+          type: string
+        vin:
+          description: VIN for the asset object that is reporting the location. Only returns when `includeAsset` is set to `true`.
+          example: 1GBJ6P1B2HV112765
+          type: string
+      required:
+      - id
       type: object
     SpeedingIntervalsGetSpeedingIntervalsBadRequestErrorResponseBody:
       description: Bad Request parameters

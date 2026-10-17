@@ -163,173 +163,6 @@ paths:
       - Inputs
 components:
   schemas:
-    assetsInputsAuxInputResponseBody:
-      description: Auxiliary input metadata
-      properties:
-        name:
-          description: Name of the auxiliary input
-          example: PTO
-          type: string
-      required:
-      - name
-      type: object
-    assetsInputsResponseResponseBody:
-      description: Full assets inputs objects.
-      properties:
-        asset:
-          $ref: '#/components/schemas/AssetsInputsAssetResponseResponseBody'
-        auxInput:
-          $ref: '#/components/schemas/assetsInputsAuxInputResponseBody'
-        happenedAtTime:
-          description: UTC timestamp in RFC 3339 format of the event.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        units:
-          description: 'Units of the values in the returned data.  Valid values: `boolean`, `millivolts`, `microamps`'
-          enum:
-          - boolean
-          - millivolts
-          - microamps
-          example: boolean
-          type: string
-        value:
-          description: Value of the data point.
-          example: '1'
-          type: string
-      required:
-      - asset
-      - happenedAtTime
-      - units
-      - value
-      type: object
-    AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsResponseBody:
-      properties:
-        data:
-          description: Array of assets inputs objects.
-          items:
-            $ref: '#/components/schemas/assetsInputsResponseResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsAssetResponseResponseBody:
-      description: Asset that the input data is from.
-      properties:
-        attributes:
-          description: List of attributes associated with the entity
-          items:
-            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
-          type: array
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the asset
-          example: '12345'
-          type: string
-        tags:
-          description: The array of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Asset.
-          items:
-            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
-          type: array
-      required:
-      - id
-      type: object
     GoaAttributeTinyResponseBody:
       description: Attribute properties.
       properties:
@@ -361,46 +194,12 @@ components:
             type: string
           type: array
       type: object
-    GoaTagTinyResponseResponseBody:
-      description: A minified tag object
-      properties:
-        id:
-          description: ID of the tag
-          example: '3914'
-          type: string
-        name:
-          description: Name of the tag.
-          example: East Coast
-          type: string
-        parentTagId:
-          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
-          example: '4815'
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    AssetsInputsGetAssetsInputsGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    AssetsInputsGetAssetsInputsInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -425,12 +224,97 @@ components:
       - message
       - requestId
       type: object
-    AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody:
-      description: Service unavailable
+    AssetsInputsGetAssetsInputsUnauthorizedErrorResponseBody:
+      description: Unauthorized
       properties:
         message:
           description: Message of error
-          example: context deadline exceeded
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    AssetsInputsAssetResponseResponseBody:
+      description: Asset that the input data is from.
+      properties:
+        attributes:
+          description: List of attributes associated with the entity
+          items:
+            $ref: '#/components/schemas/GoaAttributeTinyResponseBody'
+          type: array
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the asset
+          example: '12345'
+          type: string
+        tags:
+          description: The array of [tags](https://kb.samsara.com/hc/en-us/articles/360026674631-Using-Tags-and-Tag-Nesting) associated with the Asset.
+          items:
+            $ref: '#/components/schemas/GoaTagTinyResponseResponseBody'
+          type: array
+      required:
+      - id
+      type: object
+    AssetsInputsGetAssetsInputsBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -454,6 +338,122 @@ components:
       required:
       - message
       - requestId
+      type: object
+    GoaTagTinyResponseResponseBody:
+      description: A minified tag object
+      properties:
+        id:
+          description: ID of the tag
+          example: '3914'
+          type: string
+        name:
+          description: Name of the tag.
+          example: East Coast
+          type: string
+        parentTagId:
+          description: If this tag is part a hierarchical tag tree, this is the ID of the parent tag, otherwise this will be omitted.
+          example: '4815'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    assetsInputsResponseResponseBody:
+      description: Full assets inputs objects.
+      properties:
+        asset:
+          $ref: '#/components/schemas/AssetsInputsAssetResponseResponseBody'
+        auxInput:
+          $ref: '#/components/schemas/assetsInputsAuxInputResponseBody'
+        happenedAtTime:
+          description: UTC timestamp in RFC 3339 format of the event.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        units:
+          description: 'Units of the values in the returned data.  Valid values: `boolean`, `millivolts`, `microamps`'
+          enum:
+          - boolean
+          - millivolts
+          - microamps
+          example: boolean
+          type: string
+        value:
+          description: Value of the data point.
+          example: '1'
+          type: string
+      required:
+      - asset
+      - happenedAtTime
+      - units
+      - value
+      type: object
+    AssetsInputsGetAssetsInputsMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    AssetsInputsGetAssetsInputsResponseBody:
+      properties:
+        data:
+          description: Array of assets inputs objects.
+          items:
+            $ref: '#/components/schemas/assetsInputsResponseResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    AssetsInputsGetAssetsInputsInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    assetsInputsAuxInputResponseBody:
+      description: Auxiliary input metadata
+      properties:
+        name:
+          description: Name of the auxiliary input
+          example: PTO
+          type: string
+      required:
+      - name
       type: object
   securitySchemes:
     AccessTokenHeader:

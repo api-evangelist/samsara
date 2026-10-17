@@ -53,6 +53,22 @@ paths:
       - Roles
 components:
   schemas:
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
     standardErrorResponse:
       description: Error response
       properties:
@@ -87,22 +103,6 @@ components:
           type: array
         pagination:
           $ref: '#/components/schemas/paginationResponse'
-      type: object
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
       type: object
   securitySchemes:
     AccessTokenHeader:

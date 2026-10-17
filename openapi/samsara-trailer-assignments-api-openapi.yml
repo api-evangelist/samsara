@@ -74,31 +74,6 @@ paths:
       - Trailer  Assignments
 components:
   schemas:
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    V1Pagination:
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
-          example: MTU5MTEzNjA2OTU0MzQ3
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results after this response.
-          type: boolean
-        hasPrevPage:
-          description: True if there are more pages of results before this response.
-          type: boolean
-        startCursor:
-          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
-          example: MTU5MTEzNjA2OTU0MzQ3
-          type: string
-      required:
-      - endCursor
-      - hasNextPage
-      - hasPrevPage
-      - startCursor
-      type: object
     V1TrailerAssignmentsResponse:
       allOf:
       - $ref: '#/components/schemas/V1TrailerBase'
@@ -119,6 +94,18 @@ components:
       - id
       - name
       type: object
+    inline_response_200_7:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/V1Pagination'
+        trailers:
+          items:
+            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
+          type: array
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
     V1TrailerAssignmentResponse:
       properties:
         driverId:
@@ -144,14 +131,27 @@ components:
             $ref: '#/components/schemas/V1TrailerAssignmentResponse'
           type: array
       type: object
-    inline_response_200_7:
+    V1Pagination:
       properties:
-        pagination:
-          $ref: '#/components/schemas/V1Pagination'
-        trailers:
-          items:
-            $ref: '#/components/schemas/V1TrailerAssignmentsResponse'
-          type: array
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'startingAfter' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results after this response.
+          type: boolean
+        hasPrevPage:
+          description: True if there are more pages of results before this response.
+          type: boolean
+        startCursor:
+          description: Cursor identifier representing the first element in the response. This value should be used in conjunction with a subsequent request's 'ending_before' query parameter.
+          example: MTU5MTEzNjA2OTU0MzQ3
+          type: string
+      required:
+      - endCursor
+      - hasNextPage
+      - hasPrevPage
+      - startCursor
       type: object
   securitySchemes:
     AccessTokenHeader:

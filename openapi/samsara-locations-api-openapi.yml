@@ -200,6 +200,38 @@ paths:
       - Locations
 components:
   schemas:
+    LocationResponseResponseBody:
+      description: Location object.
+      properties:
+        accuracyMeters:
+          description: Radial accuracy of gps location in meters. This will only return if strong GPS is not available.
+          example: 5.801
+          format: double
+          type: number
+        address:
+          $ref: '#/components/schemas/AddressResponseResponseBody'
+        geofence:
+          $ref: '#/components/schemas/GeofenceResponseResponseBody'
+        headingDegrees:
+          description: Heading of the asset in degrees. May be 0 if the asset is not moving.
+          example: 120
+          format: int64
+          type: integer
+        latitude:
+          description: Latitude of the location of the asset.
+          example: 37.7749
+          format: double
+          type: number
+        longitude:
+          description: Longitude of the location of the asset.
+          example: 137.2719
+          format: double
+          type: number
+      required:
+      - headingDegrees
+      - latitude
+      - longitude
+      type: object
     V1AssetLocationResponse:
       description: A list of historical asset locations.
       items:
@@ -227,12 +259,30 @@ components:
             type: number
         type: object
       type: array
-    LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    LocationAndSpeedResponseResponseBody:
+      description: Full location and speed objects.
+      properties:
+        asset:
+          $ref: '#/components/schemas/AssetResponseResponseBody'
+        happenedAtTime:
+          description: UTC timestamp in RFC 3339 format of the event.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        location:
+          $ref: '#/components/schemas/LocationResponseResponseBody'
+        speed:
+          $ref: '#/components/schemas/SpeedResponseResponseBody'
+      required:
+      - asset
+      - happenedAtTime
+      - location
+      type: object
+    LocationAndSpeedGetLocationAndSpeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Invalid value for parameter.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -278,27 +328,12 @@ components:
           example: '16'
           type: string
       type: object
-    AssetResponseResponseBody:
-      description: Asset that the location readings are tied to.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the asset
-          example: '12345'
-          type: string
-      required:
-      - id
-      type: object
-    LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -308,72 +343,12 @@ components:
       - message
       - requestId
       type: object
-    LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    LocationAndSpeedGetLocationAndSpeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
         message:
           description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    GoaPaginationWithTokensResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - hasNextPage
-      type: object
-    GeofenceResponseResponseBody:
-      description: Closest geofence based on 1000 meter radial search.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: Unique ID of the geofence object.
-          example: '12345'
-          type: string
-      type: object
-    LocationAndSpeedGetLocationAndSpeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
+          example: Failed to execute GraphQL query.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -396,12 +371,131 @@ components:
       - data
       - pagination
       type: object
-    LocationAndSpeedGetLocationAndSpeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    LocationAndSpeedGetLocationAndSpeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LocationAndSpeedGetLocationAndSpeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaPaginationWithTokensResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - hasNextPage
+      type: object
+    LocationAndSpeedGetLocationAndSpeedServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    GeofenceResponseResponseBody:
+      description: Closest geofence based on 1000 meter radial search.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Unique ID of the geofence object.
+          example: '12345'
+          type: string
+      type: object
+    SpeedResponseResponseBody:
+      description: Speed object.
+      properties:
+        ecuSpeedMetersPerSecond:
+          description: Speed of asset based on ECU data.
+          example: 30.2
+          format: double
+          type: number
+        gpsSpeedMetersPerSecond:
+          description: Speed of asset based on GPS data.
+          example: 30.2
+          format: double
+          type: number
+      type: object
+    AssetResponseResponseBody:
+      description: Asset that the location readings are tied to.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the asset
+          example: '12345'
+          type: string
+      required:
+      - id
+      type: object
+    LocationAndSpeedGetLocationAndSpeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -426,12 +520,12 @@ components:
       - message
       - requestId
       type: object
-    LocationAndSpeedGetLocationAndSpeedNotFoundErrorResponseBody:
-      description: Resource not found
+    LocationAndSpeedGetLocationAndSpeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -440,100 +534,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    LocationAndSpeedGetLocationAndSpeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationAndSpeedResponseResponseBody:
-      description: Full location and speed objects.
-      properties:
-        asset:
-          $ref: '#/components/schemas/AssetResponseResponseBody'
-        happenedAtTime:
-          description: UTC timestamp in RFC 3339 format of the event.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        location:
-          $ref: '#/components/schemas/LocationResponseResponseBody'
-        speed:
-          $ref: '#/components/schemas/SpeedResponseResponseBody'
-      required:
-      - asset
-      - happenedAtTime
-      - location
-      type: object
-    SpeedResponseResponseBody:
-      description: Speed object.
-      properties:
-        ecuSpeedMetersPerSecond:
-          description: Speed of asset based on ECU data.
-          example: 30.2
-          format: double
-          type: number
-        gpsSpeedMetersPerSecond:
-          description: Speed of asset based on GPS data.
-          example: 30.2
-          format: double
-          type: number
-      type: object
-    LocationAndSpeedGetLocationAndSpeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LocationResponseResponseBody:
-      description: Location object.
-      properties:
-        accuracyMeters:
-          description: Radial accuracy of gps location in meters. This will only return if strong GPS is not available.
-          example: 5.801
-          format: double
-          type: number
-        address:
-          $ref: '#/components/schemas/AddressResponseResponseBody'
-        geofence:
-          $ref: '#/components/schemas/GeofenceResponseResponseBody'
-        headingDegrees:
-          description: Heading of the asset in degrees. May be 0 if the asset is not moving.
-          example: 120
-          format: int64
-          type: integer
-        latitude:
-          description: Latitude of the location of the asset.
-          example: 37.7749
-          format: double
-          type: number
-        longitude:
-          description: Longitude of the location of the asset.
-          example: 137.2719
-          format: double
-          type: number
-      required:
-      - headingDegrees
-      - latitude
-      - longitude
       type: object
   securitySchemes:
     AccessTokenHeader:

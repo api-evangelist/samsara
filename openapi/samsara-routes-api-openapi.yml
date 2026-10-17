@@ -638,12 +638,12 @@ paths:
       x-codegen-request-body-name: applyToFutureRoutes
 components:
   schemas:
-    RoutesFetchRoutesUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    RoutesDeleteRouteNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -653,7 +653,7 @@ components:
       - message
       - requestId
       type: object
-    RoutesCreateRouteBadGatewayErrorResponseBody:
+    RoutesFetchRoutesBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
@@ -683,199 +683,7 @@ components:
       - message
       - requestId
       type: object
-    RoutesFetchRoutesNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedResponseBody:
-      properties:
-        data:
-          description: Route feed response.
-          items:
-            $ref: '#/components/schemas/RouteFeedObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    RoutesCreateRouteNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRouteBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRouteInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRouteServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesCreateRouteNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesCreateRouteUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    baseRouteResponseObjectResponseBody:
-      properties:
-        actualRouteEndTime:
-          description: Actual end time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        actualRouteStartTime:
-          description: Actual start time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        driver:
-          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the route
-          example: '342341'
-          type: string
-        name:
-          description: Route name
-          example: Bid 123
-          type: string
-        notes:
-          description: Notes for the route
-          example: These are my notes
-          type: string
-        recurringRouteLiveSharingLinks:
-          description: List of shareable, non-expired 'By recurring Route' Live Sharing Links.
-          items:
-            $ref: '#/components/schemas/LiveSharingLinkResponseObjectResponseBody'
-          type: array
-        scheduledRouteEndTime:
-          description: Scheduled end time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        scheduledRouteStartTime:
-          description: Scheduled start time, if it exists, for the route in RFC 3339 format.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        settings:
-          $ref: '#/components/schemas/RouteSettingsResponseBody'
-        stops:
-          description: List of stops along the route
-          items:
-            $ref: '#/components/schemas/RoutesStopResponseObjectResponseBody'
-          minItems: 2
-          type: array
-        vehicle:
-          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
-      required:
-      - id
-      type: object
-    RoutesFetchRoutesBadRequestErrorResponseBody:
+    RoutesGetRoutesFeedBadRequestErrorResponseBody:
       description: Bad Request parameters
       properties:
         message:
@@ -890,12 +698,27 @@ components:
       - message
       - requestId
       type: object
-    RoutesGetRoutesFeedUnauthorizedErrorResponseBody:
-      description: Unauthorized
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    RoutesFetchRouteMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Invalid token.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -904,6 +727,19 @@ components:
       required:
       - message
       - requestId
+      type: object
+    RoutesFetchRoutesResponseBody:
+      properties:
+        data:
+          description: An array containing multiple routes.
+          items:
+            $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
       type: object
     RoutesFetchRouteUnauthorizedErrorResponseBody:
       description: Unauthorized
@@ -920,137 +756,12 @@ components:
       - message
       - requestId
       type: object
-    RoutesPatchRouteRequestBody:
-      properties:
-        driverId:
-          description: ID of the driver. Can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
-          example: '1234'
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        name:
-          description: Name for the route
-          example: Bid 123
-          type: string
-        notes:
-          description: Notes about the route.
-          example: These are my notes
-          maxLength: 2000
-          type: string
-        settings:
-          $ref: '#/components/schemas/RouteSettingsRequestBody'
-        stops:
-          description: List of stops along the route. If a valid `id` of a stop is provided, that stop will be updated. If no `id` is provided for a passed in stop, that stop will be created. If `id` value are passed in for some stops and not for others, those with `id` value specified will be retained and updated in the original route, those without `id` value specified in the body will be created, and those without `id` value specified that already existed on the route will be deleted. For each new stop, exactly one of `addressId` and `singleUseLocation` are required. Depending on the `settings` on your route, either a `scheduledArrivalTime` or `scheduledDepartureTime` must be specified for the first job, if a new first job is being added.
-          items:
-            $ref: '#/components/schemas/UpdateRoutesStopRequestObjectRequestBody'
-          type: array
-        vehicleId:
-          description: ID of the vehicle. Can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
-          example: '453546'
-          type: string
-      type: object
-    RouteFeedObjectResponseBody:
-      description: Route feed object.
-      properties:
-        changes:
-          $ref: '#/components/schemas/RouteChangesResponseBody'
-        operation:
-          description: 'The operation that was performed as part of this route update.  Valid values: `stop scheduled`, `stop en route`, `stop skipped`, `stop arrived`, `stop departed`, `stop ETA updated`, `stop arrival time updated`, `stop completion time updated`, `stop order changed`, `stop arrival prevented`'
-          enum:
-          - stop scheduled
-          - stop en route
-          - stop skipped
-          - stop arrived
-          - stop departed
-          - stop ETA updated
-          - stop arrival time updated
-          - stop completion time updated
-          - stop order changed
-          - stop arrival prevented
-          example: stop skipped
-          type: string
-        route:
-          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
-        source:
-          description: 'The source of this route update. Updates that are triggered by time or by the route being completed are ''automatic''.  Valid values: `automatic`, `driver`, `admin`'
-          enum:
-          - automatic
-          - driver
-          - admin
-          example: automatic
-          type: string
-        time:
-          description: The timestamp of the route in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          format: date-time
-          type: string
-        type:
-          description: 'The type of route update. The route tracking updates occur as a route is completed and stops transition from one state to another. Currently only Route Tracking updates are supported, but this will change in the future when additional types are added.  Valid values: `route tracking`'
-          enum:
-          - route tracking
-          example: route tracking
-          type: string
-      required:
-      - changes
-      - route
-      - source
-      - time
-      - type
-      type: object
-    RoutesDeleteRouteInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    RoutesFetchRouteNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
+          example: Not implemented.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1101,6 +812,54 @@ components:
         singleUseLocation:
           $ref: '#/components/schemas/RoutesSingleUseAddressObjectRequestBody'
       type: object
+    RouteFeedObjectResponseBody:
+      description: Route feed object.
+      properties:
+        changes:
+          $ref: '#/components/schemas/RouteChangesResponseBody'
+        operation:
+          description: 'The operation that was performed as part of this route update.  Valid values: `stop scheduled`, `stop en route`, `stop skipped`, `stop arrived`, `stop departed`, `stop ETA updated`, `stop arrival time updated`, `stop completion time updated`, `stop order changed`, `stop arrival prevented`'
+          enum:
+          - stop scheduled
+          - stop en route
+          - stop skipped
+          - stop arrived
+          - stop departed
+          - stop ETA updated
+          - stop arrival time updated
+          - stop completion time updated
+          - stop order changed
+          - stop arrival prevented
+          example: stop skipped
+          type: string
+        route:
+          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
+        source:
+          description: 'The source of this route update. Updates that are triggered by time or by the route being completed are ''automatic''.  Valid values: `automatic`, `driver`, `admin`'
+          enum:
+          - automatic
+          - driver
+          - admin
+          example: automatic
+          type: string
+        time:
+          description: The timestamp of the route in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          format: date-time
+          type: string
+        type:
+          description: 'The type of route update. The route tracking updates occur as a route is completed and stops transition from one state to another. Currently only Route Tracking updates are supported, but this will change in the future when additional types are added.  Valid values: `route tracking`'
+          enum:
+          - route tracking
+          example: route tracking
+          type: string
+      required:
+      - changes
+      - route
+      - source
+      - time
+      - type
+      type: object
     RoutesSingleUseAddressObjectResponseBody:
       description: This field is used to indicate stops along the route for which an address has not been persisted. This field is mutually exclusive with addressId.
       properties:
@@ -1123,12 +882,12 @@ components:
       - latitude
       - longitude
       type: object
-    RoutesFetchRoutesNotFoundErrorResponseBody:
-      description: Resource not found
+    RoutesCreateRouteGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -1138,65 +897,25 @@ components:
       - message
       - requestId
       type: object
-    RoutesFetchRouteNotFoundErrorResponseBody:
-      description: Resource not found
+    RouteSettingsRequestBody:
+      description: An optional dictionary, only necessary to override the defaults for route start and end conditions.
       properties:
-        message:
-          description: Message of error
-          example: Object not found.
+        routeCompletionCondition:
+          default: arriveLastStop
+          description: "Defaults to 'arriveLastStop' which ends the route upon arriving at the final stop. The condition 'departLastStop' \nends the route upon departing the last stop. If 'arriveLastStop' is set, then the departure time of the final stop should not be set.  Valid values: `arriveLastStop`, `departLastStop`"
+          enum:
+          - arriveLastStop
+          - departLastStop
+          example: arriveLastStop
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
+        routeStartingCondition:
+          default: departFirstStop
+          description: "Defaults to 'departFirstStop' which starts the route upon departing the first stop in the route.\n The condition 'arriveFirstStop' starts the route upon arriving at the first stop in the route. If 'departFirstStop' is set,\nthe arrival time of the first stop should not be set.  Valid values: `departFirstStop`, `arriveFirstStop`"
+          enum:
+          - departFirstStop
+          - arriveFirstStop
+          example: departFirstStop
           type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
     RoutesGetRoutesFeedServiceUnavailableErrorResponseBody:
       description: Service unavailable
@@ -1213,84 +932,23 @@ components:
       - message
       - requestId
       type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
+    RoutesGetRoutesFeedResponseBody:
       properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
+        data:
+          description: Route feed response.
+          items:
+            $ref: '#/components/schemas/RouteFeedObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
       required:
-      - endCursor
-      - hasNextPage
+      - data
+      - pagination
       type: object
-    RoutesCreateRouteGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
+    RoutesFetchRouteResponseBody:
       properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesCreateRouteBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    LiveSharingLinkResponseObjectResponseBody:
-      description: Live Sharing Link response object.
-      properties:
-        expiresAtTime:
-          description: Date that this link expires, in RFC 3339 format.
-          example: '2020-01-27T07:06:25Z'
-          type: string
-        liveSharingUrl:
-          description: The shareable URL of the vehicle's location.
-          example: https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU
-          type: string
-        name:
-          description: Name of the Live Sharing Link.
-          example: Name
-          type: string
-      required:
-      - liveSharingUrl
-      - name
+        data:
+          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
       type: object
     RoutesDeleteRouteUnauthorizedErrorResponseBody:
       description: Unauthorized
@@ -1306,367 +964,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    RoutesFetchRouteBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaAddressTinyResponseResponseBody:
-      description: A minified Address object
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: Id of the address
-          example: '494123'
-          type: string
-        name:
-          description: Name of the address
-          example: 'Company Office #1'
-          type: string
-      required:
-      - id
-      - name
-      type: object
-    RoutesPatchRouteBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    inline_object:
-      properties:
-        apply_to_future_routes:
-          description: This is only for a recurring route.  If set to true, delete all following runs of the route.  If set to false, only delete the current route.
-          example: true
-          type: boolean
-      type: object
-    MinimalRouteAuditLogsResponseBody:
-      description: A single route. Only the fields that have changed are present in the response. All other fields, including the route id, will not be present in the response. For now, only routeStops are included since only Route Tracking updates are supported.
-      properties:
-        stops:
-          description: The route stops in the route. Only stops that have been updated will be included in the response.
-          items:
-            $ref: '#/components/schemas/MinimalRouteStopAuditLogsResponseBody'
-          type: array
-      type: object
-    RoutesPatchRouteInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesPatchRouteUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesPatchRouteResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
-      type: object
-    RoutesFetchRoutesGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    MinimalRouteStopAuditLogsResponseBody:
-      description: A single route stop for a route.
-      properties:
-        actualArrivalTime:
-          description: Actual arrival time, if it exists, for the route stop in RFC 3339 format.
-          example: '2006-01-02T15:04:05+07:00'
-          format: date-time
-          type: string
-        actualDepartureTime:
-          description: Actual departure time, if it exists, for the route stop in RFC 3339 format.
-          example: '2006-01-02T15:04:05+07:00'
-          format: date-time
-          type: string
-        enRouteTime:
-          description: The time the stop became en-route, in RFC 3339 format.
-          example: '2006-01-02T15:04:05+07:00'
-          format: date-time
-          type: string
-        eta:
-          description: Estimated time of arrival, if this stop is currently en-route, in RFC 3339 format.
-          example: '2006-01-02T15:04:05+07:00'
-          format: date-time
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: Unique identifier for the route stop.
-          example: '141414'
-          type: string
-        liveSharingUrl:
-          description: The shareable url of the stop's current status.
-          example: https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token
-          type: string
-        scheduledArrivalTime:
-          description: Scheduled arrival time, if it exists, for the stop in RFC 3339 format. If it does not exist, and this field was changed in the update, it will be an empty string.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        scheduledDepartureTime:
-          description: Scheduled departure time, if it exists, for the stop in RFC 3339 format. If it does not exist, and this field was changed in the update, it will be an empty string.
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        skippedTime:
-          description: Skipped time, if it exists, for the route stop in RFC 3339 format.
-          example: '2006-01-02T15:04:05+07:00'
-          format: date-time
-          type: string
-        state:
-          description: 'The current state of the route stop.  Valid values: `unassigned`, `scheduled`, `en route`, `skipped`, `arrived`, `departed`'
-          enum:
-          - unassigned
-          - scheduled
-          - en route
-          - skipped
-          - arrived
-          - departed
-          example: scheduled
-          type: string
-      required:
-      - id
-      type: object
-    RoutesGetRoutesFeedBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesPatchRouteServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRoutesTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRouteGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRoutesResponseBody:
-      properties:
-        data:
-          description: An array containing multiple routes.
-          items:
-            $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    RoutesPatchRouteNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesCreateRouteTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesPatchRouteBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    UpdateRoutesStopRequestObjectRequestBody:
-      properties:
-        addressId:
-          description: ID of the address. An address [externalId](https://developers.samsara.com/docs/external-ids#using-external-ids) can also be used interchangeably here.
-          example: '45934'
-          type: string
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the stop
-          example: '4125'
-          type: string
-        name:
-          description: Name of the stop
-          example: 'Stop #1'
-          type: string
-        notes:
-          description: Notes for the stop
-          example: These are my notes
-          maxLength: 2000
-          type: string
-        ontimeWindowAfterArrivalMs:
-          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
-          example: 300000
-          maximum: 259200000
-          minimum: 0
-          type: integer
-        ontimeWindowBeforeArrivalMs:
-          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
-          example: 300000
-          maximum: 259200000
-          minimum: 0
-          type: integer
-        scheduledArrivalTime:
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        scheduledDepartureTime:
-          example: '2019-06-13T19:08:25Z'
-          format: date-time
-          type: string
-        singleUseLocation:
-          $ref: '#/components/schemas/RoutesSingleUseAddressObjectRequestBody'
       type: object
     RoutesStopResponseObjectResponseBody:
       properties:
@@ -1767,254 +1064,7 @@ components:
       - name
       - state
       type: object
-    RoutesPatchRouteMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaVehicleTinyResponseResponseBody:
-      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
-      properties:
-        externalIds:
-          additionalProperties:
-            type: string
-          description: A map of external ids
-          type: object
-        id:
-          description: ID of the vehicle
-          example: '494123'
-          type: string
-        name:
-          description: Name of the vehicle
-          example: 'Fleet Truck #1'
-          type: string
-      type: object
-    RoutesFetchRoutesServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RouteSettingsRequestBody:
-      description: An optional dictionary, only necessary to override the defaults for route start and end conditions.
-      properties:
-        routeCompletionCondition:
-          default: arriveLastStop
-          description: "Defaults to 'arriveLastStop' which ends the route upon arriving at the final stop. The condition 'departLastStop' \nends the route upon departing the last stop. If 'arriveLastStop' is set, then the departure time of the final stop should not be set.  Valid values: `arriveLastStop`, `departLastStop`"
-          enum:
-          - arriveLastStop
-          - departLastStop
-          example: arriveLastStop
-          type: string
-        routeStartingCondition:
-          default: departFirstStop
-          description: "Defaults to 'departFirstStop' which starts the route upon departing the first stop in the route.\n The condition 'arriveFirstStop' starts the route upon arriving at the first stop in the route. If 'departFirstStop' is set,\nthe arrival time of the first stop should not be set.  Valid values: `departFirstStop`, `arriveFirstStop`"
-          enum:
-          - departFirstStop
-          - arriveFirstStop
-          example: departFirstStop
-          type: string
-      type: object
-    RoutesFetchRoutesInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesPatchRouteGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesCreateRouteInternalServerErrorResponseBody:
-      description: An internal server error occurred
-      properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesCreateRouteResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
-      type: object
-    RoutesFetchRouteTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    RoutesFetchRouteMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesSingleUseAddressObjectRequestBody:
-      description: This field is used to indicate stops along the route for which an address has not been persisted. This field is mutually exclusive with addressId.
-      properties:
-        address:
-          description: Address of the stop.
-          example: 1234 Main St, San Jose, CA
-          maxLength: 255
-          type: string
-        latitude:
-          description: The latitude of the location
-          example: 123.456
-          format: double
-          type: number
-        longitude:
-          description: The longitude of the location
-          example: 37.459
-          format: double
-          type: number
-      required:
-      - latitude
-      - longitude
-      type: object
-    RoutesFetchRoutesMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesDeleteRouteBadGatewayErrorResponseBody:
+    RoutesCreateRouteBadGatewayErrorResponseBody:
       description: Bad Gateway
       properties:
         message:
@@ -2028,146 +1078,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    RouteSettingsResponseBody:
-      description: An optional dictionary, only necessary to override the defaults for route start and end conditions.
-      properties:
-        routeCompletionCondition:
-          default: arriveLastStop
-          description: "Defaults to 'arriveLastStop' which ends the route upon arriving at the final stop. The condition 'departLastStop' \nends the route upon departing the last stop. If 'arriveLastStop' is set, then the departure time of the final stop should not be set.  Valid values: `arriveLastStop`, `departLastStop`"
-          enum:
-          - arriveLastStop
-          - departLastStop
-          example: arriveLastStop
-          type: string
-        routeStartingCondition:
-          default: departFirstStop
-          description: "Defaults to 'departFirstStop' which starts the route upon departing the first stop in the route.\n The condition 'arriveFirstStop' starts the route upon arriving at the first stop in the route. If 'departFirstStop' is set,\nthe arrival time of the first stop should not be set.  Valid values: `departFirstStop`, `arriveFirstStop`"
-          enum:
-          - departFirstStop
-          - arriveFirstStop
-          example: departFirstStop
-          type: string
-      type: object
-    RoutesPatchRouteTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRoutesBadGatewayErrorResponseBody:
-      description: Bad Gateway
-      properties:
-        message:
-          description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesPatchRouteNotFoundErrorResponseBody:
-      description: Resource not found
-      properties:
-        message:
-          description: Message of error
-          example: Object not found.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesFetchRouteResponseBody:
-      properties:
-        data:
-          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
-      type: object
-    RoutesFetchRouteNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RoutesGetRoutesFeedNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    GoaDocumentTinyResponseResponseBody:
-      description: A minified Document object
-      properties:
-        id:
-          description: Id of the document
-          example: '494123'
-          type: string
-        name:
-          description: Name of the document
-          example: Fuel Receipt Wichita
-          type: string
-      required:
-      - id
-      type: object
-    RoutesCreateRouteServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    RouteChangesResponseBody:
-      description: A diff of the changes for a route update.
-      properties:
-        after:
-          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
-        before:
-          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
-      required:
-      - after
-      - before
       type: object
     RoutesCreateRouteRequestBody:
       properties:
@@ -2205,6 +1115,674 @@ components:
       - name
       - stops
       type: object
+    RoutesGetRoutesFeedUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    inline_object:
+      properties:
+        apply_to_future_routes:
+          description: This is only for a recurring route.  If set to true, delete all following runs of the route.  If set to false, only delete the current route.
+          example: true
+          type: boolean
+      type: object
+    RoutesFetchRouteTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesCreateRouteTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesPatchRouteBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRoutesInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesDeleteRouteServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaVehicleTinyResponseResponseBody:
+      description: A minified vehicle object. This object is only returned if the route is assigned to the vehicle.
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the vehicle
+          example: '494123'
+          type: string
+        name:
+          description: Name of the vehicle
+          example: 'Fleet Truck #1'
+          type: string
+      type: object
+    RoutesPatchRouteMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRouteNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    RoutesPatchRouteGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesDeleteRouteBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesPatchRouteRequestBody:
+      properties:
+        driverId:
+          description: ID of the driver. Can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the driver.
+          example: '1234'
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        name:
+          description: Name for the route
+          example: Bid 123
+          type: string
+        notes:
+          description: Notes about the route.
+          example: These are my notes
+          maxLength: 2000
+          type: string
+        settings:
+          $ref: '#/components/schemas/RouteSettingsRequestBody'
+        stops:
+          description: List of stops along the route. If a valid `id` of a stop is provided, that stop will be updated. If no `id` is provided for a passed in stop, that stop will be created. If `id` value are passed in for some stops and not for others, those with `id` value specified will be retained and updated in the original route, those without `id` value specified in the body will be created, and those without `id` value specified that already existed on the route will be deleted. For each new stop, exactly one of `addressId` and `singleUseLocation` are required. Depending on the `settings` on your route, either a `scheduledArrivalTime` or `scheduledDepartureTime` must be specified for the first job, if a new first job is being added.
+          items:
+            $ref: '#/components/schemas/UpdateRoutesStopRequestObjectRequestBody'
+          type: array
+        vehicleId:
+          description: ID of the vehicle. Can be either a unique Samsara ID or an [external ID](https://developers.samsara.com/docs/external-ids) for the vehicle.
+          example: '453546'
+          type: string
+      type: object
+    RoutesDeleteRouteGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesPatchRouteUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesPatchRouteInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRouteBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MinimalRouteAuditLogsResponseBody:
+      description: A single route. Only the fields that have changed are present in the response. All other fields, including the route id, will not be present in the response. For now, only routeStops are included since only Route Tracking updates are supported.
+      properties:
+        stops:
+          description: The route stops in the route. Only stops that have been updated will be included in the response.
+          items:
+            $ref: '#/components/schemas/MinimalRouteStopAuditLogsResponseBody'
+          type: array
+      type: object
+    RoutesPatchRouteBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesCreateRouteUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    MinimalRouteStopAuditLogsResponseBody:
+      description: A single route stop for a route.
+      properties:
+        actualArrivalTime:
+          description: Actual arrival time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        actualDepartureTime:
+          description: Actual departure time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        enRouteTime:
+          description: The time the stop became en-route, in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        eta:
+          description: Estimated time of arrival, if this stop is currently en-route, in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Unique identifier for the route stop.
+          example: '141414'
+          type: string
+        liveSharingUrl:
+          description: The shareable url of the stop's current status.
+          example: https://cloud.samsara.com/fleet/viewer/job/fleet_viewer_token
+          type: string
+        scheduledArrivalTime:
+          description: Scheduled arrival time, if it exists, for the stop in RFC 3339 format. If it does not exist, and this field was changed in the update, it will be an empty string.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        scheduledDepartureTime:
+          description: Scheduled departure time, if it exists, for the stop in RFC 3339 format. If it does not exist, and this field was changed in the update, it will be an empty string.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        skippedTime:
+          description: Skipped time, if it exists, for the route stop in RFC 3339 format.
+          example: '2006-01-02T15:04:05+07:00'
+          format: date-time
+          type: string
+        state:
+          description: 'The current state of the route stop.  Valid values: `unassigned`, `scheduled`, `en route`, `skipped`, `arrived`, `departed`'
+          enum:
+          - unassigned
+          - scheduled
+          - en route
+          - skipped
+          - arrived
+          - departed
+          example: scheduled
+          type: string
+      required:
+      - id
+      type: object
+    RoutesPatchRouteTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaAddressTinyResponseResponseBody:
+      description: A minified Address object
+      properties:
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: Id of the address
+          example: '494123'
+          type: string
+        name:
+          description: Name of the address
+          example: 'Company Office #1'
+          type: string
+      required:
+      - id
+      - name
+      type: object
+    RoutesFetchRouteBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesCreateRouteServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRoutesBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRoutesTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RouteChangesResponseBody:
+      description: A diff of the changes for a route update.
+      properties:
+        after:
+          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
+        before:
+          $ref: '#/components/schemas/MinimalRouteAuditLogsResponseBody'
+      required:
+      - after
+      - before
+      type: object
+    RoutesFetchRoutesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesPatchRouteResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
+      type: object
+    RoutesGetRoutesFeedNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    GoaDocumentTinyResponseResponseBody:
+      description: A minified Document object
+      properties:
+        id:
+          description: Id of the document
+          example: '494123'
+          type: string
+        name:
+          description: Name of the document
+          example: Fuel Receipt Wichita
+          type: string
+      required:
+      - id
+      type: object
+    RoutesFetchRoutesUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesDeleteRouteMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRouteServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RouteSettingsResponseBody:
+      description: An optional dictionary, only necessary to override the defaults for route start and end conditions.
+      properties:
+        routeCompletionCondition:
+          default: arriveLastStop
+          description: "Defaults to 'arriveLastStop' which ends the route upon arriving at the final stop. The condition 'departLastStop' \nends the route upon departing the last stop. If 'arriveLastStop' is set, then the departure time of the final stop should not be set.  Valid values: `arriveLastStop`, `departLastStop`"
+          enum:
+          - arriveLastStop
+          - departLastStop
+          example: arriveLastStop
+          type: string
+        routeStartingCondition:
+          default: departFirstStop
+          description: "Defaults to 'departFirstStop' which starts the route upon departing the first stop in the route.\n The condition 'arriveFirstStop' starts the route upon arriving at the first stop in the route. If 'departFirstStop' is set,\nthe arrival time of the first stop should not be set.  Valid values: `departFirstStop`, `arriveFirstStop`"
+          enum:
+          - departFirstStop
+          - arriveFirstStop
+          example: departFirstStop
+          type: string
+      type: object
+    RoutesPatchRouteNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     GoaDriverTinyResponseResponseBody:
       description: A minified driver object. This object is only returned if the route is assigned to the driver.
       properties:
@@ -2223,6 +1801,428 @@ components:
           type: string
       required:
       - id
+      type: object
+    RoutesDeleteRouteTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRoutesNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesPatchRouteNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesCreateRouteNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRoutesServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesPatchRouteServiceUnavailableErrorResponseBody:
+      description: Service unavailable
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesSingleUseAddressObjectRequestBody:
+      description: This field is used to indicate stops along the route for which an address has not been persisted. This field is mutually exclusive with addressId.
+      properties:
+        address:
+          description: Address of the stop.
+          example: 1234 Main St, San Jose, CA
+          maxLength: 255
+          type: string
+        latitude:
+          description: The latitude of the location
+          example: 123.456
+          format: double
+          type: number
+        longitude:
+          description: The longitude of the location
+          example: 37.459
+          format: double
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    baseRouteResponseObjectResponseBody:
+      properties:
+        actualRouteEndTime:
+          description: Actual end time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        actualRouteStartTime:
+          description: Actual start time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        driver:
+          $ref: '#/components/schemas/GoaDriverTinyResponseResponseBody'
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the route
+          example: '342341'
+          type: string
+        name:
+          description: Route name
+          example: Bid 123
+          type: string
+        notes:
+          description: Notes for the route
+          example: These are my notes
+          type: string
+        recurringRouteLiveSharingLinks:
+          description: List of shareable, non-expired 'By recurring Route' Live Sharing Links.
+          items:
+            $ref: '#/components/schemas/LiveSharingLinkResponseObjectResponseBody'
+          type: array
+        scheduledRouteEndTime:
+          description: Scheduled end time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        scheduledRouteStartTime:
+          description: Scheduled start time, if it exists, for the route in RFC 3339 format.
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        settings:
+          $ref: '#/components/schemas/RouteSettingsResponseBody'
+        stops:
+          description: List of stops along the route
+          items:
+            $ref: '#/components/schemas/RoutesStopResponseObjectResponseBody'
+          minItems: 2
+          type: array
+        vehicle:
+          $ref: '#/components/schemas/GoaVehicleTinyResponseResponseBody'
+      required:
+      - id
+      type: object
+    RoutesFetchRouteInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesDeleteRouteBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesGetRoutesFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    LiveSharingLinkResponseObjectResponseBody:
+      description: Live Sharing Link response object.
+      properties:
+        expiresAtTime:
+          description: Date that this link expires, in RFC 3339 format.
+          example: '2020-01-27T07:06:25Z'
+          type: string
+        liveSharingUrl:
+          description: The shareable URL of the vehicle's location.
+          example: https://cloud.samsara.com/o/123456/fleet/viewer/address/gEAitEnnOwcv92cuPzcU
+          type: string
+        name:
+          description: Name of the Live Sharing Link.
+          example: Name
+          type: string
+      required:
+      - liveSharingUrl
+      - name
+      type: object
+    RoutesCreateRouteInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRoutesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesCreateRouteNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    UpdateRoutesStopRequestObjectRequestBody:
+      properties:
+        addressId:
+          description: ID of the address. An address [externalId](https://developers.samsara.com/docs/external-ids#using-external-ids) can also be used interchangeably here.
+          example: '45934'
+          type: string
+        externalIds:
+          additionalProperties:
+            type: string
+          description: A map of external ids
+          type: object
+        id:
+          description: ID of the stop
+          example: '4125'
+          type: string
+        name:
+          description: Name of the stop
+          example: 'Stop #1'
+          type: string
+        notes:
+          description: Notes for the stop
+          example: These are my notes
+          maxLength: 2000
+          type: string
+        ontimeWindowAfterArrivalMs:
+          description: Specifies the time window (in milliseconds) after a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        ontimeWindowBeforeArrivalMs:
+          description: Specifies the time window (in milliseconds) before a stop's scheduled arrival time during which the stop is considered 'on-time'.
+          example: 300000
+          maximum: 259200000
+          minimum: 0
+          type: integer
+        scheduledArrivalTime:
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        scheduledDepartureTime:
+          example: '2019-06-13T19:08:25Z'
+          format: date-time
+          type: string
+        singleUseLocation:
+          $ref: '#/components/schemas/RoutesSingleUseAddressObjectRequestBody'
+      type: object
+    RoutesCreateRouteResponseBody:
+      properties:
+        data:
+          $ref: '#/components/schemas/baseRouteResponseObjectResponseBody'
+      type: object
+    RoutesCreateRouteBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesDeleteRouteInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesDeleteRouteNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRoutesNotFoundErrorResponseBody:
+      description: Resource not found
+      properties:
+        message:
+          description: Message of error
+          example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    RoutesFetchRouteGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
+      properties:
+        message:
+          description: Message of error
+          example: context deadline exceeded
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
   requestBodies:
     inline_object:

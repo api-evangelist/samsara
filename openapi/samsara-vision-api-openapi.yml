@@ -285,20 +285,76 @@ paths:
       - Vision
 components:
   schemas:
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
-    V1VisionRunByCameraResponse_inspectionResults:
+    V1VisionRunsByCameraResponse:
+      items:
+        properties:
+          deviceId:
+            example: 1234512345123
+            format: int64
+            type: integer
+          endedAtMs:
+            example: 0
+            format: int64
+            type: integer
+          program:
+            properties:
+              id:
+                example: 1
+                format: int64
+                type: integer
+              name:
+                example: Barcode verification program
+                type: string
+            type: object
+          reportMetadata:
+            properties:
+              itemsPerMinute:
+                example: 0.1
+                format: float64
+                type: number
+              noReadCount:
+                example: 0
+                format: int64
+                type: integer
+              rejectCount:
+                example: 0
+                format: int64
+                type: integer
+              successCount:
+                example: 181
+                format: int64
+                type: integer
+            type: object
+          startedAtMs:
+            example: 1553808606097
+            format: int64
+            type: integer
+        type: object
+      type: array
+    V1VisionRunsByCameraAndProgramResponse:
       properties:
-        captureAtMs:
-          example: 1553811994730
-          format: float64
-          type: number
-        result:
-          example: PASS
-          type: string
-        stepResults:
-          $ref: '#/components/schemas/V1VisionStepResults'
+        deviceId:
+          example: 1234512345123
+          format: int64
+          type: integer
+        endedAtMs:
+          example: 0
+          format: int64
+          type: integer
+        programId:
+          example: 1
+          format: int64
+          type: integer
+        reportMetadata:
+          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
+        results:
+          items:
+            $ref: '#/components/schemas/V1VisionRunByCameraResponse_inspectionResults'
+          type: array
+        startedAtMs:
+          example: 1553808606097
+          format: int64
+          type: integer
       type: object
     V1VisionRunByCameraResponse_runSummary:
       properties:
@@ -338,17 +394,19 @@ components:
             type: string
         type: object
       type: array
-    V1VisionRunByCameraResponse_program:
+    V1VisionRunByCameraResponse_inspectionResults:
       properties:
-        id:
-          example: 1
-          format: int64
-          type: integer
-        name:
-          example: Barcode verification program
+        captureAtMs:
+          example: 1553811994730
+          format: float64
+          type: number
+        result:
+          example: PASS
           type: string
+        stepResults:
+          $ref: '#/components/schemas/V1VisionStepResults'
       type: object
-    V1VisionRunsByCameraAndProgramResponse:
+    V1VisionRunsResponse_visionRuns:
       properties:
         deviceId:
           example: 1234512345123
@@ -363,13 +421,92 @@ components:
           format: int64
           type: integer
         reportMetadata:
-          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
-        results:
+          $ref: '#/components/schemas/V1VisionRunsResponse_reportMetadata'
+        startedAtMs:
+          example: 1553808606097
+          format: int64
+          type: integer
+      type: object
+    V1VisionRunByCameraResponse_program:
+      properties:
+        id:
+          example: 1
+          format: int64
+          type: integer
+        name:
+          example: Barcode verification program
+          type: string
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    V1VisionRunsResponse:
+      properties:
+        visionRuns:
+          items:
+            $ref: '#/components/schemas/V1VisionRunsResponse_visionRuns'
+          type: array
+      type: object
+    V1VisionRunByCameraResponse:
+      properties:
+        cameraId:
+          example: 1234512345123
+          format: int64
+          type: integer
+        endedAtMs:
+          example: 0
+          format: int64
+          type: integer
+        inspectionResults:
           items:
             $ref: '#/components/schemas/V1VisionRunByCameraResponse_inspectionResults'
           type: array
+        isOngoing:
+          example: true
+          type: boolean
+        program:
+          $ref: '#/components/schemas/V1VisionRunByCameraResponse_program'
+        runSummary:
+          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
         startedAtMs:
           example: 1553808606097
+          format: int64
+          type: integer
+      type: object
+    V1ProgramsForTheCameraResponse:
+      description: Contains the list of Programs configured on the given Camera.
+      items:
+        properties:
+          programId:
+            example: 1
+            format: int64
+            type: integer
+          programName:
+            example: Barcode verification program
+            type: string
+        type: object
+      type: array
+    V1VisionRunsResponse_reportMetadata:
+      description: The response includes 4 additional fields that are now deprecated
+      properties:
+        itemsPerMinute:
+          description: Returns average scanned items per minute. Should be used instead of scanRate.
+          example: 0.1
+          format: float64
+          type: number
+        noReadCount:
+          description: Returns no read count for the run. Should be used instead of noReadScansCount
+          example: 181
+          format: int64
+          type: integer
+        rejectCount:
+          description: Returns reject count for the run. Should be used instead of failedScansCount
+          example: 0
+          format: int64
+          type: integer
+        successCount:
+          description: Returns success count for the run. Should be used instead of successfulScansCount
+          example: 181
           format: int64
           type: integer
       type: object
@@ -854,143 +991,6 @@ components:
             type: object
         type: object
       type: array
-    V1VisionRunsResponse_visionRuns:
-      properties:
-        deviceId:
-          example: 1234512345123
-          format: int64
-          type: integer
-        endedAtMs:
-          example: 0
-          format: int64
-          type: integer
-        programId:
-          example: 1
-          format: int64
-          type: integer
-        reportMetadata:
-          $ref: '#/components/schemas/V1VisionRunsResponse_reportMetadata'
-        startedAtMs:
-          example: 1553808606097
-          format: int64
-          type: integer
-      type: object
-    V1VisionRunsResponse_reportMetadata:
-      description: The response includes 4 additional fields that are now deprecated
-      properties:
-        itemsPerMinute:
-          description: Returns average scanned items per minute. Should be used instead of scanRate.
-          example: 0.1
-          format: float64
-          type: number
-        noReadCount:
-          description: Returns no read count for the run. Should be used instead of noReadScansCount
-          example: 181
-          format: int64
-          type: integer
-        rejectCount:
-          description: Returns reject count for the run. Should be used instead of failedScansCount
-          example: 0
-          format: int64
-          type: integer
-        successCount:
-          description: Returns success count for the run. Should be used instead of successfulScansCount
-          example: 181
-          format: int64
-          type: integer
-      type: object
-    V1VisionRunsByCameraResponse:
-      items:
-        properties:
-          deviceId:
-            example: 1234512345123
-            format: int64
-            type: integer
-          endedAtMs:
-            example: 0
-            format: int64
-            type: integer
-          program:
-            properties:
-              id:
-                example: 1
-                format: int64
-                type: integer
-              name:
-                example: Barcode verification program
-                type: string
-            type: object
-          reportMetadata:
-            properties:
-              itemsPerMinute:
-                example: 0.1
-                format: float64
-                type: number
-              noReadCount:
-                example: 0
-                format: int64
-                type: integer
-              rejectCount:
-                example: 0
-                format: int64
-                type: integer
-              successCount:
-                example: 181
-                format: int64
-                type: integer
-            type: object
-          startedAtMs:
-            example: 1553808606097
-            format: int64
-            type: integer
-        type: object
-      type: array
-    V1ProgramsForTheCameraResponse:
-      description: Contains the list of Programs configured on the given Camera.
-      items:
-        properties:
-          programId:
-            example: 1
-            format: int64
-            type: integer
-          programName:
-            example: Barcode verification program
-            type: string
-        type: object
-      type: array
-    V1VisionRunsResponse:
-      properties:
-        visionRuns:
-          items:
-            $ref: '#/components/schemas/V1VisionRunsResponse_visionRuns'
-          type: array
-      type: object
-    V1VisionRunByCameraResponse:
-      properties:
-        cameraId:
-          example: 1234512345123
-          format: int64
-          type: integer
-        endedAtMs:
-          example: 0
-          format: int64
-          type: integer
-        inspectionResults:
-          items:
-            $ref: '#/components/schemas/V1VisionRunByCameraResponse_inspectionResults'
-          type: array
-        isOngoing:
-          example: true
-          type: boolean
-        program:
-          $ref: '#/components/schemas/V1VisionRunByCameraResponse_program'
-        runSummary:
-          $ref: '#/components/schemas/V1VisionRunByCameraResponse_runSummary'
-        startedAtMs:
-          example: 1553808606097
-          format: int64
-          type: integer
-      type: object
   securitySchemes:
     AccessTokenHeader:
       type: http

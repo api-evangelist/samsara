@@ -114,9 +114,16 @@ paths:
       x-codegen-request-body-name: createMessages
 components:
   schemas:
-    V1ErrorResponse:
-      description: Error message describing why the request failed.
-      type: string
+    V1MessagesResponse:
+      items:
+        $ref: '#/components/schemas/V1MessageResponse'
+      type: array
+    inline_response_200_5:
+      description: A list of messages.
+      properties:
+        data:
+          $ref: '#/components/schemas/V1MessagesResponse'
+      type: object
     V1MessageSender:
       properties:
         name:
@@ -131,6 +138,10 @@ components:
       - name
       - type
       type: object
+    V1Messages:
+      items:
+        $ref: '#/components/schemas/V1Message'
+      type: array
     V1Message:
       properties:
         driverId:
@@ -144,6 +155,36 @@ components:
           type: string
       required:
       - driverId
+      - text
+      type: object
+    inline_response_200_6:
+      description: A list of created messages.
+      properties:
+        data:
+          $ref: '#/components/schemas/V1Messages'
+      type: object
+    V1ErrorResponse:
+      description: Error message describing why the request failed.
+      type: string
+    inline_object_2:
+      properties:
+        driverIds:
+          description: IDs of the drivers for whom the messages are sent to.
+          example:
+          - 111
+          - 222
+          - 333
+          items:
+            example: 555
+            format: int64
+            type: number
+          type: array
+        text:
+          description: The text sent in the message. Max 2500 characters allowed.
+          example: This is a message.
+          type: string
+      required:
+      - driverIds
       - text
       type: object
     V1MessageResponse:
@@ -175,47 +216,6 @@ components:
       - sentAtMs
       - text
       type: object
-    inline_response_200_5:
-      description: A list of messages.
-      properties:
-        data:
-          $ref: '#/components/schemas/V1MessagesResponse'
-      type: object
-    inline_object_2:
-      properties:
-        driverIds:
-          description: IDs of the drivers for whom the messages are sent to.
-          example:
-          - 111
-          - 222
-          - 333
-          items:
-            example: 555
-            format: int64
-            type: number
-          type: array
-        text:
-          description: The text sent in the message. Max 2500 characters allowed.
-          example: This is a message.
-          type: string
-      required:
-      - driverIds
-      - text
-      type: object
-    V1Messages:
-      items:
-        $ref: '#/components/schemas/V1Message'
-      type: array
-    inline_response_200_6:
-      description: A list of created messages.
-      properties:
-        data:
-          $ref: '#/components/schemas/V1Messages'
-      type: object
-    V1MessagesResponse:
-      items:
-        $ref: '#/components/schemas/V1MessageResponse'
-      type: array
   requestBodies:
     inline_object_2:
       content:

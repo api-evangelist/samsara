@@ -120,6 +120,177 @@ paths:
       - Forms
 components:
   schemas:
+    FormTemplatesGetFormTemplatesInternalServerErrorResponseBody:
+      description: An internal server error occurred
+      properties:
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplateSectionObjectResponseBody:
+      description: Form Template section object.
+      properties:
+        fieldIndexFirstInclusive:
+          description: The index of the first field from the fields array that is in this section. Index 0 represents the first field definition of the fields array.
+          example: 0
+          format: int64
+          type: integer
+        fieldIndexLastInclusive:
+          description: The index of the last field from the fields array that is in this section.
+          example: 9
+          format: int64
+          type: integer
+        label:
+          description: Label of the section.
+          example: Engine Hours
+          type: string
+      required:
+      - fieldIndexFirstInclusive
+      - fieldIndexLastInclusive
+      - label
+      type: object
+    SingleApprovalRequirementsObjectResponseBody:
+      description: Single approval requirements object.
+      properties:
+        roleIds:
+          description: List of role IDs representing which user roles can be approvers.
+          example:
+          - 23d4d8d3-dc10-4e7a-a183-69968751f23e
+          items:
+            example: Minus temporibus fugit.
+            type: string
+          type: array
+      required:
+      - roleIds
+      type: object
+    FormsApprovalConfigObjectResponseBody:
+      description: Form Template approval configuration object.
+      properties:
+        singleApprovalConfig:
+          $ref: '#/components/schemas/FormsSingleApprovalConfigObjectResponseBody'
+        type:
+          description: 'Type of approval.  Valid values: `singleApproval`'
+          enum:
+          - singleApproval
+          example: singleApproval
+          type: string
+      required:
+      - type
+      type: object
+    GoaPaginationResponseResponseBody:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    FormTemplatesGetFormTemplatesNotImplementedErrorResponseBody:
+      description: Requested endpoint is not yet implemented
+      properties:
+        message:
+          description: Message of error
+          example: Not implemented.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
+      properties:
+        message:
+          description: Message of error
+          example: DELETE not allowed on /endpoint.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesBadRequestErrorResponseBody:
+      description: Bad Request parameters
+      properties:
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesResponseBody:
+      properties:
+        data:
+          description: List of form templates.
+          items:
+            $ref: '#/components/schemas/FormTemplateResponseObjectResponseBody'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
+      required:
+      - data
+      - pagination
+      type: object
+    FormsPolymorphicUserObjectResponseBody:
+      description: User or driver object.
+      properties:
+        id:
+          description: ID of the polymorphic user.
+          example: '938172'
+          type: string
+        type:
+          description: 'The type of the polymorphic user.  Valid values: `driver`, `user`'
+          enum:
+          - driver
+          - user
+          example: driver
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    FormTemplatesGetFormTemplatesUnauthorizedErrorResponseBody:
+      description: Unauthorized
+      properties:
+        message:
+          description: Message of error
+          example: Invalid token.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
     FormTemplatesGetFormTemplatesTooManyRequestsErrorResponseBody:
       description: Too many requests
       properties:
@@ -135,12 +306,12 @@ components:
       - message
       - requestId
       type: object
-    FormTemplatesGetFormTemplatesInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    FormTemplatesGetFormTemplatesServiceUnavailableErrorResponseBody:
+      description: Service unavailable
       properties:
         message:
           description: Message of error
-          example: Failed to execute GraphQL query.
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -149,6 +320,19 @@ components:
       required:
       - message
       - requestId
+      type: object
+    FormsSingleApprovalConfigObjectResponseBody:
+      description: Single approval configuration object.
+      properties:
+        allowManualApproverSelection:
+          description: Indicates whether approver can be manually selected. True by default.
+          example: true
+          type: boolean
+        requirements:
+          $ref: '#/components/schemas/SingleApprovalRequirementsObjectResponseBody'
+      required:
+      - allowManualApproverSelection
+      - requirements
       type: object
     FormTemplateResponseObjectResponseBody:
       description: Form Template response object.
@@ -209,26 +393,12 @@ components:
       - updatedAtTime
       - updatedBy
       type: object
-    SingleApprovalRequirementsObjectResponseBody:
-      description: Single approval requirements object.
-      properties:
-        roleIds:
-          description: List of role IDs representing which user roles can be approvers.
-          example:
-          - 23d4d8d3-dc10-4e7a-a183-69968751f23e
-          items:
-            example: Minus temporibus fugit.
-            type: string
-          type: array
-      required:
-      - roleIds
-      type: object
-    FormTemplatesGetFormTemplatesBadGatewayErrorResponseBody:
-      description: Bad Gateway
+    FormTemplatesGetFormTemplatesGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
         message:
           description: Message of error
-          example: 'rpc error: code = Unknown desc = connection refused'
+          example: context deadline exceeded
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -237,75 +407,6 @@ components:
       required:
       - message
       - requestId
-      type: object
-    FormsApprovalConfigObjectResponseBody:
-      description: Form Template approval configuration object.
-      properties:
-        singleApprovalConfig:
-          $ref: '#/components/schemas/FormsSingleApprovalConfigObjectResponseBody'
-        type:
-          description: 'Type of approval.  Valid values: `singleApproval`'
-          enum:
-          - singleApproval
-          example: singleApproval
-          type: string
-      required:
-      - type
-      type: object
-    GoaPaginationResponseResponseBody:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    FormsPolymorphicUserObjectResponseBody:
-      description: User or driver object.
-      properties:
-        id:
-          description: ID of the polymorphic user.
-          example: '938172'
-          type: string
-        type:
-          description: 'The type of the polymorphic user.  Valid values: `driver`, `user`'
-          enum:
-          - driver
-          - user
-          example: driver
-          type: string
-      required:
-      - id
-      - type
-      type: object
-    FormTemplateSectionObjectResponseBody:
-      description: Form Template section object.
-      properties:
-        fieldIndexFirstInclusive:
-          description: The index of the first field from the fields array that is in this section. Index 0 represents the first field definition of the fields array.
-          example: 0
-          format: int64
-          type: integer
-        fieldIndexLastInclusive:
-          description: The index of the last field from the fields array that is in this section.
-          example: 9
-          format: int64
-          type: integer
-        label:
-          description: Label of the section.
-          example: Engine Hours
-          type: string
-      required:
-      - fieldIndexFirstInclusive
-      - fieldIndexLastInclusive
-      - label
       type: object
     FormsFieldDefinitionObjectResponseBody:
       description: Forms field definition object.
@@ -412,113 +513,27 @@ components:
       - label
       - type
       type: object
-    FormTemplatesGetFormTemplatesGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FormTemplatesGetFormTemplatesBadRequestErrorResponseBody:
-      description: Bad Request parameters
-      properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FormTemplatesGetFormTemplatesMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
-      properties:
-        message:
-          description: Message of error
-          example: DELETE not allowed on /endpoint.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FormTemplatesGetFormTemplatesUnauthorizedErrorResponseBody:
-      description: Unauthorized
-      properties:
-        message:
-          description: Message of error
-          example: Invalid token.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FormTemplatesGetFormTemplatesServiceUnavailableErrorResponseBody:
-      description: Service unavailable
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    FormTemplatesGetFormTemplatesResponseBody:
-      properties:
-        data:
-          description: List of form templates.
-          items:
-            $ref: '#/components/schemas/FormTemplateResponseObjectResponseBody'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/GoaPaginationResponseResponseBody'
-      required:
-      - data
-      - pagination
-      type: object
-    FormsSingleApprovalConfigObjectResponseBody:
-      description: Single approval configuration object.
-      properties:
-        allowManualApproverSelection:
-          description: Indicates whether approver can be manually selected. True by default.
-          example: true
-          type: boolean
-        requirements:
-          $ref: '#/components/schemas/SingleApprovalRequirementsObjectResponseBody'
-      required:
-      - allowManualApproverSelection
-      - requirements
-      type: object
     FormTemplatesGetFormTemplatesNotFoundErrorResponseBody:
       description: Resource not found
       properties:
         message:
           description: Message of error
           example: Object not found.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    FormTemplatesGetFormTemplatesBadGatewayErrorResponseBody:
+      description: Bad Gateway
+      properties:
+        message:
+          description: Message of error
+          example: 'rpc error: code = Unknown desc = connection refused'
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -551,21 +566,6 @@ components:
       required:
       - id
       - label
-      type: object
-    FormTemplatesGetFormTemplatesNotImplementedErrorResponseBody:
-      description: Requested endpoint is not yet implemented
-      properties:
-        message:
-          description: Message of error
-          example: Not implemented.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

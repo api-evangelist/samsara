@@ -232,9 +232,22 @@ paths:
       - Tachograph ( E U  Only)
 components:
   schemas:
-    TachographDriverFileData:
+    standardErrorResponse:
+      description: Error response
+      properties:
+        message:
+          description: The message of the error.
+          example: An error has occurred.
+          type: string
+        requestId:
+          description: The ID of the request.
+          example: 8916e1c1
+          type: string
+      type: object
+    TachographDriverFileList:
+      description: List of all tachograph driver files in a specified time range.
       items:
-        $ref: '#/components/schemas/TachographDriverFileListWrapper'
+        $ref: '#/components/schemas/TachographDriverFile'
       type: array
     TachographDriverFile:
       description: Tachograph driver file
@@ -256,21 +269,16 @@ components:
           example: https://samsara-tachograph-files.s3.us-west-2.amazonaws.com/123/456/789/4aff772c-a7bb-45e6-8e41-6a53e34feb83.ddd
           type: string
       type: object
-    TachographVehicleFileListWrapper:
+    TachographActivityListWrapper:
       properties:
-        files:
-          $ref: '#/components/schemas/TachographVehicleFileList'
-        vehicle:
-          $ref: '#/components/schemas/vehicleTinyResponse'
+        activity:
+          $ref: '#/components/schemas/TachographActivityList'
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
       type: object
     DriverTachographActivityData:
       items:
         $ref: '#/components/schemas/TachographActivityListWrapper'
-      type: array
-    TachographVehicleFileList:
-      description: List of all tachograph vehicle files in a specified time range.
-      items:
-        $ref: '#/components/schemas/TachographVehicleFile'
       type: array
     TachographVehicleFile:
       description: Tachograph vehicle file
@@ -291,6 +299,60 @@ components:
           description: VIN associated with the vehicle file.
           example: '1000000492436002'
           type: string
+      type: object
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    TachographActivityList:
+      description: List of all driver tachograph activities in a specified time range.
+      items:
+        $ref: '#/components/schemas/TachographActivity'
+      type: array
+    TachographVehicleFileData:
+      items:
+        $ref: '#/components/schemas/TachographVehicleFileListWrapper'
+      type: array
+    TachographDriverFileData:
+      items:
+        $ref: '#/components/schemas/TachographDriverFileListWrapper'
+      type: array
+    TachographVehicleFileList:
+      description: List of all tachograph vehicle files in a specified time range.
+      items:
+        $ref: '#/components/schemas/TachographVehicleFile'
+      type: array
+    DriverTachographActivityResponse:
+      description: List of all driver tachograph activities in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/DriverTachographActivityData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
       type: object
     vehicleTinyResponse:
       description: A minified vehicle object.
@@ -320,29 +382,12 @@ components:
         pagination:
           $ref: '#/components/schemas/paginationResponse'
       type: object
-    DriverTachographActivityResponse:
-      description: List of all driver tachograph activities in a specified time range.
+    TachographVehicleFileListWrapper:
       properties:
-        data:
-          $ref: '#/components/schemas/DriverTachographActivityData'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    TachographVehicleFileData:
-      items:
-        $ref: '#/components/schemas/TachographVehicleFileListWrapper'
-      type: array
-    standardErrorResponse:
-      description: Error response
-      properties:
-        message:
-          description: The message of the error.
-          example: An error has occurred.
-          type: string
-        requestId:
-          description: The ID of the request.
-          example: 8916e1c1
-          type: string
+        files:
+          $ref: '#/components/schemas/TachographVehicleFileList'
+        vehicle:
+          $ref: '#/components/schemas/vehicleTinyResponse'
       type: object
     TachographDriverFileListWrapper:
       properties:
@@ -358,13 +403,6 @@ components:
           $ref: '#/components/schemas/TachographDriverFileData'
         pagination:
           $ref: '#/components/schemas/paginationResponse'
-      type: object
-    TachographActivityListWrapper:
-      properties:
-        activity:
-          $ref: '#/components/schemas/TachographActivityList'
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
       type: object
     TachographActivity:
       description: Tachograph activity
@@ -389,44 +427,6 @@ components:
           - AVAILABILITY
           - DRIVING
           - UNKNOWN
-          type: string
-      type: object
-    TachographActivityList:
-      description: List of all driver tachograph activities in a specified time range.
-      items:
-        $ref: '#/components/schemas/TachographActivity'
-      type: array
-    TachographDriverFileList:
-      description: List of all tachograph driver files in a specified time range.
-      items:
-        $ref: '#/components/schemas/TachographDriverFile'
-      type: array
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    driverTinyResponse:
-      description: A minified driver object.
-      properties:
-        id:
-          description: ID of the driver.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Susan Bob
           type: string
       type: object
   securitySchemes:

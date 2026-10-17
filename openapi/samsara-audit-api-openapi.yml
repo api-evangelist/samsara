@@ -118,34 +118,80 @@ paths:
       - Audit
 components:
   schemas:
-    SafetyEventVehicleObjectResponseBody:
-      description: A minified vehicle object.
+    SafetyEventBehaviorLabelsResponseBody:
+      description: Behavior label for a safety event.
       properties:
-        id:
-          description: ID of the vehicle.
-          example: '1234'
+        name:
+          description: Name of the behavior label.
+          example: Acceleration
+          type: string
+        type:
+          description: 'Type of the BehaviorLabel.  Valid values: `Acceleration`, `Braking`, `Crash`, `DefensiveDriving`, `DidNotYield`, `Drinking`, `Drowsy`, `Eating`, `EatingDrinking`, `EdgeDistractedDriving`, `EdgeRailroadCrossingViolation`, `FollowingDistance`, `FollowingDistanceModerate`, `FollowingDistanceSevere`, `ForwardCollisionWarning`, `GenericDistraction`, `GenericTailgating`, `HarshTurn`, `Invalid`, `LaneDeparture`, `LateResponse`, `MobileUsage`, `NearCollison`, `NoSeatbelt`, `ObstructedCamera`, `PolicyViolationMask`, `RanRedLight`, `RollingStop`, `RolloverProtection`, `Smoking`, `Speeding`, `YawControl`'
+          enum:
+          - Acceleration
+          - Braking
+          - Crash
+          - DefensiveDriving
+          - DidNotYield
+          - Drinking
+          - Drowsy
+          - Eating
+          - EatingDrinking
+          - EdgeDistractedDriving
+          - EdgeRailroadCrossingViolation
+          - FollowingDistance
+          - FollowingDistanceModerate
+          - FollowingDistanceSevere
+          - ForwardCollisionWarning
+          - GenericDistraction
+          - GenericTailgating
+          - HarshTurn
+          - Invalid
+          - LaneDeparture
+          - LateResponse
+          - MobileUsage
+          - NearCollison
+          - NoSeatbelt
+          - ObstructedCamera
+          - PolicyViolationMask
+          - RanRedLight
+          - RollingStop
+          - RolloverProtection
+          - Smoking
+          - Speeding
+          - YawControl
+          example: Acceleration
           type: string
       type: object
-    SafetyEventObjectResponseBody:
-      description: The safety event that was updated.
+    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
+      description: An internal server error occurred
       properties:
-        behaviorLabels:
-          description: Behavior labels for a safety event.
-          items:
-            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
-          type: array
-        driver:
-          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
-        id:
-          description: The unique Samsara ID of the safety event.
-          example: 212014918174029-1550954461759
+        message:
+          description: Message of error
+          example: Failed to execute GraphQL query.
           type: string
-        time:
-          description: The time the safety event occurred in RFC 3339 milliseconds format.
-          example: '2019-06-13T19:08:25.455Z'
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
-        vehicle:
-          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
+      description: Too many requests
+      properties:
+        message:
+          description: Message of error
+          example: Exceeded rate limit.
+          type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
       type: object
     SafetyEventsGetSafetyActivityEventFeedResponseBody:
       properties:
@@ -175,27 +221,20 @@ components:
       - endCursor
       - hasNextPage
       type: object
-    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
-      description: Bad Request parameters
+    SafetyEventDriverObjectResponseBody:
+      description: A minified driver object.
       properties:
-        message:
-          description: Message of error
-          example: Invalid value for parameter.
+        id:
+          description: ID of the driver.
+          example: 0987
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
-    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
-      description: Resource not found
+    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
+      description: Method not allowed
       properties:
         message:
           description: Message of error
-          example: Object not found.
+          example: DELETE not allowed on /endpoint.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -262,58 +301,56 @@ components:
       - message
       - requestId
       type: object
-    SafetyEventBehaviorLabelsResponseBody:
-      description: Behavior label for a safety event.
+    SafetyEventsGetSafetyActivityEventFeedBadRequestErrorResponseBody:
+      description: Bad Request parameters
       properties:
-        name:
-          description: Name of the behavior label.
-          example: Acceleration
+        message:
+          description: Message of error
+          example: Invalid value for parameter.
           type: string
-        type:
-          description: 'Type of the BehaviorLabel.  Valid values: `Acceleration`, `Braking`, `Crash`, `DefensiveDriving`, `DidNotYield`, `Drinking`, `Drowsy`, `Eating`, `EatingDrinking`, `EdgeDistractedDriving`, `EdgeRailroadCrossingViolation`, `FollowingDistance`, `FollowingDistanceModerate`, `FollowingDistanceSevere`, `ForwardCollisionWarning`, `GenericDistraction`, `GenericTailgating`, `HarshTurn`, `Invalid`, `LaneDeparture`, `LateResponse`, `MobileUsage`, `NearCollison`, `NoSeatbelt`, `ObstructedCamera`, `PolicyViolationMask`, `RanRedLight`, `RollingStop`, `RolloverProtection`, `Smoking`, `Speeding`, `YawControl`'
-          enum:
-          - Acceleration
-          - Braking
-          - Crash
-          - DefensiveDriving
-          - DidNotYield
-          - Drinking
-          - Drowsy
-          - Eating
-          - EatingDrinking
-          - EdgeDistractedDriving
-          - EdgeRailroadCrossingViolation
-          - FollowingDistance
-          - FollowingDistanceModerate
-          - FollowingDistanceSevere
-          - ForwardCollisionWarning
-          - GenericDistraction
-          - GenericTailgating
-          - HarshTurn
-          - Invalid
-          - LaneDeparture
-          - LateResponse
-          - MobileUsage
-          - NearCollison
-          - NoSeatbelt
-          - ObstructedCamera
-          - PolicyViolationMask
-          - RanRedLight
-          - RollingStop
-          - RolloverProtection
-          - Smoking
-          - Speeding
-          - YawControl
-          example: Acceleration
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
           type: string
+      required:
+      - message
+      - requestId
       type: object
-    SafetyEventDriverObjectResponseBody:
-      description: A minified driver object.
+    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
+      description: Gateway timeout
       properties:
-        id:
-          description: ID of the driver.
-          example: 0987
+        message:
+          description: Message of error
+          example: context deadline exceeded
           type: string
+        requestId:
+          description: The request ID; used when reaching out to support for issues with requests.
+          example: 8916e1c1
+          type: string
+      required:
+      - message
+      - requestId
+      type: object
+    SafetyEventObjectResponseBody:
+      description: The safety event that was updated.
+      properties:
+        behaviorLabels:
+          description: Behavior labels for a safety event.
+          items:
+            $ref: '#/components/schemas/SafetyEventBehaviorLabelsResponseBody'
+          type: array
+        driver:
+          $ref: '#/components/schemas/SafetyEventDriverObjectResponseBody'
+        id:
+          description: The unique Samsara ID of the safety event.
+          example: 212014918174029-1550954461759
+          type: string
+        time:
+          description: The time the safety event occurred in RFC 3339 milliseconds format.
+          example: '2019-06-13T19:08:25.455Z'
+          type: string
+        vehicle:
+          $ref: '#/components/schemas/SafetyEventVehicleObjectResponseBody'
       type: object
     SafetyEventsGetSafetyActivityEventFeedBadGatewayErrorResponseBody:
       description: Bad Gateway
@@ -345,12 +382,12 @@ components:
       - message
       - requestId
       type: object
-    SafetyEventsGetSafetyActivityEventFeedMethodNotAllowedErrorResponseBody:
-      description: Method not allowed
+    SafetyEventsGetSafetyActivityEventFeedNotFoundErrorResponseBody:
+      description: Resource not found
       properties:
         message:
           description: Message of error
-          example: DELETE not allowed on /endpoint.
+          example: Object not found.
           type: string
         requestId:
           description: The request ID; used when reaching out to support for issues with requests.
@@ -360,50 +397,13 @@ components:
       - message
       - requestId
       type: object
-    SafetyEventsGetSafetyActivityEventFeedInternalServerErrorResponseBody:
-      description: An internal server error occurred
+    SafetyEventVehicleObjectResponseBody:
+      description: A minified vehicle object.
       properties:
-        message:
-          description: Message of error
-          example: Failed to execute GraphQL query.
+        id:
+          description: ID of the vehicle.
+          example: '1234'
           type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedGatewayTimeoutErrorResponseBody:
-      description: Gateway timeout
-      properties:
-        message:
-          description: Message of error
-          example: context deadline exceeded
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
-      type: object
-    SafetyEventsGetSafetyActivityEventFeedTooManyRequestsErrorResponseBody:
-      description: Too many requests
-      properties:
-        message:
-          description: Message of error
-          example: Exceeded rate limit.
-          type: string
-        requestId:
-          description: The request ID; used when reaching out to support for issues with requests.
-          example: 8916e1c1
-          type: string
-      required:
-      - message
-      - requestId
       type: object
   securitySchemes:
     AccessTokenHeader:

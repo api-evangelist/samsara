@@ -161,6 +161,22 @@ paths:
       - Files
 components:
   schemas:
+    paginationResponse:
+      description: Pagination parameters.
+      properties:
+        endCursor:
+          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
+          example: MjkY
+          format: string
+          type: string
+        hasNextPage:
+          description: True if there are more pages of results immediately available after this endCursor.
+          example: true
+          type: boolean
+      required:
+      - endCursor
+      - hasNextPage
+      type: object
     standardErrorResponse:
       description: Error response
       properties:
@@ -172,6 +188,73 @@ components:
           description: The ID of the request.
           example: 8916e1c1
           type: string
+      type: object
+    TachographVehicleFileData:
+      items:
+        $ref: '#/components/schemas/TachographVehicleFileListWrapper'
+      type: array
+    TachographDriverFileData:
+      items:
+        $ref: '#/components/schemas/TachographDriverFileListWrapper'
+      type: array
+    TachographDriverFileList:
+      description: List of all tachograph driver files in a specified time range.
+      items:
+        $ref: '#/components/schemas/TachographDriverFile'
+      type: array
+    TachographDriverFile:
+      description: Tachograph driver file
+      properties:
+        cardNumber:
+          description: Tachograph card number associated with the file.
+          example: '1000000492436002'
+          type: string
+        createdAtTime:
+          description: Creation time of files in RFC 3339 format. This is either the download time from the tachograph itself (for files downloaded via Samsara VG) or upload time (for files manually uploaded via Samsara UI).
+          example: 2020-01-02T15:04:05Z07:00
+          type: string
+        id:
+          description: ID of the file.
+          example: 4aff772c-a7bb-45e6-8e41-6a53e34feb83
+          type: string
+        url:
+          description: A temporary URL which can be used to download the file. The link can be used multiple times and expires after an hour.
+          example: https://samsara-tachograph-files.s3.us-west-2.amazonaws.com/123/456/789/4aff772c-a7bb-45e6-8e41-6a53e34feb83.ddd
+          type: string
+      type: object
+    driverTinyResponse:
+      description: A minified driver object.
+      properties:
+        id:
+          description: ID of the driver.
+          example: '88668'
+          type: string
+        name:
+          description: Name of the driver.
+          example: Susan Bob
+          type: string
+      type: object
+    TachographVehicleFilesResponse:
+      description: List of all vehicle tachograph files in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/TachographVehicleFileData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
+    TachographDriverFileListWrapper:
+      properties:
+        driver:
+          $ref: '#/components/schemas/driverTinyResponse'
+        files:
+          $ref: '#/components/schemas/TachographDriverFileList'
+      type: object
+    TachographVehicleFileListWrapper:
+      properties:
+        files:
+          $ref: '#/components/schemas/TachographVehicleFileList'
+        vehicle:
+          $ref: '#/components/schemas/vehicleTinyResponse'
       type: object
     TachographVehicleFile:
       description: Tachograph vehicle file
@@ -193,10 +276,19 @@ components:
           example: '1000000492436002'
           type: string
       type: object
-    TachographDriverFileData:
+    TachographVehicleFileList:
+      description: List of all tachograph vehicle files in a specified time range.
       items:
-        $ref: '#/components/schemas/TachographDriverFileListWrapper'
+        $ref: '#/components/schemas/TachographVehicleFile'
       type: array
+    TachographDriverFilesResponse:
+      description: List of all driver tachograph files in a specified time range.
+      properties:
+        data:
+          $ref: '#/components/schemas/TachographDriverFileData'
+        pagination:
+          $ref: '#/components/schemas/paginationResponse'
+      type: object
     vehicleTinyResponse:
       description: A minified vehicle object.
       properties:
@@ -217,98 +309,6 @@ components:
           example: 'Midwest Truck #4'
           type: string
       type: object
-    TachographDriverFileListWrapper:
-      properties:
-        driver:
-          $ref: '#/components/schemas/driverTinyResponse'
-        files:
-          $ref: '#/components/schemas/TachographDriverFileList'
-      type: object
-    TachographDriverFile:
-      description: Tachograph driver file
-      properties:
-        cardNumber:
-          description: Tachograph card number associated with the file.
-          example: '1000000492436002'
-          type: string
-        createdAtTime:
-          description: Creation time of files in RFC 3339 format. This is either the download time from the tachograph itself (for files downloaded via Samsara VG) or upload time (for files manually uploaded via Samsara UI).
-          example: 2020-01-02T15:04:05Z07:00
-          type: string
-        id:
-          description: ID of the file.
-          example: 4aff772c-a7bb-45e6-8e41-6a53e34feb83
-          type: string
-        url:
-          description: A temporary URL which can be used to download the file. The link can be used multiple times and expires after an hour.
-          example: https://samsara-tachograph-files.s3.us-west-2.amazonaws.com/123/456/789/4aff772c-a7bb-45e6-8e41-6a53e34feb83.ddd
-          type: string
-      type: object
-    TachographDriverFileList:
-      description: List of all tachograph driver files in a specified time range.
-      items:
-        $ref: '#/components/schemas/TachographDriverFile'
-      type: array
-    paginationResponse:
-      description: Pagination parameters.
-      properties:
-        endCursor:
-          description: Cursor identifier representing the last element in the response. This value should be used in conjunction with a subsequent request's 'after' query parameter. This may be an empty string if there are no more pages left to view.
-          example: MjkY
-          format: string
-          type: string
-        hasNextPage:
-          description: True if there are more pages of results immediately available after this endCursor.
-          example: true
-          type: boolean
-      required:
-      - endCursor
-      - hasNextPage
-      type: object
-    TachographVehicleFileListWrapper:
-      properties:
-        files:
-          $ref: '#/components/schemas/TachographVehicleFileList'
-        vehicle:
-          $ref: '#/components/schemas/vehicleTinyResponse'
-      type: object
-    TachographVehicleFilesResponse:
-      description: List of all vehicle tachograph files in a specified time range.
-      properties:
-        data:
-          $ref: '#/components/schemas/TachographVehicleFileData'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    TachographDriverFilesResponse:
-      description: List of all driver tachograph files in a specified time range.
-      properties:
-        data:
-          $ref: '#/components/schemas/TachographDriverFileData'
-        pagination:
-          $ref: '#/components/schemas/paginationResponse'
-      type: object
-    driverTinyResponse:
-      description: A minified driver object.
-      properties:
-        id:
-          description: ID of the driver.
-          example: '88668'
-          type: string
-        name:
-          description: Name of the driver.
-          example: Susan Bob
-          type: string
-      type: object
-    TachographVehicleFileData:
-      items:
-        $ref: '#/components/schemas/TachographVehicleFileListWrapper'
-      type: array
-    TachographVehicleFileList:
-      description: List of all tachograph vehicle files in a specified time range.
-      items:
-        $ref: '#/components/schemas/TachographVehicleFile'
-      type: array
   securitySchemes:
     AccessTokenHeader:
       type: http

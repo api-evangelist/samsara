@@ -3,6 +3,7 @@ provider: Samsara
 generated_by: planning/capability-mapping/scripts/classify_capabilities.py
 model: claude-opus-5
 frame:
+- Infrastructure
 - Transportation & Logistics
 min_confidence: 0.7
 capability_model:
@@ -146,6 +147,16 @@ edges:
     behaviorResponseBody, DriverWithExternalIdObjectResponseBody
   reason: Operations retrieve driver coaching sessions tied to coachable driving behaviour events for
     identified drivers — driver performance scoring and coaching, i.e. Driver and Crew Performance Management.
+- tag: Training
+  spec_file: samsara-training-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.82
+  evidence: PATCH /preview/training-assignments  patchTrainingAssignments; schemas TrainingLearnerObjectResponseBody,
+    TrainingCourseObjectResponseBody
+  reason: Assignment of training courses to learners is learning and development administration for the
+    workforce, regardless of the vendor being a telematics platform.
 - tag: Equipment
   spec_file: samsara-equipment-api-openapi.yml
   capability_id: BC-2430.40
@@ -188,17 +199,6 @@ edges:
   reason: CRUD over fleet dispatch routes with stops and addresses is transport execution planning/dispatch.
     The 'dispatch/routes' path grounds Dispatch Management, though route-plan definition could also read
     as last-mile routing.
-- tag: Training
-  spec_file: samsara-training-api-openapi.yml
-  capability_id: BC-300.40
-  capability_id_l1: BC-300
-  capability_name: Learning & Development Management
-  confidence: 0.8
-  evidence: 'PATCH /preview/training-assignments  patchTrainingAssignments  [preview] Update Training
-    Assignments.  schemas: TrainingLearnerObjectResponseBody, TrainingCourseObjectResponseBody'
-  reason: Learner and course objects with assignment lifecycle operations describe workforce training
-    administration, i.e. Learning & Development Management. No evidence it is scoped to a specific regulated
-    regime such as dangerous-goods training, so the generic HCM capability is the honest fit.
 - tag: Activity
   spec_file: samsara-activity-api-openapi.yml
   capability_id: BC-2440.30

@@ -5398,6 +5398,75 @@ edges:
     sector: American Dynamism;Enterprise;Growth
   detected_by: sweep-vc-portfolios.py
   first_seen: '2026-10-21'
+- partner_name: Open Mobility Foundation MDS registered providers
+  partner: null
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://raw.githubusercontent.com/openmobilityfoundation/mobility-data-specification/main/providers.csv
+  category: MDS provider registration
+  contract_reference:
+    register: Open Mobility Foundation MDS registered providers
+    standard: Mobility Data Specification (MDS)
+    spec_file: null
+    role: mds-provider
+    registrations:
+    - registered_name: Samsara
+      mode: passenger-services
+      provider_id: aa055687-5947-4921-ae1d-70d7755609ae
+      matched_domain: samsara.com
+      matched_by: domain
+      mds_api_host: null
+      gbfs_api_host: null
+      evidence_url: https://github.com/openmobilityfoundation/mobility-data-specification/blob/main/providers.csv
+    signal_note: 'participation only: an OMF provider registration (provider_id issued); the OMF publishes no MDS
+      conformance certification'
+    detected_by: sweep-open-mobility-foundation-mds.py
+    detected: '2026-10-22'
+  detected_by: sweep-open-mobility-foundation-mds.py
+  first_seen: '2026-10-22'
+- partner_name: FMCSA registered Electronic Logging Devices (self-certified ELD list + revoked devices)
+  partner: null
+  partner_match: register
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://eld.fmcsa.dot.gov/List/Index
+  category: US FMCSA Electronic Logging Device registration (hours of service)
+  contract_reference:
+    register: FMCSA registered Electronic Logging Devices (self-certified ELD list + revoked devices)
+    standard: FMCSA ELD technical specifications (49 CFR Part 395 Subpart B, Appendix A)
+    spec_file: null
+    role: eld-manufacturer
+    registered_name: Samsara Inc.
+    matched_domain: samsara.com
+    matched_by: domain
+    eld_status: active
+    certified_products:
+    - product: Electronic Logging Device
+      product_type: Electronic Logging Device
+      standard: FMCSA ELD technical specifications (49 CFR Part 395 Subpart B, Appendix A)
+      lapsed: false
+      self_certified: true
+    devices:
+    - device: Samsara ELD
+      model: VG
+      eld_identifier: SAMELD
+      status: active
+    - device: Samsara ELD for International Trucks
+      model: N2
+      eld_identifier: SAMNI1
+      status: active
+    signal_note: 'certified_products = one entry for the ELD product type, SELF-certified by the manufacturer against
+      the FMCSA technical specifications (lapsed: true when every listed device is revoked); device rows are context,
+      never counted'
+    detected_by: sweep-fmcsa-eld-registered-devices.py
+    detected: '2026-10-22'
+  detected_by: sweep-fmcsa-eld-registered-devices.py
+  first_seen: '2026-10-22'
 method: searched
 checked:
 - https://fivetran.com/docs-sitemap.xml
@@ -5415,5 +5484,10 @@ checked:
 - https://www.indexventures.com/companies/
 - https://www.sequoiacap.com/our-companies/
 - https://www.sequoiacap.com/sitemap.xml
+- https://openmobilityfoundation.org
+- https://raw.githubusercontent.com/openmobilityfoundation/mobility-data-specification/main/agencies.csv
+- https://raw.githubusercontent.com/openmobilityfoundation/mobility-data-specification/main/providers.csv
+- https://eld.fmcsa.dot.gov/List/GetListOfELDs?listType=Revoked
+- https://eld.fmcsa.dot.gov/List/Index
 source:
 - workday/integrations/workday-integration-edges.yml
